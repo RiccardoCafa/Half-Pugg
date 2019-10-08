@@ -6,13 +6,14 @@ using System.Web;
 
 namespace HalfPugg.Models
 {
-    public class Classification_Gamer
+    public class HashTag
     {
         [Key]
-        public int ID_Classification { get; set; }
+        public int ID_Matter { get; set; }
         [Required]
-        public int ID_Gamer { get; set; }
-        [Required]
-        public float Points { get; set; }
+      
+        public IList<Gamer> Gamers { get; set; }
+
+        public IList<Game> Games { get; set; }
     }
 }
