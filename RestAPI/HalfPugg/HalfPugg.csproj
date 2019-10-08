@@ -161,30 +161,22 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\Classification_GamerController.cs" />
-    <Compile Include="Controllers\Classification_UserController.cs" />
-    <Compile Include="Controllers\GamersController.cs" />
-    <Compile Include="Controllers\GamesController.cs" />
-    <Compile Include="Controllers\Game_TopicController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MatchesController.cs" />
-    <Compile Include="Controllers\MattersController.cs" />
-    <Compile Include="Controllers\TopicsController.cs" />
-    <Compile Include="Controllers\User_GameController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Classification_Gamer.cs" />
-    <Compile Include="Models\Classification_User.cs" />
+    <Compile Include="Models\Classification_Game.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Gamer.cs" />
-    <Compile Include="Models\Game_Topic.cs" />
     <Compile Include="Models\HalfPuggContext.cs" />
-    <Compile Include="Models\Match.cs" />
-    <Compile Include="Models\Matter.cs" />
-    <Compile Include="Models\Topic.cs" />
-    <Compile Include="Models\User_Game.cs" />
+    <Compile Include="Models\HashTag.cs" />
+    <Compile Include="Models\Filter.cs" />
+    <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\Hall.cs" />
+    <Compile Include="Models\MessageGamer.cs" />
+    <Compile Include="Models\MessageGroup.cs" />
+    <Compile Include="Models\MessageHall.cs" />
+    <Compile Include="Models\Template .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +232,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
