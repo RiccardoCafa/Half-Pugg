@@ -11,7 +11,7 @@ namespace HalfPugg.Models
         public Game Game { get; set; }
         public int Capacity { get; set; }
 
-        public int ID_Filter { get; set; }
+        public IList<Filter> Filter { get; set; }
         public Gamer Admin { get; set; }
         public DateTime CreatedAt { get; set; }
         public IList<Gamer> Components { get; set; }
