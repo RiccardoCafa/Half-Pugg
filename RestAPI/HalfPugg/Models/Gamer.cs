@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Security.Cryptography;
 
 namespace HalfPugg.Models
 {
@@ -21,7 +22,7 @@ namespace HalfPugg.Models
         public string Nickname { get; set; }
         [Required]
         [StringLenght(100)]
-        public string HashPassword { get; set; }
+        public MD5 HashPassword { get; set; }
         [StringLenght(300)]
         public string Bio { get; set; }
 
