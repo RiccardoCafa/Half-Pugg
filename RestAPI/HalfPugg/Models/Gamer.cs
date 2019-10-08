@@ -12,10 +12,10 @@ namespace HalfPugg.Models
         [Key]
         public int ID { get; set; }
         [Required]
-        [StringLenght(30)]
+        [StringLength(30)]
         public string Name { get; set; }
         [Required]
-        [StringLenght(70)]
+        [StringLength(70)]
         public string LastName { get; set; }
         [Required]
         [StringLenght(50)]
@@ -45,7 +45,7 @@ namespace HalfPugg.Models
         
         public IList<Game> Games { get; set; }
 
-        public IList<Classification_User> Classification { get; set; }
+        public IList<Classification_Gamer> Classification { get; set; }
 
         public IList<Groups> Groups { get; set; }
 
