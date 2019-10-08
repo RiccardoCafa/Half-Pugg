@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -10,7 +11,7 @@ namespace HalfPugg.Models
         public int ID { get; set; }
         public Filter ID_Filter { get; set; }
         [Required]
-        [StringLenght(50)]
-        public string Label { get; set; }
+        [StringLength(50)]
+        public string NameLabel { get; set; }
     }
 }
