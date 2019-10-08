@@ -8,22 +8,25 @@ namespace HalfPugg.Models
 {
     public class Gamer
     {
-        #region DATA
         [Key]
         public int ID { get; set; }
         [Required]
+        [StringLenght(30)]
         public string Name { get; set; }
         [Required]
+        [StringLenght(70)]
         public string LastName { get; set; }
         [Required]
+        [StringLenght(50)]
         public string Nickname { get; set; }
         [Required]
+        [StringLenght(100)]
         public string HashPassword { get; set; }
-        
+        [StringLenght(300)]
         public string Bio { get; set; }
 
         public DateTime Birthday { get; set; }
-
+        [StringLenght(100)]
         public string ImagePath { get; set; }
 
         [Required]
@@ -32,7 +35,7 @@ namespace HalfPugg.Models
         public int ID_Branch { get; set; }
         
         public char Sex { get; set; }
-        
+        [StringLenght(100)]
         public string Genre { get; set; }
 
         public IList<Gamer> Matches { get; set; }
@@ -47,18 +50,7 @@ namespace HalfPugg.Models
 
         public IList<Halls> Halls { get; set; }
 
-        public char Sex { get; set; }
-
-        public string Genre { get; set; }
-        #endregion
-
-        #region RELATIONS
-
-        public IList<Gamer> Match { get; set; }
-        public IList<Game> Games { get; set; }
-        public IList<string> Topics { get; set; }
         
-        #endregion
-
+        
     }
 }

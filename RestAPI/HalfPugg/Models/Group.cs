@@ -7,6 +7,7 @@ namespace HalfPugg.Models
     public class Group
     {
         public int ID_Group { get; set; }
+        [StringLenght(70)]
         public string Name { get; set; }
         public Game Game { get; set; }
         public int Capacity { get; set; }

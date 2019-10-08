@@ -8,6 +8,7 @@ namespace HalfPugg.Models
     public class MessageGamer
     {
         public int ID_Message { get; set; }
+        [StringLenght(400)]
         public string Content { get; set; }
         public DateTime Send_Time{ get; set; }
         public Gamer ID_User { get; set; }

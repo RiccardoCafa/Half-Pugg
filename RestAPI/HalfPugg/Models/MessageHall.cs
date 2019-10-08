@@ -8,6 +8,7 @@ namespace HalfPugg.Models
     public class MenssageHall
     {
         public int ID { get; set; }
+        [StringLenght(400)]
         public string Content { get; set; }
         public DateTime Send_Time { get; set; }
         public DateTime View_Time { get; set; }

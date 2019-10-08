@@ -8,8 +8,9 @@ namespace HalfPugg.MongoModels
     public class Hall
     {
         public int ID_Hall { get; set; }
+        [StringLenght(70)]
         public string Name { get; set; }
-        public string ID_Game { get; set; }
+        public Game game { get; set; }
         public int Capacity { get; set; }
 
         public IList<Filter> Filter { get; set; }

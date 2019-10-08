@@ -15,7 +15,10 @@ namespace HalfPugg.Models
         [StringLenght(70)]
         public string Name { get; set; }
         [Required]
+        [StringLenght(300)]
         public string Description { get; set; }
+
+        public DateTime Birthday { get; set; }
 
         public string EndPoint { get; set; }
 
