@@ -12,6 +12,7 @@ namespace HalfPugg.Models
         [Required]
         public int ID_Game { get; set; }
         [Required]
+        [StringLenght(70)]
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
@@ -29,6 +30,5 @@ namespace HalfPugg.Models
         public IList<Filter> Filter { get; set; }
 
         
-
     }
 }
