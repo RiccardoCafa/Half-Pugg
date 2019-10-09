@@ -35,6 +35,10 @@
     color: white;
 }
 
+.cadastro-label:hover {
+    text-decoration: underline;
+}
+
 .login-container form button {
     margin-top: 20px;
     width: 90px;
@@ -46,6 +50,16 @@
     border: 0;
     border-radius: 15px;
     color: white;
+    transition: all .2s;
+    outline: none;
+}
+
+.login-container form button:active {
+    transform: translateY(2px);
+}
+
+.login-container form button:hover {
+    background: rgb(20, 138, 49);
 }
 
 .cadastro {
@@ -61,4 +75,10 @@
 
 .login-container img {
     margin-left: 35%;
+    cursor: pointer;
+    transition: all .2s;
 }
+.login-container img:hover {
+    transform: translateY(-3px);
+}
+
