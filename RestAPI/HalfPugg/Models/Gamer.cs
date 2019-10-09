@@ -12,22 +12,22 @@ namespace HalfPugg.Models
         [Key]
         public int ID { get; set; }
         [Required]
-        [StringLenght(30)]
+        [StringLength(30)]
         public string Name { get; set; }
         [Required]
-        [StringLenght(70)]
+        [StringLength(70)]
         public string LastName { get; set; }
         [Required]
-        [StringLenght(50)]
+        [StringLength(50)]
         public string Nickname { get; set; }
         [Required]
-        [StringLenght(100)]
+        [StringLength(100)]
         public MD5 HashPassword { get; set; }
-        [StringLenght(300)]
+        [StringLength(300)]
         public string Bio { get; set; }
 
         public DateTime Birthday { get; set; }
-        [StringLenght(100)]
+        [StringLength(100)]
         public string ImagePath { get; set; }
 
         [Required]
@@ -36,20 +36,20 @@ namespace HalfPugg.Models
         public int ID_Branch { get; set; }
         
         public char Sex { get; set; }
-        [StringLenght(100)]
+        [StringLength(100)]
         public string Genre { get; set; }
 
         public IList<Gamer> Matches { get; set; }
         
-        public IList<Matter> Hashtags { get; set; }
+        public IList<HashTag> Hashtags { get; set; }
         
         public IList<Game> Games { get; set; }
 
-        public IList<Classification_User> Classification { get; set; }
+        public IList<Classification_Gamer> Classification { get; set; }
 
-        public IList<Groups> Groups { get; set; }
+        public IList<Group> Groups { get; set; }
 
-        public IList<Halls> Halls { get; set; }
+        public IList<MessageHall> Halls { get; set; }
 
         
         
