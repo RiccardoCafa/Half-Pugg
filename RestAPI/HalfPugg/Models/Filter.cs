@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace HalfPugg.MongoModels
+namespace HalfPugg.Models
 {
     public class Filter
     {
@@ -12,8 +12,8 @@ namespace HalfPugg.MongoModels
         [StringLenght(100)]
         public string Filter { get; set; }
         public IList<Game> Games { get; set; }
-        public IList<Hall> Filter { get; set; }
-        public IList<Group> Filter { get; set; }
+        public IList<Hall> HallFilter { get; set; }
+        public IList<Group> HallFilter { get; set; }
     }
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace HalfPugg.MongoModels
+namespace HalfPugg.Models
 {
     public class Hall
     {
