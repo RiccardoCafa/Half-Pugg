@@ -161,11 +161,14 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Controllers\GamerControler.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classification_Gamer.cs" />
     <Compile Include="Models\Classification_Game.cs" />
+    <Compile Include="Models\Classification_Gamer.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Gamer.cs" />
     <Compile Include="Models\HalfPuggContext.cs" />
@@ -173,9 +176,12 @@
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Hall.cs" />
+    <Compile Include="Models\Label.cs" />
     <Compile Include="Models\MessageGamer.cs" />
     <Compile Include="Models\MessageGroup.cs" />
     <Compile Include="Models\MessageHall.cs" />
+    <Compile Include="Models\Numbered.cs" />
+    <Compile Include="Models\Range.cs" />
     <Compile Include="Models\Template .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -232,7 +238,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

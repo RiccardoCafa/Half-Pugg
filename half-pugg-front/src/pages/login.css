@@ -1,0 +1,84 @@
+
+.login-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7%;
+    flex-direction: column;
+
+}
+
+.login-container form {
+    width: 100%;
+    max-width: 300px;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-container form input {
+    margin-top: 20px;
+    border: 2px solid #fff;
+    border-radius: 4px;
+    height: 30px;
+    font-size: 16px;
+    color: #665;
+    margin-left: 10px;
+    width: 300px;
+    padding-left: 10px;
+}
+
+.login-container form h1 {
+    text-align: center;
+    margin-left: 5%;
+    color: white;
+}
+
+.cadastro-label:hover {
+    text-decoration: underline;
+}
+
+.login-container form button {
+    margin-top: 20px;
+    width: 90px;
+    margin-left: 40%;
+    height: 30px;
+    cursor: pointer;
+    background: rgb(25, 172, 61);
+    font-weight: bold;
+    border: 0;
+    border-radius: 15px;
+    color: white;
+    transition: all .2s;
+    outline: none;
+}
+
+.login-container form button:active {
+    transform: translateY(2px);
+}
+
+.login-container form button:hover {
+    background: rgb(20, 138, 49);
+}
+
+.cadastro {
+    color: white;
+    margin-top: 20px;
+    margin-left: 45px;
+    cursor: pointer;
+} 
+
+.cadastro-label {
+    cursor: pointer;
+}
+
+.login-container img {
+    margin-left: 35%;
+    cursor: pointer;
+    transition: all .2s;
+}
+.login-container img:hover {
+    transform: translateY(-3px);
+}
+

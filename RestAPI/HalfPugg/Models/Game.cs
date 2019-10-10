@@ -12,26 +12,25 @@ namespace HalfPugg.Models
         [Required]
         public int ID_Game { get; set; }
         [Required]
-        [StringLenght(70)]
+        [StringLength(70)]
         public string Name { get; set; }
         [Required]
-        [StringLenght(300)]
+        [StringLength(70)]
         public string Description { get; set; }
-
+        [Required]
         public DateTime Birthday { get; set; }
-
+        [Required]
         public string EndPoint { get; set; }
 
         public IList<Gamer> Gamers { get; set; }
 
         public IList<Classification_Game> Classifications { get; set; }
 
-        public IList<Filters> Filter { get; set; }
-
-        public IList<Matter> Hashtags { get; set; }
-
         public IList<Filter> Filter { get; set; }
 
-        
+        public IList<HashTag> Hashtags { get; set; }
+
+        public IList<Filter> Filters { get; set; }
+
     }
 }

@@ -11,6 +11,8 @@ namespace HalfPugg.Models
         [Key]
         public int ID_Matter { get; set; }
         [Required]
+        [StringLength(70)]
+        public string Hashtag { get; set; }
       
         public IList<Gamer> Gamers { get; set; }
 

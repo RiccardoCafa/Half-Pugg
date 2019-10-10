@@ -6,12 +6,16 @@ using System.Web;
 
 namespace HalfPugg.Models
 {
-    public class Label
+    public class Classification_Game
     {
+        [Key]
         public int ID { get; set; }
-        public Filter ID_Filter { get; set; }
         [Required]
         [StringLength(50)]
-        public string NameLabel { get; set; }
+        public string Description { get; set; }
+
+        public IList<Game> Games { get; set; }
+
+
     }
 }

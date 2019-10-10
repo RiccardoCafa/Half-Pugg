@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace HalfPugg.Models
 {
-    public class MenssageHall
+    public class MessageHall
     {
+        [Key]
         public int ID { get; set; }
-        [StringLenght(400)]
+        [StringLength(400)]
+        [Required]
         public string Content { get; set; }
+        [Required]
         public DateTime Send_Time { get; set; }
+        [Required]
         public DateTime View_Time { get; set; }
+        [Required]
         public Gamer ID_User { get; set; }
+        [Required]
         public Hall ID_Recipient { get; set; }
         public char Status { get; set; }
     }
