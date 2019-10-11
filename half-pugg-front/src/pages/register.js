@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './register.css';
 import pugg from '../images/Logo_Pugg.png';
+import api from '../services/api';
 
 export default function({history}) {
 
@@ -14,10 +15,13 @@ export default function({history}) {
     const [ firstName, setFirstName ] = useState('');
     const [ lastName, setLastName ] = useState('');
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
-        console.log('usuario: ' + username);
+        const response = await api.post('/', {
+            "asd": username,
+            
+        });
     }
 
     return (
@@ -32,24 +36,45 @@ export default function({history}) {
             <form onSubmit={handleSubmit}>
                 <ul>
                     <li>
+                        <h4>Primeiro Nome</h4>
                         <input 
-                            placeholder = "Seu nome heróico (ง ͠° ͟ل͜ ͡°)ง"
+                            placeholder = ""
+                            value = {firstName}
+                            onChange = { e => setFirstName(e.target.value)} 
+                            maxLength = {30}
+                        />
+                    </li>
+                    <li>
+                        <h4>Último Nome</h4>
+                        <input 
+                            placeholder = ""
+                            value = {lastName}
+                            maxLength = {30}
+                            onChange = {e => setLastName(e.target.value)}
+                        />
+                    </li>
+                    <li>
+                        <h4>Seu nome heróico (ง ͠° ͟ل͜ ͡°)ง</h4>
+                        <input 
+                            placeholder = ""
                             value = {username}
                             onChange = { e => setUsername(e.target.value)} 
                             maxLength = {25}
                         />
                     </li>
                     <li>
+                        <h4>Seu email fabuloso ( ✧≖ ͜ʖ≖)</h4>
                         <input 
-                            placeholder = "Seu email fabuloso ( ✧≖ ͜ʖ≖)"
+                            placeholder = ""
                             value = {email}
                             onChange = { e => setEmail(e.target.value)}
                             type= {"email"}
                         />
                     </li>
                     <li>
+                        <h4>Declare palavras secretas ( ͡~ ͜ʖ ͡°)</h4>
                         <input 
-                            placeholder = "Declare palavras secretas ( ͡~ ͜ʖ ͡°)"
+                            placeholder = ""
                             value = {senha}
                             onChange = { e => setSenha(e.target.value)}
                             type = {"password"}
@@ -57,44 +82,32 @@ export default function({history}) {
                         />
                     </li>
                     <li >  
+                        <h4>Confirme as palavras secretas ಠ_ಠ</h4>
                         <input 
-                            placeholder = "Confirme as palavras secretas ಠ_ಠ"
+                            placeholder = ""
                             value = {confirmSenha}
                             onChange = { e => setConfirmSenha(e.target.value)}
                             type = {"password"}
                         />
                     </li>
                     <li>
+                        <h4>Dia de spawn no mundo</h4>
                         <input 
-                            placeholder = "Primeiro Nome"
-                            value = {firstName}
-                            onChange = { e => setFirstName(e.target.value)} 
-                            maxLength = {30}
-                        />
-                    </li>
-                    <li>
-                        <input 
-                            placeholder = "Último Nome"
-                            value = {lastName}
-                            pattern="[A-Za-z]"
-                            maxLength = {30}
-                            onChange = {e => setLastName(e.target.value)}
-                        />
-                    </li>
-                    <li>
-                        <input 
-                            placeholder = "Dia de spawn no mundo"
+                            placeholder = ""
                             value = {dataNascimento}
                             onChange = { e => setDataNascimento(e.target.value)}
                             type = {"date"}
                         />
                     </li>
+                    <li>
+                        <button type="submit" >
+                            Cadastrar-se
+                        </button>
+                    </li>
                 </ul>
             </form>
             </div>
-            <button type="submit" >
-                    Sign-up
-                </button>
+            
         </div>
     );
 }

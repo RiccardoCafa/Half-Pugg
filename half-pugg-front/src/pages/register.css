@@ -18,37 +18,53 @@
 .register-inputs ul {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 2fr);
+    grid-template-rows: repeat(4, 2fr);
+    margin-top: 5%;
 }
 
 .register-inputs ul li {
-    max-height: 40px;
+    max-height: 60px;
     margin-bottom: 3px;
 }
 
+.register-inputs ul li h4 {
+    margin-left: 5%;
+    color: white;
+    margin-bottom: 0%;
+}
+
 .register-inputs form input {
-    margin-top: 20px;
-    border: 2px solid #fff;
+    margin-top: 4px;
+    border: 2px solid rgb(62, 1, 130);
     border-radius: 4px;
     height: 30px;
     font-size: 16px;
-    color: #665;
+    color: #eeeeee;
+    background: rgb(62, 1, 112);
     margin-left: 10px;
     width: 300px;
     padding-left: 10px;
 }
 
+.register-inputs form input:hover {
+    border: 2px solid rgb(49, 1, 104);
+}
+
+.register-inputs form input:focus {
+    border: 2px solid rgb(82, 25, 146);
+}
+
 .register-container button {
     margin-top: 20px;
-    width: 90px;
-    margin-left: 0%;
-    height: 30px;
+    width: 120px;
+    margin-left: 35%;
+    height: 35px;
     cursor: pointer;
     background: rgb(25, 172, 61);
     font-weight: bold;
     border: 0;
-    border-radius: 15px;
+    border-radius: 10px;
     color: white;
 }
 
@@ -64,4 +80,10 @@
 .register-title img {
     align-content: center;
     margin-left: 15%;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.register-title img:hover {
+    transform: translateY(-3px);
 }
