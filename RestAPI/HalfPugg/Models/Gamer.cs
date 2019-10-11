@@ -41,7 +41,7 @@ namespace HalfPugg.Models
 
         public IList<Gamer> Matches { get; set; }
         
-        public IList<Matter> Hashtags { get; set; }
+        public IList<Hashtags> Hashtags { get; set; }
         
         public IList<Game> Games { get; set; }
 

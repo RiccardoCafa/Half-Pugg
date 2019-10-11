@@ -167,6 +167,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ClassificationOfMatch.cs" />
     <Compile Include="Models\Classification_Game.cs" />
     <Compile Include="Models\Classification_Gamer.cs" />
     <Compile Include="Models\Filter.cs" />
@@ -178,11 +179,15 @@
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Hall.cs" />
     <Compile Include="Models\Label.cs" />
+    <Compile Include="Models\Match.cs" />
     <Compile Include="Models\MessageGamer.cs" />
     <Compile Include="Models\MessageGroup.cs" />
     <Compile Include="Models\MessageHall.cs" />
     <Compile Include="Models\Numbered.cs" />
     <Compile Include="Models\Range.cs" />
+    <Compile Include="Models\RequestedGroup.cs" />
+    <Compile Include="Models\RequestedMatch.cs" />
+    <Compile Include="Models\RequestHall.cs" />
     <Compile Include="Models\Template .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
