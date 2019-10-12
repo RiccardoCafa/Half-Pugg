@@ -25,7 +25,7 @@ namespace HalfPugg.Models
         public string HashPassword { get; set; }
         [StringLength(300)]
         public string Bio { get; set; }
-
+        public string  Email { get; set; }
         public DateTime Birthday { get; set; }
         [StringLength(100)]
         public string ImagePath { get; set; }

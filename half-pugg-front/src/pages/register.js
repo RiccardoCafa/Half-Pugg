@@ -17,11 +17,24 @@ export default function({history}) {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        console.log("cadastro");
+        const dts = dataNascimento.split("-");
+        const dt = dts[2] + "/" + dts[1] + "/" + dts[0];
 
-        const response = await api.post('/', {
-            "asd": username,
-            
+        const response = await api.post('api/Gamers', {
+            "Nickname": username,
+            "Name": firstName,
+            "LastName": lastName,
+            "HashPassword": senha,
+            "Birthday": dt,
+            "Email": email,
+            "Type": "a",
+        }).catch(function (error) {
+            console.log(error.response);
+            console.log("Error: " + error.message);
         });
+
+        console.log(dt);
     }
 
     return (
