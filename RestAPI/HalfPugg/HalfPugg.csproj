@@ -55,11 +55,18 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -167,21 +174,26 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ClassificationOfMatch.cs" />
     <Compile Include="Models\Classification_Game.cs" />
     <Compile Include="Models\Classification_Gamer.cs" />
+    <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Gamer.cs" />
     <Compile Include="Models\HalfPuggContext.cs" />
     <Compile Include="Models\HashTag.cs" />
-    <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Hall.cs" />
     <Compile Include="Models\Label.cs" />
+    <Compile Include="Models\Match.cs" />
     <Compile Include="Models\MessageGamer.cs" />
     <Compile Include="Models\MessageGroup.cs" />
     <Compile Include="Models\MessageHall.cs" />
     <Compile Include="Models\Numbered.cs" />
     <Compile Include="Models\Range.cs" />
+    <Compile Include="Models\RequestedGroup.cs" />
+    <Compile Include="Models\RequestedMatch.cs" />
+    <Compile Include="Models\RequestHall.cs" />
     <Compile Include="Models\Template .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

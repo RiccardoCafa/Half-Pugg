@@ -22,10 +22,10 @@ namespace HalfPugg.Models
         public string Nickname { get; set; }
         [Required]
         [StringLength(100)]
-        public MD5 HashPassword { get; set; }
+        public string HashPassword { get; set; }
         [StringLength(300)]
         public string Bio { get; set; }
-
+        public string  Email { get; set; }
         public DateTime Birthday { get; set; }
         [StringLength(100)]
         public string ImagePath { get; set; }
@@ -49,9 +49,6 @@ namespace HalfPugg.Models
 
         public IList<Group> Groups { get; set; }
 
-        public IList<MessageHall> Halls { get; set; }
-
-        
-        
+        public IList<MessageHall> Halls { get; set; } 
     }
 }

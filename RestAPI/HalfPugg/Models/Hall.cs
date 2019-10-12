@@ -8,6 +8,7 @@ namespace HalfPugg.Models
 {
     public class Hall
     {
+        [Key]
         public int ID_Hall { get; set; }
         [StringLength(70)]
         public string Name { get; set; }

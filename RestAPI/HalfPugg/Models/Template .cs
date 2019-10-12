@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace HalfPugg.MongoModels
+namespace HalfPugg.Models
 {
     public class Template
     {
@@ -11,7 +12,7 @@ namespace HalfPugg.MongoModels
         [Required]
         public Game game { get; set; }
         [Required]
-        [StringLenght(100)]
+        [StringLength(100)]
         public string Path { get; set; }
     }
 }
