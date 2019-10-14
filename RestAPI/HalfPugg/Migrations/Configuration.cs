@@ -1,11 +1,9 @@
 namespace HalfPugg.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
+    using HalfPugg.Models;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<HalfPugg.Models.HalfPuggContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<HalfPuggContext>
     {
         public Configuration()
         {

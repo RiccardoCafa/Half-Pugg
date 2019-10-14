@@ -8,6 +8,7 @@ namespace HalfPugg.Models
 {
     public class Template
     {
+        [Key]
         public int ID_Template { get; set; }
         [Required]
         public Game game { get; set; }

@@ -29,26 +29,16 @@ namespace HalfPugg.Models
         public DateTime Birthday { get; set; }
         [StringLength(100)]
         public string ImagePath { get; set; }
-
         [Required]
         public char Type { get; set; }
-
-        public int ID_Branch { get; set; }
-        
+        public int ID_Branch { get; set; }        
         public char Sex { get; set; }
         [StringLength(100)]
         public string Genre { get; set; }
-
-        public IList<Gamer> Matches { get; set; }
-        
-        public IList<HashTag> Hashtags { get; set; }
-        
-        public IList<Game> Games { get; set; }
-
+        public IList<Gamer> Matches { get; set; }        
+        public IList<HashTag> Hashtags { get; set; }        
         public IList<Classification_Gamer> Classification { get; set; }
-
         public IList<Group> Groups { get; set; }
-
         public IList<MessageHall> Halls { get; set; } 
     }
 }
