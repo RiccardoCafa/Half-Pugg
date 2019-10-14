@@ -5,7 +5,7 @@ using System.Web;
 
 namespace HalfPugg.Models
 {
-    public class RequestHall
+    public class RequestedHall
     {
         public int ID { get; set; }
         public Gamer Player { get; set; }

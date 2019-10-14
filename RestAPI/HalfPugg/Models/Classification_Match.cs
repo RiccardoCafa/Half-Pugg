@@ -5,7 +5,7 @@ using System.Web;
 
 namespace HalfPugg.Models
 {
-    public class ClassificationOfMatch
+    public class Classification_Match
     {
     }
 }
