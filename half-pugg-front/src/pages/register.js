@@ -21,7 +21,7 @@ export default function({history}) {
         const dts = dataNascimento.split("-");
         const dt = dts[2] + "/" + dts[1] + "/" + dts[0];
 
-        const response = await api.post('api/Gamers', {
+        await api.post('api/Gamers', {
             "Nickname": username,
             "Name": firstName,
             "LastName": lastName,
