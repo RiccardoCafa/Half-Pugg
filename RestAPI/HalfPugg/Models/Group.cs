@@ -17,7 +17,10 @@ namespace HalfPugg.Models
         public IList<Gamer> Components { get; set; }
         public IList<MessageGroup> Chat { get; set; }
 
-            
+        public DateTime CreateAt { get; set; }
+        public DateTime AlteredAt { get; set; }
+
+
 
     }
 }

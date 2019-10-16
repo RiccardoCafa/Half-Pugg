@@ -15,5 +15,8 @@ namespace HalfPugg.Models
         [Required]
         [StringLength(100)]
         public string Path { get; set; }
+
+        public DateTime CreateAt { get; set; }
+        public DateTime AlteredAt { get; set; }
     }
 }

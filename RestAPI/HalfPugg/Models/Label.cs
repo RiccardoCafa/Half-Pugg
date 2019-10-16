@@ -13,5 +13,8 @@ namespace HalfPugg.Models
         [Required]
         [StringLength(50)]
         public string NameLabel { get; set; }
+
+        public DateTime CreateAt { get; set; }
+        public DateTime AlteredAt { get; set; }
     }
 }

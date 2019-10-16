@@ -11,5 +11,8 @@ namespace HalfPugg.Models
         public Filter ID_Filter { get; set; }
         public float Max { get; set; }
         public float Min { get; set; }
+
+        public DateTime CreateAt { get; set; }
+        public DateTime AlteredAt { get; set; }
     }
 }

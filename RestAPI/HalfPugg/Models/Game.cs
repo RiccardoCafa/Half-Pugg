@@ -22,7 +22,9 @@ namespace HalfPugg.Models
         [Required]
         public string EndPoint { get; set; }
         public IList<Filter> Filter { get; set; }
-        
+        public DateTime CreateAt { get; set; }
+        public DateTime AlteredAt { get; set; }
+
 
 
     }

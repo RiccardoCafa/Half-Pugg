@@ -215,11 +215,13 @@
       <DependentUpon>201910141458442_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
     <Compile Include="Models\Classification_Game.cs" />
     <Compile Include="Models\Classification_Gamer.cs" />
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\GameInGame.cs" />
     <Compile Include="Models\Gamer.cs" />
     <Compile Include="Models\HalfPuggContext.cs" />
     <Compile Include="Models\HashTag.cs" />
@@ -232,6 +234,7 @@
     <Compile Include="Models\MessageHall.cs" />
     <Compile Include="Models\Numbered.cs" />
     <Compile Include="Models\PlayerGame.cs" />
+    <Compile Include="Models\PlayerHashtag.cs" />
     <Compile Include="Models\Range.cs" />
     <Compile Include="Models\RequestedGroup.cs" />
     <Compile Include="Models\RequestedMatch.cs" />

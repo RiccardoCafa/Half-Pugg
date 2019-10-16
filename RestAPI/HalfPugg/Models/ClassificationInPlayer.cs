@@ -6,13 +6,16 @@ using System.Web;
 
 namespace HalfPugg.Models
 {
-    public class Classification_Match
+    public class ClassificationPlayer
     {
         [Key]
         public int ID { get; set; }
         [Required]
-        [StringLength(50)]
-        public string Description { get; set; }
+        public Gamer Player { get; set; }
+        [Required]
+        public Classification_Gamer Classification { get; set; }
+        [Required]
+        public float Points { get; set; }
 
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
