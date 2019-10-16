@@ -55,17 +55,10 @@
     border: 2px solid rgb(82, 25, 146);
 }
 
-.register-container button {
+.register-container Button {
     margin-top: 20px;
-    width: 120px;
     margin-left: 35%;
-    height: 35px;
-    cursor: pointer;
     background: rgb(25, 172, 61);
-    font-weight: bold;
-    border: 0;
-    border-radius: 10px;
-    color: white;
 }
 
 .register-title {
