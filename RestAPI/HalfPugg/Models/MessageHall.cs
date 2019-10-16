@@ -22,5 +22,8 @@ namespace HalfPugg.Models
         [Required]
         public Hall ID_Recipient { get; set; }
         public char Status { get; set; }
+
+        public DateTime CreateAt { get; set; }
+        public DateTime AlteredAt { get; set; }
     }
 }

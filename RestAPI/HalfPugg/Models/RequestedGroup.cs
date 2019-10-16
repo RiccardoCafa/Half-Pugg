@@ -14,5 +14,8 @@ namespace HalfPugg.Models
         public DateTime ComfirmedTime { get; set; }
         public char Status { get; set; }
         public Filter Filters { get; set; }
+
+        public DateTime CreateAt { get; set; }
+        public DateTime AlteredAt { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Security.Cryptography;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HalfPugg.Models
 {
@@ -19,6 +20,7 @@ namespace HalfPugg.Models
         public string LastName { get; set; }
         [Required]
         [StringLength(50)]
+        [Index(IsUnique = true)]
         public string Nickname { get; set; }
         [Required]
         [StringLength(100)]
@@ -29,26 +31,18 @@ namespace HalfPugg.Models
         public DateTime Birthday { get; set; }
         [StringLength(100)]
         public string ImagePath { get; set; }
-
         [Required]
         public char Type { get; set; }
-
-        public int ID_Branch { get; set; }
-        
+        public int ID_Branch { get; set; }        
         public char Sex { get; set; }
         [StringLength(100)]
-        public string Genre { get; set; }
-
-        public IList<Gamer> Matches { get; set; }
-        
-        public IList<HashTag> Hashtags { get; set; }
-        
-        public IList<Game> Games { get; set; }
-
-        public IList<Classification_Gamer> Classification { get; set; }
-
+        public string Genre { get; set; }  
         public IList<Group> Groups { get; set; }
+        public IList<Hall> Hall { get; set; }
+        public IList<MessageHall> Halls { get; set; }
 
-        public IList<MessageHall> Halls { get; set; } 
+        public DateTime CreateAt { get; set; }
+        public DateTime AlteredAt { get; set; }
+
     }
 }

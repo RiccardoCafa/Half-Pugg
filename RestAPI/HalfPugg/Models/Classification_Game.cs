@@ -14,8 +14,7 @@ namespace HalfPugg.Models
         [StringLength(50)]
         public string Description { get; set; }
 
-        public IList<Game> Games { get; set; }
-
-
+        public DateTime CreateAt { get; set; }
+        public DateTime AlteredAt { get; set; }
     }
 }
