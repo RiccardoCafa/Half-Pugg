@@ -1,17 +1,35 @@
 import React, { useState } from 'react';
 
 import './login.css';
-import pugg from '../images/Logo_Pugg.png';
+import { Button, Input } from 'semantic-ui-react';
+import api from '../services/api';
 
 export default function({history}) {
 
-    const [ username, setUsername ] = useState(''); 
+    const [ email, setEmail ] = useState(''); 
     const [ senha, setSenha ] = useState('');
+    const [ cor, setCor ] = useState('white');
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
-        console.log('usuario: ' + username);
+        const response = await api.post('api/Login', {
+            "Email": email,
+            "HashPassword": senha
+        }).catch(function(error){
+            console.log(error);
+            switch(error.response.status){
+                case 404:
+                    setCor('red');
+                break;
+                case 200:
+                    history.push('/match');
+                break;
+                default:
+                    console.log('algo deu errado');
+                break;
+            }
+        });
     }
 
     function handleCadastro(e){
@@ -21,26 +39,44 @@ export default function({history}) {
         history.push('/register');
     }
 
+    function handleBranchConnect(e){
+        e.preventDefault();
+
+        console.log('Branch Connect');
+    }
+
     return (
         <div className = "login-container">
-            <form onSubmit={handleSubmit}>
-                <img src={pugg} width="100" height="100" alt="pugg logo"/>
+            <form >
                 <h1>Half Pugg</h1>
-                <input 
-                    placeholder = "Seu nome heróico (ง ͠° ͟ل͜ ͡°)ง"
-                    value = {username}
-                    onChange = { e => setUsername(e.target.value)} 
-                    maxLength = {25}
-                />
-                <input 
-                    placeholder = "Suas palavras secretas ( ͡~ ͜ʖ ͡°)"
-                    value = {senha}
-                    onChange = { e => setSenha(e.target.value)}
-                    type = {"password"}
-                />
-                <button type="submit" >
-                    Login
-                </button>
+                <div>
+                    <h4>E-MAIL</h4>
+                    <input style={{color: {cor}}}
+                        placeholder= "Seu email"
+                        value = {email}
+                        onChange = { e => setEmail(e.target.value)} 
+                        maxLength = {25}
+                    />
+                </div>
+                <div>
+                    <h4>SENHA</h4>
+                    <input 
+                        style = {{color: {cor}}}
+                        placeholder= "Suas palavras secretas ( ͡~ ͜ʖ ͡°)"
+                        value = {senha}
+                        onChange = { e => setSenha(e.target.value)}
+                        type = {"password"}
+                    />
+                </div>
+                <Button.Group id="botoes">
+                    <Button color='green' onClick={e => handleSubmit(e)} >
+                        Login
+                    </Button>
+                    <Button.Or />
+                    <Button color='youtube' onClick={e => handleBranchConnect(e)} >
+                        Branch Connect!
+                    </Button>
+                </Button.Group>
             </form>
             <form className="cadastro" >
                 <span>

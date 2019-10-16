@@ -25,16 +25,7 @@ namespace HalfPugg.Models
 
         public System.Data.Entity.DbSet<HalfPugg.Models.Classification_Gamer> Classification_Gamer { get; set; }
 
-        public System.Data.Entity.DbSet<HalfPugg.Models.Classification_User> Classification_User { get; set; }
-
-        public System.Data.Entity.DbSet<HalfPugg.Models.Game_Topic> Game_Topic { get; set; }
-
         public System.Data.Entity.DbSet<HalfPugg.Models.Match> Matches { get; set; }
 
-        public System.Data.Entity.DbSet<HalfPugg.Models.Matter> Matters { get; set; }
-
-        public System.Data.Entity.DbSet<HalfPugg.Models.User_Game> User_Game { get; set; }
-
-        public System.Data.Entity.DbSet<HalfPugg.Models.Topic> Topics { get; set; }
     }
 }
