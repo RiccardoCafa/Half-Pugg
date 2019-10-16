@@ -20,7 +20,5 @@ namespace HalfPugg.Models
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
 
-        public DateTime CreateAt { get; set; }
-        public DateTime AlteredAt { get; set; }
     }
 }

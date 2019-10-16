@@ -12,16 +12,19 @@ namespace HalfPugg.Models
         public int ID_Hall { get; set; }
         [StringLength(70)]
         public string Name { get; set; }
+        [Required]
         public Game game { get; set; }
+        [Required]
         public int Capacity { get; set; }
 
         public IList<Filter> Filters { get; set; }
+        [Required]
         public Gamer Admin { get; set; }
-        public DateTime CreatedAt { get; set; }
         public IList<Gamer> Components { get; set; }
         public IList<MessageHall> Chat { get; set; }
-
+        [Required]
         public DateTime CreateAt { get; set; }
+        [Required]
         public DateTime AlteredAt { get; set; }
     }
 }

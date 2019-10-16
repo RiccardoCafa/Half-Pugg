@@ -17,8 +17,9 @@ namespace HalfPugg.Models
         public IList<Gamer> Gamers { get; set; }
 
         public IList<Game> Games { get; set; }
-
+        [Required]
         public DateTime CreateAt { get; set; }
+        [Required]
         public DateTime AlteredAt { get; set; }
     }
 }

@@ -18,8 +18,9 @@ namespace HalfPugg.Models
         public char Status { get; set; }
         [Required]
         public float Weight { get; set; }
-
+        [Required]
         public DateTime CreateAt { get; set; }
+        [Required]
         public DateTime AlteredAt { get; set; }
     }
 }

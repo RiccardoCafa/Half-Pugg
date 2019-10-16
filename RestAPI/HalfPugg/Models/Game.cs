@@ -18,11 +18,11 @@ namespace HalfPugg.Models
         [StringLength(70)]
         public string Description { get; set; }
         [Required]
-        public DateTime Birthday { get; set; }
-        [Required]
         public string EndPoint { get; set; }
         public IList<Filter> Filter { get; set; }
+        [Required]
         public DateTime CreateAt { get; set; }
+        [Required]
         public DateTime AlteredAt { get; set; }
 
 

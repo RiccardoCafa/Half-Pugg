@@ -1,16 +1,18 @@
 namespace HalfPugg.Migrations
 {
+    using System;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using HalfPugg.Models;
+    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<HalfPuggContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<HalfPugg.Models.HalfPuggContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(HalfPuggContext context)
+        protected override void Seed(HalfPugg.Models.HalfPuggContext context)
         {
             //  This method will be called after migrating to the latest version.
 

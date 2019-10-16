@@ -211,9 +211,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910141458442_Init.cs" />
-    <Compile Include="Migrations\201910141458442_Init.Designer.cs">
-      <DependentUpon>201910141458442_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201910162329124_InitMigration.cs" />
+    <Compile Include="Migrations\201910162329124_InitMigration.Designer.cs">
+      <DependentUpon>201910162329124_InitMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
@@ -294,12 +294,6 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
-    <None Include="nuspec.2010.7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="nuspec.2011.8.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -353,8 +347,8 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910141458442_Init.resx">
-      <DependentUpon>201910141458442_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910162329124_InitMigration.resx">
+      <DependentUpon>201910162329124_InitMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
