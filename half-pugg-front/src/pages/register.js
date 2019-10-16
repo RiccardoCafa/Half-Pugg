@@ -1,44 +1,56 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import './register.css';
 import pugg from '../images/Logo_Pugg.png';
 import api from '../services/api';
 
-export default function({history}) {
+export default class register extends Component {
 
-    const [ username, setUsername ] = useState(''); 
-    const [ senha, setSenha ] = useState('');
-    const [ confirmSenha, setConfirmSenha ] = useState('');
-    const [ dataNascimento, setDataNascimento] = useState('');
-    const [ email, setEmail ] = useState('');
-    const [ firstName, setFirstName ] = useState('');
-    const [ lastName, setLastName ] = useState('');
+    state = {
+        Name: '',
+        LastName: '',
+        Nickname: '',
+        HashPassword: '',
+        Email: '',
+        Birthday: '',
+        confirmSenha: '',
+    }
 
-    async function handleSubmit(e) {
+    componentDidMount = async e => {
+        const response = await api.get('api/Login').catch(function(error) {
+            console.log('Algo deu errado ' + error.message);
+        });
+        if(response != null) {
+            console.log(response);
+        }
+    }
+
+    handleSubmit = async e => {
         e.preventDefault();
         console.log("cadastro");
-        const dts = dataNascimento.split("-");
+        const dts = this.state.Birthday.split("-");
         const dt = dts[2] + "/" + dts[1] + "/" + dts[0];
 
         await api.post('api/Gamers', {
-            "Nickname": username,
-            "Name": firstName,
-            "LastName": lastName,
-            "HashPassword": senha,
+            "Name": this.state.Name,
+            "LastName": this.state.LastName,
+            "Nickname": this.state.Nickname,
+            "HashPassword": this.state.HashPassword,
+            "Email": this.state.Email,
             "Birthday": dt,
-            "Email": email,
             "Type": "a",
         }).catch(function (error) {
             console.log(error.response);
             console.log("Error: " + error.message);
         });
-
+        this.history.push('/');
         console.log(dt);
     }
 
-    return (
-        <div className = "register-container">    
+    render(){
+        return (
+            <div className = "register-container">    
             <div className= "register-title">
                 <Link to = "/">
                     <img src={pugg} width="100" height="100" alt="pugg logo"/>
@@ -46,14 +58,14 @@ export default function({history}) {
                 <h1>Half Pugg</h1>
             </div>
             <div className = "register-inputs">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={this.handleSubmit}>
                 <ul>
                     <li>
                         <h4>Primeiro Nome</h4>
                         <input 
                             placeholder = ""
-                            value = {firstName}
-                            onChange = { e => setFirstName(e.target.value)} 
+                            value = {this.state.Name}
+                            onChange = { e => this.setState({firstName: e.target.value})} 
                             maxLength = {30}
                         />
                     </li>
@@ -61,17 +73,17 @@ export default function({history}) {
                         <h4>Último Nome</h4>
                         <input 
                             placeholder = ""
-                            value = {lastName}
+                            value = {this.state.LastName}
                             maxLength = {30}
-                            onChange = {e => setLastName(e.target.value)}
+                            onChange = {e => this.setState({lastName: e.target.value})}
                         />
                     </li>
                     <li>
                         <h4>Seu nome heróico (ง ͠° ͟ل͜ ͡°)ง</h4>
                         <input 
                             placeholder = ""
-                            value = {username}
-                            onChange = { e => setUsername(e.target.value)} 
+                            value = {this.state.Nickname}
+                            onChange = { e => this.setState({username: e.target.value})} 
                             maxLength = {25}
                         />
                     </li>
@@ -79,8 +91,8 @@ export default function({history}) {
                         <h4>Seu email fabuloso ( ✧≖ ͜ʖ≖)</h4>
                         <input 
                             placeholder = ""
-                            value = {email}
-                            onChange = { e => setEmail(e.target.value)}
+                            value = {this.state.Email}
+                            onChange = { e => this.setState({email: e.target.value})}
                             type= {"email"}
                         />
                     </li>
@@ -88,8 +100,8 @@ export default function({history}) {
                         <h4>Declare palavras secretas ( ͡~ ͜ʖ ͡°)</h4>
                         <input 
                             placeholder = ""
-                            value = {senha}
-                            onChange = { e => setSenha(e.target.value)}
+                            value = {this.state.HashPassword}
+                            onChange = { e => this.setState({senha: e.target.value})}
                             type = {"password"}
                             maxLength = {20}
                         />
@@ -98,8 +110,8 @@ export default function({history}) {
                         <h4>Confirme as palavras secretas ಠ_ಠ</h4>
                         <input 
                             placeholder = ""
-                            value = {confirmSenha}
-                            onChange = { e => setConfirmSenha(e.target.value)}
+                            value = {this.state.confirmSenha}
+                            onChange = { e => this.setState({confirmSenha: e.target.value})}
                             type = {"password"}
                         />
                     </li>
@@ -107,8 +119,8 @@ export default function({history}) {
                         <h4>Dia de spawn no mundo</h4>
                         <input 
                             placeholder = ""
-                            value = {dataNascimento}
-                            onChange = { e => setDataNascimento(e.target.value)}
+                            value = {this.state.Birthday}
+                            onChange = { e => this.setState({dataNascimento: e.target.value})}
                             type = {"date"}
                         />
                     </li>
@@ -122,5 +134,6 @@ export default function({history}) {
             </div>
             
         </div>
-    );
+        );
+    }
 }
