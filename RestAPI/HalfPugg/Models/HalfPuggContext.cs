@@ -1,31 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 
 namespace HalfPugg.Models
 {
     public class HalfPuggContext : DbContext
     {
-        // You can add custom code to this file. Changes will not be overwritten.
-        // 
-        // If you want Entity Framework to drop and regenerate your database
-        // automatically whenever you change your model schema, please use data migrations.
-        // For more information refer to the documentation:
-        // http://msdn.microsoft.com/en-us/data/jj591621.aspx
-    
-        public HalfPuggContext() : base("name=HalfPuggContext")
+        public HalfPuggContext() : base("Half-Pugg")
         {
+
         }
 
-        public System.Data.Entity.DbSet<HalfPugg.Models.Gamer> Gamers { get; set; }
+        public DbSet<Gamer> Gamers { get; set; }
 
-        public System.Data.Entity.DbSet<HalfPugg.Models.Game> Games { get; set; }
+        public DbSet<Game> Games { get; set; }
 
-        public System.Data.Entity.DbSet<HalfPugg.Models.Classification_Gamer> Classification_Gamer { get; set; }
+        public DbSet<Classification_Gamer> Classification_Gamers { get; set; }
 
-        public System.Data.Entity.DbSet<HalfPugg.Models.Match> Matches { get; set; }
+        public DbSet<Match> Matches { get; set; }
+
+        public DbSet<Classification_Game> Classification_Games { get; set; }
+
+        public DbSet<Classification_Match> Classification_Matchs { get; set; }
+
+        public DbSet<Filter> Filters { get; set; }
+
+        public DbSet<Group> Groups { get; set; }
+
+        public DbSet<Hall> Halls { get; set; }
+
+        public DbSet<HashTag> HashTags { get; set; }
+
+        public DbSet<Label> Labels { get; set; }
+
+        public DbSet<MessageGamer> MessageGamers { get; set; }
+
+        public DbSet<MessageGroup> MessageGroups { get; set; }
+
+        public DbSet<MessageHall> MessageHalls { get; set; }
+
+        public DbSet<Numbered> Numbereds { get; set; }
+
+        public DbSet<Range> Ranges { get; set; }
+
+        public DbSet<RequestedGroup> RequestedGroups { get; set; }
+
+        public DbSet<RequestedHall> RequestedHalls { get; set; }
+
+        public DbSet<RequestedMatch> RequestedMatchs { get; set; }
+
+        public DbSet<Template> Templates { get; set; }
+               
 
     }
 }

@@ -21,6 +21,10 @@ namespace HalfPugg.Models
         public Gamer ID_User { get; set; }
         [Required]
         public Hall ID_Recipient { get; set; }
+        [Required]
         public char Status { get; set; }
+
+        [Required] public DateTime CreateAt { get; set; }
+        [Required] public DateTime AlteredAt { get; set; }
     }
 }
