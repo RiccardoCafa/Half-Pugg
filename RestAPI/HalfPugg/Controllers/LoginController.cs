@@ -2,12 +2,16 @@
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using System.Security.Claims;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens;
 
 namespace HalfPugg.Controllers
 {
     public class LoginController : ApiController
     {
         HalfPuggContext db;
+        public static int IDLoggado = -1;
 
         public LoginController()
         {
@@ -15,13 +19,17 @@ namespace HalfPugg.Controllers
         }
 
         // GET: api/Login
+        [HttpGet]
         public IHttpActionResult Get()
         {
-            if (HttpContext.Current.Session["ID"] != null)
+            var gamerLogged = db.Gamers.FirstOrDefault(g => g.ID == IDLoggado);
+            
+            if(gamerLogged != null)
             {
-                return Json<Gamer>(HttpContext.Current.Session["ID"] as Gamer);
+                return Json<Gamer>(gamerLogged);
             }
-            else return NotFound();
+
+            return NotFound();
         }
 
         // POST: api/Login
@@ -29,10 +37,10 @@ namespace HalfPugg.Controllers
         {
             var gamerLogged = db.Gamers.FirstOrDefault(g => g.Email == gamer.Email && g.HashPassword == gamer.HashPassword);
 
-            if(gamerLogged != null)
+            if (gamerLogged != null)
             {
-                HttpContext.Current.Session["ID"] = gamerLogged;
-                return Json<Gamer>(gamerLogged);
+                IDLoggado = gamerLogged.ID;
+                return Ok();
             }
             return NotFound();
         }

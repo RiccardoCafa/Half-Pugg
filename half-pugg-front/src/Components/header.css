@@ -1,0 +1,23 @@
+.a {
+    background: white;
+}
+
+#botoes-header {
+    margin-left: 1%;
+    margin-right: 1%;
+    height: 60px;
+}
+
+#botoes-header a {
+    color: white;
+}
+
+.ui.secondary.menu .item {
+    color: white;
+}
+
+#myHeader {
+    top: 0;
+    height: 20%;
+    background: rgb(0, 0, 0);
+}

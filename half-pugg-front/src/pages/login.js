@@ -17,6 +17,7 @@ export default function({history}) {
             "Email": email,
             "HashPassword": senha
         }).catch(function(error){
+            console.log(error);
             switch(error.response.status){
                 case 404:
                     setShowPopUp(true);

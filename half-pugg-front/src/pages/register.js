@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import './register.css';
 import pugg from '../images/Logo_Pugg.png';
@@ -15,24 +15,25 @@ export default class register extends Component {
         Email: '',
         Birthday: '',
         confirmSenha: '',
+        toLogin: false,
     }
 
     componentDidMount = async e => {
-        const response = await api.get('api/Login').catch(function(error) {
+        /*const response = await api.get('api/Login').catch(function(error) {
             console.log('Algo deu errado ' + error.message);
         });
         if(response != null) {
             console.log(response);
-        }
+        }*/
     }
-
+    
     handleSubmit = async e => {
         e.preventDefault();
         console.log("cadastro");
         const dts = this.state.Birthday.split("-");
         const dt = dts[2] + "/" + dts[1] + "/" + dts[0];
 
-        await api.post('api/Gamers', {
+        const respo = await api.post('api/Gamers', {
             "Name": this.state.Name,
             "LastName": this.state.LastName,
             "Nickname": this.state.Nickname,
@@ -40,15 +41,22 @@ export default class register extends Component {
             "Email": this.state.Email,
             "Birthday": dt,
             "Type": "a",
+            "Sex": "M",
         }).catch(function (error) {
             console.log(error.response);
             console.log("Error: " + error.message);
         });
-        this.history.push('/');
+        if(respo != null){
+            this.setState({toLogin: true});
+        }
+        //useHistory().push('/');
         console.log(dt);
     }
 
     render(){
+        if(this.state.toLogin === true) {
+            return <Redirect to='/'></Redirect>
+        }
         return (
             <div className = "register-container">    
             <div className= "register-title">
@@ -65,7 +73,7 @@ export default class register extends Component {
                         <input 
                             placeholder = ""
                             value = {this.state.Name}
-                            onChange = { e => this.setState({firstName: e.target.value})} 
+                            onChange = { e => this.setState({Name: e.target.value})} 
                             maxLength = {30}
                         />
                     </li>
@@ -75,7 +83,7 @@ export default class register extends Component {
                             placeholder = ""
                             value = {this.state.LastName}
                             maxLength = {30}
-                            onChange = {e => this.setState({lastName: e.target.value})}
+                            onChange = {e => this.setState({LastName: e.target.value})}
                         />
                     </li>
                     <li>
@@ -83,7 +91,7 @@ export default class register extends Component {
                         <input 
                             placeholder = ""
                             value = {this.state.Nickname}
-                            onChange = { e => this.setState({username: e.target.value})} 
+                            onChange = { e => this.setState({Nickname: e.target.value})} 
                             maxLength = {25}
                         />
                     </li>
@@ -92,7 +100,7 @@ export default class register extends Component {
                         <input 
                             placeholder = ""
                             value = {this.state.Email}
-                            onChange = { e => this.setState({email: e.target.value})}
+                            onChange = { e => this.setState({Email: e.target.value})}
                             type= {"email"}
                         />
                     </li>
@@ -101,7 +109,7 @@ export default class register extends Component {
                         <input 
                             placeholder = ""
                             value = {this.state.HashPassword}
-                            onChange = { e => this.setState({senha: e.target.value})}
+                            onChange = { e => this.setState({HashPassword: e.target.value})}
                             type = {"password"}
                             maxLength = {20}
                         />
@@ -120,7 +128,7 @@ export default class register extends Component {
                         <input 
                             placeholder = ""
                             value = {this.state.Birthday}
-                            onChange = { e => this.setState({dataNascimento: e.target.value})}
+                            onChange = { e => this.setState({Birthday: e.target.value})}
                             type = {"date"}
                         />
                     </li>
