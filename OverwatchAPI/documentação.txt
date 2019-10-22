@@ -1,0 +1,34 @@
+Struct Role:
+    estrutura que guarda informações sobre qual classe o jogador usa (Tank,Damage,Support)
+
+Struct Profile:
+    guarda informações gerais sobre o jogador (Name, Level, Prestige, ...)
+
+Struct CarreerStats
+    guarda informações sobre o desempenho médio do jogador nas partidas (DamageDone, Deaths, Eliminations, ...)
+
+Struct Player
+    representa o objeto do jogador em si, é composto pelo Profile e duas CarreerStats, uma para partidas rapidas e outra para competitivas
+
+
+Enum Region
+    define as opções da região do servidor do jogador (US, EU, ASIA)
+
+
+Class OwAPI
+    a api propiamente dita, necessita de um objeto HttpClient para ser inicializada
+
+    contem três metodos, sendo que cada um deles tem uma versão de busca em massa.
+    todos os metodos recebem como parametro uma string para o nome do jogador e um enum region para a região dele (ou lista de string e region para busca em massa)
+    no caso da busca para mais de um jogador é necessário que as listas nome e reg tenham o mesmo tamanho além de a posição do jogador e sua região respectiva nas listas sejam iguais
+
+    Methods
+
+        GetPlayerProfile(string name, region reg)
+            retorna uma struct Player apenas com o campo profile preenchido
+        
+        GetPlayer(string name, region reg)
+            retorna uma struct Player com profile e carreerStats preenchidos
+        
+        GetPlayerComplete(string name, region reg)
+            retorna um JObject contendo o arquivo json fornecido pela web api do overwatch, este arquivos contem todos os dados disponíveis do jogado, utilize-o somente se necessário 

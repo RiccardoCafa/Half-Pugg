@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -13,48 +12,44 @@ using HalfPugg.Models;
 
 namespace HalfPugg.Controllers
 {
-    public class GamesController : ApiController
+    public class MatchesController : ApiController
     {
         private HalfPuggContext db = new HalfPuggContext();
 
-        // GET: api/Games
-        public IQueryable<Game> GetGames()
+        // GET: api/Matches
+        public IQueryable<Match> GetMatches()
         {
-            return db.Games;
-          
+            return db.Matches;
         }
 
-        // GET: api/Games/5
-        [ResponseType(typeof(Game))]
-        public IHttpActionResult GetGame(int id)
+        // GET: api/Matches/5
+        [ResponseType(typeof(Match))]
+        public IHttpActionResult GetMatch(int id)
         {
-            Stopwatch wt = new Stopwatch();
-            wt.Start();
-            Game game = db.Games.Find(id);
-            if (game == null)
+            Match match = db.Matches.Find(id);
+            if (match == null)
             {
                 return NotFound();
             }
-            wt.Stop();
-           
-            return Ok(game);
+
+            return Ok(match);
         }
 
-        // PUT: api/Games/5
+        // PUT: api/Matches/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutGame(int id, Game game)
+        public IHttpActionResult PutMatch(int id, Match match)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != game.ID_Game)
+            if (id != match.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(game).State = EntityState.Modified;
+            db.Entry(match).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +57,7 @@ namespace HalfPugg.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GameExists(id))
+                if (!MatchExists(id))
                 {
                     return NotFound();
                 }
@@ -75,35 +70,35 @@ namespace HalfPugg.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Games
-        [ResponseType(typeof(Game))]
-        public IHttpActionResult PostGame(Game game)
+        // POST: api/Matches
+        [ResponseType(typeof(Match))]
+        public IHttpActionResult PostMatch(Match match)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Games.Add(game);
+            db.Matches.Add(match);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = game.ID_Game }, game);
+            return CreatedAtRoute("DefaultApi", new { id = match.ID }, match);
         }
 
-        // DELETE: api/Games/5
-        [ResponseType(typeof(Game))]
-        public IHttpActionResult DeleteGame(int id)
+        // DELETE: api/Matches/5
+        [ResponseType(typeof(Match))]
+        public IHttpActionResult DeleteMatch(int id)
         {
-            Game game = db.Games.Find(id);
-            if (game == null)
+            Match match = db.Matches.Find(id);
+            if (match == null)
             {
                 return NotFound();
             }
 
-            db.Games.Remove(game);
+            db.Matches.Remove(match);
             db.SaveChanges();
 
-            return Ok(game);
+            return Ok(match);
         }
 
         protected override void Dispose(bool disposing)
@@ -115,9 +110,9 @@ namespace HalfPugg.Controllers
             base.Dispose(disposing);
         }
 
-        private bool GameExists(int id)
+        private bool MatchExists(int id)
         {
-            return db.Games.Count(e => e.ID_Game == id) > 0;
+            return db.Matches.Count(e => e.ID == id) > 0;
         }
     }
 }
