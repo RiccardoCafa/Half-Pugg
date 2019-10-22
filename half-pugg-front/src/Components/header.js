@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import api from '../services/api';
 
-import { Menu, Image, Label } from 'semantic-ui-react';
+import { Menu, Image, Label, Input } from 'semantic-ui-react';
 
 import './header.css';
 
@@ -48,6 +48,9 @@ export default class header extends Component {
                         onClick={this.handleItemClick}
                         />
                     <Menu.Menu position='right'>
+                        <Menu.Item >
+                            <Input icon='search' placeholder='Search in Half-Pugg'></Input>
+                        </Menu.Item>
                         <Menu.Item >
                             <Label as='a' color='black'>
                                 <Image avatar spaced='right'></Image>

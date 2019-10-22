@@ -31,7 +31,7 @@ export default class register extends Component {
         e.preventDefault();
         console.log("cadastro");
         const dts = this.state.Birthday.split("-");
-        const dt = dts[2] + "/" + dts[1] + "/" + dts[0];
+        const dt = dts[1] + "/" + dts[2] + "/" + dts[0];
 
         const respo = await api.post('api/Gamers', {
             "Name": this.state.Name,

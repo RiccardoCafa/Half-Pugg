@@ -67,6 +67,11 @@ export default class Match extends Component {
                                     </Button>
                                 </div>
                             </Card.Content>
+                            <Card.Content extra>
+                                <Button fluid basic color='Blue'>
+                                    Open Curriculum
+                                </Button>
+                            </Card.Content>
                         </Card>
                     )};
                 </Card.Group>
