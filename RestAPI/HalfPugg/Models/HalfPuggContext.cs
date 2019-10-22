@@ -15,9 +15,17 @@ namespace HalfPugg.Models
 
         public DbSet<Classification_Gamer> Classification_Gamers { get; set; }
 
+        public DbSet<ClassificationPlayer> Classification_Players { get; set; }
+
+        public DbSet<PlayerHashtag> PlayerHashtags { get; set; }
+
+        public DbSet<PlayerGame> PlayerGames { get; set; }
+
         public DbSet<Match> Matches { get; set; }
 
         public DbSet<Classification_Game> Classification_Games { get; set; }
+
+        public DbSet<GameInGame> GamerInGame { get; set; }
 
         public DbSet<Classification_Match> Classification_Matchs { get; set; }
 
