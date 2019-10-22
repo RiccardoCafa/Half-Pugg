@@ -11,6 +11,7 @@ export default class Match extends Component {
 
     state = {
         Nickname: '',
+        GamerMatch: [],
     }
 
     async componentDidMount() {
@@ -18,6 +19,12 @@ export default class Match extends Component {
         if(myData.data != null){
             this.setState ({Nickname: myData.data.Nickname})
             console.log(this.state.Nickname);
+        }
+
+        const MatchData = await api.get('api/GamersMatch');
+        if(MatchData.data != null){
+            console.log(MatchData.data);
+            this.setState({GamerMatch: MatchData.data});
         }
     }
 
@@ -38,51 +45,30 @@ export default class Match extends Component {
             </div>
             <div className='connections'>
                 <Card.Group>
-                    <Card>
-                        <Card.Content>
-                            <Image
-                                floated='right'
-                                size='mini'
-                                src={gostosao}
-                            />
-                            <Card.Header>xXThorXx</Card.Header>
-                            <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
-                            <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
-                        </Card.Content>
-                        <Card.Content extra>
-                            <div className='ui two buttons'>
-                                <Button basic color='green'>
-                                    Connect!
-                                </Button>
-                                <Button basic color='red'>
-                                    Decline!
-                                </Button>
-                            </div>
-                        </Card.Content>
-                    </Card>
-
-                    <Card>
-                        <Card.Content>
-                            <Image
-                                floated='right'
-                                size='mini'
-                                src={gostosao}
-                            />
-                            <Card.Header>xXThorXx</Card.Header>
-                            <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
-                            <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
-                        </Card.Content>
-                        <Card.Content extra>
-                            <div className='ui two buttons'>
-                                <Button basic color='green'>
-                                    Connect!
-                                </Button>
-                                <Button basic color='red'>
-                                    Decline!
-                                </Button>
-                            </div>
-                        </Card.Content>
-                    </Card>
+                    {this.state.GamerMatch.map((matcher) => 
+                        <Card>
+                            <Card.Content>
+                                <Image
+                                    floated='right'
+                                    size='mini'
+                                    src={gostosao}
+                                />
+                                <Card.Header>{matcher.Nickname}</Card.Header>
+                                <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
+                                <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
+                            </Card.Content>
+                            <Card.Content extra>
+                                <div className='ui two buttons'>
+                                    <Button basic color='green'>
+                                        Connect!
+                                    </Button>
+                                    <Button basic color='red'>
+                                        Decline!
+                                    </Button>
+                                </div>
+                            </Card.Content>
+                        </Card>
+                    )};
                 </Card.Group>
             </div>
         </div>  
