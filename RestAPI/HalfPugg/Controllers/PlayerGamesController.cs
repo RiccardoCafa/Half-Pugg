@@ -23,6 +23,22 @@ namespace HalfPugg.Controllers
             return db.PlayerGames;
         }
 
+        [Route("api/GetGamersInGame")]
+        [ResponseType(typeof(PlayerGame))]
+        [HttpGet]
+        public IQueryable<PlayerGame> GetGamersInGame(int GameID)
+        {
+            return db.PlayerGames.Where(x=> x.IDGame == GameID);
+        }
+
+        [Route("api/GetGamesInGamers")]
+        [ResponseType(typeof(PlayerGame))]
+        [HttpGet]
+        public IQueryable<PlayerGame> GetGamesInGamers(int GamerID)
+        {
+            return db.PlayerGames.Where(x => x.IDGamer == GamerID);
+        }
+
         // GET: api/PlayerGames/5
         [ResponseType(typeof(PlayerGame))]
         public IHttpActionResult GetPlayerGame(int id)
