@@ -3,58 +3,54 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
+using Newtonsoft.Json.Linq;
 
 namespace HalfPugg.Controllers
 {
-    public class GamesController : ApiController
+    public class PlayerGamesController : ApiController
     {
         private HalfPuggContext db = new HalfPuggContext();
 
-        // GET: api/Games
-        public IQueryable<Game> GetGames()
+        // GET: api/PlayerGames
+        public IQueryable<PlayerGame> GetPlayerGames()
         {
-            return db.Games;
-          
+            return db.PlayerGames;
         }
 
-        // GET: api/Games/5
-        [ResponseType(typeof(Game))]
-        public IHttpActionResult GetGame(int id)
+        // GET: api/PlayerGames/5
+        [ResponseType(typeof(PlayerGame))]
+        public IHttpActionResult GetPlayerGame(int id)
         {
-            Stopwatch wt = new Stopwatch();
-            wt.Start();
-            Game game = db.Games.Find(id);
-            if (game == null)
+            PlayerGame playerGame = db.PlayerGames.Find(id);
+            if (playerGame == null)
             {
                 return NotFound();
             }
-            wt.Stop();
-           
-            return Ok(game);
+
+            return Ok(playerGame);
         }
 
-        // PUT: api/Games/5
+        // PUT: api/PlayerGames/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutGame(int id, Game game)
+        public IHttpActionResult PutPlayerGame(int id, PlayerGame playerGame)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != game.ID_Game)
+            if (id != playerGame.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(game).State = EntityState.Modified;
+            db.Entry(playerGame).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +58,7 @@ namespace HalfPugg.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GameExists(id))
+                if (!PlayerGameExists(id))
                 {
                     return NotFound();
                 }
@@ -75,35 +71,36 @@ namespace HalfPugg.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Games
-        [ResponseType(typeof(Game))]
-        public IHttpActionResult PostGame(Game game)
+        // POST: api/PlayerGames
+        [ResponseType(typeof(PlayerGame))]
+        public IHttpActionResult PostPlayerGame(PlayerGame playerGame)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            db.Games.Add(game);
+            playerGame.Game = db.Games.Find(playerGame.IDGame);
+            playerGame.Gamer = db.Gamers.Find(playerGame.IDGamer);
+            db.PlayerGames.Add(playerGame);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = game.ID_Game }, game);
+            return CreatedAtRoute("DefaultApi", new { id = playerGame.ID }, playerGame);
         }
 
-        // DELETE: api/Games/5
-        [ResponseType(typeof(Game))]
-        public IHttpActionResult DeleteGame(int id)
+        // DELETE: api/PlayerGames/5
+        [ResponseType(typeof(PlayerGame))]
+        public IHttpActionResult DeletePlayerGame(int id)
         {
-            Game game = db.Games.Find(id);
-            if (game == null)
+            PlayerGame playerGame = db.PlayerGames.Find(id);
+            if (playerGame == null)
             {
                 return NotFound();
             }
 
-            db.Games.Remove(game);
+            db.PlayerGames.Remove(playerGame);
             db.SaveChanges();
 
-            return Ok(game);
+            return Ok(playerGame);
         }
 
         protected override void Dispose(bool disposing)
@@ -115,9 +112,9 @@ namespace HalfPugg.Controllers
             base.Dispose(disposing);
         }
 
-        private bool GameExists(int id)
+        private bool PlayerGameExists(int id)
         {
-            return db.Games.Count(e => e.ID_Game == id) > 0;
+            return db.PlayerGames.Count(e => e.ID == id) > 0;
         }
     }
 }
