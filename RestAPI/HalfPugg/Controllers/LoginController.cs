@@ -11,7 +11,7 @@ namespace HalfPugg.Controllers
     public class LoginController : ApiController
     {
         HalfPuggContext db;
-        public static int IDLoggado = -1;
+        public static Gamer GamerLogado = null;
 
         public LoginController()
         {
@@ -22,11 +22,11 @@ namespace HalfPugg.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-            var gamerLogged = db.Gamers.FirstOrDefault(g => g.ID == IDLoggado);
+            //var gamerLogged = db.Gamers.FirstOrDefault(g => g.ID == GamerLogado.ID);
             
-            if(gamerLogged != null)
+            if(GamerLogado != null)
             {
-                return Json<Gamer>(gamerLogged);
+                return Json<Gamer>(GamerLogado);
             }
 
             return NotFound();
@@ -39,7 +39,7 @@ namespace HalfPugg.Controllers
 
             if (gamerLogged != null)
             {
-                IDLoggado = gamerLogged.ID;
+                GamerLogado = gamerLogged;
                 return Ok();
             }
             return NotFound();

@@ -219,6 +219,7 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\GamerControler.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
