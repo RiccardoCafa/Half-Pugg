@@ -11,10 +11,16 @@ namespace HalfPugg.Models
         [StringLength(300)]
         [Required]
         public string Description { get; set; }
+        public Game Game { get; set; }
+       
+        public Gamer Gamer { get; set; }
+
         [Required]
-        public Game IdGame { get; set; }
+        public int IDGamer { get; set; }
+        
         [Required]
-        public Gamer IdGamer { get; set; }
+        public int IDGame { get; set; }
+        
         [Required]
         [Index(IsUnique = true)]
         public string IdAPI { get; set; }
@@ -23,5 +29,6 @@ namespace HalfPugg.Models
 
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
+
     }
 }
