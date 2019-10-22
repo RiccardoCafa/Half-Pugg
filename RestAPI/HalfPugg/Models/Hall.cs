@@ -22,9 +22,9 @@ namespace HalfPugg.Models
         public Gamer Admin { get; set; }
         public IList<Gamer> Components { get; set; }
         public IList<MessageHall> Chat { get; set; }
-        [Required]
+        
         public DateTime CreateAt { get; set; }
-        [Required]
+        
         public DateTime AlteredAt { get; set; }
     }
 }
