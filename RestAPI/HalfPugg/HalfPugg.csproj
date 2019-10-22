@@ -225,9 +225,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910162329124_InitMigration.cs" />
-    <Compile Include="Migrations\201910162329124_InitMigration.Designer.cs">
-      <DependentUpon>201910162329124_InitMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201910221103511_init.cs" />
+    <Compile Include="Migrations\201910221103511_init.Designer.cs">
+      <DependentUpon>201910221103511_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
@@ -261,6 +261,115 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="bin\Antlr3.Runtime.dll" />
+    <Content Include="bin\Antlr3.Runtime.pdb" />
+    <Content Include="bin\EntityFramework.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\EntityFramework.xml" />
+    <Content Include="bin\EntityFramework6.Npgsql.dll" />
+    <Content Include="bin\EntityFramework6.Npgsql.xml" />
+    <Content Include="bin\HalfPugg.dll" />
+    <Content Include="bin\HalfPugg.pdb" />
+    <Content Include="bin\Microsoft.Bcl.AsyncInterfaces.dll" />
+    <Content Include="bin\Microsoft.Bcl.AsyncInterfaces.xml" />
+    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
+    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
+    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\Newtonsoft.Json.xml" />
+    <Content Include="bin\Npgsql.dll" />
+    <Content Include="bin\Npgsql.pdb" />
+    <Content Include="bin\Npgsql.xml" />
+    <Content Include="bin\pt-br\System.Net.Http.Formatting.resources.dll" />
+    <Content Include="bin\pt-br\System.Web.Helpers.resources.dll" />
+    <Content Include="bin\pt-br\System.Web.Http.resources.dll" />
+    <Content Include="bin\pt-br\System.Web.Http.WebHost.resources.dll" />
+    <Content Include="bin\pt-br\System.Web.Mvc.resources.dll" />
+    <Content Include="bin\pt-br\System.Web.Optimization.resources.dll" />
+    <Content Include="bin\pt-br\System.Web.Razor.resources.dll" />
+    <Content Include="bin\pt-br\System.Web.WebPages.Deployment.resources.dll" />
+    <Content Include="bin\pt-br\System.Web.WebPages.Razor.resources.dll" />
+    <Content Include="bin\pt-br\System.Web.WebPages.resources.dll" />
+    <Content Include="bin\roslyn\csc.exe" />
+    <Content Include="bin\roslyn\csi.exe" />
+    <Content Include="bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll" />
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll" />
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.dll" />
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll" />
+    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll" />
+    <Content Include="bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll" />
+    <Content Include="bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll" />
+    <Content Include="bin\roslyn\Microsoft.Win32.Primitives.dll" />
+    <Content Include="bin\roslyn\System.AppContext.dll" />
+    <Content Include="bin\roslyn\System.Collections.Immutable.dll" />
+    <Content Include="bin\roslyn\System.Console.dll" />
+    <Content Include="bin\roslyn\System.Diagnostics.DiagnosticSource.dll" />
+    <Content Include="bin\roslyn\System.Diagnostics.FileVersionInfo.dll" />
+    <Content Include="bin\roslyn\System.Diagnostics.StackTrace.dll" />
+    <Content Include="bin\roslyn\System.Globalization.Calendars.dll" />
+    <Content Include="bin\roslyn\System.IO.Compression.dll" />
+    <Content Include="bin\roslyn\System.IO.Compression.ZipFile.dll" />
+    <Content Include="bin\roslyn\System.IO.FileSystem.dll" />
+    <Content Include="bin\roslyn\System.IO.FileSystem.Primitives.dll" />
+    <Content Include="bin\roslyn\System.Net.Http.dll" />
+    <Content Include="bin\roslyn\System.Net.Sockets.dll" />
+    <Content Include="bin\roslyn\System.Reflection.Metadata.dll" />
+    <Content Include="bin\roslyn\System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <Content Include="bin\roslyn\System.Security.Cryptography.Algorithms.dll" />
+    <Content Include="bin\roslyn\System.Security.Cryptography.Encoding.dll" />
+    <Content Include="bin\roslyn\System.Security.Cryptography.Primitives.dll" />
+    <Content Include="bin\roslyn\System.Security.Cryptography.X509Certificates.dll" />
+    <Content Include="bin\roslyn\System.Text.Encoding.CodePages.dll" />
+    <Content Include="bin\roslyn\System.Threading.Tasks.Extensions.dll" />
+    <Content Include="bin\roslyn\System.ValueTuple.dll" />
+    <Content Include="bin\roslyn\System.Xml.ReaderWriter.dll" />
+    <Content Include="bin\roslyn\System.Xml.XmlDocument.dll" />
+    <Content Include="bin\roslyn\System.Xml.XPath.dll" />
+    <Content Include="bin\roslyn\System.Xml.XPath.XDocument.dll" />
+    <Content Include="bin\roslyn\vbc.exe" />
+    <Content Include="bin\roslyn\VBCSCompiler.exe" />
+    <Content Include="bin\System.Buffers.dll" />
+    <Content Include="bin\System.Buffers.xml" />
+    <Content Include="bin\System.Memory.dll" />
+    <Content Include="bin\System.Memory.xml" />
+    <Content Include="bin\System.Net.Http.Formatting.dll" />
+    <Content Include="bin\System.Net.Http.Formatting.xml" />
+    <Content Include="bin\System.Numerics.Vectors.dll" />
+    <Content Include="bin\System.Numerics.Vectors.xml" />
+    <Content Include="bin\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="bin\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="bin\System.Text.Encodings.Web.dll" />
+    <Content Include="bin\System.Text.Encodings.Web.xml" />
+    <Content Include="bin\System.Text.Json.dll" />
+    <Content Include="bin\System.Text.Json.xml" />
+    <Content Include="bin\System.Threading.Tasks.Extensions.dll" />
+    <Content Include="bin\System.Threading.Tasks.Extensions.xml" />
+    <Content Include="bin\System.ValueTuple.dll" />
+    <Content Include="bin\System.ValueTuple.xml" />
+    <Content Include="bin\System.Web.Cors.dll" />
+    <Content Include="bin\System.Web.Helpers.dll" />
+    <Content Include="bin\System.Web.Helpers.xml" />
+    <Content Include="bin\System.Web.Http.Cors.dll" />
+    <Content Include="bin\System.Web.Http.Cors.xml" />
+    <Content Include="bin\System.Web.Http.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.xml" />
+    <Content Include="bin\System.Web.Http.xml" />
+    <Content Include="bin\System.Web.Mvc.dll" />
+    <Content Include="bin\System.Web.Mvc.xml" />
+    <Content Include="bin\System.Web.Optimization.dll" />
+    <Content Include="bin\System.Web.Optimization.xml" />
+    <Content Include="bin\System.Web.Razor.dll" />
+    <Content Include="bin\System.Web.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.Deployment.dll" />
+    <Content Include="bin\System.Web.WebPages.Deployment.xml" />
+    <Content Include="bin\System.Web.WebPages.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.xml" />
+    <Content Include="bin\WebGrease.dll" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -310,6 +419,17 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="bin\HalfPugg.dll.config" />
+    <Content Include="bin\roslyn\csc.exe.config" />
+    <Content Include="bin\roslyn\csc.rsp" />
+    <Content Include="bin\roslyn\csi.exe.config" />
+    <Content Include="bin\roslyn\csi.rsp" />
+    <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
+    <Content Include="bin\roslyn\Microsoft.Managed.Core.targets" />
+    <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
+    <Content Include="bin\roslyn\vbc.exe.config" />
+    <Content Include="bin\roslyn\vbc.rsp" />
+    <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -365,8 +485,8 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910162329124_InitMigration.resx">
-      <DependentUpon>201910162329124_InitMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910221103511_init.resx">
+      <DependentUpon>201910221103511_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
