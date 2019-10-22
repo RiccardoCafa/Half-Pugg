@@ -230,6 +230,10 @@
     <Compile Include="Migrations\201910221211221_Init.Designer.cs">
       <DependentUpon>201910221211221_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910221428097_playerController_idInt.cs" />
+    <Compile Include="Migrations\201910221428097_playerController_idInt.Designer.cs">
+      <DependentUpon>201910221428097_playerController_idInt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
@@ -488,6 +492,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201910221211221_Init.resx">
       <DependentUpon>201910221211221_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910221428097_playerController_idInt.resx">
+      <DependentUpon>201910221428097_playerController_idInt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

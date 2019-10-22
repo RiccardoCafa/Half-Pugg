@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
+using Newtonsoft.Json.Linq;
 
 namespace HalfPugg.Controllers
 {
@@ -78,7 +79,8 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            playerGame.Game = db.Games.Find(playerGame.IDGame);
+            playerGame.Gamer = db.Gamers.Find(playerGame.IDGamer);
             db.PlayerGames.Add(playerGame);
             db.SaveChanges();
 

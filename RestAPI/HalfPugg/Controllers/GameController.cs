@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -27,12 +28,15 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(Game))]
         public IHttpActionResult GetGame(int id)
         {
+            Stopwatch wt = new Stopwatch();
+            wt.Start();
             Game game = db.Games.Find(id);
             if (game == null)
             {
                 return NotFound();
             }
-
+            wt.Stop();
+           
             return Ok(game);
         }
 
