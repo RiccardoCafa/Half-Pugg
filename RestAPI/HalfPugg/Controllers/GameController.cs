@@ -20,6 +20,7 @@ namespace HalfPugg.Controllers
         public IQueryable<Game> GetGames()
         {
             return db.Games;
+          
         }
 
         // GET: api/Games/5
