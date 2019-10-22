@@ -220,6 +220,7 @@
     <Compile Include="Controllers\GamerControler.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
+    <Compile Include="Controllers\PlayerGamesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
@@ -488,12 +489,6 @@
     <EmbeddedResource Include="Migrations\201910221103511_init.resx">
       <DependentUpon>201910221103511_init.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\OverwatchAPI\OverwatchAPI.csproj">
-      <Project>{82515743-f5d8-4a74-801b-d0f2ed3b7eb7}</Project>
-      <Name>OverwatchAPI</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
