@@ -18,9 +18,9 @@ namespace HalfPugg.Models
         public PlayerGame IdGame { get; set; }
         [Required]        
         public float Points { get; set; }
-        [Required]
+        
         public DateTime CreateAt { get; set; }
-        [Required]
+        
         public DateTime AlteredAt { get; set; }
     }
 }

@@ -15,12 +15,12 @@ namespace HalfPugg.Models
         [Required]
         public Gamer Player2 { get; set; }
         [Required]
-        public char Status { get; set; }
+        public bool Status { get; set; }
         [Required]
         public float Weight { get; set; }
-        [Required]
+        
         public DateTime CreateAt { get; set; }
-        [Required]
+        
         public DateTime AlteredAt { get; set; }
     }
 }
