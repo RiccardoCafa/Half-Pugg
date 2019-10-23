@@ -241,6 +241,10 @@
     <Compile Include="Migrations\201910222353517_MatchStatus.Designer.cs">
       <DependentUpon>201910222353517_MatchStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910230231085_Upt-PlayerGame.cs" />
+    <Compile Include="Migrations\201910230231085_Upt-PlayerGame.Designer.cs">
+      <DependentUpon>201910230231085_Upt-PlayerGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
@@ -498,6 +502,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910222353517_MatchStatus.resx">
       <DependentUpon>201910222353517_MatchStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910230231085_Upt-PlayerGame.resx">
+      <DependentUpon>201910230231085_Upt-PlayerGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

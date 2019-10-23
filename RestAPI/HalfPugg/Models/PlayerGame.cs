@@ -9,8 +9,15 @@ namespace HalfPugg.Models
         [Required] public int ID { get; set; }
         [StringLength(300)] [Required] 
         public string Description { get; set; }
-        [Required] public Game IdGame { get; set; }
-        [Required] public Gamer IdGamer { get; set; }
+        
+        public Game Game { get; set; }
+        public Gamer Gamer { get; set; }
+        
+        [Required]
+        public int IDGame { get; set; }
+        [Required]
+        public int IDGamer { get; set; }
+
         [Required] [Index(IsUnique = true)]
         public string IdAPI { get; set; }
         [Required] public float Weight { get; set; }
