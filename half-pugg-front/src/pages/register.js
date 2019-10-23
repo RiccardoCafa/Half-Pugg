@@ -1,64 +1,44 @@
-import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import './register.css';
 import pugg from '../images/Logo_Pugg.png';
 import api from '../services/api';
 
-export default class register extends Component {
+export default function({history}) {
 
-    state = {
-        Name: '',
-        LastName: '',
-        Nickname: '',
-        HashPassword: '',
-        Email: '',
-        Birthday: '',
-        confirmSenha: '',
-        toLogin: false,
-    }
+    const [ username, setUsername ] = useState(''); 
+    const [ senha, setSenha ] = useState('');
+    const [ confirmSenha, setConfirmSenha ] = useState('');
+    const [ dataNascimento, setDataNascimento] = useState('');
+    const [ email, setEmail ] = useState('');
+    const [ firstName, setFirstName ] = useState('');
+    const [ lastName, setLastName ] = useState('');
 
-    componentDidMount = async e => {
-        /*const response = await api.get('api/Login').catch(function(error) {
-            console.log('Algo deu errado ' + error.message);
-        });
-        if(response != null) {
-            console.log(response);
-        }*/
-    }
-    
-    handleSubmit = async e => {
+    async function handleSubmit(e) {
         e.preventDefault();
         console.log("cadastro");
-        const dts = this.state.Birthday.split("-");
+        const dts = dataNascimento.split("-");
         const dt = dts[2] + "/" + dts[1] + "/" + dts[0];
 
-        const respo = await api.post('api/Gamers', {
-            "Name": this.state.Name,
-            "LastName": this.state.LastName,
-            "Nickname": this.state.Nickname,
-            "HashPassword": this.state.HashPassword,
-            "Email": this.state.Email,
+        await api.post('api/Gamers', {
+            "Nickname": username,
+            "Name": firstName,
+            "LastName": lastName,
+            "HashPassword": senha,
             "Birthday": dt,
+            "Email": email,
             "Type": "a",
-            "Sex": "M",
         }).catch(function (error) {
             console.log(error.response);
             console.log("Error: " + error.message);
         });
-        if(respo != null){
-            this.setState({toLogin: true});
-        }
-        //useHistory().push('/');
+
         console.log(dt);
     }
 
-    render(){
-        if(this.state.toLogin === true) {
-            return <Redirect to='/'></Redirect>
-        }
-        return (
-            <div className = "register-container">    
+    return (
+        <div className = "register-container">    
             <div className= "register-title">
                 <Link to = "/">
                     <img src={pugg} width="100" height="100" alt="pugg logo"/>
@@ -66,14 +46,14 @@ export default class register extends Component {
                 <h1>Half Pugg</h1>
             </div>
             <div className = "register-inputs">
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <ul>
                     <li>
                         <h4>Primeiro Nome</h4>
                         <input 
                             placeholder = ""
-                            value = {this.state.Name}
-                            onChange = { e => this.setState({Name: e.target.value})} 
+                            value = {firstName}
+                            onChange = { e => setFirstName(e.target.value)} 
                             maxLength = {30}
                         />
                     </li>
@@ -81,17 +61,17 @@ export default class register extends Component {
                         <h4>Último Nome</h4>
                         <input 
                             placeholder = ""
-                            value = {this.state.LastName}
+                            value = {lastName}
                             maxLength = {30}
-                            onChange = {e => this.setState({LastName: e.target.value})}
+                            onChange = {e => setLastName(e.target.value)}
                         />
                     </li>
                     <li>
                         <h4>Seu nome heróico (ง ͠° ͟ل͜ ͡°)ง</h4>
                         <input 
                             placeholder = ""
-                            value = {this.state.Nickname}
-                            onChange = { e => this.setState({Nickname: e.target.value})} 
+                            value = {username}
+                            onChange = { e => setUsername(e.target.value)} 
                             maxLength = {25}
                         />
                     </li>
@@ -99,8 +79,8 @@ export default class register extends Component {
                         <h4>Seu email fabuloso ( ✧≖ ͜ʖ≖)</h4>
                         <input 
                             placeholder = ""
-                            value = {this.state.Email}
-                            onChange = { e => this.setState({Email: e.target.value})}
+                            value = {email}
+                            onChange = { e => setEmail(e.target.value)}
                             type= {"email"}
                         />
                     </li>
@@ -108,8 +88,8 @@ export default class register extends Component {
                         <h4>Declare palavras secretas ( ͡~ ͜ʖ ͡°)</h4>
                         <input 
                             placeholder = ""
-                            value = {this.state.HashPassword}
-                            onChange = { e => this.setState({HashPassword: e.target.value})}
+                            value = {senha}
+                            onChange = { e => setSenha(e.target.value)}
                             type = {"password"}
                             maxLength = {20}
                         />
@@ -118,8 +98,8 @@ export default class register extends Component {
                         <h4>Confirme as palavras secretas ಠ_ಠ</h4>
                         <input 
                             placeholder = ""
-                            value = {this.state.confirmSenha}
-                            onChange = { e => this.setState({confirmSenha: e.target.value})}
+                            value = {confirmSenha}
+                            onChange = { e => setConfirmSenha(e.target.value)}
                             type = {"password"}
                         />
                     </li>
@@ -127,8 +107,8 @@ export default class register extends Component {
                         <h4>Dia de spawn no mundo</h4>
                         <input 
                             placeholder = ""
-                            value = {this.state.Birthday}
-                            onChange = { e => this.setState({Birthday: e.target.value})}
+                            value = {dataNascimento}
+                            onChange = { e => setDataNascimento(e.target.value)}
                             type = {"date"}
                         />
                     </li>
@@ -142,6 +122,5 @@ export default class register extends Component {
             </div>
             
         </div>
-        );
-    }
+    );
 }

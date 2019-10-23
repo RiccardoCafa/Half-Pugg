@@ -1,17 +1,17 @@
 ﻿using HalfPugg.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-using System.Security.Claims;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens;
 
 namespace HalfPugg.Controllers
 {
     public class LoginController : ApiController
     {
         HalfPuggContext db;
-        public static Gamer GamerLogado = null;
 
         public LoginController()
         {
@@ -19,28 +19,29 @@ namespace HalfPugg.Controllers
         }
 
         // GET: api/Login
-        [HttpGet]
         public IHttpActionResult Get()
         {
-            //var gamerLogged = db.Gamers.FirstOrDefault(g => g.ID == GamerLogado.ID);
-            
-            if(GamerLogado != null)
+            if (HttpContext.Current.Session["ID"] != null)
             {
-                return Json<Gamer>(GamerLogado);
+                var gamer = db.Gamers
+                                .FirstOrDefault(g => 
+                                    g.ID == int.Parse(HttpContext.Current.Session["ID"].ToString()));
+                if (gamer != null)
+                    return Ok<Gamer>(gamer);
+                else return BadRequest();
             }
-
-            return NotFound();
+            else return NotFound();
         }
 
         // POST: api/Login
         public IHttpActionResult Post(Gamer gamer)
         {
-            var gamerLogged = db.Gamers.FirstOrDefault(g => g.Email == gamer.Email && g.HashPassword == gamer.HashPassword);
+            var gamerLogged = db.Gamers.FirstOrDefault(g => g.ID == gamer.ID && g.HashPassword == gamer.HashPassword);
 
-            if (gamerLogged != null)
+            if(gamerLogged != null)
             {
-                GamerLogado = gamerLogged;
-                return Ok();
+                HttpContext.Current.Session["ID"] = gamer.ID;
+                return Json<Gamer>(gamer);
             }
             return NotFound();
         }
