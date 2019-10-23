@@ -215,6 +215,10 @@
     <Compile Include="Migrations\201910221211221_Init.Designer.cs">
       <DependentUpon>201910221211221_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910222353517_MatchStatus.cs" />
+    <Compile Include="Migrations\201910222353517_MatchStatus.Designer.cs">
+      <DependentUpon>201910222353517_MatchStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
@@ -469,6 +473,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201910221211221_Init.resx">
       <DependentUpon>201910221211221_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910222353517_MatchStatus.resx">
+      <DependentUpon>201910222353517_MatchStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
