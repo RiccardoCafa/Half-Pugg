@@ -235,17 +235,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910221211221_Init.cs" />
-    <Compile Include="Migrations\201910221211221_Init.Designer.cs">
-      <DependentUpon>201910221211221_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910222353517_MatchStatus.cs" />
-    <Compile Include="Migrations\201910222353517_MatchStatus.Designer.cs">
-      <DependentUpon>201910222353517_MatchStatus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910230231085_Upt-PlayerGame.cs" />
-    <Compile Include="Migrations\201910230231085_Upt-PlayerGame.Designer.cs">
-      <DependentUpon>201910230231085_Upt-PlayerGame.cs</DependentUpon>
+    <Compile Include="Migrations\201910232155284_init.cs" />
+    <Compile Include="Migrations\201910232155284_init.Designer.cs">
+      <DependentUpon>201910232155284_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
@@ -500,14 +492,8 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910221211221_Init.resx">
-      <DependentUpon>201910221211221_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910222353517_MatchStatus.resx">
-      <DependentUpon>201910222353517_MatchStatus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910230231085_Upt-PlayerGame.resx">
-      <DependentUpon>201910230231085_Upt-PlayerGame.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910232155284_init.resx">
+      <DependentUpon>201910232155284_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

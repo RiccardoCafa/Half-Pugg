@@ -12,6 +12,7 @@ namespace HalfPugg.Controllers
     public class LoginController : ApiController
     {
         HalfPuggContext db;
+        public static Gamer GamerLogado = null;
 
         public LoginController()
         {
@@ -21,29 +22,35 @@ namespace HalfPugg.Controllers
         // GET: api/Login
         public IHttpActionResult Get()
         {
-            if (HttpContext.Current.Session["ID"] != null)
+            //var gamerLogged = db.Gamers.FirstOrDefault(g => g.ID == GamerLogado.ID);
+
+            if (GamerLogado != null)
             {
-                var gamer = db.Gamers
-                                .FirstOrDefault(g => 
-                                    g.ID == int.Parse(HttpContext.Current.Session["ID"].ToString()));
-                if (gamer != null)
-                    return Ok<Gamer>(gamer);
-                else return BadRequest();
+                return Json<Gamer>(GamerLogado);
             }
-            else return NotFound();
+
+            return NotFound();
         }
 
         // POST: api/Login
         public IHttpActionResult Post(Gamer gamer)
         {
-            var gamerLogged = db.Gamers.FirstOrDefault(g => g.ID == gamer.ID && g.HashPassword == gamer.HashPassword);
+            var gamerLogged = db.Gamers.FirstOrDefault(g => g.Email == gamer.Email && g.HashPassword == gamer.HashPassword);
 
-            if(gamerLogged != null)
+            if (gamerLogged != null)
             {
-                HttpContext.Current.Session["ID"] = gamer.ID;
-                return Json<Gamer>(gamer);
+                GamerLogado = gamerLogged;
+                return Ok();
             }
             return NotFound();
+        }
+
+        [HttpDelete]
+        [Route("api/logoff")]
+        public IHttpActionResult DeleteLogin(Gamer gamer)
+        {
+            GamerLogado = null;
+            return Ok();
         }
     }
 }
