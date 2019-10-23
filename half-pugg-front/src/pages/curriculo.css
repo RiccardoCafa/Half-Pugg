@@ -1,0 +1,10 @@
+.curriculo-container {
+    height: 200%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+    margin-bottom: 0%;
+    flex-direction: column;
+}

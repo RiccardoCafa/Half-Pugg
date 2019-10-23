@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
+using System.Linq;
 
 namespace HalfPugg.Controllers
 {
@@ -30,6 +32,42 @@ namespace HalfPugg.Controllers
             }
 
             return Ok(gamer);
+        }
+
+        [Route("api/GamersMatch")]
+        [HttpGet]
+        public IHttpActionResult GetGamerMatch()
+        {
+            Gamer gamerL = LoginController.GamerLogado;
+
+            if(gamerL == null)
+            {
+                return null;
+            }
+            List<Gamer> gamers = new List<Gamer>();
+            List<Match> matches = db.Matches.AsEnumerable().ToList();
+            foreach (Gamer gMatch in db.Gamers)
+            {
+                if(gMatch.ID != gamerL.ID)
+                {
+                    Match found = matches.FirstOrDefault(x => 
+                    (x.Player1.ID != gamerL.ID && x.Player2.ID != gMatch.ID) 
+                    || (x.Player1.ID != gMatch.ID && x.Player2.ID != gamerL.ID));
+                    if (found == null)
+                    {
+                        gamers.Add(new Gamer() {
+                            ID = gMatch.ID,
+                            Nickname = gMatch.Nickname,
+                            Name = gMatch.Name,
+                            LastName = gMatch.LastName,
+                            Email = gMatch.Email
+                        });
+
+                    }
+                }
+            }
+
+            return Json(gamers);
         }
 
         // PUT: api/Gamers/5

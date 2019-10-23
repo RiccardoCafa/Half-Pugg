@@ -2,9 +2,11 @@
 using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace OverwatchAPI
 {
+
     public struct role
     {
         public string name;
@@ -100,6 +102,17 @@ namespace OverwatchAPI
                 },
             };
         }
+
+        public IEnumerable<player> GetPlayerProfile(List<string> name, List<region> reg)
+        {
+            if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
+
+            for (int i = 0; i < name.Count; i++)
+            {
+                yield return GetPlayerProfile(name[i], reg[i]);
+            }
+        }
+
         public player GetPlayer(string name, region reg)
         {
             string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
@@ -158,9 +171,29 @@ namespace OverwatchAPI
                 }
             };
         }
+
+        public IEnumerable<player> GetPlayer(List<string> name, List<region> reg)
+        {
+            if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
+
+            for (int i = 0; i < name.Count; i++)
+            {
+                yield return GetPlayer(name[i], reg[i]);
+            }
+        }
+
         public JObject GetPlayerComplete(string name, region reg)
                 => JObject.Parse(client.GetAsync(ENDPOINT_API + regStr(reg) + $"/{name}/complete")
                                                                     .Result.Content.ReadAsStringAsync().Result);
 
+        public IEnumerable<JObject> GetPlayerComplete(List<string> name, List<region> reg)
+        {
+            if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
+
+            for (int i = 0; i < name.Count; i++)
+            {
+                yield return GetPlayerComplete(name[i], reg[i]);
+            }
+        }
     }
 }
