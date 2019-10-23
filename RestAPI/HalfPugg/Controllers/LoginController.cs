@@ -44,5 +44,13 @@ namespace HalfPugg.Controllers
             }
             return NotFound();
         }
+
+        [HttpDelete]
+        [Route("api/logoff")]
+        public IHttpActionResult DeleteLogin(Gamer gamer)
+        {
+            GamerLogado = null;
+            return Ok();
+        }
     }
 }

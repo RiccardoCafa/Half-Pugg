@@ -50,7 +50,7 @@ namespace HalfPugg.Controllers
             }
 
             db.Entry(match).State = EntityState.Modified;
-
+                
             try
             {
                 db.SaveChanges();
@@ -72,13 +72,26 @@ namespace HalfPugg.Controllers
 
         // POST: api/Matches
         [ResponseType(typeof(Match))]
-        public IHttpActionResult PostMatch(Match match)
+        public IHttpActionResult PostMatch(Match match, bool foimatch)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            Match hasMatch = db.Matches.FirstOrDefault(ma => 
+            ((ma.Player1.ID == match.Player1.ID && ma.Player2.ID == match.Player2.ID) ||
+            (ma.Player2.ID == match.Player1.ID && ma.Player1.ID == match.Player2.ID)) && ma.Status == 'A');
 
+            if (hasMatch != null)
+            {
+                if (foimatch) hasMatch.Status = 'M';
+                else hasMatch.Status = 'D';
+                hasMatch.Status = match.Status;
+                db.Entry(hasMatch).State = EntityState.Modified;
+                db.SaveChanges();
+                return Ok();
+            }
+            match.Status = 'A';
             db.Matches.Add(match);
             db.SaveChanges();
 

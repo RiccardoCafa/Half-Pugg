@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import api from '../services/api';
 
-import { Menu, Image, Label, Input } from 'semantic-ui-react';
+import { Menu, Image, Label, Input, Button } from 'semantic-ui-react';
 
 import './header.css';
 
@@ -14,7 +14,7 @@ export default class header extends Component {
         Email: '',
         activeItem: '',
     }
-
+    //4b0082
     handleItemClick = (e, { name }) => this.setState( {activeItem: name } );
 
     // async componentDidMount() {
@@ -56,6 +56,9 @@ export default class header extends Component {
                                 <Image avatar spaced='right'></Image>
                                 {this.props.dataFP}
                             </Label>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <Button basic color='red' size='mini'>Sair</Button>
                         </Menu.Item>
                     </Menu.Menu>
                 </Menu>
