@@ -14,18 +14,15 @@ export default class Match extends Component {
         GamerMatch: [],
         Gamer: {
             "ID": 0,
-            "Name": '',
-            "LastName": '',
-            "Nickname": '',
-            "Bio": '',
-            "Email": '',
         },
+        GamerLogado: {},
     }
 
     async componentDidMount() {
         const myData = await api.get('api/Login');
         if(myData.data != null){
-            this.setState ({Nickname: myData.data.Nickname})
+            this.setState({GamerLogado: myData.data});
+            this.setState ({Nickname: myData.data.Nickname});
             console.log(this.state.Nickname);
         }
 
@@ -36,9 +33,27 @@ export default class Match extends Component {
         }
     }
 
-    connectMatch() {
-        console.log(this.state.Gamer);
-        //api.post('api/Matches?foimatch=true', this.state.Gamer);
+    connectMatch(matcher) {
+
+        console.log(matcher);
+        const response = api.post('api/Matches', {
+            "Player1": this.state.GamerLogado,
+            "Player2": matcher,
+            "Status": false,
+            "Weight": 0,
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+        
+        if(response !== null) {
+            var array = [... this.state.GamerMatch];
+            var index = array.indexOf(matcher);
+            if(index != -1) {
+                array.splice(index, 1);
+                this.setState({GamerMatch: array});
+            }
+        }
     }
 
     async desconnectMatch() {
@@ -63,7 +78,7 @@ export default class Match extends Component {
                 <div className='connections'>
                     <Card.Group>
                         {this.state.GamerMatch.map((matcher) => 
-                            <Card>
+                            <Card key={matcher.ID} >
                                 <Card.Content>
                                     <Image
                                         floated='right'
@@ -76,18 +91,16 @@ export default class Match extends Component {
                                 </Card.Content>
                                 <Card.Content extra>
                                     <div className='ui two buttons'>
-                                        <Button basic color='green' onClick={e => {
-                                            this.setState({Gamer: matcher});
-                                            this.connectMatch(); }}>
+                                        <Button id='btn-acpden' basic color='green' onClick={() => this.connectMatch(matcher)}>
                                             Connect!
                                         </Button>
-                                        <Button basic color='red' onClick={this.desconnectMatch}>
+                                        <Button id='btn-acpden' basic color='red' onClick={this.desconnectMatch}>
                                             Not Interested!
                                         </Button>
                                     </div>
                                 </Card.Content>
                                 <Card.Content extra>
-                                    <Button fluid basic color='Blue'>
+                                    <Button fluid basic color='blue'>
                                         Open Curriculum
                                     </Button>
                                 </Card.Content>
