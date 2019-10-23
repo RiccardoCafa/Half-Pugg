@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import api from '../services/api';
 
 import { Menu, Image, Label, Input, Button } from 'semantic-ui-react';
 
