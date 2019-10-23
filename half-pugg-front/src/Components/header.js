@@ -17,15 +17,6 @@ export default class header extends Component {
     //4b0082
     handleItemClick = (e, { name }) => this.setState( {activeItem: name } );
 
-    // async componentDidMount() {
-    //     const logged = await api.get('/api/Login');
-    //     if(logged == null) {
-    //         this.history.push('/');
-    //     }else {
-    //         console.log(logged.data);
-    //     }
-    // }
-
     render() {
         const { activeItem } = this.state;
 
