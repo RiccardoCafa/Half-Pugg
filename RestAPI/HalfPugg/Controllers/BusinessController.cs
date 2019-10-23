@@ -17,7 +17,7 @@ namespace HalfPugg.Controllers
         private HalfPuggContext db = new HalfPuggContext();
 
         [ResponseType(typeof(IEnumerable<player>))]
-        [Route("api/GetPlayerOw")]
+        [Route("api/GetPlayersOwerwatch")]
         [HttpGet]
         public IHttpActionResult GetPlayerOw(int GameID)
         {
@@ -28,10 +28,16 @@ namespace HalfPugg.Controllers
             {
                 names.Add(pg.IdAPI);
                 regions.Add(region.us);
+                Console.WriteLine(pg.IdAPI);
             }
-
-            return Json(OwAPI.GetPlayer(names, regions));
+            var a = OwAPI.GetPlayer(names, regions);
+            return Json(a);
         }
+
+         //[ResponseType(typeof(IEnumerable<player>))]
+         //[Route("api/Get/Match/Overwatch")]
+         //[HttpGet]
+         //public IHttpActionResult 
 
     }
 }
