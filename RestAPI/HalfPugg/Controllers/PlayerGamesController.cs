@@ -79,7 +79,8 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            playerGame.Game = db.Games.Find(playerGame.IDGame);
+            playerGame.Gamer = db.Gamers.Find(playerGame.IDGamer);
             db.PlayerGames.Add(playerGame);
             await db.SaveChangesAsync();
 
