@@ -17,10 +17,10 @@ namespace HalfPugg.Models
         [Required] [StringLength(100)] public string HashPassword { get; set; } 
         [StringLength(300)] public string Bio { get; set; }
         [Required] [EmailAddress] public string  Email { get; set; }
-        public DateTime Birthday { get; set; }
+        [Required] public DateTime Birthday { get; set; }
         [StringLength(100)] public string ImagePath { get; set; }
         [Required] public char Type { get; set; }
-        [Required] public int ID_Branch { get; set; }
+        public int ID_Branch { get; set; }
         [Required] public char Sex { get; set; }
         [StringLength(100)] public string Genre { get; set; }  
         public IList<Group> Groups { get; set; }
