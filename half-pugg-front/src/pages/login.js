@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
 import './login.css';
-import { Button, Popup } from 'semantic-ui-react';
+import { Button, Input } from 'semantic-ui-react';
 import api from '../services/api';
 
 export default function({history}) {
 
     const [ email, setEmail ] = useState(''); 
     const [ senha, setSenha ] = useState('');
-    const [ showPopUp, setShowPopUp ] = useState(Boolean);
+    const [ cor, setCor ] = useState('white');
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -20,20 +20,16 @@ export default function({history}) {
             console.log(error);
             switch(error.response.status){
                 case 404:
-                    setShowPopUp(true);
-                    console.log("404");
+                    setCor('red');
+                break;
+                case 200:
+                    history.push('/match');
                 break;
                 default:
                     console.log('algo deu errado');
                 break;
             }
         });
-        if(response != null) {
-            console.log('deu bom hein');
-            console.log(response);
-            console.log(response.data);
-            history.push('/match');
-        }
     }
 
     function handleCadastro(e){
@@ -54,16 +50,8 @@ export default function({history}) {
             <form >
                 <h1>Half Pugg</h1>
                 <div>
-                    {{showPopUp} ? 
-                        <Popup 
-                            content='Email ou Senha errada!'
-                            pinned 
-                            on='click'
-                            open={showPopUp}
-                            trigger={<h4 className="emailLabel">E-MAIL</h4>}
-                        />
-                    : <h4 className="emailLabel">E-MAIL</h4> }
-                    <input
+                    <h4>E-MAIL</h4>
+                    <input style={{color: {cor}}}
                         placeholder= "Seu email"
                         value = {email}
                         onChange = { e => setEmail(e.target.value)} 
@@ -73,6 +61,7 @@ export default function({history}) {
                 <div>
                     <h4>SENHA</h4>
                     <input 
+                        style = {{color: {cor}}}
                         placeholder= "Suas palavras secretas ( ͡~ ͜ʖ ͡°)"
                         value = {senha}
                         onChange = { e => setSenha(e.target.value)}
