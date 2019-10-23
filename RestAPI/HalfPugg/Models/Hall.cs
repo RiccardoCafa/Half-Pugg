@@ -10,7 +10,7 @@ namespace HalfPugg.Models
     {
         [Key] public int ID_Hall { get; set; }
         [StringLength(70)] public string Name { get; set; }
-        [Required] public Game game { get; set; }
+        [Required] public int IdGame { get; set; }
         [Required] public int Capacity { get; set; }
 
         public IList<Filter> Filters { get; set; }
@@ -21,5 +21,6 @@ namespace HalfPugg.Models
         public DateTime CreateAt { get; set; }
         
         public DateTime AlteredAt { get; set; }
+        public virtual Game game { get; set; }
     }
 }
