@@ -13,7 +13,6 @@ namespace HalfPugg.Models
         public IList<Game> Games { get; set; }
         public IList<Hall> HallFilter { get; set; }
         public IList<Group> GroupFilter { get; set; }
-
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
     }
