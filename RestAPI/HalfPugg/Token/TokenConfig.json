@@ -1,7 +1,0 @@
-{
-  "TokenConfigurations": {
-    "Audience": "ExemploAudience",
-    "Issuer": "ExemploIssuer",
-    "Seconds": 7200
-  }
-}

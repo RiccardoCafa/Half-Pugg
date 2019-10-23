@@ -6,10 +6,10 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
-using Newtonsoft.Json.Linq;
 
 namespace HalfPugg.Controllers
 {
@@ -25,9 +25,9 @@ namespace HalfPugg.Controllers
 
         // GET: api/PlayerGames/5
         [ResponseType(typeof(PlayerGame))]
-        public IHttpActionResult GetPlayerGame(int id)
+        public async Task<IHttpActionResult> GetPlayerGame(int id)
         {
-            PlayerGame playerGame = db.PlayerGames.Find(id);
+            PlayerGame playerGame = await db.PlayerGames.FindAsync(id);
             if (playerGame == null)
             {
                 return NotFound();
@@ -38,7 +38,7 @@ namespace HalfPugg.Controllers
 
         // PUT: api/PlayerGames/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutPlayerGame(int id, PlayerGame playerGame)
+        public async Task<IHttpActionResult> PutPlayerGame(int id, PlayerGame playerGame)
         {
             if (!ModelState.IsValid)
             {
@@ -54,7 +54,7 @@ namespace HalfPugg.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,7 +73,7 @@ namespace HalfPugg.Controllers
 
         // POST: api/PlayerGames
         [ResponseType(typeof(PlayerGame))]
-        public IHttpActionResult PostPlayerGame(PlayerGame playerGame)
+        public async Task<IHttpActionResult> PostPlayerGame(PlayerGame playerGame)
         {
             if (!ModelState.IsValid)
             {
@@ -82,23 +82,23 @@ namespace HalfPugg.Controllers
             playerGame.Game = db.Games.Find(playerGame.IDGame);
             playerGame.Gamer = db.Gamers.Find(playerGame.IDGamer);
             db.PlayerGames.Add(playerGame);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = playerGame.ID }, playerGame);
         }
 
         // DELETE: api/PlayerGames/5
         [ResponseType(typeof(PlayerGame))]
-        public IHttpActionResult DeletePlayerGame(int id)
+        public async Task<IHttpActionResult> DeletePlayerGame(int id)
         {
-            PlayerGame playerGame = db.PlayerGames.Find(id);
+            PlayerGame playerGame = await db.PlayerGames.FindAsync(id);
             if (playerGame == null)
             {
                 return NotFound();
             }
 
             db.PlayerGames.Remove(playerGame);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return Ok(playerGame);
         }

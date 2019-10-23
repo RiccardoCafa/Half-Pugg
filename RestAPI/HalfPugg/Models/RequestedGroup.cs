@@ -8,22 +8,14 @@ namespace HalfPugg.Models
 {
     public class RequestedGroup
     {
-        [Key]
-        public int ID { get; set; }
-        [Required]
-        public Gamer Player { get; set; }
-        [Required]
-        public Group Sala { get; set; }
-        [Required]
-        public DateTime RequestedTime { get; set; }
-        [Required]
-        public DateTime ComfirmedTime { get; set; }
-        [Required]
-        public char Status { get; set; }
-        public Filter Filters { get; set; }
-        [Required]
-        public DateTime CreateAt { get; set; }
-        [Required]
+        [Key] public int ID { get; set; }
+        [Required] public Gamer Player { get; set; }
+        [Required] public Group Sala { get; set; }
+        [Required] public DateTime RequestedTime { get; set; }
+        [Required] public DateTime ComfirmedTime { get; set; }
+        [Required] public char Status { get; set; }
+        public Filter Filters { get; set; }        
+        public DateTime CreateAt { get; set; }        
         public DateTime AlteredAt { get; set; }
     }
 }
