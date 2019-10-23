@@ -204,6 +204,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\BusinessController.cs" />
     <Compile Include="Controllers\ClassificationPlayersController.cs" />
     <Compile Include="Controllers\Classification_GameController.cs" />
     <Compile Include="Controllers\Classification_GamerController.cs" />
@@ -485,6 +486,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Business\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
