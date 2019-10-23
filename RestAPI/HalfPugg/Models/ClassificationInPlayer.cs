@@ -8,17 +8,11 @@ namespace HalfPugg.Models
 {
     public class ClassificationPlayer
     {
-        [Key]
-        public int ID { get; set; }
-        [Required]
-        public Gamer Player { get; set; }
-        [Required]
-        public Classification_Gamer Classification { get; set; }
-        [Required]
-        public float Points { get; set; }
-        [Required]
+        [Key] public int ID { get; set; }
+        [Required] public Gamer Player { get; set; }
+        [Required] public Classification_Gamer Classification { get; set; }
+        [Required] public float Points { get; set; }
         public DateTime CreateAt { get; set; }
-        [Required]
         public DateTime AlteredAt { get; set; }
 
     }
