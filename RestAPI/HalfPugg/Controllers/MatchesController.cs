@@ -73,23 +73,22 @@ namespace HalfPugg.Controllers
 
         // POST: api/Matches
         [ResponseType(typeof(Match))]
-        public async Task<IHttpActionResult> PostMatch(Match match, bool DeuMatch)
+        public async Task<IHttpActionResult> PostMatch(Match match)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
+
             Match hasMatch = db.Matches.FirstOrDefault(ma => 
             ((ma.Player1.ID == match.Player1.ID && ma.Player2.ID == match.Player2.ID) ||
             (ma.Player2.ID == match.Player1.ID && ma.Player1.ID == match.Player2.ID)) && ma.Status == false);
 
             if (hasMatch != null)
             {
-                hasMatch.Status = DeuMatch;
-                db.Entry(hasMatch).State = EntityState.Modified;
-                db.SaveChanges();
-                return Ok();
+                return BadRequest();
             }
+
             match.Status = false;
             db.Matches.Add(match);
             await db.SaveChangesAsync();

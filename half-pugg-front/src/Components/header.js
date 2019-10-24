@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import { Menu, Image, Label, Input, Button } from 'semantic-ui-react';
+import api from '../services/api';
 
 import './header.css';
 
@@ -12,12 +14,31 @@ export default class header extends Component {
         Nickname: '',
         Email: '',
         activeItem: '',
+        toHome: false,
     }
     //4b0082
     handleItemClick = (e, { name }) => this.setState( {activeItem: name } );
 
+    async handleLogoff() {
+        try {
+            const response = api.delete('api/logoff', {
+                "ID": 0,
+                "Nickname": this.state.Nickname,
+            });
+            if(response != null){
+                this.setState({toHome: true});
+            }
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     render() {
         const { activeItem } = this.state;
+
+        if(this.state.toHome === true) {
+            return <Redirect to='/'></Redirect>
+        } 
 
         return (
             <div id='myHeader'>
@@ -48,7 +69,7 @@ export default class header extends Component {
                             </Label>
                         </Menu.Item>
                         <Menu.Item>
-                            <Button basic color='red' size='mini'>Sair</Button>
+                            <Button basic color='red' size='mini' onClick={this.handleLogoff}>Sair</Button>
                         </Menu.Item>
                     </Menu.Menu>
                 </Menu>
