@@ -16,11 +16,17 @@ export default class Login extends Component {
     }
 
     async componentDidMount() {
-        const response = await api.get('api/Login');
+        try {
+            const response = await api.get('api/Login');
+    
+            if(response != null) {
+                this.setState({goToMatch: true});
+            }
 
-        if(response != null) {
-            this.setState({goToMatch: true});
-        }
+        } catch(error) 
+        {
+            console.log('nao tem conta logada');
+        };
     }
 
     async handleSubmit(e) {
@@ -31,7 +37,7 @@ export default class Login extends Component {
             "HashPassword": this.state.senha
         }).catch(function(error){
             console.log(error);
-            switch(error.response.status){
+            switch(error.response.status) {
                 case 404:
                     this.setState({showPopUp: true});
                     console.log("404");
@@ -42,9 +48,6 @@ export default class Login extends Component {
             }
         });
         if(response != null) {
-            console.log('deu bom hein');
-            console.log(response);
-            console.log(response.data);
             this.setState({goToMatch: true});
         }
     }
@@ -105,14 +108,14 @@ export default class Login extends Component {
                             Login
                         </Button>
                         <Button.Or />
-                        <Button color='youtube' onClick={e => this.handleBranchConnect(e)} >
+                        <Button color='red' onClick={e => this.handleBranchConnect(e)} >
                             Branch Connect!
                         </Button>
                     </Button.Group>
                 </form>
                 <form className="cadastro" >
                     <span>
-                        <label className="cadastro-label" onClick={this.handleCadastro}>Cadastra-se agora e vire um profissional!</label>
+                        <label className="cadastro-label" onClick={e => this.handleCadastro(e)}>Cadastra-se agora e vire um profissional!</label>
                     </span>
                 </form>
             </div>

@@ -9,7 +9,7 @@ namespace HalfPugg.Models
 
         }
 
-        public DbSet<Gamer> Gamers { get; set; }
+        public DbSet<Player> Gamers { get; set; }
 
         public DbSet<Game> Games { get; set; }
 
@@ -23,7 +23,7 @@ namespace HalfPugg.Models
 
         public DbSet<Match> Matches { get; set; }
 
-        public DbSet<Classification_Game> Classification_Games { get; set; }
+        public DbSet<Classification_Player> Classification_Games { get; set; }
 
         public DbSet<GameInGame> GamerInGame { get; set; }
 
@@ -39,7 +39,7 @@ namespace HalfPugg.Models
 
         public DbSet<Label> Labels { get; set; }
 
-        public DbSet<MessageGamer> MessageGamers { get; set; }
+        public DbSet<MessagePlayer> MessageGamers { get; set; }
 
         public DbSet<MessageGroup> MessageGroups { get; set; }
 

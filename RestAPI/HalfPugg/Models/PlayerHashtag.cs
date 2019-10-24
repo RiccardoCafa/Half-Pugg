@@ -16,7 +16,7 @@ namespace HalfPugg.Models
         public DateTime AlteredAt { get; set; }
 
         public virtual HashTag Hash { get; set; }
-        public virtual Gamer Player { get; set; }
+        public virtual Player Player { get; set; }
 
     }
 }

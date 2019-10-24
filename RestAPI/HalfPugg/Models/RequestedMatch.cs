@@ -10,14 +10,12 @@ namespace HalfPugg.Models
     {
         [Key] public int ID { get; set; }
         [Required] public int IdPlayer { get; set; }
-        [Required] public int IdSala { get; set; }
-        [Required] public DateTime RequestedTime { get; set; }
-        [Required] public DateTime ComfirmedTime { get; set; }
+        [Required] public int IdPlayer2 { get; set; }
+        public DateTime RequestedTime { get; set; }
+        public DateTime ComfirmedTime { get; set; }
         [Required] public char Status { get; set; }
         public Filter Filters { get; set; }        
-        public DateTime CreateAt { get; set; }       
-        public DateTime AlteredAt { get; set; }
-        public virtual Gamer Player { get; set; }
-        public virtual Gamer Sala { get; set; }
+        public virtual Player Player { get; set; }
+        public virtual Player Player2 { get; set; }
     }
 }

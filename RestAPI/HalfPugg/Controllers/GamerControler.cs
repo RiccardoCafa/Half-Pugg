@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -14,16 +15,16 @@ namespace HalfPugg.Controllers
         private HalfPuggContext db = new HalfPuggContext();
 
         // GET: api/Gamers
-        public IQueryable<Gamer> GetGamers()
+        public IQueryable<Player> GetGamers()
         {
             return db.Gamers;
         }
 
         // GET: api/Gamers/5
-        [ResponseType(typeof(Gamer))]
+        [ResponseType(typeof(Player))]
         public IHttpActionResult GetGamer(int id)
         {
-            Gamer gamer = db.Gamers.Find(id);
+            Player gamer = db.Gamers.Find(id);
             if (gamer == null)
             {
                 return NotFound();
@@ -32,9 +33,57 @@ namespace HalfPugg.Controllers
             return Ok(gamer);
         }
 
+        [Route("api/GamersMatch")]
+        [HttpGet]
+        public IHttpActionResult GetGamerMatch()
+        {
+            Player gamerL = LoginController.GamerLogado;
+
+            if (gamerL == null)
+            {
+                return null;
+            }
+            List<Player> gamers = new List<Player>();
+            List<Match> matches = db.Matches
+                                    .Where(ma => ma.IdPlayer1 == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
+                                    .AsEnumerable().ToList();
+            List<RequestedMatch> reqMatches = db.RequestedMatchs
+                                                .Where(ma => ma.IdPlayer == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
+                                                .AsEnumerable().ToList();
+            foreach (Player gMatch in db.Gamers)
+            {
+                if (gMatch.ID != gamerL.ID)
+                {
+                    Match found = matches.FirstOrDefault(x =>
+                     x.IdPlayer2 == gMatch.ID || x.IdPlayer1 == gMatch.ID);
+
+                    RequestedMatch Requested = reqMatches.FirstOrDefault(x =>
+                    x.IdPlayer2 == gMatch.ID || x.IdPlayer == gMatch.ID);
+
+                    if (found == null && Requested == null)
+                    {
+                        gamers.Add(new Player()
+                        {
+                            ID = gMatch.ID,
+                            Nickname = gMatch.Nickname,
+                            Name = gMatch.Name,
+                            LastName = gMatch.LastName,
+                            Email = gMatch.Email,
+                            ImagePath = gMatch.ImagePath,
+                            Bio = gMatch.Bio,
+                        });
+
+                    }
+                }
+            }
+
+            return Json(gamers);
+        }
+
+
         // PUT: api/Gamers/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutGamer(int id, Gamer gamer)
+        public IHttpActionResult PutGamer(int id, Player gamer)
         {
             if (!ModelState.IsValid)
             {
@@ -68,8 +117,8 @@ namespace HalfPugg.Controllers
         }
 
         // POST: api/Gamers
-        [ResponseType(typeof(Gamer))]
-        public IHttpActionResult PostGamer(Gamer gamer)
+        [ResponseType(typeof(Player))]
+        public IHttpActionResult PostGamer(Player gamer)
         {
             if (!ModelState.IsValid)
             {
@@ -83,10 +132,10 @@ namespace HalfPugg.Controllers
         }
 
         // DELETE: api/Gamers/5
-        [ResponseType(typeof(Gamer))]
+        [ResponseType(typeof(Player))]
         public IHttpActionResult DeleteGamer(int id)
         {
-            Gamer gamer = db.Gamers.Find(id);
+            Player gamer = db.Gamers.Find(id);
             if (gamer == null)
             {
                 return NotFound();

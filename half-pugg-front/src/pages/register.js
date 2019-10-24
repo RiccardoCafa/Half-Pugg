@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { Button, Checkbox } from 'semantic-ui-react';
 
 import './register.css';
 import pugg from '../images/Logo_Pugg.png';
@@ -15,16 +16,9 @@ export default class register extends Component {
         Email: '',
         Birthday: '',
         confirmSenha: '',
+        Sex: '',
         toLogin: false,
-    }
-
-    componentDidMount = async e => {
-        /*const response = await api.get('api/Login').catch(function(error) {
-            console.log('Algo deu errado ' + error.message);
-        });
-        if(response != null) {
-            console.log(response);
-        }*/
+        toRegister2: false,
     }
     
     handleSubmit = async e => {
@@ -40,22 +34,27 @@ export default class register extends Component {
             "HashPassword": this.state.HashPassword,
             "Email": this.state.Email,
             "Birthday": dt,
-            "Type": "a",
-            "Sex": "M",
+            "Type": "F",
+            "Sex": this.state.Sex,
+            "ID_Branch": -1,
         }).catch(function (error) {
             console.log(error.response);
             console.log("Error: " + error.message);
         });
         if(respo != null){
-            this.setState({toLogin: true});
+            this.setState({toRegister2: true});
         }
         //useHistory().push('/');
         console.log(dt);
     }
 
+    handleCheckBox(e, value) {
+        this.setState({Sex: value});
+    }
+
     render(){
-        if(this.state.toLogin === true) {
-            return <Redirect to='/'></Redirect>
+        if(this.state.toRegister2 === true) {
+            return <Redirect to='/bio'></Redirect>
         }
         return (
             <div className = "register-container">    
@@ -133,11 +132,27 @@ export default class register extends Component {
                         />
                     </li>
                     <li>
-                        <button type="submit" >
-                            Cadastrar-se
-                        </button>
+                        <Checkbox
+                            radio
+                            label='Homi'
+                            name='checkboxRadioGroup'
+                            value='M'
+                            checked = {this.state.Sex === 'M'}
+                            onChange={e => this.handleCheckBox(e, 'M')}
+                        />
+                        <Checkbox
+                            radio
+                            label='Mulé'
+                            name='checkboxRadioGroup'
+                            value='F'
+                            checked={this.state.Sex === 'F'}
+                            onChange={e => this.handleCheckBox(e, 'F')}
+                        />
                     </li>
                 </ul>
+                <Button id='botao-registro' size='mini' color='green' type="submit" >
+                    Cadastrar-se
+                </Button>
             </form>
             </div>
             

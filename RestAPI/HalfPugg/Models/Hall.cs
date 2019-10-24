@@ -14,8 +14,8 @@ namespace HalfPugg.Models
         [Required] public int Capacity { get; set; }
 
         public IList<Filter> Filters { get; set; }
-        [Required] public Gamer Admin { get; set; }
-        public IList<Gamer> Components { get; set; }
+        [Required] public Player Admin { get; set; }
+        public IList<Player> Components { get; set; }
         public IList<MessageHall> Chat { get; set; }
         
         public DateTime CreateAt { get; set; }

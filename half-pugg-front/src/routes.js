@@ -14,7 +14,7 @@ export default function () {
             <Route path="/register" component={register}/>
             <Route path="/bio" component={register2}/>
             <Route path="/curriculo" component={curriculo}/>
-            <Route path="/match" component={match}/>
+            <Route path="/match" exact component={match}/>
         </BrowserRouter>
     );
 }
