@@ -23,7 +23,7 @@ namespace HalfPugg.Controllers
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
-
+        
             foreach(PlayerGame pg in db.PlayerGames.Where(x=>x.IDGame == GameID))
             {
                 names.Add(pg.IdAPI);

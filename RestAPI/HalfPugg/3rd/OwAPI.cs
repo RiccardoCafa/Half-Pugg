@@ -51,6 +51,7 @@ namespace OverwatchAPI
     public static class OwAPI
     {
         private static HttpClient client;
+
         public const string ENDPOINT_API = "https://ow-api.com/v1/stats/pc/";
 
         private static string regStr(region reg)
@@ -67,6 +68,59 @@ namespace OverwatchAPI
             return "";
         }
 
+        private static profile getProfile(JToken token)
+        {
+            if (token == null) return null;
+            var ratings = token["ratings"];
+
+            JArray rls = new JArray();
+
+            if (ratings.HasValues)
+            {
+                rls = JArray.Parse(ratings.ToString());
+            }
+
+            role[] roles = new role[rls.Count];
+            byte i = 0;
+            foreach (var r in rls)
+            {
+                roles[i] = new role
+                {
+                    name = r["role"].ToString(),
+                    level = r["level"].Value<int>()
+                };
+            }
+           
+            return new profile
+            {
+                endorsement = token["endorsement"].HasValues?token["endorsement"].Value<int>():-1,
+                name = token["name"].HasValues?token["name"].ToString():"none",
+                level = token["level"].HasValues?token["level"].Value<int>():-1,
+                prestige = token["prestige"].HasValues?token["prestige"].Value<int>():-1,
+                rating = token["rating"].HasValues?token["rating"].Value<int>():-1,
+                ratings = roles
+            };
+        }
+
+        private static careerStats getCareer(JToken token)
+        {
+            return (token != null) ?
+             new careerStats
+             {
+                 allDamageDone = token["allDamageDoneAvgPer10Min"].HasValues ? token["allDamageDoneAvgPer10Min"].Value<float>() : -1,
+                 barrierDamageDone = token["barrierDamageDoneAvgPer10Min"].HasValues ? token["barrierDamageDoneAvgPer10Min"].Value<float>(): - 1,
+                 deaths = token["deathsAvgPer10Min"].HasValues ? token["deathsAvgPer10Min"].Value<float>() : -1,
+                 eliminations = token["eliminationsAvgPer10Min"].HasValues ? token["eliminationsAvgPer10Min"].Value<float>():-1,
+                finalBlows = token["finalBlowsAvgPer10Min"].HasValues?token["finalBlowsAvgPer10Min"].Value<float>():-1,
+                healingDone = token["healingDoneAvgPer10Min"].HasValues?token["healingDoneAvgPer10Min"].Value<float>():-1,
+                heroDamageDone = token["heroDamageDoneAvgPer10Min"].HasValues?token["heroDamageDoneAvgPer10Min"].Value<float>():-1,
+                objectiveKills = token["objectiveKillsAvgPer10Min"].HasValues?token["objectiveKillsAvgPer10Min"].Value<float>():-1,
+                objectiveTime = token["objectiveTimeAvgPer10Min"].HasValues?token["objectiveTimeAvgPer10Min"].ToString():"",
+                soloKills = token["soloKillsAvgPer10Min"].HasValues?token["soloKillsAvgPer10Min"].Value<float>():-1,
+                timeSpentOnFire = token["timeSpentOnFireAvgPer10Min"].HasValues?token["timeSpentOnFireAvgPer10Min"].ToString():""
+            }:null;
+        }
+
         static OwAPI()
         {
             client = new HttpClient();
@@ -77,31 +131,33 @@ namespace OverwatchAPI
             string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
             JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
 
-            JArray rls = JArray.Parse(obj["ratings"].ToString());
-            role[] roles = new role[rls.Count];
-            byte i = 0;
-            foreach (var r in rls)
+            return new player
             {
-                roles[i] = new role
-                {
-                    name = r["role"].ToString(),
-                    level = int.Parse(r["level"].ToString())
-                };
-            }
+                profile = getProfile(obj)
+            };
+        }
+
+        public static player GetPlayer(string name, region reg)
+        {
+           
+            string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
+            JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
+            if (obj.ContainsKey("error")) throw new Exception("Erro ao buscar jogador:" + obj["error"].Value<string>());
+            JToken quickCr = obj["quickPlayStats"].HasValues? obj["quickPlayStats"]["careerStats"]["allHeroes"]["average"]:null;
+            JToken compCr = obj["competitiveStats"].HasValues? obj["competitiveStats"]["careerStats"]["allHeroes"]["average"]:null;
 
             return new player
             {
-                profile = new profile
-                {
-                    endorsement = int.Parse(obj["endorsement"].ToString()),
-                    name = obj["name"].ToString(),
-                    level = int.Parse(obj["level"].ToString()),
-                    prestige = int.Parse(obj["prestige"].ToString()),
-                    rating = int.Parse(obj["rating"].ToString()),
-                    ratings = roles
-                },
+                profile =  getProfile(obj),
+                compCareer = getCareer(compCr),
+                quickCareer = getCareer(quickCr)
             };
+           
         }
+        
+        public static JObject GetPlayerComplete(string name, region reg)
+                => JObject.Parse(client.GetAsync(ENDPOINT_API + regStr(reg) + $"/{name}/complete")
+                                                                    .Result.Content.ReadAsStringAsync().Result);
 
         public static IEnumerable<player> GetPlayerProfile(List<string> name, List<region> reg)
         {
@@ -113,79 +169,14 @@ namespace OverwatchAPI
             }
         }
 
-        public static player GetPlayer(string name, region reg)
+        public static IEnumerable<JObject> GetPlayerComplete(List<string> name, List<region> reg)
         {
-            Console.WriteLine(name);
-            string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
-            JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
-           // if (obj.ContainsKey("error"))throw new Exception ("Jogador não encontrado");
-            JToken quickCr = obj["quickPlayStats"]["careerStats"]["allHeroes"]["average"];
-            JToken compCr = obj["competitiveStats"]["careerStats"]["allHeroes"]["average"];
-            var ratings = obj["ratings"];
+            if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
 
-            JArray rls = new JArray();
-            
-            if (ratings.HasValues)
+            for (int i = 0; i < name.Count; i++)
             {
-                rls = JArray.Parse(ratings.ToString());
+                yield return GetPlayerComplete(name[i], reg[i]);
             }
-            
-            role[] roles = new role[rls.Count];
-            byte i = 0;
-            foreach (var r in rls)
-            {
-                roles[i] = new role
-                {
-                    name = r["role"].ToString(),
-                    level = r["level"].Value<int>()
-                };
-            }
-
-            player p = new player();
-            profile prof =  new profile
-            {
-                endorsement = obj["endorsement"].Value<int>(),
-                name = obj["name"].ToString(),
-                level = obj["level"].Value<int>(),
-                prestige = obj["prestige"].Value<int>(),
-                rating = obj["rating"].Value<int>(),
-                ratings = roles
-            };
-
-            careerStats quickCareer = new careerStats
-            {
-                allDamageDone = quickCr["allDamageDoneAvgPer10Min"].Value<float>(),
-                barrierDamageDone = quickCr["barrierDamageDoneAvgPer10Min"].Value<float>(),
-                deaths = quickCr["deathsAvgPer10Min"].Value<float>(),
-                eliminations = quickCr["eliminationsAvgPer10Min"].Value<float>(),
-                finalBlows = quickCr["finalBlowsAvgPer10Min"].Value<float>(),
-                healingDone = quickCr["healingDoneAvgPer10Min"].Value<float>(),
-                heroDamageDone = quickCr["heroDamageDoneAvgPer10Min"].Value<float>(),
-                objectiveKills = quickCr["objectiveKillsAvgPer10Min"].Value<float>(),
-                objectiveTime = quickCr["objectiveTimeAvgPer10Min"].ToString(),
-                soloKills = quickCr["soloKillsAvgPer10Min"].Value<float>(),
-                timeSpentOnFire = quickCr["timeSpentOnFireAvgPer10Min"].ToString()
-            };
-
-            careerStats compCareer = new careerStats
-            {
-                allDamageDone = compCr["allDamageDoneAvgPer10Min"].Value<float>(),
-                barrierDamageDone = compCr["barrierDamageDoneAvgPer10Min"].Value<float>(),
-                deaths = compCr["deathsAvgPer10Min"].Value<float>(),
-                eliminations = compCr["eliminationsAvgPer10Min"].Value<float>(),
-                finalBlows = compCr["finalBlowsAvgPer10Min"].Value<float>(),
-                healingDone = compCr["healingDoneAvgPer10Min"].Value<float>(),
-                heroDamageDone = compCr["heroDamageDoneAvgPer10Min"].Value<float>(),
-                objectiveKills = compCr["objectiveKillsAvgPer10Min"].Value<float>(),
-                objectiveTime = compCr["objectiveTimeAvgPer10Min"].ToString(),
-                soloKills = compCr["soloKillsAvgPer10Min"].Value<float>(),
-                timeSpentOnFire = compCr["timeSpentOnFireAvgPer10Min"].ToString()
-            };
-
-            p.profile = prof;
-            p.compCareer = compCareer;
-            p.quickCareer = quickCareer;
-            return p;
         }
 
         public static IEnumerable<player> GetPlayer(List<string> name, List<region> reg)
@@ -198,18 +189,5 @@ namespace OverwatchAPI
             }
         }
 
-        public static JObject GetPlayerComplete(string name, region reg)
-                => JObject.Parse(client.GetAsync(ENDPOINT_API + regStr(reg) + $"/{name}/complete")
-                                                                    .Result.Content.ReadAsStringAsync().Result);
-
-        public static IEnumerable<JObject> GetPlayerComplete(List<string> name, List<region> reg)
-        {
-            if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
-
-            for (int i = 0; i < name.Count; i++)
-            {
-                yield return GetPlayerComplete(name[i], reg[i]);
-            }
-        }
     }
 }
