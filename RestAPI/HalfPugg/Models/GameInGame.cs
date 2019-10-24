@@ -8,19 +8,13 @@ namespace HalfPugg.Models
 {
     public class GameInGame
     {
-        [Key]
-        [Required]
-        public int ID { get; set; }
-        [StringLength(300)]
-        [Required]
-        public Classification_Gamer Classification { get; set; }
-        [Required]
-        public PlayerGame IdGame { get; set; }
-        [Required]        
-        public float Points { get; set; }
-        [Required]
-        public DateTime CreateAt { get; set; }
-        [Required]
+        [Key] public int ID { get; set; }
+        [Required] public int IdClassification { get; set; }
+        [Required] public int IdPlayerGame { get; set; }
+        [Required] public float Points { get; set; }        
+        public DateTime CreateAt { get; set; }        
         public DateTime AlteredAt { get; set; }
+        public virtual Classification_Gamer Classification { get; set; }
+        public virtual PlayerGame PlayerGame { get; set; }
     }
 }

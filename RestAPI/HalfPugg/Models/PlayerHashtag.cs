@@ -8,17 +8,15 @@ namespace HalfPugg.Models
 {
     public class PlayerHashtag
     {
-        [Key]
-        public int ID { get; set; }
-        [Required]
-        public HashTag Hash { get; set; }
-        [Required]
-        public Gamer Player2 { get; set; }
-        [Required]
-        public float Weight { get; set; }
-
+        [Key] public int ID { get; set; }
+        [Required] public int IdHash { get; set; }
+        [Required] public int IdPlayer { get; set; }
+        [Required] public float Weight { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
+
+        public virtual HashTag Hash { get; set; }
+        public virtual Player Player { get; set; }
 
     }
 }

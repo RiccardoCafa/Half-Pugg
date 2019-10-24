@@ -10,21 +10,15 @@ namespace HalfPugg.Models
     {
         [Key]
         public int ID { get; set; }
-        [StringLength(500)]
-        public string Content { get; set; }
-        [Required]
-        public DateTime Send_Time { get; set; }
-        [Required]
-        public DateTime View_Time { get; set; }
-        [Required]
-        public Gamer ID_User { get; set; }
-        [Required]
-        public Group ID_Recipient { get; set; }
-        [Required]
-        public char Status { get; set; }
-        [Required]
-        public DateTime CreateAt { get; set; }
-        [Required]
+        [StringLength(500)] public string Content { get; set; }
+        [Required] public DateTime Send_Time { get; set; }
+        [Required] public DateTime View_Time { get; set; }
+        [Required] public int ID_User { get; set; }
+        [Required] public int ID_Recipient { get; set; }
+        [Required] public char Status { get; set; }
+        public DateTime CreateAt { get; set; }        
         public DateTime AlteredAt { get; set; }
+        public virtual Player User { get; set; }
+        public virtual Group Recipient { get; set; }
     }
 }
