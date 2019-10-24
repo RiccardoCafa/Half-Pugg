@@ -22,8 +22,14 @@ export default class header extends Component {
     async handleLogoff() {
         try {
             const response = api.delete('api/logoff', {
-                "ID": 0,
-                "Nickname": this.state.Nickname,
+                "ID": 5,
+                "Name": "t",
+                "LastName": "e",
+                "Nickname": "teste",
+                "HashPassword": "12345",
+                "Bio": "Biografia",
+                "Email": "r@gmail.com",
+                "Birthday": "1999-01-01T00:00:00",
             });
             if(response != null){
                 this.setState({toHome: true});
@@ -43,14 +49,12 @@ export default class header extends Component {
         return (
             <div id='myHeader'>
                 <Menu secondary id='botoes-header'>
+                    <Menu.Item id='user-name-item' >
+                        Olá, {this.props.dataFP}
+                    </Menu.Item>
                     <Menu.Item 
                         name='Home'
                         active={activeItem === 'Home'}
-                        onClick={this.handleItemClick}
-                        />
-                    <Menu.Item
-                        name='Match'
-                        active={activeItem === 'Match'}
                         onClick={this.handleItemClick}
                         />
                     <Menu.Item
@@ -62,14 +66,8 @@ export default class header extends Component {
                         <Menu.Item >
                             <Input icon='search' placeholder='Search in Half-Pugg'></Input>
                         </Menu.Item>
-                        <Menu.Item >
-                            <Label as='a' color='black'>
-                                <Image avatar spaced='right'></Image>
-                                {this.props.dataFP}
-                            </Label>
-                        </Menu.Item>
                         <Menu.Item>
-                            <Button basic color='red' size='mini' onClick={this.handleLogoff}>Sair</Button>
+                            <Button color='red' size='mini' onClick={this.handleLogoff}>Sair</Button>
                         </Menu.Item>
                     </Menu.Menu>
                 </Menu>

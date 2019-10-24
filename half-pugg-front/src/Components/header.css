@@ -1,5 +1,6 @@
 .a {
     background: white;
+    height: 50px;
 }
 
 #botoes-header {
@@ -19,11 +20,16 @@
 #myHeader {
     top: 0;
     height: 20%;
-    background: #4b0082;
+    background: #0dbb6b;
 }
 
 .ui.menu:not(.vertical) .right.menu .item {
     margin-left: 0%;
     margin-right: 1%;
     padding: 1%;
+}
+
+#user-name-item {
+    cursor: pointer;
+    text-shadow: 3px 3px 5px rgb(0,0,0,0.4);
 }

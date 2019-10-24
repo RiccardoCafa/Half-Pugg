@@ -80,14 +80,14 @@ namespace HalfPugg.Controllers
                 return BadRequest();
             }
 
-            Match hasMatch = db.Matches.FirstOrDefault(ma => 
-            ((ma.Player1.ID == match.Player1.ID && ma.Player2.ID == match.Player2.ID) ||
-            (ma.Player2.ID == match.Player1.ID && ma.Player1.ID == match.Player2.ID)) && ma.Status == false);
+            //Match hasMatch = db.Matches.FirstOrDefault(ma => 
+            //((ma.Player1.ID == match.Player1.ID && ma.Player2.ID == match.Player2.ID) ||
+            //(ma.Player2.ID == match.Player1.ID && ma.Player1.ID == match.Player2.ID)) && ma.Status == false);
 
-            if (hasMatch != null)
-            {
-                return BadRequest();
-            }
+            //if (hasMatch != null)
+            //{
+            //    return BadRequest();
+            //}
 
             match.Status = false;
             db.Matches.Add(match);
