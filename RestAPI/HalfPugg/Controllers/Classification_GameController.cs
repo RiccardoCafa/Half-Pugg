@@ -18,16 +18,16 @@ namespace HalfPugg.Controllers
         private HalfPuggContext db = new HalfPuggContext();
 
         // GET: api/Classification_Game
-        public IQueryable<Classification_Game> GetClassification_Games()
+        public IQueryable<Classification_Player> GetClassification_Games()
         {
             return db.Classification_Games;
         }
 
         // GET: api/Classification_Game/5
-        [ResponseType(typeof(Classification_Game))]
+        [ResponseType(typeof(Classification_Player))]
         public async Task<IHttpActionResult> GetClassification_Game(int id)
         {
-            Classification_Game classification_Game = await db.Classification_Games.FindAsync(id);
+            Classification_Player classification_Game = await db.Classification_Games.FindAsync(id);
             if (classification_Game == null)
             {
                 return NotFound();
@@ -38,7 +38,7 @@ namespace HalfPugg.Controllers
 
         // PUT: api/Classification_Game/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutClassification_Game(int id, Classification_Game classification_Game)
+        public async Task<IHttpActionResult> PutClassification_Game(int id, Classification_Player classification_Game)
         {
             if (!ModelState.IsValid)
             {
@@ -72,8 +72,8 @@ namespace HalfPugg.Controllers
         }
 
         // POST: api/Classification_Game
-        [ResponseType(typeof(Classification_Game))]
-        public async Task<IHttpActionResult> PostClassification_Game(Classification_Game classification_Game)
+        [ResponseType(typeof(Classification_Player))]
+        public async Task<IHttpActionResult> PostClassification_Game(Classification_Player classification_Game)
         {
             if (!ModelState.IsValid)
             {
@@ -87,10 +87,10 @@ namespace HalfPugg.Controllers
         }
 
         // DELETE: api/Classification_Game/5
-        [ResponseType(typeof(Classification_Game))]
+        [ResponseType(typeof(Classification_Player))]
         public async Task<IHttpActionResult> DeleteClassification_Game(int id)
         {
-            Classification_Game classification_Game = await db.Classification_Games.FindAsync(id);
+            Classification_Player classification_Game = await db.Classification_Games.FindAsync(id);
             if (classification_Game == null)
             {
                 return NotFound();

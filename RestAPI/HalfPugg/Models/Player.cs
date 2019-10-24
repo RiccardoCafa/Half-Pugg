@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HalfPugg.Models
 {
-    public class Gamer
+    public class Player
     {
         [Key] public int ID { get; set; }
         [Required] [StringLength(30)] public string Name { get; set; }

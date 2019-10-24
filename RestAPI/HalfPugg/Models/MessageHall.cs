@@ -18,7 +18,7 @@ namespace HalfPugg.Models
         [Required] public char Status { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
-        public virtual Gamer User { get; set; }
+        public virtual Player User { get; set; }
         public virtual Hall Recipient { get; set; }
     }
 }

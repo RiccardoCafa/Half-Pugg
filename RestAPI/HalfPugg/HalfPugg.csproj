@@ -249,22 +249,26 @@
     <Compile Include="Migrations\201910241158517_Slogan.Designer.cs">
       <DependentUpon>201910241158517_Slogan.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910241224108_GamertoPlayer.cs" />
+    <Compile Include="Migrations\201910241224108_GamertoPlayer.Designer.cs">
+      <DependentUpon>201910241224108_GamertoPlayer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
-    <Compile Include="Models\Classification_Game.cs" />
+    <Compile Include="Models\Classification_Player.cs" />
     <Compile Include="Models\Classification_Gamer.cs" />
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GameInGame.cs" />
-    <Compile Include="Models\Gamer.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="Models\HalfPuggContext.cs" />
     <Compile Include="Models\HashTag.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Hall.cs" />
     <Compile Include="Models\Label.cs" />
     <Compile Include="Models\Match.cs" />
-    <Compile Include="Models\MessageGamer.cs" />
+    <Compile Include="Models\MessagePlayer.cs" />
     <Compile Include="Models\MessageGroup.cs" />
     <Compile Include="Models\MessageHall.cs" />
     <Compile Include="Models\Numbered.cs" />
@@ -512,6 +516,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910241158517_Slogan.resx">
       <DependentUpon>201910241158517_Slogan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910241224108_GamertoPlayer.resx">
+      <DependentUpon>201910241224108_GamertoPlayer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

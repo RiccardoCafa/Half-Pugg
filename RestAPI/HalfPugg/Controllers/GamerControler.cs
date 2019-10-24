@@ -14,16 +14,16 @@ namespace HalfPugg.Controllers
         private HalfPuggContext db = new HalfPuggContext();
 
         // GET: api/Gamers
-        public IQueryable<Gamer> GetGamers()
+        public IQueryable<Player> GetGamers()
         {
             return db.Gamers;
         }
 
         // GET: api/Gamers/5
-        [ResponseType(typeof(Gamer))]
+        [ResponseType(typeof(Player))]
         public IHttpActionResult GetGamer(int id)
         {
-            Gamer gamer = db.Gamers.Find(id);
+            Player gamer = db.Gamers.Find(id);
             if (gamer == null)
             {
                 return NotFound();
@@ -34,7 +34,7 @@ namespace HalfPugg.Controllers
 
         // PUT: api/Gamers/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutGamer(int id, Gamer gamer)
+        public IHttpActionResult PutGamer(int id, Player gamer)
         {
             if (!ModelState.IsValid)
             {
@@ -68,8 +68,8 @@ namespace HalfPugg.Controllers
         }
 
         // POST: api/Gamers
-        [ResponseType(typeof(Gamer))]
-        public IHttpActionResult PostGamer(Gamer gamer)
+        [ResponseType(typeof(Player))]
+        public IHttpActionResult PostGamer(Player gamer)
         {
             if (!ModelState.IsValid)
             {
@@ -83,10 +83,10 @@ namespace HalfPugg.Controllers
         }
 
         // DELETE: api/Gamers/5
-        [ResponseType(typeof(Gamer))]
+        [ResponseType(typeof(Player))]
         public IHttpActionResult DeleteGamer(int id)
         {
-            Gamer gamer = db.Gamers.Find(id);
+            Player gamer = db.Gamers.Find(id);
             if (gamer == null)
             {
                 return NotFound();
