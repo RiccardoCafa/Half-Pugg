@@ -21,12 +21,12 @@ namespace HalfPugg.Models
         [StringLength(100)] public string ImagePath { get; set; }
         [Required] public char Type { get; set; }
         public int ID_Branch { get; set; }
+        public string Slogan { get; set; }
         [Required] public char Sex { get; set; }
         [StringLength(100)] public string Genre { get; set; }  
         public IList<Group> Groups { get; set; }
         public IList<Hall> Hall { get; set; }
         public IList<MessageHall> Halls { get; set; }
-
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
 
