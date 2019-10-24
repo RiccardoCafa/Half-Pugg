@@ -15,7 +15,7 @@ namespace HalfPugg.Models
         public DateTime ComfirmedTime { get; set; }
         [Required] public char Status { get; set; }
         public int IdFilters { get; set; }        
-        public virtual Gamer Player { get; set; }
+        public virtual Player Player { get; set; }
         public virtual Group Sala { get; set; }
         public virtual Filter Filters { get; set; }
 

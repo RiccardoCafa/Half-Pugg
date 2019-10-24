@@ -12,7 +12,7 @@ namespace HalfPugg.Controllers
     public class LoginController : ApiController
     {
         HalfPuggContext db;
-        public static Gamer GamerLogado = null;
+        public static Player GamerLogado = null;
 
         public LoginController()
         {
@@ -26,14 +26,14 @@ namespace HalfPugg.Controllers
 
             if (GamerLogado != null)
             {
-                return Json<Gamer>(GamerLogado);
+                return Json<Player>(GamerLogado);
             }
 
             return NotFound();
         }
 
         // POST: api/Login
-        public IHttpActionResult Post(Gamer gamer)
+        public IHttpActionResult Post(Player gamer)
         {
             var gamerLogged = db.Gamers.FirstOrDefault(g => g.Email == gamer.Email && g.HashPassword == gamer.HashPassword);
 
@@ -47,7 +47,7 @@ namespace HalfPugg.Controllers
 
         [HttpDelete]
         [Route("api/logoff")]
-        public IHttpActionResult DeleteLogin(Gamer gamer)
+        public IHttpActionResult DeleteLogin(Player gamer)
         {
             GamerLogado = null;
             return Ok();
