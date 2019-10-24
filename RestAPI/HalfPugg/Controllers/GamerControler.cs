@@ -70,6 +70,7 @@ namespace HalfPugg.Controllers
                             LastName = gMatch.LastName,
                             Email = gMatch.Email,
                             ImagePath = gMatch.ImagePath,
+                            Bio = gMatch.Bio,
                         });
 
                     }

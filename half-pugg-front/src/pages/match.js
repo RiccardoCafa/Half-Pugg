@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import './match.css'
 import api from '../services/api'
 import Headera from '../Components/header';
+import OpenCurriculum from '../Components/openCurriculum';
 import { Card, Image, Button, Menu, Icon, Label } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg'
@@ -77,9 +78,8 @@ export default class Match extends Component {
     openConnections() {
         this.setState({NewConnections: false});
     }
-
     render() {
-      
+        
         return (
             <div>
                 <div>
@@ -105,7 +105,7 @@ export default class Match extends Component {
                                     <Image
                                         floated='right'
                                         size='mini'
-                                        src={matcher.ImagePath === "" ? gostosao : matcher.ImagePath}
+                                        src={(matcher.ImagePath === "" || matcher.ImagePath === null) ? gostosao : matcher.ImagePath}
                                         />
                                     <Card.Header>{matcher.Nickname}</Card.Header>
                                     <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
@@ -122,9 +122,7 @@ export default class Match extends Component {
                                     </div>
                                 </Card.Content>
                                 <Card.Content extra>
-                                    <Button fluid basic color='blue'>
-                                        Open Curriculum
-                                    </Button>
+                                    <OpenCurriculum matcher={matcher}></OpenCurriculum>
                                 </Card.Content>
                             </Card>
                         )};
@@ -137,7 +135,8 @@ export default class Match extends Component {
                                     <Image
                                         floated='right'
                                         size='mini'
-                                        src={gostosao}
+                                        circular
+                                        src={(requests.ImagePath === "" || requests.ImagePath === null) ? gostosao : requests.ImagePath}
                                         />
                                     <Card.Header>{requests.Nickname}</Card.Header>
                                     <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
@@ -154,9 +153,7 @@ export default class Match extends Component {
                                     </div>
                                 </Card.Content>
                                 <Card.Content extra>
-                                    <Button fluid basic color='blue'>
-                                        Open Curriculum
-                                    </Button>
+                                    <OpenCurriculum matcher={requests}></OpenCurriculum>
                                 </Card.Content>
                             </Card>
                         )}
