@@ -14,6 +14,7 @@
     width: 100%;
     max-width: 300px;
     align-items: center;
+    align-content: center;
     flex-direction: column;
 }
 
@@ -38,20 +39,13 @@
     border: 2px solid rgb(82, 25, 146);
 }
 
-#botoes {
-    margin-top: 20px;
-    margin-left: 0;
-    margin-left: 12.5%;
-    transition: all .2s;
-    height: 100%;
-    padding: 0%;
-}
 
 .login-container form h1 {
     text-align: center;
-    margin-left: 0%;
+    align-content: center;
+    margin-left: 50%;
     margin-bottom: 10%;
-    color: white;
+    color: black;
 }
 
 .login-container form h4 {
@@ -60,7 +54,17 @@
     margin-bottom: 2%;
     margin-top: 2%;
     font-size: 14px;
-    color: white;
+    color: black;
+}
+
+#title {
+    align-content: center;
+    margin-left: 0%;
+    margin-top: 2%;
+}
+
+#input-login {
+    width: 100%;
 }
 
 .cadastro-label:hover {

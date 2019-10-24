@@ -66,10 +66,6 @@ export default class Match extends Component {
         }
     }
 
-    async desconnectMatch() {
-        
-    }
-
     openRequests() {
         console.log(this.state.RequestedMatches.data);
         this.setState({NewConnections: true})
@@ -78,6 +74,34 @@ export default class Match extends Component {
     openConnections() {
         this.setState({NewConnections: false});
     }
+
+    async FazMatch(deuMatch, gamerMatch) {
+        try {
+            const reqResponse = await api.put('api/RequestedMatches/1', {
+                "IdPlayer": gamerMatch.ID,
+                "IdPlayer2": this.state.GamerLogado.ID,
+                "Status": "F"
+            });
+    
+            const response = await api.post('api/Matches', {
+                "IdPlayer1": gamerMatch.ID,
+                "IdPlayer2": this.state.GamerLogado.ID,
+                "Status": deuMatch,
+                "Weight": 0,
+            });
+    
+            var array = [...this.state.RequestedMatches];
+            var index = array.indexOf(gamerMatch);
+            if(index !== -1) {
+                array.splice(index, 1);
+                this.setState({RequestedMatches: array});
+                this.setState({NumberOfRequests: this.state.RequestedMatches.length})
+            }
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     render() {
         
         return (
@@ -88,7 +112,7 @@ export default class Match extends Component {
                 <div className='submenu'>
                     <Menu compact>
                         <Menu.Item onClick={e => this.openConnections()}>
-                            <Icon name='users'/> My Connections
+                            <Icon name='users'/> New Connections
                         </Menu.Item>
                         <Menu.Item onClick={e => this.openRequests()}>
                             <Icon name='mail'/> Pending Requests
@@ -113,19 +137,25 @@ export default class Match extends Component {
                                 </Card.Content>
                                 <Card.Content extra>
                                     <div className='ui two buttons'>
-                                        <Button id='btn-acpden' basic color='green' onClick={() => this.connectMatch(matcher)}>
-                                            Connect!
-                                        </Button>
-                                        <Button id='btn-acpden' basic color='red' onClick={this.desconnectMatch}>
-                                            Not Interested!
-                                        </Button>
+                                        <Button 
+                                            id='btn-acpden' 
+                                            basic color='green' 
+                                            onClick={() => this.connectMatch(matcher)}
+                                            content='Connect!'
+                                            />
+                                        <Button 
+                                            id='btn-acpden' 
+                                            basic color='red' 
+                                            onClick={this.desconnectMatch}
+                                            content='Not Interested!'
+                                            />
                                     </div>
                                 </Card.Content>
                                 <Card.Content extra>
                                     <OpenCurriculum matcher={matcher}></OpenCurriculum>
                                 </Card.Content>
                             </Card>
-                        )};
+                        )}
                     </Card.Group>
                     :
                     <Card.Group>
@@ -144,10 +174,10 @@ export default class Match extends Component {
                                 </Card.Content>
                                 <Card.Content extra>
                                     <div className='ui two buttons'>
-                                        <Button id='btn-acpden' basic color='green'>
+                                        <Button id='btn-acpden' basic color='green' onClick={() => this.FazMatch(true, requests)}>
                                             Accept!
                                         </Button>
-                                        <Button id='btn-acpden' basic color='red'>
+                                        <Button id='btn-acpden' basic color='red' onClick={() => this.FazMatch(false, requests)}>
                                             Deny!
                                         </Button>
                                     </div>
