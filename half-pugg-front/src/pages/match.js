@@ -5,7 +5,7 @@ import api from '../services/api'
 import Headera from '../Components/header';
 import { Card, Image, Button, Menu, Icon, Label } from 'semantic-ui-react';
 
-import gostosao from '../images/chris-hemsworth.jpg'
+import gostosao from '../images/chris.jpg'
 
 export default class Match extends Component {
 
@@ -16,6 +16,9 @@ export default class Match extends Component {
             "ID": 0,
         },
         GamerLogado: {},
+        RequestedMatches: [],
+        NumberOfRequests: 0,
+        NewConnections: false,
     }
 
     async componentDidMount() {
@@ -31,25 +34,31 @@ export default class Match extends Component {
             console.log(MatchData.data);
             this.setState({GamerMatch: MatchData.data});
         }
+
+        const requestedMatch = await api.get('api/RequestedMatchesLoggedGamer');
+        if(requestedMatch.data !== null) {
+            this.setState({RequestedMatches: requestedMatch.data});
+            console.log(requestedMatch.data);
+            this.setState({NumberOfRequests: requestedMatch.data.length});
+        }
     }
 
     connectMatch(matcher) {
 
         console.log(matcher);
-        const response = api.post('api/Matches', {
-            "Player1": this.state.GamerLogado,
-            "Player2": matcher,
-            "Status": false,
-            "Weight": 0,
+        const response = api.post('api/RequestedMatches', {
+            "IdPlayer": this.state.GamerLogado.ID,
+            "IdPlayer2": matcher.ID,
+            "Status": "A",
         })
         .catch(function(error){
             console.log(error);
         });
         
         if(response !== null) {
-            var array = [... this.state.GamerMatch];
+            var array = [...this.state.GamerMatch];
             var index = array.indexOf(matcher);
-            if(index != -1) {
+            if(index !== -1) {
                 array.splice(index, 1);
                 this.setState({GamerMatch: array});
             }
@@ -58,6 +67,15 @@ export default class Match extends Component {
 
     async desconnectMatch() {
         
+    }
+
+    openRequests() {
+        console.log(this.state.RequestedMatches.data);
+        this.setState({NewConnections: true})
+    }
+
+    openConnections() {
+        this.setState({NewConnections: false});
     }
 
     render() {
@@ -69,13 +87,17 @@ export default class Match extends Component {
                 </div>  
                 <div className='submenu'>
                     <Menu compact>
-                        <Menu.Item>
-                            <Icon name='users'/> New Connections
-                            <Label color='teal' floating>0</Label>
+                        <Menu.Item onClick={e => this.openConnections()}>
+                            <Icon name='users'/> My Connections
+                        </Menu.Item>
+                        <Menu.Item onClick={e => this.openRequests()}>
+                            <Icon name='mail'/> Pending Requests
+                            <Label color='teal' floating>{this.state.NumberOfRequests}</Label>
                         </Menu.Item>
                     </Menu>
                 </div>
                 <div className='connections'>
+                    {this.state.NewConnections === false ?
                     <Card.Group>
                         {this.state.GamerMatch.map((matcher) => 
                             <Card key={matcher.ID} >
@@ -83,8 +105,8 @@ export default class Match extends Component {
                                     <Image
                                         floated='right'
                                         size='mini'
-                                        src={gostosao}
-                                    />
+                                        src={matcher.ImagePath === "" ? gostosao : matcher.ImagePath}
+                                        />
                                     <Card.Header>{matcher.Nickname}</Card.Header>
                                     <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
                                     <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
@@ -107,6 +129,39 @@ export default class Match extends Component {
                             </Card>
                         )};
                     </Card.Group>
+                    :
+                    <Card.Group>
+                        {this.state.RequestedMatches.map((requests) => 
+                            <Card key = {requests.ID} >
+                                <Card.Content>
+                                    <Image
+                                        floated='right'
+                                        size='mini'
+                                        src={gostosao}
+                                        />
+                                    <Card.Header>{requests.Nickname}</Card.Header>
+                                    <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
+                                    <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
+                                </Card.Content>
+                                <Card.Content extra>
+                                    <div className='ui two buttons'>
+                                        <Button id='btn-acpden' basic color='green'>
+                                            Accept!
+                                        </Button>
+                                        <Button id='btn-acpden' basic color='red'>
+                                            Deny!
+                                        </Button>
+                                    </div>
+                                </Card.Content>
+                                <Card.Content extra>
+                                    <Button fluid basic color='blue'>
+                                        Open Curriculum
+                                    </Button>
+                                </Card.Content>
+                            </Card>
+                        )}
+                    </Card.Group>
+                    }
                 </div>
             </div>  
         )

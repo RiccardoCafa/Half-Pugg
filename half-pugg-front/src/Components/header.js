@@ -21,7 +21,10 @@ export default class header extends Component {
 
     async handleLogoff() {
         try {
-            const response = api.delete('api/logoff', {});
+            const response = api.delete('api/logoff', {
+                "ID": 0,
+                "Nickname": this.state.Nickname,
+            });
             if(response != null){
                 this.setState({toHome: true});
             }

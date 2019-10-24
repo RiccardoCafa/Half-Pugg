@@ -36,6 +36,37 @@ namespace HalfPugg.Controllers
             return Ok(requestedMatch);
         }
 
+        [Route("api/RequestedMatchesLoggedGamer")]
+        [HttpGet]
+        public IHttpActionResult GetRequestedMatchForLogg()
+        {
+            Gamer gamerlogado = LoginController.GamerLogado;
+            if (gamerlogado == null) return BadRequest();
+            List<RequestedMatch> reqMatches = db.RequestedMatchs
+                                                     .Where(x => x.IdPlayer2 == gamerlogado.ID)
+                                                     .AsEnumerable().ToList();
+
+            List<Gamer> gamersReq = new List<Gamer>();
+            foreach (RequestedMatch reqMatch in reqMatches)
+            {
+                Gamer findMe = db.Gamers.Find(reqMatch.IdPlayer);
+                if(findMe != null)
+                {
+                    gamersReq.Add(new Gamer()
+                    {
+                        ID = findMe.ID,
+                        Nickname =findMe.Nickname,
+                        Bio = findMe.Bio,
+                        LastName = findMe.LastName,
+                        Name = findMe.Name,
+                        Sex = findMe.Sex,
+                        ImagePath = findMe.ImagePath
+                    });
+                }
+            }
+            return Ok(gamersReq);
+        }
+
         // PUT: api/RequestedMatches/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutRequestedMatch(int id, RequestedMatch requestedMatch)

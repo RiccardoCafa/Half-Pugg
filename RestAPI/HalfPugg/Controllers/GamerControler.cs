@@ -44,15 +44,23 @@ namespace HalfPugg.Controllers
                 return null;
             }
             List<Gamer> gamers = new List<Gamer>();
-            List<Match> matches = db.Matches.AsEnumerable().ToList();
+            List<Match> matches = db.Matches
+                                    .Where(ma => ma.IdPlayer1 == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
+                                    .AsEnumerable().ToList();
+            List<RequestedMatch> reqMatches = db.RequestedMatchs
+                                                .Where(ma => ma.IdPlayer == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
+                                                .AsEnumerable().ToList();
             foreach (Gamer gMatch in db.Gamers)
             {
                 if (gMatch.ID != gamerL.ID)
                 {
                     Match found = matches.FirstOrDefault(x =>
-                    (x.Player1.ID != gamerL.ID && x.Player2.ID != gMatch.ID)
-                    || (x.Player1.ID != gMatch.ID && x.Player2.ID != gamerL.ID));
-                    if (found == null)
+                     x.IdPlayer2 == gMatch.ID || x.IdPlayer1 == gMatch.ID);
+
+                    RequestedMatch Requested = reqMatches.FirstOrDefault(x =>
+                    x.IdPlayer2 == gMatch.ID || x.IdPlayer == gMatch.ID);
+
+                    if (found == null && Requested == null)
                     {
                         gamers.Add(new Gamer()
                         {
@@ -60,7 +68,8 @@ namespace HalfPugg.Controllers
                             Nickname = gMatch.Nickname,
                             Name = gMatch.Name,
                             LastName = gMatch.LastName,
-                            Email = gMatch.Email
+                            Email = gMatch.Email,
+                            ImagePath = gMatch.ImagePath,
                         });
 
                     }
