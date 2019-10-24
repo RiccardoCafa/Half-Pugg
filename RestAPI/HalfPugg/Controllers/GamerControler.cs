@@ -37,20 +37,20 @@ namespace HalfPugg.Controllers
         [HttpGet]
         public IHttpActionResult GetGamerMatch()
         {
-            Gamer gamerL = LoginController.GamerLogado;
+            Player gamerL = LoginController.GamerLogado;
 
             if (gamerL == null)
             {
                 return null;
             }
-            List<Gamer> gamers = new List<Gamer>();
+            List<Player> gamers = new List<Player>();
             List<Match> matches = db.Matches
                                     .Where(ma => ma.IdPlayer1 == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
                                     .AsEnumerable().ToList();
             List<RequestedMatch> reqMatches = db.RequestedMatchs
                                                 .Where(ma => ma.IdPlayer == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
                                                 .AsEnumerable().ToList();
-            foreach (Gamer gMatch in db.Gamers)
+            foreach (Player gMatch in db.Gamers)
             {
                 if (gMatch.ID != gamerL.ID)
                 {
@@ -62,7 +62,7 @@ namespace HalfPugg.Controllers
 
                     if (found == null && Requested == null)
                     {
-                        gamers.Add(new Gamer()
+                        gamers.Add(new Player()
                         {
                             ID = gMatch.ID,
                             Nickname = gMatch.Nickname,

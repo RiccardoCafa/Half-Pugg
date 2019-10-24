@@ -40,19 +40,19 @@ namespace HalfPugg.Controllers
         [HttpGet]
         public IHttpActionResult GetRequestedMatchForLogg()
         {
-            Gamer gamerlogado = LoginController.GamerLogado;
+            Player gamerlogado = LoginController.GamerLogado;
             if (gamerlogado == null) return BadRequest();
             List<RequestedMatch> reqMatches = db.RequestedMatchs
                                                      .Where(x => x.IdPlayer2 == gamerlogado.ID)
                                                      .AsEnumerable().ToList();
 
-            List<Gamer> gamersReq = new List<Gamer>();
+            List<Player> gamersReq = new List<Player>();
             foreach (RequestedMatch reqMatch in reqMatches)
             {
-                Gamer findMe = db.Gamers.Find(reqMatch.IdPlayer);
+                Player findMe = db.Gamers.Find(reqMatch.IdPlayer);
                 if(findMe != null)
                 {
-                    gamersReq.Add(new Gamer()
+                    gamersReq.Add(new Player()
                     {
                         ID = findMe.ID,
                         Nickname =findMe.Nickname,
