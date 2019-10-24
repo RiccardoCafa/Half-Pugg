@@ -18,16 +18,16 @@ namespace HalfPugg.Controllers
         private HalfPuggContext db = new HalfPuggContext();
 
         // GET: api/MessageGamers
-        public IQueryable<MessageGamer> GetMessageGamers()
+        public IQueryable<MessagePlayer> GetMessageGamers()
         {
             return db.MessageGamers;
         }
 
         // GET: api/MessageGamers/5
-        [ResponseType(typeof(MessageGamer))]
+        [ResponseType(typeof(MessagePlayer))]
         public async Task<IHttpActionResult> GetMessageGamer(int id)
         {
-            MessageGamer messageGamer = await db.MessageGamers.FindAsync(id);
+            MessagePlayer messageGamer = await db.MessageGamers.FindAsync(id);
             if (messageGamer == null)
             {
                 return NotFound();
@@ -38,7 +38,7 @@ namespace HalfPugg.Controllers
 
         // PUT: api/MessageGamers/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutMessageGamer(int id, MessageGamer messageGamer)
+        public async Task<IHttpActionResult> PutMessageGamer(int id, MessagePlayer messageGamer)
         {
             if (!ModelState.IsValid)
             {
@@ -72,8 +72,8 @@ namespace HalfPugg.Controllers
         }
 
         // POST: api/MessageGamers
-        [ResponseType(typeof(MessageGamer))]
-        public async Task<IHttpActionResult> PostMessageGamer(MessageGamer messageGamer)
+        [ResponseType(typeof(MessagePlayer))]
+        public async Task<IHttpActionResult> PostMessageGamer(MessagePlayer messageGamer)
         {
             if (!ModelState.IsValid)
             {
@@ -87,10 +87,10 @@ namespace HalfPugg.Controllers
         }
 
         // DELETE: api/MessageGamers/5
-        [ResponseType(typeof(MessageGamer))]
+        [ResponseType(typeof(MessagePlayer))]
         public async Task<IHttpActionResult> DeleteMessageGamer(int id)
         {
-            MessageGamer messageGamer = await db.MessageGamers.FindAsync(id);
+            MessagePlayer messageGamer = await db.MessageGamers.FindAsync(id);
             if (messageGamer == null)
             {
                 return NotFound();

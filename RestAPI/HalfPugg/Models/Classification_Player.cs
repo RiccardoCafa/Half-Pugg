@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HalfPugg.Models
 {
-    public class Classification_Game
+    public class Classification_Player
     {
         [Key] public int ID { get; set; }
         [Required] [StringLength(50)] public string Description { get; set; }
