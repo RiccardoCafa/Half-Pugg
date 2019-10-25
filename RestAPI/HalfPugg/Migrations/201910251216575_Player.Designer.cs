@@ -7,13 +7,13 @@ namespace HalfPugg.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class PlayerGroup : IMigrationMetadata
+    public sealed partial class Player : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(PlayerGroup));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Player));
         
         string IMigrationMetadata.Id
         {
-            get { return "201910251124325_PlayerGroup"; }
+            get { return "201910251216575_Player"; }
         }
         
         string IMigrationMetadata.Source
