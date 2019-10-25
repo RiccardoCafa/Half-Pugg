@@ -235,25 +235,25 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910232155284_init.cs" />
-    <Compile Include="Migrations\201910232155284_init.Designer.cs">
-      <DependentUpon>201910232155284_init.cs</DependentUpon>
+    <Compile Include="Migrations\201910250047014_Init.cs" />
+    <Compile Include="Migrations\201910250047014_Init.Designer.cs">
+      <DependentUpon>201910250047014_Init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910232302227_match.cs" />
-    <Compile Include="Migrations\201910232302227_match.Designer.cs">
-      <DependentUpon>201910232302227_match.cs</DependentUpon>
+    <Compile Include="Migrations\201910251052516_Relations.cs" />
+    <Compile Include="Migrations\201910251052516_Relations.Designer.cs">
+      <DependentUpon>201910251052516_Relations.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910232318295_match1.cs" />
-    <Compile Include="Migrations\201910232318295_match1.Designer.cs">
-      <DependentUpon>201910232318295_match1.cs</DependentUpon>
+    <Compile Include="Migrations\201910251100540_GroupHall.cs" />
+    <Compile Include="Migrations\201910251100540_GroupHall.Designer.cs">
+      <DependentUpon>201910251100540_GroupHall.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910241158517_Slogan.cs" />
-    <Compile Include="Migrations\201910241158517_Slogan.Designer.cs">
-      <DependentUpon>201910241158517_Slogan.cs</DependentUpon>
+    <Compile Include="Migrations\201910251104468_HallPlayer.cs" />
+    <Compile Include="Migrations\201910251104468_HallPlayer.Designer.cs">
+      <DependentUpon>201910251104468_HallPlayer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910241224108_GamertoPlayer.cs" />
-    <Compile Include="Migrations\201910241224108_GamertoPlayer.Designer.cs">
-      <DependentUpon>201910241224108_GamertoPlayer.cs</DependentUpon>
+    <Compile Include="Migrations\201910251124325_PlayerGroup.cs" />
+    <Compile Include="Migrations\201910251124325_PlayerGroup.Designer.cs">
+      <DependentUpon>201910251124325_PlayerGroup.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
@@ -275,6 +275,8 @@
     <Compile Include="Models\MessageHall.cs" />
     <Compile Include="Models\Numbered.cs" />
     <Compile Include="Models\PlayerGame.cs" />
+    <Compile Include="Models\PlayerGroup.cs" />
+    <Compile Include="Models\PlayerHall.cs" />
     <Compile Include="Models\PlayerHashtag.cs" />
     <Compile Include="Models\Range.cs" />
     <Compile Include="Models\RequestedGroup.cs" />
@@ -508,20 +510,20 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910232155284_init.resx">
-      <DependentUpon>201910232155284_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910250047014_Init.resx">
+      <DependentUpon>201910250047014_Init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910232302227_match.resx">
-      <DependentUpon>201910232302227_match.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910251052516_Relations.resx">
+      <DependentUpon>201910251052516_Relations.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910232318295_match1.resx">
-      <DependentUpon>201910232318295_match1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910251100540_GroupHall.resx">
+      <DependentUpon>201910251100540_GroupHall.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910241158517_Slogan.resx">
-      <DependentUpon>201910241158517_Slogan.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910251104468_HallPlayer.resx">
+      <DependentUpon>201910251104468_HallPlayer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910241224108_GamertoPlayer.resx">
-      <DependentUpon>201910241224108_GamertoPlayer.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910251124325_PlayerGroup.resx">
+      <DependentUpon>201910251124325_PlayerGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

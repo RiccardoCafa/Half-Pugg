@@ -7,13 +7,13 @@ namespace HalfPugg.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Slogan : IMigrationMetadata
+    public sealed partial class Relations : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Slogan));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Relations));
         
         string IMigrationMetadata.Id
         {
-            get { return "201910241158517_Slogan"; }
+            get { return "201910251052516_Relations"; }
         }
         
         string IMigrationMetadata.Source
