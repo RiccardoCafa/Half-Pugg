@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -18,7 +19,7 @@ namespace HalfPugg.Models
         [Required] public char Status { get; set; }
         public DateTime CreateAt { get; set; }        
         public DateTime AlteredAt { get; set; }
-        public virtual Player User { get; set; }
-        public virtual Group Recipient { get; set; }
+        [ForeignKey("ID_User")] public virtual Player User { get; set; }
+        [ForeignKey("ID_Recipient")] public virtual Group Recipient { get; set; }
     }
 }

@@ -7,13 +7,13 @@ namespace HalfPugg.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class match : IMigrationMetadata
+    public sealed partial class HallPlayer : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(match));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(HallPlayer));
         
         string IMigrationMetadata.Id
         {
-            get { return "201910232302227_match"; }
+            get { return "201910251104468_HallPlayer"; }
         }
         
         string IMigrationMetadata.Source

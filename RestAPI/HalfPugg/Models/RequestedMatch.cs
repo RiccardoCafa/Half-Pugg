@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -14,8 +15,9 @@ namespace HalfPugg.Models
         public DateTime RequestedTime { get; set; }
         public DateTime ComfirmedTime { get; set; }
         [Required] public char Status { get; set; }
-        public Filter Filters { get; set; }        
-        public virtual Player Player { get; set; }
-        public virtual Player Player2 { get; set; }
+        public int IdFilters { get; set; }
+        [ForeignKey("IdPlayer")] public virtual Player Player1 { get; set; }
+        [ForeignKey("IdPlayer2")] public virtual Group Player2 { get; set; }
+        [ForeignKey("IdFilters")] public virtual Filter Filters { get; set; }
     }
 }
