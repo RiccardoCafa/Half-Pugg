@@ -11,14 +11,14 @@ namespace HalfPugg.Models
     {
         [Key] public int ID_Hall { get; set; }
         [StringLength(70)] public string Name { get; set; }
-        [Required] public int IdGame { get; set; }
+        [Required] [ForeignKey("Game")] public int IdGame { get; set; }
         [Required] public int Capacity { get; set; }
         public IList<Filter> Filters { get; set; }
-        [Required] public int IdAdmin { get; set; }
+        [Required] [ForeignKey("Admin")] public int IdAdmin { get; set; }
         public DateTime CreateAt { get; set; }        
         public DateTime AlteredAt { get; set; }
-        [ForeignKey("IdGame")] public virtual Game Game { get; set; }
-        [ForeignKey("IdAdmin")] public virtual Player Admin { get; set; }
+        public virtual Game Game { get; set; }
+        public virtual Player Admin { get; set; }
 
     }
 }
