@@ -6,9 +6,9 @@ namespace HalfPugg.Models
     public class PlayerHall
     {
         [Key] public int ID { get; set; }
-        [Required] public int IdPlayer { get; set; }
-        [Required] public int IdHall { get; set; }
-        [ForeignKey("IdPlayer")] public virtual Player Player { get; set; }
-        [ForeignKey("IdHall")] public virtual Hall Hall { get; set; }
+        [Required] [ForeignKey("Player")] public int IdPlayer { get; set; }
+        [Required] [ForeignKey("Hall")] public int IdHall { get; set; }
+        public virtual Player Player { get; set; }
+        public virtual Hall Hall { get; set; }
     }
 }

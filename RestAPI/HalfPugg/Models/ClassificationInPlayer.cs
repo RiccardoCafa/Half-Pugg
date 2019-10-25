@@ -10,12 +10,12 @@ namespace HalfPugg.Models
     public class ClassificationPlayer
     {
         [Key] public int ID { get; set; }
-        [Required] public int IdPlayer { get; set; }
-        [Required] public int IdClassification { get; set; }
+        [Required] [ForeignKey("Player")] public int IdPlayer { get; set; }
+        [Required] [ForeignKey("Classification")] public int IdClassification { get; set; }
         [Required] public float Points { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
-        [ForeignKey("IdPlayer")] public virtual Player Player { get; set; }
-        [ForeignKey("IdClassification")] public virtual Classification_Gamer Classification { get; set; }
+        public virtual Player Player { get; set; }
+        public virtual Classification_Gamer Classification { get; set; }
     }
 }
