@@ -93,11 +93,11 @@ namespace OverwatchAPI
            
             return new profile
             {
-                endorsement = token["endorsement"].HasValues?token["endorsement"].Value<int>():-1,
-                name = token["name"].HasValues?token["name"].ToString():"none",
-                level = token["level"].HasValues?token["level"].Value<int>():-1,
-                prestige = token["prestige"].HasValues?token["prestige"].Value<int>():-1,
-                rating = token["rating"].HasValues?token["rating"].Value<int>():-1,
+                endorsement = token["endorsement"].Value<int>(),
+                name = token["name"].ToString(),
+                level = token["level"].Value<int>(),
+                prestige = token["prestige"].Value<int>(),
+                rating = token["rating"].Value<int>(),
                 ratings = roles
             };
         }
@@ -107,17 +107,18 @@ namespace OverwatchAPI
             return (token != null) ?
              new careerStats
              {
-                 allDamageDone = token["allDamageDoneAvgPer10Min"].HasValues ? token["allDamageDoneAvgPer10Min"].Value<float>() : -1,
-                 barrierDamageDone = token["barrierDamageDoneAvgPer10Min"].HasValues ? token["barrierDamageDoneAvgPer10Min"].Value<float>(): - 1,
-                 deaths = token["deathsAvgPer10Min"].HasValues ? token["deathsAvgPer10Min"].Value<float>() : -1,
-                 eliminations = token["eliminationsAvgPer10Min"].HasValues ? token["eliminationsAvgPer10Min"].Value<float>():-1,
-                finalBlows = token["finalBlowsAvgPer10Min"].HasValues?token["finalBlowsAvgPer10Min"].Value<float>():-1,
-                healingDone = token["healingDoneAvgPer10Min"].HasValues?token["healingDoneAvgPer10Min"].Value<float>():-1,
-                heroDamageDone = token["heroDamageDoneAvgPer10Min"].HasValues?token["heroDamageDoneAvgPer10Min"].Value<float>():-1,
-                objectiveKills = token["objectiveKillsAvgPer10Min"].HasValues?token["objectiveKillsAvgPer10Min"].Value<float>():-1,
-                objectiveTime = token["objectiveTimeAvgPer10Min"].HasValues?token["objectiveTimeAvgPer10Min"].ToString():"",
-                soloKills = token["soloKillsAvgPer10Min"].HasValues?token["soloKillsAvgPer10Min"].Value<float>():-1,
-                timeSpentOnFire = token["timeSpentOnFireAvgPer10Min"].HasValues?token["timeSpentOnFireAvgPer10Min"].ToString():""
+                  
+                 allDamageDone = token["allDamageDoneAvgPer10Min"].Value<float>(),
+                 barrierDamageDone = token["barrierDamageDoneAvgPer10Min"].Value<float>(),
+                 deaths = token["deathsAvgPer10Min"].Value<float>() ,
+                 eliminations = token["eliminationsAvgPer10Min"].Value<float>(),
+                finalBlows = token["finalBlowsAvgPer10Min"].Value<float>(),
+                healingDone =token["healingDoneAvgPer10Min"].Value<float>(),
+                heroDamageDone =token["heroDamageDoneAvgPer10Min"].Value<float>(),
+                objectiveKills = token["objectiveKillsAvgPer10Min"].Value<float>(),
+                objectiveTime = token["objectiveTimeAvgPer10Min"].ToString(),
+                soloKills = token["soloKillsAvgPer10Min"].Value<float>(),
+                timeSpentOnFire = token["timeSpentOnFireAvgPer10Min"].ToString()
             }:null;
         }
 
