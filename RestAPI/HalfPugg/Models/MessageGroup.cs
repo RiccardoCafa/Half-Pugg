@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
+using Newtonsoft.Json;
 
 namespace HalfPugg.Models
 {
@@ -19,7 +17,7 @@ namespace HalfPugg.Models
         [Required] public char Status { get; set; }
         public DateTime CreateAt { get; set; }        
         public DateTime AlteredAt { get; set; }
-        public virtual Player User { get; set; }
-        public virtual Group Recipient { get; set; }
+        [JsonIgnore] public virtual Player User { get; set; }
+        [JsonIgnore] public virtual Group Recipient { get; set; }
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace HalfPugg.Models
 {
@@ -16,8 +14,8 @@ namespace HalfPugg.Models
         public DateTime ComfirmedTime { get; set; }
         [Required] public char Status { get; set; }
         [ForeignKey("Filters")] public int IdFilters { get; set; }
-        public virtual Player Player1 { get; set; }
-        public virtual Group Player2 { get; set; }
-        public virtual Filter Filters { get; set; }
+        [JsonIgnore] public virtual Player Player1 { get; set; }
+        [JsonIgnore] public virtual Group Player2 { get; set; }
+        [JsonIgnore] public virtual Filter Filters { get; set; }
     }
 }

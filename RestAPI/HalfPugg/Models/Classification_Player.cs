@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace HalfPugg.Models
 {
