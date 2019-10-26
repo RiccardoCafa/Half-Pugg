@@ -16,15 +16,16 @@ namespace HalfPugg.Controllers
     {
         private HalfPuggContext db = new HalfPuggContext();
 
+       
         [ResponseType(typeof(IEnumerable<player>))]
         [Route("api/GetPlayersOwerwatch")]
         [HttpGet]
-        public IHttpActionResult GetPlayerOw(int GameID)
+        public IHttpActionResult GetPlayerOw()
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
         
-            foreach(PlayerGame pg in db.PlayerGames.Where(x=>x.IDGame == GameID))
+            foreach(PlayerGame pg in db.PlayerGames.Where(x=>x.IDGame == 1))
             {
                 names.Add(pg.IdAPI);
                 regions.Add(region.us);
@@ -34,10 +35,23 @@ namespace HalfPugg.Controllers
             return Json(a);
         }
 
-         //[ResponseType(typeof(IEnumerable<player>))]
-         //[Route("api/Get/Match/Overwatch")]
-         //[HttpGet]
-         //public IHttpActionResult 
+        [ResponseType(typeof(IEnumerable<player>))]
+        [Route("api/GetOwerwatchMacth")]
+        [HttpGet]
+        public IHttpActionResult GetOwMatch(int PlayerID)
+        {
+            List<string> names = new List<string>();
+            List<region> regions = new List<region>();
+
+            foreach (PlayerGame pg in db.PlayerGames.Where(x => x.IDGame == 1))
+            {
+                names.Add(pg.IdAPI);
+                regions.Add(region.us);
+                Console.WriteLine(pg.IdAPI);
+            }
+            var a = OwAPI.GetPlayer(names, regions);
+            return Json(a);
+        }
 
     }
 }
