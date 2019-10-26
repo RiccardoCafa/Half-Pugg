@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -31,6 +32,54 @@ namespace HalfPugg.Controllers
 
             return Ok(gamer);
         }
+
+        [Route("api/GamersMatch")]
+        [HttpGet]
+        public IHttpActionResult GetGamerMatch()
+        {
+            Player gamerL = LoginController.GamerLogado;
+
+            if (gamerL == null)
+            {
+                return null;
+            }
+            List<Player> gamers = new List<Player>();
+            List<Match> matches = db.Matches
+                                    .Where(ma => ma.IdPlayer1 == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
+                                    .AsEnumerable().ToList();
+            List<RequestedMatch> reqMatches = db.RequestedMatchs
+                                                .Where(ma => ma.IdPlayer == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
+                                                .AsEnumerable().ToList();
+            foreach (Player gMatch in db.Gamers)
+            {
+                if (gMatch.ID != gamerL.ID)
+                {
+                    Match found = matches.FirstOrDefault(x =>
+                     x.IdPlayer2 == gMatch.ID || x.IdPlayer1 == gMatch.ID);
+
+                    RequestedMatch Requested = reqMatches.FirstOrDefault(x =>
+                    x.IdPlayer2 == gMatch.ID || x.IdPlayer == gMatch.ID);
+
+                    if (found == null && Requested == null)
+                    {
+                        gamers.Add(new Player()
+                        {
+                            ID = gMatch.ID,
+                            Nickname = gMatch.Nickname,
+                            Name = gMatch.Name,
+                            LastName = gMatch.LastName,
+                            Email = gMatch.Email,
+                            ImagePath = gMatch.ImagePath,
+                            Bio = gMatch.Bio,
+                        });
+
+                    }
+                }
+            }
+
+            return Json(gamers);
+        }
+
 
         // PUT: api/Gamers/5
         [ResponseType(typeof(void))]

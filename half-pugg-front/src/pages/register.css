@@ -80,3 +80,27 @@
 .register-title img:hover {
     transform: translateY(-3px);
 }
+
+#botao-registro {
+    align-items: center;
+    align-content: center;
+    margin-left: 45%;
+    margin-top: 8%;
+}
+
+.ui.checkbox label {
+    color: white;
+}
+
+.ui.checkbox label:hover {
+    color: white;
+}
+
+.ui.checkbox input:focus~label {
+    color: white;
+}
+
+.ui.radio.checkbox {
+    margin-left: 20%;
+    margin-top: 9%;
+}
