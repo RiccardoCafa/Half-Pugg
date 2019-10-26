@@ -10,9 +10,32 @@ namespace OverwatchAPI
     public class role
     {
         public string name;
-        public int level;
+        public int rating;
     }
-    public class profile
+
+    /*
+     > Overwatch é um jogo que se divide em partida rapida e competitivo (tem mais modalidades mas a API trata apenas essas duas)
+     
+     > Os dados gerais do jogador, aqueles que não estão diretamente ligados ao desempenho dele na partida (Nome, nivel, prestigio,etc...),
+     estão armazenados no perfil (profile)
+     
+     > O sistema de nivel é separado em duas partes: level e endorsement, endorsement se refere a parte da centena e level fica com a parte
+     da dezena e unidade ex: 311 é endorsement 3 e level 11
+     
+     > Prestige é a indicação que o jogador recebe aos finais de partidas
+     
+     > rating é a "pontuação" média do jogador, quanto mais vitorias mais pontos o jogador ganha e maior o elo ele recebe, essa pontuação
+     existe apenas no modo competitivo, entretanto fica disponivel no perfil do usuario
+
+     > a pontuação tambem é calculada isoladamente para cada classe que o jogador joga (Tank,Dps,Support), a classe é representada aqui pela
+     estrutura role, o rating citado anteriormente é a media das pontuações das classes que o jogador joga, sendo que ele pode jogar apenas 
+     uma, com duas ou as tres
+
+     > as informações referentes as partidas competitivas e rapidas são iguais e representados pela mesma classe (careeStats), a classe Player
+     que representa o jogador em si contém duas referencias para careerStats, uma para competitivo e outra para partida rapida
+     */
+
+    public class profile 
     {
         public string name;
         public int level;
@@ -87,8 +110,9 @@ namespace OverwatchAPI
                 roles[i] = new role
                 {
                     name = r["role"].ToString(),
-                    level = r["level"].Value<int>()
+                    rating = r["level"].Value<int>()
                 };
+                i++;
             }
            
             return new profile
@@ -143,7 +167,7 @@ namespace OverwatchAPI
            
             string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
             JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
-            if (obj.ContainsKey("error")) throw new Exception("Erro ao buscar jogador:" + obj["error"].Value<string>());
+            if (obj.ContainsKey("error")) throw new Exception($"[{name}] " + obj["error"].Value<string>());
             JToken quickCr = obj["quickPlayStats"].HasValues? obj["quickPlayStats"]["careerStats"]["allHeroes"]["average"]:null;
             JToken compCr = obj["competitiveStats"].HasValues? obj["competitiveStats"]["careerStats"]["allHeroes"]["average"]:null;
 
