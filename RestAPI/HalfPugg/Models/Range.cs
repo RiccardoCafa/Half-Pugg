@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace HalfPugg.Models
 {
@@ -15,6 +13,6 @@ namespace HalfPugg.Models
         [Required] public float Min { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
-        public virtual Filter Filter { get; set; }
+        [JsonIgnore] public virtual Filter Filter { get; set; }
     }
 }

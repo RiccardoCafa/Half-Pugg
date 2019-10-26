@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
+
 namespace HalfPugg.Models
 {
     public class PlayerGame
@@ -15,7 +17,7 @@ namespace HalfPugg.Models
 
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
-        [ForeignKey("IDGamer")] public virtual Player Gamer { get; set; }
-        [ForeignKey("IDGame")] public virtual Game Game { get; set; }
+        [JsonIgnore] public virtual Player Gamer { get; set; }
+        [JsonIgnore] public virtual Game Game { get; set; }
     }
 }

@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
+using Newtonsoft.Json;
 
 namespace HalfPugg.Models
 {
@@ -17,8 +16,8 @@ namespace HalfPugg.Models
         [Required] [ForeignKey("Admin")] public int IdAdmin { get; set; }
         public DateTime CreateAt { get; set; }        
         public DateTime AlteredAt { get; set; }
-        public virtual Game Game { get; set; }
-        public virtual Player Admin { get; set; }
+        [JsonIgnore] public virtual Game Game { get; set; }
+        [JsonIgnore] public virtual Player Admin { get; set; }
 
     }
 }
