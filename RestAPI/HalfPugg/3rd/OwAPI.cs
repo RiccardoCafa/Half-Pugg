@@ -210,7 +210,19 @@ namespace OverwatchAPI
 
             for (int i = 0; i < name.Count; i++)
             {
-                yield return GetPlayer(name[i], reg[i]);
+                string url = ENDPOINT_API + regStr(reg[i]) + $"/{name[i]}/complete";
+                JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
+                if (obj.ContainsKey("error")) throw new Exception($"[{name[i]}] " + obj["error"].Value<string>());
+                JToken quickCr = obj["quickPlayStats"].HasValues ? obj["quickPlayStats"]["careerStats"]["allHeroes"]["average"] : null;
+                JToken compCr = obj["competitiveStats"].HasValues ? obj["competitiveStats"]["careerStats"]["allHeroes"]["average"] : null;
+
+                yield return new player
+                {
+                    profile = getProfile(obj),
+                    compCareer = getCareer(compCr),
+                    quickCareer = getCareer(quickCr)
+                };
+                
             }
         }
 
