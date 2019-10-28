@@ -245,6 +245,18 @@
     <Compile Include="Migrations\201910281227226_Sex.Designer.cs">
       <DependentUpon>201910281227226_Sex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910281241593_Status.cs" />
+    <Compile Include="Migrations\201910281241593_Status.Designer.cs">
+      <DependentUpon>201910281241593_Status.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910281251091_CharProblem.cs" />
+    <Compile Include="Migrations\201910281251091_CharProblem.Designer.cs">
+      <DependentUpon>201910281251091_CharProblem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910281253477_MatchChar.cs" />
+    <Compile Include="Migrations\201910281253477_MatchChar.Designer.cs">
+      <DependentUpon>201910281253477_MatchChar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
@@ -507,6 +519,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910281227226_Sex.resx">
       <DependentUpon>201910281227226_Sex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910281241593_Status.resx">
+      <DependentUpon>201910281241593_Status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910281251091_CharProblem.resx">
+      <DependentUpon>201910281251091_CharProblem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910281253477_MatchChar.resx">
+      <DependentUpon>201910281253477_MatchChar.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
