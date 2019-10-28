@@ -1,0 +1,15 @@
+.game-title {
+    color: white;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.curriculo-title {
+    color: white;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 10px;
+}
