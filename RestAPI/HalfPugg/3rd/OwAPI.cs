@@ -35,6 +35,19 @@ namespace OverwatchAPI
      que representa o jogador em si contém duas referencias para careerStats, uma para competitivo e outra para partida rapida
      */
 
+
+    public class owFilter
+    { //-1 para não informado
+        public int role;//-1 none, 0 tank, 1 dps, 2 haler
+        public int[] level;// level+endorsement
+        public int[] rating;
+        public float[] damage;
+        public float[] healing;
+        public int[] elimination;
+        public DateTime[] objTime; //00:00 nao informado
+        public DateTime[] onfire; //00:00 nao informado
+    }
+
     public class profile 
     {
         public string name;

@@ -72,8 +72,7 @@ namespace HalfPugg.Controllers
             var a = OwAPI.GetPlayer(names, regions).Where
                 (
                 m=> 
-                player.profile.rating * 0.95f < m.profile.rating
-                && player.profile.rating * 1.05f > m.profile.rating
+                m.profile.rating > 1600
                 );
            
             return Json(a);
