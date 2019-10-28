@@ -71,13 +71,6 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest();
             }
-
-            if (GamerLogado != null)
-            {
-                return Json<Player>(GamerLogado);
-            }
-
-            return NotFound();
         }
 
         // POST: api/Login

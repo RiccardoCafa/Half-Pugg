@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5%;
+    margin-top: 0%;
     margin-bottom: 0%;
     flex-direction: column;
 }
@@ -15,7 +15,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10%;
+    margin-top: 0%;
     flex-direction: column;
 
 }
@@ -40,6 +40,14 @@
 
 #botoes {
     margin-top: 20px;
-    margin-left: 55px;
+    margin-left: 42%;
     transition: all .2s;
+}
+
+#title {
+    margin-left: 0%;
+}
+
+#biography {
+    width: 500px;
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import './login.css';
-import {  Segment, Button, Popup, Form, Grid, Divider } from 'semantic-ui-react';
+import {  Segment, Button, Popup, Form, Grid, Divider, Loader } from 'semantic-ui-react';
 import api from '../services/api';
 
 export default class Login extends Component {
@@ -58,7 +58,6 @@ export default class Login extends Component {
     handleCadastro(e){
         console.log('fui clicado');
         this.setState({goToRegister: true});
-        //history.push('/register');
     }
 
     handleBranchConnect(e){
@@ -77,6 +76,7 @@ export default class Login extends Component {
         return (
             <div>
                 <div className = "login-container">
+                    {this.state.loading !== true ?
                     <Segment>
                     <Grid columns={2} relaxed='very' stackable>
                         <Grid.Column>
@@ -128,6 +128,8 @@ export default class Login extends Component {
                     </Grid>
                     <Divider vertical>Or</Divider>
                     </Segment>
+                    :
+                    <Loader active></Loader>}
                 </div>
                 <div>
 

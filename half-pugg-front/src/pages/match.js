@@ -228,7 +228,7 @@ export default class Match extends Component {
                             }
                             </Grid.Column>
                             <Grid.Column width={3}>
-
+                                
                             </Grid.Column>
                         </Grid>
                     </Segment>

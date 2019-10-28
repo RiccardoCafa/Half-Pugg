@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react';
 
 import './curriculo.css';
 import {Icon, Image, Menu, Segment, Sidebar} from 'semantic-ui-react'
-import Header from '../components/header';
+import Header from '../Components/header';
 
 export default function({history}) {
 
