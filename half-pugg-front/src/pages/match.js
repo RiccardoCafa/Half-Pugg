@@ -6,7 +6,7 @@ import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/header';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Menu, Icon, Label } from 'semantic-ui-react';
+import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Divider } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg'
 
@@ -45,20 +45,7 @@ export default class Match extends Component {
         })
         console.log(myData);
         this.setState({Nickname: myData.Nickname})
-        /*const jwt = localStorage.getItem("jwt");
-        if(!jwt) {
-            this.setState({toLogin: true});
-            return;
-        }
-        const myData = await api.get('api/Login', {
-            headers: { "token-jwt": {jwt} }
-        }).then(res =>{
-            this.setState({GamerLogado: myData.data});
-            this.setState ({Nickname: myData.data.Nickname});
-            console.log(this.state.Nickname);
-        }).catch(error => {
-            this.setState({toLogin: true})
-        });*/
+        
         if(myData !== undefined && myData.data !== null) {
             const MatchData = await api.get('api/GamersMatch',
                 { headers: { "token-jwt": jwt }});
@@ -87,6 +74,7 @@ export default class Match extends Component {
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
             "Status": "A",
+            "IdFilters": 0
         })
         .catch(function(error){
             console.log(error);
@@ -160,74 +148,85 @@ export default class Match extends Component {
                     </Menu>
                 </div>
                 <div className='connections'>
-                    {this.state.NewConnections === false ?
-                    <Card.Group>
-                        {this.state.GamerMatch.map((matcher) => 
-                            <Card key={matcher.ID} >
-                                <Card.Content>
-                                    <Image
-                                        floated='right'
-                                        size='mini'
-                                        src={(matcher.ImagePath === "" || matcher.ImagePath === null) ? gostosao : matcher.ImagePath}
-                                        />
-                                    <Card.Header>{matcher.Nickname}</Card.Header>
-                                    <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
-                                    <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
-                                </Card.Content>
-                                <Card.Content extra>
-                                    <div className='ui two buttons'>
-                                        <Button 
-                                            id='btn-acpden' 
-                                            basic color='green' 
-                                            onClick={() => this.connectMatch(matcher)}
-                                            content='Connect!'
-                                            />
-                                        <Button 
-                                            id='btn-acpden' 
-                                            basic color='red' 
-                                            onClick={this.desconnectMatch}
-                                            content='Not Interested!'
-                                            />
-                                    </div>
-                                </Card.Content>
-                                <Card.Content extra>
-                                    <OpenCurriculum matcher={matcher}></OpenCurriculum>
-                                </Card.Content>
-                            </Card>
-                        )}
-                    </Card.Group>
-                    :
-                    <Card.Group>
-                        {this.state.RequestedMatches.map((requests) => 
-                            <Card key = {requests.ID} >
-                                <Card.Content>
-                                    <Image
-                                        floated='right'
-                                        size='mini'
-                                        circular
-                                        src={(requests.ImagePath === "" || requests.ImagePath === null) ? gostosao : requests.ImagePath}
-                                        />
-                                    <Card.Header>{requests.Nickname}</Card.Header>
-                                    <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
-                                    <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
-                                </Card.Content>
-                                <Card.Content extra>
-                                    <div className='ui two buttons'>
-                                        <Button id='btn-acpden' basic color='green' onClick={() => this.FazMatch(true, requests)}>
-                                            Accept!
-                                        </Button>
-                                        <Button id='btn-acpden' basic color='red' onClick={() => this.FazMatch(false, requests)}>
-                                            Deny!
-                                        </Button>
-                                    </div>
-                                </Card.Content>
-                                <Card.Content extra>
-                                    <OpenCurriculum matcher={requests}></OpenCurriculum>
-                                </Card.Content>
-                            </Card>
-                        )}
-                    </Card.Group>
-                    }
+                    <Segment>
+                        <Grid columns={2} relaxed='very' stackable>
+                            <Grid.Column width={10}>
+                            {this.state.NewConnections === false ?
+                            <Card.Group>
+                                {this.state.GamerMatch.map((matcher) => 
+                                    <Card key={matcher.ID} >
+                                        <Card.Content>
+                                            <Image
+                                                floated='right'
+                                                size='mini'
+                                                src={(matcher.ImagePath === "" || matcher.ImagePath === null) ? gostosao : matcher.ImagePath}
+                                                />
+                                            <Card.Header>{matcher.Nickname}</Card.Header>
+                                            <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
+                                            <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
+                                        </Card.Content>
+                                        <Card.Content extra>
+                                            <div className='ui two buttons'>
+                                                <Button 
+                                                    id='btn-acpden' 
+                                                    basic color='green' 
+                                                    onClick={() => this.connectMatch(matcher)}
+                                                    content='Connect!'
+                                                    />
+                                                <Button 
+                                                    id='btn-acpden' 
+                                                    basic color='red' 
+                                                    onClick={this.desconnectMatch}
+                                                    content='Not Interested!'
+                                                    />
+                                            </div>
+                                        </Card.Content>
+                                        <Card.Content extra>
+                                            <OpenCurriculum matcher={matcher}></OpenCurriculum>
+                                        </Card.Content>
+                                    </Card>
+                                )}
+                            </Card.Group>
+                            :
+                            <Card.Group>
+                                {this.state.RequestedMatches.map((requests) => 
+                                    <Card key = {requests.ID} >
+                                        <Card.Content>
+                                            <Image
+                                                floated='right'
+                                                size='mini'
+                                                circular
+                                                src={(requests.ImagePath === "" || requests.ImagePath === null) ? gostosao : requests.ImagePath}
+                                                />
+                                            <Card.Header>{requests.Nickname}</Card.Header>
+                                            <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
+                                            <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
+                                        </Card.Content>
+                                        <Card.Content extra>
+                                            <div className='ui two buttons'>
+                                                <Button id='btn-acpden' basic color='green' onClick={() => this.FazMatch(true, requests)}>
+                                                    Accept!
+                                                </Button>
+                                                <Button id='btn-acpden' basic color='red' onClick={() => this.FazMatch(false, requests)}>
+                                                    Deny!
+                                                </Button>
+                                            </div>
+                                        </Card.Content>
+                                        <Card.Content extra>
+                                            <OpenCurriculum matcher={requests}></OpenCurriculum>
+                                        </Card.Content>
+                                    </Card>
+                                )}
+                            </Card.Group>
+                            }
+                            </Grid.Column>
+                            <Grid.Column width={3}>
+
+                            </Grid.Column>
+                        </Grid>
+                        <Divider vertical></Divider>  
+                    </Segment>
+                    
                 </div>
             </div>  
         )
