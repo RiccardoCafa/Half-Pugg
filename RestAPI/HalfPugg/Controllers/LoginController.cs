@@ -30,6 +30,24 @@ namespace HalfPugg.Controllers
             db = new HalfPuggContext();
         }
 
+        [Route("api/ValidateToken")]
+        [HttpGet]
+        public IHttpActionResult ValidateToken()
+        {
+            var headers = Request.Headers;
+            if (headers.Contains("token-jwt"))
+            {
+                string token = headers.GetValues("token-jwt").First();
+                TokenValidation validation = new TokenValidation();
+                string userValidated = validation.ValidateToken(token);
+                if (userValidated != null)
+                {
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
+
         // GET: api/Login
         public IHttpActionResult Get()
         {
