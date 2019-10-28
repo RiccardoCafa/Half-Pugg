@@ -44,7 +44,7 @@ export default class Match extends Component {
             GamerLogado: myData
         })
         console.log(myData);
-
+        this.setState({Nickname: myData.Nickname})
         /*const jwt = localStorage.getItem("jwt");
         if(!jwt) {
             this.setState({toLogin: true});
@@ -60,13 +60,15 @@ export default class Match extends Component {
             this.setState({toLogin: true})
         });*/
         if(myData !== undefined && myData.data !== null) {
-            const MatchData = await api.get('api/GamersMatch');
+            const MatchData = await api.get('api/GamersMatch',
+                { headers: { "token-jwt": jwt }});
             if(MatchData.data != null){
                 console.log(MatchData.data);
                 this.setState({GamerMatch: MatchData.data});
             }
     
-            const requestedMatch = await api.get('api/RequestedMatchesLoggedGamer');
+            const requestedMatch = await api.get('api/RequestedMatchesLoggedGamer',
+                { headers: { "token-jwt": jwt }});
             if(requestedMatch.data !== null) {
                 this.setState({RequestedMatches: requestedMatch.data});
                 console.log(requestedMatch.data);
@@ -76,8 +78,11 @@ export default class Match extends Component {
     }
 
     connectMatch(matcher) {
-
-        console.log(matcher);
+        console.log({
+            "IdPlayer": this.state.GamerLogado.ID,
+            "IdPlayer2": matcher.ID,
+            "Status": "A",
+        })
         const response = api.post('api/RequestedMatches', {
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
