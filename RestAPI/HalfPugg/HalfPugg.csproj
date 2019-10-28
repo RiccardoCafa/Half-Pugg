@@ -241,6 +241,10 @@
     <Compile Include="Migrations\201910262347538_JsonIgnore.Designer.cs">
       <DependentUpon>201910262347538_JsonIgnore.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910281227226_Sex.cs" />
+    <Compile Include="Migrations\201910281227226_Sex.Designer.cs">
+      <DependentUpon>201910281227226_Sex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
@@ -500,6 +504,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910262347538_JsonIgnore.resx">
       <DependentUpon>201910262347538_JsonIgnore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910281227226_Sex.resx">
+      <DependentUpon>201910281227226_Sex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
