@@ -12,7 +12,8 @@ namespace HalfPugg.Models
         [Required] [StringLength(70)] public string Name { get; set; }
         [Required] [StringLength(70)] public string Description { get; set; } 
         [Required] public string EndPoint { get; set; }
-        public IList<Filter> Filter { get; set; }        
+        public ICollection<Filter> Filter { get; set; }
+        public ICollection<HashTag> HashTag { get; set; }
         public DateTime CreateAt { get; set; }        
         public DateTime AlteredAt { get; set; }
 
