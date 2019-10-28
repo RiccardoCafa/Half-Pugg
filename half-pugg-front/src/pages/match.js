@@ -28,6 +28,7 @@ export default class Match extends Component {
     async componentDidMount() {
 
         const jwt = localStorage.getItem("jwt");
+        let stop = false;
         //console.log(jwt);
         let myData;
         if(jwt){
@@ -35,10 +36,16 @@ export default class Match extends Component {
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
                 myData = res.data
                 //console.log(res.data)
-            ).catch(error => this.setState({toLogin: true}))
-        }else {
-            this.setState({toLogin: true});
+            ).catch(error => stop = true)
+        } else {
+            stop = true;
         }
+
+        if(stop) {
+            this.setState({toLogin: true});
+            return;
+        }
+
         this.setState(
         {
             GamerLogado: myData
@@ -149,8 +156,8 @@ export default class Match extends Component {
                 </div>
                 <div className='connections'>
                     <Segment>
-                        <Grid columns={2} relaxed='very' stackable>
-                            <Grid.Column width={10}>
+                        <Grid columns={2} celled='internally' stackable>
+                            <Grid.Column width={12}>
                             {this.state.NewConnections === false ?
                             <Card.Group>
                                 {this.state.GamerMatch.map((matcher) => 
@@ -224,7 +231,6 @@ export default class Match extends Component {
 
                             </Grid.Column>
                         </Grid>
-                        <Divider vertical></Divider>  
                     </Segment>
                     
                 </div>
