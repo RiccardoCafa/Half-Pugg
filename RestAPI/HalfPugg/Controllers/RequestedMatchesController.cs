@@ -66,7 +66,7 @@ namespace HalfPugg.Controllers
             List<Player> gamersReq = new List<Player>();
             foreach (RequestedMatch reqMatch in reqMatches)
             {
-                if (reqMatch.Status == 'F') continue;
+                if (reqMatch.Status == "F") continue;
                 Player findMe = db.Gamers.Find(reqMatch.IdPlayer);
                 if(findMe != null)
                 {
