@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
+import {Redirect} from 'react-router-dom';
 
 import './match.css'
 import api from '../services/api'
+import Auth from '../Components/auth';
 import Headera from '../Components/header';
 import OpenCurriculum from '../Components/openCurriculum';
 import { Card, Image, Button, Menu, Icon, Label } from 'semantic-ui-react';
@@ -20,27 +22,56 @@ export default class Match extends Component {
         RequestedMatches: [],
         NumberOfRequests: 0,
         NewConnections: false,
+        toLogin: false,
     }
 
     async componentDidMount() {
-        const myData = await api.get('api/Login');
-        if(myData.data != null){
+
+        const jwt = localStorage.getItem("jwt");
+        //console.log(jwt);
+        let myData;
+        if(jwt){
+            console.log(jwt);
+            await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
+                myData = res.data
+                //console.log(res.data)
+            ).catch(error => this.setState({toLogin: true}))
+        }else {
+            this.setState({toLogin: true});
+        }
+        this.setState(
+        {
+            GamerLogado: myData
+        })
+        console.log(myData);
+
+        /*const jwt = localStorage.getItem("jwt");
+        if(!jwt) {
+            this.setState({toLogin: true});
+            return;
+        }
+        const myData = await api.get('api/Login', {
+            headers: { "token-jwt": {jwt} }
+        }).then(res =>{
             this.setState({GamerLogado: myData.data});
             this.setState ({Nickname: myData.data.Nickname});
             console.log(this.state.Nickname);
-        }
-
-        const MatchData = await api.get('api/GamersMatch');
-        if(MatchData.data != null){
-            console.log(MatchData.data);
-            this.setState({GamerMatch: MatchData.data});
-        }
-
-        const requestedMatch = await api.get('api/RequestedMatchesLoggedGamer');
-        if(requestedMatch.data !== null) {
-            this.setState({RequestedMatches: requestedMatch.data});
-            console.log(requestedMatch.data);
-            this.setState({NumberOfRequests: requestedMatch.data.length});
+        }).catch(error => {
+            this.setState({toLogin: true})
+        });*/
+        if(myData !== undefined && myData.data !== null) {
+            const MatchData = await api.get('api/GamersMatch');
+            if(MatchData.data != null){
+                console.log(MatchData.data);
+                this.setState({GamerMatch: MatchData.data});
+            }
+    
+            const requestedMatch = await api.get('api/RequestedMatchesLoggedGamer');
+            if(requestedMatch.data !== null) {
+                this.setState({RequestedMatches: requestedMatch.data});
+                console.log(requestedMatch.data);
+                this.setState({NumberOfRequests: requestedMatch.data.length});
+            }
         }
     }
 
@@ -103,9 +134,12 @@ export default class Match extends Component {
     }
 
     render() {
-        
+        if(this.state.toLogin === true) {
+            return <Redirect to="/"></Redirect>
+        }
         return (
             <div>
+                <Auth></Auth>
                 <div>
                     <Headera dataFP = {this.state.Nickname}/>
                 </div>  

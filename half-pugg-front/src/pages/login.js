@@ -35,6 +35,9 @@ export default class Login extends Component {
         const response = await api.post('api/Login', {
             "Email": this.state.email,
             "HashPassword": this.state.senha
+        }).then(res =>{
+            localStorage.setItem("jwt", res.data);
+            this.setState({goToMatch: true});
         }).catch(function(error){
             console.log(error);
             switch(error.response.status) {
@@ -47,9 +50,6 @@ export default class Login extends Component {
                 break;
             }
         });
-        if(response != null) {
-            this.setState({goToMatch: true});
-        }
     }
 
     handleCadastro(e){
