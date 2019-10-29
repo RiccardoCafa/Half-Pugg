@@ -75,7 +75,7 @@ export default class Login extends Component {
         }
         return (
             <div>
-                <div className = "login-container">
+                <div className = "login-container-2">
                     {this.state.loading !== true ?
                     <Segment>
                     <Grid columns={2} relaxed='very' stackable>

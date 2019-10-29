@@ -57,12 +57,11 @@ export default class register extends Component {
             return <Redirect to='/bio'></Redirect>
         }
         return (
-            <div className = "register-container">    
+            <div className = "register-container-3">    
             <div className= "register-title">
                 <Link to = "/">
-                    <img src={pugg} width="100" height="100" alt="pugg logo"/>
+                    <h1>Half Pugg</h1>
                 </Link>
-                <h1>Half Pugg</h1>
             </div>
             <div className = "register-inputs">
             <form onSubmit={this.handleSubmit}>

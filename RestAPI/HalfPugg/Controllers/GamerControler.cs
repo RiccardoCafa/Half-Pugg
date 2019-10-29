@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -140,9 +141,14 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            db.Gamers.Add(gamer);
-            db.SaveChanges();
+            try
+            {
+                db.Gamers.Add(gamer);
+                db.SaveChanges();
+            } catch(Exception)
+            {
+                return BadRequest();
+            }
 
             return CreatedAtRoute("DefaultApi", new { id = gamer.ID }, gamer);
         }

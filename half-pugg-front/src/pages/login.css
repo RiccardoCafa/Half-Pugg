@@ -1,5 +1,5 @@
 
-.login-container {
+.login-container-2 {
     height: 100%;
     width: 100%;
     display: flex;
@@ -10,7 +10,7 @@
 
 }
 
-.login-container form {
+.login-container-2 form {
     width: 100%;
     max-width: 300px;
     align-items: center;
@@ -18,7 +18,7 @@
     flex-direction: column;
 }
 
-.login-container form input {
+.login-container-2 form input {
     margin-top: 0px;
     border: 2px solid rgb(62, 1, 130);
     border-radius: 2px;
@@ -31,16 +31,16 @@
     padding-left: 10px;
 }
 
-.login-container form input:hover {
+.login-container-2 form input:hover {
     border: 2px solid rgb(49, 1, 104);
 }
 
-.login-container form input:focus {
+.login-container-2 form input:focus {
     border: 2px solid rgb(82, 25, 146);
 }
 
 
-.login-container form h1 {
+.login-container-2 form h1 {
     text-align: center;
     align-content: center;
     margin-left: 50%;
@@ -48,7 +48,7 @@
     color: black;
 }
 
-.login-container form h4 {
+.login-container-2 form h4 {
     text-align: left;
     margin-left: 1%;
     margin-bottom: 2%;
@@ -82,7 +82,7 @@
     cursor: pointer;
 }
 
-.login-container img {
+.login-container-2 img {
     align-items: center;
     margin-left: 32.5%;
 }
