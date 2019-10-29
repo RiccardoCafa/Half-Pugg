@@ -40,7 +40,7 @@ export default class Login extends Component {
         }).then(res =>{
             localStorage.setItem("jwt", res.data);
             this.setState({goToMatch: true});
-        }).catch(function(error){
+        }).catch(error => {
             console.log(error);
             this.setState({loading: false});
             switch(error.response.status) {

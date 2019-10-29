@@ -75,12 +75,12 @@ export default class Match extends Component {
         console.log({
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
-            "Status": "A",
+            "Status": false,
         })
         const response = api.post('api/RequestedMatches', {
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
-            "Status": "A",
+            "Status": false,
             "IdFilters": 0
         })
         .catch(function(error){

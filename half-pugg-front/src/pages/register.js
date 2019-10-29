@@ -3,7 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { Button, Checkbox } from 'semantic-ui-react';
 
 import './register.css';
-import pugg from '../images/Logo_Pugg.png';
 import api from '../services/api';
 
 export default class register extends Component {
@@ -37,14 +36,12 @@ export default class register extends Component {
             "Type": "F",
             "Sex": this.state.Sex,
             "ID_Branch": -1,
-        }).catch(function (error) {
+        }).then(
+            this.setState({toLogin: true})
+        ).catch(function (error) {
             console.log(error.response);
             console.log("Error: " + error.message);
         });
-        if(respo != null){
-            this.setState({toRegister2: true});
-        }
-        //useHistory().push('/');
         console.log(dt);
     }
 
@@ -53,8 +50,8 @@ export default class register extends Component {
     }
 
     render(){
-        if(this.state.toRegister2 === true) {
-            return <Redirect to='/bio'></Redirect>
+        if(this.state.toLogin === true) {
+            return <Redirect to='/'></Redirect>
         }
         return (
             <div className = "register-container-3">    
