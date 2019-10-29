@@ -260,6 +260,14 @@
     <Compile Include="Migrations\201910281253477_MatchChar.Designer.cs">
       <DependentUpon>201910281253477_MatchChar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910290054527_PathLen.cs" />
+    <Compile Include="Migrations\201910290054527_PathLen.Designer.cs">
+      <DependentUpon>201910290054527_PathLen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910290056197_PathLen1.cs" />
+    <Compile Include="Migrations\201910290056197_PathLen1.Designer.cs">
+      <DependentUpon>201910290056197_PathLen1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
@@ -532,6 +540,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910281253477_MatchChar.resx">
       <DependentUpon>201910281253477_MatchChar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910290054527_PathLen.resx">
+      <DependentUpon>201910290054527_PathLen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910290056197_PathLen1.resx">
+      <DependentUpon>201910290056197_PathLen1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
