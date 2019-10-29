@@ -56,6 +56,9 @@
     <Reference Include="EntityFramework6.Npgsql, Version=3.2.1.1, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework6.Npgsql.3.2.1.1\lib\net45\EntityFramework6.Npgsql.dll</HintPath>
     </Reference>
+    <Reference Include="JWT, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JWT.5.3.1\lib\net472\JWT.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -243,6 +246,30 @@
     <Compile Include="Migrations\201910262347538_JsonIgnore.Designer.cs">
       <DependentUpon>201910262347538_JsonIgnore.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910281227226_Sex.cs" />
+    <Compile Include="Migrations\201910281227226_Sex.Designer.cs">
+      <DependentUpon>201910281227226_Sex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910281241593_Status.cs" />
+    <Compile Include="Migrations\201910281241593_Status.Designer.cs">
+      <DependentUpon>201910281241593_Status.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910281251091_CharProblem.cs" />
+    <Compile Include="Migrations\201910281251091_CharProblem.Designer.cs">
+      <DependentUpon>201910281251091_CharProblem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910281253477_MatchChar.cs" />
+    <Compile Include="Migrations\201910281253477_MatchChar.Designer.cs">
+      <DependentUpon>201910281253477_MatchChar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910290054527_PathLen.cs" />
+    <Compile Include="Migrations\201910290054527_PathLen.Designer.cs">
+      <DependentUpon>201910290054527_PathLen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910290056197_PathLen1.cs" />
+    <Compile Include="Migrations\201910290056197_PathLen1.Designer.cs">
+      <DependentUpon>201910290056197_PathLen1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
@@ -272,6 +299,7 @@
     <Compile Include="Models\RequestedHall.cs" />
     <Compile Include="Models\Template .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TokenJWT\TokenMaker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -503,6 +531,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910262347538_JsonIgnore.resx">
       <DependentUpon>201910262347538_JsonIgnore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910281227226_Sex.resx">
+      <DependentUpon>201910281227226_Sex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910281241593_Status.resx">
+      <DependentUpon>201910281241593_Status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910281251091_CharProblem.resx">
+      <DependentUpon>201910281251091_CharProblem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910281253477_MatchChar.resx">
+      <DependentUpon>201910281253477_MatchChar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910290054527_PathLen.resx">
+      <DependentUpon>201910290054527_PathLen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910290056197_PathLen1.resx">
+      <DependentUpon>201910290056197_PathLen1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

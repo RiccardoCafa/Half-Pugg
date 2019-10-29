@@ -16,11 +16,11 @@ namespace HalfPugg.Models
         [StringLength(300)] public string Bio { get; set; }
         [Required] [EmailAddress] public string  Email { get; set; }
         [Required] public DateTime Birthday { get; set; }
-        [StringLength(100)] public string ImagePath { get; set; }
-        [Required] public char Type { get; set; }
+        [StringLength(500)] public string ImagePath { get; set; }
+        [Required] [StringLength(1)] public string Type { get; set; }
         public int ID_Branch { get; set; }
         public string Slogan { get; set; }
-        [Required] public char Sex { get; set; }
+        [Required] [StringLength(1)] public string Sex { get; set; }
         [StringLength(100)] public string Genre { get; set; }  
         public ICollection<MessageHall> MessageHalls { get; set; }
         public DateTime CreateAt { get; set; }

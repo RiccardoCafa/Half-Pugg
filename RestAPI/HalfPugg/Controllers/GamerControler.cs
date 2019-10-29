@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
+using HalfPugg.TokenJWT;
+using Newtonsoft.Json;
 
 namespace HalfPugg.Controllers
 {
@@ -37,11 +39,25 @@ namespace HalfPugg.Controllers
         [HttpGet]
         public IHttpActionResult GetGamerMatch()
         {
-            Player gamerL = LoginController.GamerLogado;
+            Player gamerL = null;
+
+            var headers = Request.Headers;
+
+            if (headers.Contains("token-jwt"))
+            {
+                string token = headers.GetValues("token-jwt").First();
+                TokenValidation validation = new TokenValidation();
+                string userValidated = validation.ValidateToken(token);
+                if (userValidated != null)
+                {
+                    TokenData data = JsonConvert.DeserializeObject<TokenData>(userValidated);
+                    gamerL = db.Gamers.FirstOrDefault(g => g.ID == data.ID);
+                }
+            }
 
             if (gamerL == null)
             {
-                return null;
+                return NotFound();
             }
             List<Player> gamers = new List<Player>();
             List<Match> matches = db.Matches

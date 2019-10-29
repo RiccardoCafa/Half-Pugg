@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
+using HalfPugg.TokenJWT;
+using Newtonsoft.Json;
 
 namespace HalfPugg.Controllers
 {
@@ -40,7 +42,22 @@ namespace HalfPugg.Controllers
         [HttpGet]
         public IHttpActionResult GetRequestedMatchForLogg()
         {
-            Player gamerlogado = LoginController.GamerLogado;
+            Player gamerlogado = null;
+
+            var headers = Request.Headers;
+
+            if (headers.Contains("token-jwt"))
+            {
+                string token = headers.GetValues("token-jwt").First();
+                TokenValidation validation = new TokenValidation();
+                string userValidated = validation.ValidateToken(token);
+                if (userValidated != null)
+                {
+                    TokenData data = JsonConvert.DeserializeObject<TokenData>(userValidated);
+                    gamerlogado = db.Gamers.FirstOrDefault(g => g.ID == data.ID);
+                }
+            }
+
             if (gamerlogado == null) return BadRequest();
             List<RequestedMatch> reqMatches = db.RequestedMatchs
                                                      .Where(x => x.IdPlayer2 == gamerlogado.ID)
@@ -49,7 +66,7 @@ namespace HalfPugg.Controllers
             List<Player> gamersReq = new List<Player>();
             foreach (RequestedMatch reqMatch in reqMatches)
             {
-                if (reqMatch.Status == 'F') continue;
+                if (reqMatch.Status == "F") continue;
                 Player findMe = db.Gamers.Find(reqMatch.IdPlayer);
                 if(findMe != null)
                 {
