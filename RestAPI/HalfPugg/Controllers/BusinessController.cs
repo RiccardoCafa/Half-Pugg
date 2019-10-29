@@ -78,16 +78,15 @@ namespace HalfPugg.Controllers
             return Json(a);
         }
 
-       
-        
         [ResponseType(typeof(IEnumerable<player>))]
-        [Route("api/GetOwerwatchMacth")]
+        [Route("api/GetOwMatchFilter")]
         [HttpGet]
         public IHttpActionResult GetOwMatchFilter(int PlayerID,owFilter filter)
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
             PlayerGame p = null;
+           
             foreach (PlayerGame pg in db.PlayerGames.Where(x => x.IDGame == 1))
             {
                 if (pg.IDGamer == PlayerID)
@@ -117,7 +116,6 @@ namespace HalfPugg.Controllers
         bool filterPlayer(player p, owFilter filter)
         {
             bool ret = true;
-            
            //rating
             if (filter.rating.Length > 0)
             {
@@ -130,21 +128,6 @@ namespace HalfPugg.Controllers
                 else
                 {
                    ret = p.profile.rating == filter.rating[0];
-                }
-            }
-            if (!ret) return false;
-            //damage quick
-            if (filter.damage.Length > 0)
-            {
-                if (filter.damage.Length > 1)
-                {
-                    if (filter.damage[1] == -1) ret = p.quickCareer.allDamageDone > filter.damage[0];
-                    else if (filter.damage[1] > -1 && filter.damage[0] > -1) ret = (p.quickCareer.allDamageDone > filter.damage[0] && p.quickCareer.allDamageDone < filter.damage[1]);
-                    else if (filter.damage[0] == -1) ret = p.quickCareer.allDamageDone < filter.damage[1];
-                }
-                else
-                {
-                    ret = p.quickCareer.allDamageDone == filter.damage[0];
                 }
             }
 
@@ -164,67 +147,168 @@ namespace HalfPugg.Controllers
                 }
             }
 
-            if (!ret) return false;
-            //elimination quick
-            if (filter.elimination.Length > 0)
+            if (filter.competitive)
             {
-                if (filter.elimination.Length > 1)
+                if (!ret) return false;
+                //damage quick
+                if (filter.damage.Length > 0)
                 {
-                    if (filter.elimination[1] == -1) ret = p.quickCareer.eliminations > filter.elimination[0];
-                    else if (filter.elimination[1] > -1 && filter.elimination[0] > -1) ret = (p.quickCareer.eliminations > filter.elimination[0] && p.quickCareer.eliminations < filter.elimination[1]);
-                    else if (filter.elimination[0] == -1) ret = p.quickCareer.eliminations < filter.elimination[1];
+                    if (filter.damage.Length > 1)
+                    {
+                        if (filter.damage[1] == -1) ret = p.compCareer.allDamageDone > filter.damage[0];
+                        else if (filter.damage[1] > -1 && filter.damage[0] > -1) ret = (p.compCareer.allDamageDone > filter.damage[0] && p.compCareer.allDamageDone < filter.damage[1]);
+                        else if (filter.damage[0] == -1) ret = p.compCareer.allDamageDone < filter.damage[1];
+                    }
+                    else
+                    {
+                        ret = p.compCareer.allDamageDone == filter.damage[0];
+                    }
                 }
-                else
+
+                if (!ret) return false;
+                //elimination quick
+                if (filter.elimination.Length > 0)
                 {
-                    ret = p.quickCareer.eliminations == filter.elimination[0];
+                    if (filter.elimination.Length > 1)
+                    {
+                        if (filter.elimination[1] == -1) ret = p.compCareer.eliminations > filter.elimination[0];
+                        else if (filter.elimination[1] > -1 && filter.elimination[0] > -1) ret = (p.compCareer.eliminations > filter.elimination[0] && p.compCareer.eliminations < filter.elimination[1]);
+                        else if (filter.elimination[0] == -1) ret = p.compCareer.eliminations < filter.elimination[1];
+                    }
+                    else
+                    {
+                        ret = p.compCareer.eliminations == filter.elimination[0];
+                    }
+                }
+
+                if (!ret) return false;
+                //healing quick
+                if (filter.healing.Length > 0)
+                {
+                    if (filter.healing.Length > 1)
+                    {
+                        if (filter.healing[1] == -1) ret = p.compCareer.healingDone > filter.healing[0];
+                        else if (filter.healing[1] > -1 && filter.healing[0] > -1) ret = (p.compCareer.healingDone > filter.healing[0] && p.compCareer.healingDone < filter.healing[1]);
+                        else if (filter.healing[0] == -1) ret = p.compCareer.healingDone < filter.healing[1];
+                    }
+                    else
+                    {
+                        ret = p.compCareer.healingDone == filter.healing[0];
+                    }
+                }
+
+                if (!ret) return false;
+                //objtime quick
+                if (filter.objTime.Length > 0)
+                {
+                    if (filter.objTime.Length > 1)
+                    {
+                        if (filter.objTime[1] == null) ret = DateTime.Compare(p.compCareer.objectiveTime, filter.objTime[0]) > 0;
+                        else if (filter.objTime[1] != null && filter.objTime[0] != null) ret = (DateTime.Compare(p.compCareer.objectiveTime, filter.objTime[0]) > 0 && DateTime.Compare(p.compCareer.objectiveTime, filter.objTime[1]) < 0);
+                        else if (filter.objTime[0] != null) ret = DateTime.Compare(p.compCareer.objectiveTime, filter.objTime[1]) < 0;
+                    }
+                    else
+                    {
+                        ret = DateTime.Compare(p.compCareer.objectiveTime, filter.objTime[0]) == 0;
+                    }
+                }
+
+                if (!ret) return false;
+                //onfire quick
+                if (filter.onfire.Length > 0)
+                {
+                    if (filter.onfire.Length > 1)
+                    {
+                        if (filter.onfire[1] == null) ret = DateTime.Compare(p.compCareer.timeSpentOnFire, filter.onfire[0]) > 0;
+                        else if (filter.onfire[1] != null && filter.onfire[0] != null) ret = (DateTime.Compare(p.compCareer.timeSpentOnFire, filter.onfire[0]) > 0 && DateTime.Compare(p.compCareer.timeSpentOnFire, filter.onfire[1]) < 0);
+                        else if (filter.onfire[0] != null) ret = DateTime.Compare(p.compCareer.timeSpentOnFire, filter.onfire[1]) < 0;
+                    }
+                    else
+                    {
+                        ret = DateTime.Compare(p.compCareer.timeSpentOnFire, filter.onfire[0]) == 0;
+                    }
                 }
             }
-
-            if (!ret) return false;
-            //healing quick
-            if (filter.healing.Length > 0)
+            else
             {
-                if (filter.healing.Length > 1)
+                if (!ret) return false;
+                //damage quick
+                if (filter.damage.Length > 0)
                 {
-                    if (filter.healing[1] == -1) ret = p.quickCareer.healingDone > filter.healing[0];
-                    else if (filter.healing[1] > -1 && filter.healing[0] > -1) ret = (p.quickCareer.healingDone > filter.healing[0] && p.quickCareer.healingDone < filter.healing[1]);
-                    else if (filter.healing[0] == -1) ret = p.quickCareer.healingDone < filter.healing[1];
+                    if (filter.damage.Length > 1)
+                    {
+                        if (filter.damage[1] == -1) ret = p.quickCareer.allDamageDone > filter.damage[0];
+                        else if (filter.damage[1] > -1 && filter.damage[0] > -1) ret = (p.quickCareer.allDamageDone > filter.damage[0] && p.quickCareer.allDamageDone < filter.damage[1]);
+                        else if (filter.damage[0] == -1) ret = p.quickCareer.allDamageDone < filter.damage[1];
+                    }
+                    else
+                    {
+                        ret = p.quickCareer.allDamageDone == filter.damage[0];
+                    }
                 }
-                else
-                {
-                    ret = p.quickCareer.healingDone == filter.healing[0];
-                }
-            }
 
-            if (!ret) return false;
-            //objtime quick
-            if (filter.objTime.Length > 0)
-            {
-                if (filter.objTime.Length > 1)
+                if (!ret) return false;
+                //elimination quick
+                if (filter.elimination.Length > 0)
                 {
-                    if (filter.objTime[1] == null) ret = DateTime.Compare(p.quickCareer.objectiveTime , filter.objTime[0]) > 0;
-                    else if (filter.objTime[1] !=null && filter.objTime[0] !=null) ret = (DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) > 0 && DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[1]) < 0);
-                    else if (filter.objTime[0] !=null) ret = DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[1]) < 0;
+                    if (filter.elimination.Length > 1)
+                    {
+                        if (filter.elimination[1] == -1) ret = p.quickCareer.eliminations > filter.elimination[0];
+                        else if (filter.elimination[1] > -1 && filter.elimination[0] > -1) ret = (p.quickCareer.eliminations > filter.elimination[0] && p.quickCareer.eliminations < filter.elimination[1]);
+                        else if (filter.elimination[0] == -1) ret = p.quickCareer.eliminations < filter.elimination[1];
+                    }
+                    else
+                    {
+                        ret = p.quickCareer.eliminations == filter.elimination[0];
+                    }
                 }
-                else
-                {
-                    ret = DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) == 0;
-                }
-            }
 
-            if (!ret) return false;
-            //onfire quick
-            if (filter.onfire.Length > 0)
-            {
-                if (filter.onfire.Length > 1)
+                if (!ret) return false;
+                //healing quick
+                if (filter.healing.Length > 0)
                 {
-                    if (filter.onfire[1] == null) ret = DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) > 0;
-                    else if (filter.onfire[1] != null && filter.onfire[0] != null) ret = (DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) > 0 && DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[1]) < 0);
-                    else if (filter.onfire[0] != null) ret = DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[1]) < 0;
+                    if (filter.healing.Length > 1)
+                    {
+                        if (filter.healing[1] == -1) ret = p.quickCareer.healingDone > filter.healing[0];
+                        else if (filter.healing[1] > -1 && filter.healing[0] > -1) ret = (p.quickCareer.healingDone > filter.healing[0] && p.quickCareer.healingDone < filter.healing[1]);
+                        else if (filter.healing[0] == -1) ret = p.quickCareer.healingDone < filter.healing[1];
+                    }
+                    else
+                    {
+                        ret = p.quickCareer.healingDone == filter.healing[0];
+                    }
                 }
-                else
+
+                if (!ret) return false;
+                //objtime quick
+                if (filter.objTime.Length > 0)
                 {
-                    ret = DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) == 0;
+                    if (filter.objTime.Length > 1)
+                    {
+                        if (filter.objTime[1] == null) ret = DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) > 0;
+                        else if (filter.objTime[1] != null && filter.objTime[0] != null) ret = (DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) > 0 && DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[1]) < 0);
+                        else if (filter.objTime[0] != null) ret = DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[1]) < 0;
+                    }
+                    else
+                    {
+                        ret = DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) == 0;
+                    }
+                }
+
+                if (!ret) return false;
+                //onfire quick
+                if (filter.onfire.Length > 0)
+                {
+                    if (filter.onfire.Length > 1)
+                    {
+                        if (filter.onfire[1] == null) ret = DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) > 0;
+                        else if (filter.onfire[1] != null && filter.onfire[0] != null) ret = (DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) > 0 && DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[1]) < 0);
+                        else if (filter.onfire[0] != null) ret = DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[1]) < 0;
+                    }
+                    else
+                    {
+                        ret = DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) == 0;
+                    }
                 }
             }
 

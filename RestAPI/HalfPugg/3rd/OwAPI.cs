@@ -7,13 +7,7 @@ using System.Globalization;
 
 namespace OverwatchAPI
 {
-    public enum classe
-    {
-        tank = 1,damage = 2, support=4
-    }
-
-
-
+    
     /*
      > Overwatch é um jogo que se divide em partida rapida e competitivo (tem mais modalidades mas a API trata apenas essas duas)
      
@@ -39,14 +33,14 @@ namespace OverwatchAPI
 
     public class owFilter
     { //-1 para não informado
-        public int role;//-1 none, 0 tank, 1 dps, 2 haler
+        public int role;//1 tank, 2 damage, 4 support , <1 para não informado
         public int[] level;// level+endorsement
         public int[] rating;
         public float[] damage;
         public float[] healing;
         public int[] elimination;
-        public DateTime[] objTime; //00:00 nao informado
-        public DateTime[] onfire; //00:00 nao informado
+        public DateTime[] objTime; //null se nao informado
+        public DateTime[] onfire; //null se nao informado
         public bool competitive;
     }
 
@@ -94,11 +88,6 @@ namespace OverwatchAPI
 
         public const string ENDPOINT_API = "https://ow-api.com/v1/stats/pc/";
 
-        static Dictionary<string, classe> nameClasse = new Dictionary<string, classe>()
-        {
-            {"tank",classe.tank },{"support",classe.support},{"damage",classe.damage}
-        };
-
         private static string regStr(region reg)
         {
             switch (reg)
@@ -116,10 +105,11 @@ namespace OverwatchAPI
         private static profile getProfile(JToken token)
         {
             if (token == null) return null;
+            int[] levels = new int[] { -1, -1, -1 };
+
             var ratings = token["ratings"];
 
             JArray rls = new JArray();
-            int[] levels = new int[] { -1, -1, -1 };
             if (ratings.HasValues)
             {
                 rls = JArray.Parse(ratings.ToString());
@@ -133,11 +123,11 @@ namespace OverwatchAPI
                 {
                     levels[0] = r["level"].Value<int>();
                 }
-                if (r["role"].ToString() == "damage")
+                else if (r["role"].ToString() == "damage")
                 {
                     levels[1] = r["level"].Value<int>();
                 }
-                if (r["role"].ToString() == "support")
+                else if (r["role"].ToString() == "support")
                 {
                     levels[2] = r["level"].Value<int>();
                 }
