@@ -36,6 +36,18 @@ namespace HalfPugg.Controllers
             return Ok(playerGame);
         }
 
+        [Route("api/GetPlayersInGame")]
+        public IQueryable<PlayerGame> GetPlayerInGame(int GameID)
+        {
+            return db.PlayerGames.Where(x=>x.IDGame == GameID);
+        }
+
+        [Route("api/GetGamesInPlayer")]
+        public IQueryable<PlayerGame> GetGameInPlayer(int PlayerID)
+        {
+            return db.PlayerGames.Where(x => x.IDGamer == PlayerID);
+        }
+
         // PUT: api/PlayerGames/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutPlayerGame(int id, PlayerGame playerGame)
