@@ -1,7 +1,8 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 
 import './curriculo.css';
-import {Icon, Image, Menu, Segment, Sidebar} from 'semantic-ui-react'
+import {Icon, Image, Menu, Segment, Sidebar, Grid} from 'semantic-ui-react'
 import Header from '../Components/header';
 
 export default class Curriculo extends Component {
@@ -15,128 +16,132 @@ export default class Curriculo extends Component {
         toLogin: false,
     }
 
-    async componentDidMount(){
-    }
-
     OpenConnections(){
         this.setState({NewConnections: false});
     }
-
     
     render(){
-            if(this.state.toLogin == true){
-                return <Redirect to="/"></Redirect>
-            }
-            return (
-                <Segment>
-                    <Header />
-                    <div className="menu-container">
-                        <div className="left-content">
-                            <div class="ui vertical labeled icon menu">
-                                <a class="item">
-                                <i aria-hidden="true" class="gamepad icon"></i>
-                                Conectar
-                                </a>
-                                <a class="item">
-                                <i aria-hidden="true" class="video camera icon"></i>
-                                Criar salas
-                                </a>
-                                <a class="item">
-                                <i aria-hidden="true" class="video play icon"></i>
-                                Meus grupos
-                                </a>
-                                <a class="item">
-                                <i aria-hidden="true" class="gamepad icon"></i>
-                                Meus jogos
-                                </a>
-                                <a class="item">
-                                <i aria-hidden="true" class="video camera icon"></i>
-                                Perfil
-                                </a>
-                                <a class="item">
-                                <i aria-hidden="true" class="video play icon"></i>
-                                Ranking
-                                </a>
-                            </div>
-                        </div>
-                        <div className="main-content">
-                            <div class="ui container">
-                                    <h2 class="ui icon center aligned header">
-                                        <i aria-hidden="true" class="users circular icon"></i>
-                                        <div class="content">Fulaninho</div>
-                                    </h2>
-                                    <div class='space'>
-                                    <div class="ui star rating" role="radiogroup" tabindex="-1">
-                                        <i
-                                            tabindex="0"
-                                            aria-checked="false"
-                                            aria-posinset="1"
-                                            aria-setsize="4"
-                                            class="active icon"
-                                            role="radio"
-                                        ></i>
-                                        <i
-                                            tabindex="0"
-                                            aria-checked="false"
-                                            aria-posinset="2"
-                                            aria-setsize="4"
-                                            class="active icon"
-                                            role="radio"
-                                        ></i>
-                                        <i
-                                            tabindex="0"
-                                            aria-checked="true"
-                                            aria-posinset="3"
-                                            aria-setsize="4"
-                                            class="active icon"
-                                            role="radio"
-                                        ></i>
-                                        <i
-                                            tabindex="0"
-                                            aria-checked="false"
-                                            aria-posinset="4"
-                                            aria-setsize="4"
-                                            class="icon"
-                                            role="radio"
-                                        ></i>
-                                    </div>
-                                    </div>
-                                    <div class='space'> 
-                                    <div class="ui message">
-                                        <div class="header">Características</div>
-                                        <ul class="list">
-                                            <li class="content">Like to talk</li>
-                                            <li class="content">Easy-going</li>
-                                            <li class="content">Living the best life</li>
-                                        </ul>
-                                    </div>
-                                    </div>
-                            </div>
-                            <div>
-                                <div class="ui segment dimmable">
-                                    <h3 class="ui header">Overwatch</h3>
-                                    <div class="ui small ui small images images">
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image>
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image>
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image> 
-                                    </div>
-                                    <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" class="ui medium image"></Image>
-                                </div>
-                                <div class="ui segment dimmable">
-                                    <h3 class="ui header">League of legends</h3>
-                                    <div class="ui small ui small images images">
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image> 
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image>
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image>
-                                    </div>
-                                    <Image
-                                        src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png"
-                                        class="ui medium image"
-                                    > </Image>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </Segment>
-            );
+        if(this.state.toLogin == true){
+            return <Redirect to="/"></Redirect>
         }
+        return (
+            <div>
+                <div>
+                    <Header/>
+                </div>
+                <div className="menu-container">
+                    <Segment>
+                        <Grid columns={2} relaxed='very' stackable>
+                            <Grid.Column width={2}>
+                                <div className="left-content">
+                                    <div className="ui vertical labeled icon menu">
+                                        <a className="item">
+                                        <i aria-hidden="true" className="gamepad icon"></i>
+                                        Conectar
+                                        </a>
+                                        <a className="item">
+                                        <i aria-hidden="true" className="video camera icon"></i>
+                                        Criar salas
+                                        </a>
+                                        <a className="item">
+                                        <i aria-hidden="true" className="video play icon"></i>
+                                        Meus grupos
+                                        </a>
+                                        <a className="item">
+                                        <i aria-hidden="true" className="gamepad icon"></i>
+                                        Meus jogos
+                                        </a>
+                                        <a className="item">
+                                        <i aria-hidden="true" className="video camera icon"></i>
+                                        Perfil
+                                        </a>
+                                        <a className="item">
+                                        <i aria-hidden="true" className="video play icon"></i>
+                                        Ranking
+                                        </a>
+                                    </div>
+                                </div>
+                            </Grid.Column>
+                            <Grid.Column width={10}>
+                                <div className="main-content">
+                                <div className="ui container">
+                                        <h2 className="ui icon center aligned header">
+                                            <i aria-hidden="true" className="users circular icon"></i>
+                                            <div className="content">Fulaninho</div>
+                                        </h2>
+                                        <div className='space'>
+                                        <div className="ui star rating" role="radiogroup">
+                                            <i
+                                                aria-checked="false"
+                                                aria-posinset="1"
+                                                aria-setsize="4"
+                                                className="active icon"
+                                                role="radio"
+                                            ></i>
+                                            <i
+                                                aria-checked="false"
+                                                aria-posinset="2"
+                                                aria-setsize="4"
+                                                className="active icon"
+                                                role="radio"
+                                            ></i>
+                                            <i
+                                                aria-checked="true"
+                                                aria-posinset="3"
+                                                aria-setsize="4"
+                                                className="active icon"
+                                                role="radio"
+                                            ></i>
+                                            <i
+                                                aria-checked="false"
+                                                aria-posinset="4"
+                                                aria-setsize="4"
+                                                className="icon"
+                                                role="radio"
+                                            ></i>
+                                        </div>
+                                        </div>
+                                        <div className='space'> 
+                                        <div className="ui message">
+                                            <div className="header">Características</div>
+                                            <ul className="list">
+                                                <li className="content">Like to talk</li>
+                                                <li className="content">Easy-going</li>
+                                                <li className="content">Living the best life</li>
+                                            </ul>
+                                        </div>
+                                        </div>
+                                </div>
+                                <div>
+                                    <div className="ui segment dimmable">
+                                        <h3 className="ui header">Overwatch</h3>
+                                        <div className="ui small ui small images images">
+                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
+                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
+                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
+                                        </div>
+                                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" className="ui medium image"></Image>
+                                    </div>
+                                    <div className="ui segment dimmable">
+                                        <h3 className="ui header">League of legends</h3>
+                                        <div className="ui small ui small images images">
+                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
+                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
+                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
+                                        </div>
+                                        <Image
+                                            src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png"
+                                            className="ui medium image"
+                                        />
+                                    </div>
+                                    </div>
+                                </div>
+                            </Grid.Column>
+                        </Grid>
+                        
+                    </Segment>
+                </div>
+            </div>
+        )
+    }
+}

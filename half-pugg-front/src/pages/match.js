@@ -23,6 +23,7 @@ export default class Match extends Component {
         NumberOfRequests: 0,
         NewConnections: false,
         toLogin: false,
+        cadastroIncompleto: false,
     }
 
     async componentDidMount() {
@@ -75,13 +76,14 @@ export default class Match extends Component {
         console.log({
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
-            "Status": false,
+            "Status": "F",
+            "IdFilters": 1
         })
         const response = api.post('api/RequestedMatches', {
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
-            "Status": false,
-            "IdFilters": 0
+            "Status": "F",
+            "IdFilters": 1
         })
         .catch(function(error){
             console.log(error);
@@ -111,7 +113,8 @@ export default class Match extends Component {
             const reqResponse = await api.put('api/RequestedMatches/1', {
                 "IdPlayer": gamerMatch.ID,
                 "IdPlayer2": this.state.GamerLogado.ID,
-                "Status": "F"
+                "Status": "F",
+                "IdFilters": 1,
             });
     
             const response = await api.post('api/Matches', {
@@ -154,6 +157,9 @@ export default class Match extends Component {
                         </Menu.Item>
                     </Menu>
                 </div>
+                <Segment id="incomplete-cadastro">
+                    <Button labelPosition='left'>X</Button>
+                </Segment>
                 <div className='connections'>
                     <Segment>
                         <Grid columns={2} celled='internally' stackable>
