@@ -16,7 +16,7 @@ namespace HalfPugg.Models
         [Required] [StringLength(1)] public string Status { get; set; }
         [ForeignKey("Filters")] public int IdFilters { get; set; }
         public virtual Player Player { get; set; }
-        [JsonIgnore] public virtual Group Sala { get; set; }
+        [JsonIgnore] public virtual Hall Sala { get; set; }
         [JsonIgnore] public virtual Filter Filters { get; set; }
     }
 
