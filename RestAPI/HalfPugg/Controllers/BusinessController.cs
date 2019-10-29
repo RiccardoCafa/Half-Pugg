@@ -117,7 +117,7 @@ namespace HalfPugg.Controllers
         {
             bool ret = true;
            //rating
-            if (filter.rating.Length > 0)
+            if (filter.rating != null)
             {
                 if (filter.rating.Length > 1)
                 {
@@ -133,7 +133,7 @@ namespace HalfPugg.Controllers
 
             if (!ret) return false;
             //level 
-            if (filter.level.Length > 0)
+            if (filter.level != null)
             {
                 if (filter.level.Length > 1)
                 {
@@ -151,7 +151,7 @@ namespace HalfPugg.Controllers
             {
                 if (!ret) return false;
                 //damage quick
-                if (filter.damage.Length > 0)
+                if (filter.damage != null )
                 {
                     if (filter.damage.Length > 1)
                     {
@@ -167,7 +167,7 @@ namespace HalfPugg.Controllers
 
                 if (!ret) return false;
                 //elimination quick
-                if (filter.elimination.Length > 0)
+                if (filter.elimination != null)
                 {
                     if (filter.elimination.Length > 1)
                     {
@@ -183,7 +183,7 @@ namespace HalfPugg.Controllers
 
                 if (!ret) return false;
                 //healing quick
-                if (filter.healing.Length > 0)
+                if (filter.healing != null)
                 {
                     if (filter.healing.Length > 1)
                     {
@@ -199,7 +199,7 @@ namespace HalfPugg.Controllers
 
                 if (!ret) return false;
                 //objtime quick
-                if (filter.objTime.Length > 0)
+                if (filter.objTime != null)
                 {
                     if (filter.objTime.Length > 1)
                     {
@@ -215,7 +215,7 @@ namespace HalfPugg.Controllers
 
                 if (!ret) return false;
                 //onfire quick
-                if (filter.onfire.Length > 0)
+                if (filter.onfire != null)
                 {
                     if (filter.onfire.Length > 1)
                     {
@@ -233,7 +233,7 @@ namespace HalfPugg.Controllers
             {
                 if (!ret) return false;
                 //damage quick
-                if (filter.damage.Length > 0)
+                if (filter.damage != null)
                 {
                     if (filter.damage.Length > 1)
                     {
@@ -249,7 +249,7 @@ namespace HalfPugg.Controllers
 
                 if (!ret) return false;
                 //elimination quick
-                if (filter.elimination.Length > 0)
+                if (filter.elimination != null)
                 {
                     if (filter.elimination.Length > 1)
                     {
@@ -265,7 +265,7 @@ namespace HalfPugg.Controllers
 
                 if (!ret) return false;
                 //healing quick
-                if (filter.healing.Length > 0)
+                if (filter.healing != null)
                 {
                     if (filter.healing.Length > 1)
                     {
@@ -281,7 +281,7 @@ namespace HalfPugg.Controllers
 
                 if (!ret) return false;
                 //objtime quick
-                if (filter.objTime.Length > 0)
+                if (filter.objTime != null)
                 {
                     if (filter.objTime.Length > 1)
                     {
@@ -297,7 +297,7 @@ namespace HalfPugg.Controllers
 
                 if (!ret) return false;
                 //onfire quick
-                if (filter.onfire.Length > 0)
+                if (filter.onfire != null)
                 {
                     if (filter.onfire.Length > 1)
                     {

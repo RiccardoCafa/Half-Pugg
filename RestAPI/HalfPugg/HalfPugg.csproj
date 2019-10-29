@@ -239,37 +239,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910251216575_Player.cs" />
-    <Compile Include="Migrations\201910251216575_Player.Designer.cs">
-      <DependentUpon>201910251216575_Player.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910262347538_JsonIgnore.cs" />
-    <Compile Include="Migrations\201910262347538_JsonIgnore.Designer.cs">
-      <DependentUpon>201910262347538_JsonIgnore.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910281227226_Sex.cs" />
-    <Compile Include="Migrations\201910281227226_Sex.Designer.cs">
-      <DependentUpon>201910281227226_Sex.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910281241593_Status.cs" />
-    <Compile Include="Migrations\201910281241593_Status.Designer.cs">
-      <DependentUpon>201910281241593_Status.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910281251091_CharProblem.cs" />
-    <Compile Include="Migrations\201910281251091_CharProblem.Designer.cs">
-      <DependentUpon>201910281251091_CharProblem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910281253477_MatchChar.cs" />
-    <Compile Include="Migrations\201910281253477_MatchChar.Designer.cs">
-      <DependentUpon>201910281253477_MatchChar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910290054527_PathLen.cs" />
-    <Compile Include="Migrations\201910290054527_PathLen.Designer.cs">
-      <DependentUpon>201910290054527_PathLen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910290056197_PathLen1.cs" />
-    <Compile Include="Migrations\201910290056197_PathLen1.Designer.cs">
-      <DependentUpon>201910290056197_PathLen1.cs</DependentUpon>
+    <Compile Include="Migrations\201910292323586_Init.cs" />
+    <Compile Include="Migrations\201910292323586_Init.Designer.cs">
+      <DependentUpon>201910292323586_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
@@ -527,29 +499,8 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910251216575_Player.resx">
-      <DependentUpon>201910251216575_Player.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910262347538_JsonIgnore.resx">
-      <DependentUpon>201910262347538_JsonIgnore.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910281227226_Sex.resx">
-      <DependentUpon>201910281227226_Sex.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910281241593_Status.resx">
-      <DependentUpon>201910281241593_Status.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910281251091_CharProblem.resx">
-      <DependentUpon>201910281251091_CharProblem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910281253477_MatchChar.resx">
-      <DependentUpon>201910281253477_MatchChar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910290054527_PathLen.resx">
-      <DependentUpon>201910290054527_PathLen.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910290056197_PathLen1.resx">
-      <DependentUpon>201910290056197_PathLen1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910292323586_Init.resx">
+      <DependentUpon>201910292323586_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
