@@ -7,7 +7,7 @@ class Auth extends Component {
     state = {
         user: undefined,
         toLogin: false,
-
+        toMatch: false,
     }
     
     componentDidMount() {
@@ -15,13 +15,11 @@ class Auth extends Component {
         if(!jwt){
             this.setState({toLogin: true});
             
-            api.get('api/Login', { headers: { "token-jwt": {jwt} }}).then(res => res.setState(
-            {
-                user: res.data
-            }
-            )).catch(err => {
-                localStorage.removeItem("jwt");
-            this.setState({toLogin: true});
+            api.get('api/ValidateToken', { headers: { "token-jwt": {jwt} }})
+               .then(res => res.setState({ toMatch: true }))
+               .catch(() => {
+                    localStorage.removeItem("jwt");
+                    this.setState({toLogin: true});
             })
             console.log(this.state.user);
         }

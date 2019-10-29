@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { Menu, Image, Label, Input, Button } from 'semantic-ui-react';
+import { Menu, Input, Button } from 'semantic-ui-react';
 import api from '../services/api';
 
 import './header.css';
