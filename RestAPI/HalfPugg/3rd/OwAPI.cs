@@ -3,15 +3,16 @@ using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace OverwatchAPI
 {
-
-    public class role
+    public enum classe
     {
-        public string name;
-        public int rating;
+        tank = 1,damage = 2, support=4
     }
+
+
 
     /*
      > Overwatch é um jogo que se divide em partida rapida e competitivo (tem mais modalidades mas a API trata apenas essas duas)
@@ -46,6 +47,7 @@ namespace OverwatchAPI
         public int[] elimination;
         public DateTime[] objTime; //00:00 nao informado
         public DateTime[] onfire; //00:00 nao informado
+        public bool competitive;
     }
 
     public class profile 
@@ -55,7 +57,9 @@ namespace OverwatchAPI
         public int endorsement;
         public int prestige;
         public int rating;
-        public role[] ratings;
+        public int tank_rating;
+        public int damage_rating;
+        public int support_rating;
     }
     public class careerStats
     {
@@ -67,9 +71,9 @@ namespace OverwatchAPI
         public float healingDone;
         public float heroDamageDone;
         public float objectiveKills;
-        public string objectiveTime;
+        public DateTime objectiveTime;
         public float soloKills;
-        public string timeSpentOnFire;
+        public DateTime timeSpentOnFire;
     }
     public class player
     {
@@ -89,6 +93,11 @@ namespace OverwatchAPI
         private static HttpClient client;
 
         public const string ENDPOINT_API = "https://ow-api.com/v1/stats/pc/";
+
+        static Dictionary<string, classe> nameClasse = new Dictionary<string, classe>()
+        {
+            {"tank",classe.tank },{"support",classe.support},{"damage",classe.damage}
+        };
 
         private static string regStr(region reg)
         {
@@ -110,21 +119,29 @@ namespace OverwatchAPI
             var ratings = token["ratings"];
 
             JArray rls = new JArray();
-
+            int[] levels = new int[] { -1, -1, -1 };
             if (ratings.HasValues)
             {
                 rls = JArray.Parse(ratings.ToString());
             }
 
-            role[] roles = new role[rls.Count];
+           
             byte i = 0;
             foreach (var r in rls)
             {
-                roles[i] = new role
+                if (r["role"].ToString() == "tank")
                 {
-                    name = r["role"].ToString(),
-                    rating = r["level"].Value<int>()
-                };
+                    levels[0] = r["level"].Value<int>();
+                }
+                if (r["role"].ToString() == "damage")
+                {
+                    levels[1] = r["level"].Value<int>();
+                }
+                if (r["role"].ToString() == "support")
+                {
+                    levels[2] = r["level"].Value<int>();
+                }
+                
                 i++;
             }
            
@@ -135,7 +152,9 @@ namespace OverwatchAPI
                 level = token["level"].Value<int>(),
                 prestige = token["prestige"].Value<int>(),
                 rating = token["rating"].Value<int>(),
-                ratings = roles
+                tank_rating = levels[0],
+                damage_rating = levels[1],
+                support_rating = levels[2]
             };
         }
 
@@ -144,18 +163,18 @@ namespace OverwatchAPI
             return (token != null) ?
              new careerStats
              {
-                  
+
                  allDamageDone = token["allDamageDoneAvgPer10Min"].Value<float>(),
                  barrierDamageDone = token["barrierDamageDoneAvgPer10Min"].Value<float>(),
-                 deaths = token["deathsAvgPer10Min"].Value<float>() ,
+                 deaths = token["deathsAvgPer10Min"].Value<float>(),
                  eliminations = token["eliminationsAvgPer10Min"].Value<float>(),
-                finalBlows = token["finalBlowsAvgPer10Min"].Value<float>(),
-                healingDone =token["healingDoneAvgPer10Min"].Value<float>(),
-                heroDamageDone =token["heroDamageDoneAvgPer10Min"].Value<float>(),
-                objectiveKills = token["objectiveKillsAvgPer10Min"].Value<float>(),
-                objectiveTime = token["objectiveTimeAvgPer10Min"].ToString(),
-                soloKills = token["soloKillsAvgPer10Min"].Value<float>(),
-                timeSpentOnFire = token["timeSpentOnFireAvgPer10Min"].ToString()
+                 finalBlows = token["finalBlowsAvgPer10Min"].Value<float>(),
+                 healingDone = token["healingDoneAvgPer10Min"].Value<float>(),
+                 heroDamageDone = token["heroDamageDoneAvgPer10Min"].Value<float>(),
+                 objectiveKills = token["objectiveKillsAvgPer10Min"].Value<float>(),
+                 objectiveTime = DateTime.ParseExact(token["objectiveTimeAvgPer10Min"].ToString(), "mm:ss", new CultureInfo("en-US")),
+                 soloKills = token["soloKillsAvgPer10Min"].Value<float>(),
+                 timeSpentOnFire = DateTime.ParseExact(token["timeSpentOnFireAvgPer10Min"].ToString(), "mm:ss",new CultureInfo("en-US"))
             }:null;
         }
 
