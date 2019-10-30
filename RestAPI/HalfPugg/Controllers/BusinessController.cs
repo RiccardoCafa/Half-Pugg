@@ -35,14 +35,16 @@ namespace HalfPugg.Controllers
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
+            List<int> ids = new List<int>();
         
             foreach(PlayerGame pg in db.PlayerGames.Where(x=>x.IDGame == 1))
             {
                 names.Add(pg.IdAPI);
                 regions.Add(region.us);
+                ids.Add(pg.IDGamer);
                 Console.WriteLine(pg.IdAPI);
             }
-            var a = OwAPI.GetPlayer(names, regions);
+            var a = OwAPI.GetPlayer(names, regions, ids);
             return Json(a);
         }
 
@@ -53,6 +55,7 @@ namespace HalfPugg.Controllers
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
+            List<int> ids = new List<int>();
             PlayerGame p = null;
             foreach (PlayerGame pg in db.PlayerGames.Where(x => x.IDGame == 1))
             {
@@ -64,12 +67,13 @@ namespace HalfPugg.Controllers
                 {
                     names.Add(pg.IdAPI);
                     regions.Add(region.us);
+                    ids.Add(pg.IDGamer);
                 }
             }
             if (p == null) return null;
            
-            var player = OwAPI.GetPlayer(p.IdAPI, region.us);
-            var a = OwAPI.GetPlayer(names, regions).Where
+            var player = OwAPI.GetPlayer(p.IdAPI, region.us,p.IDGamer);
+            var a = OwAPI.GetPlayer(names, regions, ids).Where
                 (
                 m=> 
                 m.profile.rating > 1600
@@ -81,10 +85,11 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(IEnumerable<player>))]
         [Route("api/GetOwMatchFilter")]
         [HttpGet]
-        public IHttpActionResult GetOwMatchFilter(int PlayerID,owFilter filter)
+        public IHttpActionResult GetOwMatchFilter(int PlayerID, owFilter filter)
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
+            List<int> ids = new List<int>();
             PlayerGame p = null;
            
             foreach (PlayerGame pg in db.PlayerGames.Where(x => x.IDGame == 1))
@@ -97,18 +102,15 @@ namespace HalfPugg.Controllers
                 {
                     names.Add(pg.IdAPI);
                     regions.Add(region.us);
+                    ids.Add(pg.IDGamer);
                 }
             }
             if (p == null) return null;
 
-            var player = OwAPI.GetPlayer(p.IdAPI, region.us);
-            var a = OwAPI.GetPlayer(names, regions);
+            var player = OwAPI.GetPlayer(p.IdAPI, region.us, p.IDGamer);
+            var a = OwAPI.GetPlayer(names, regions, ids).Where(x => filterPlayer(x, filter));
 
-            if (filter.role == 1) a = a.Where(x => x.profile.tank_rating>0);
-            else if (filter.role == 2) a = a.Where(x => x.profile.damage_rating > 0);
-            else if (filter.role == 4) a = a.Where(x => x.profile.support_rating > 0);
-
-            a = a.Where(x => filterPlayer(x,filter));
+          
 
             return Json(a);
         }
@@ -116,7 +118,14 @@ namespace HalfPugg.Controllers
         bool filterPlayer(player p, owFilter filter)
         {
             bool ret = true;
-           //rating
+
+            if (filter.role == 1) ret = p.profile.tank_rating > 0;
+            else if (filter.role == 2) ret = p.profile.damage_rating > 0;
+            else if (filter.role == 4) ret = p.profile.support_rating > 0;
+
+            if (!ret) return false;
+
+            //rating
             if (filter.rating != null)
             {
                 if (filter.rating.Length > 1)
@@ -135,15 +144,16 @@ namespace HalfPugg.Controllers
             //level 
             if (filter.level != null)
             {
+                int l = p.profile.level + p.profile.endorsement * 100;
                 if (filter.level.Length > 1)
                 {
-                    if (filter.level[1] == -1) ret = p.profile.level > filter.level[0];
-                    else if (filter.level[1] > -1 && filter.level[0] > -1) ret = (p.profile.level > filter.level[0] && p.profile.level < filter.level[1]);
-                    else if (filter.level[0] == -1) ret = p.profile.level < filter.level[1];
+                    if (filter.level[1] == -1) ret = l > filter.level[0];
+                    else if (filter.level[1] > -1 && filter.level[0] > -1) ret = (l > filter.level[0] && l < filter.level[1]);
+                    else if (filter.level[0] == -1) ret = l < filter.level[1];
                 }
                 else
                 {
-                    ret = p.profile.level == filter.level[0];
+                    ret = l == filter.level[0];
                 }
             }
 
@@ -203,13 +213,13 @@ namespace HalfPugg.Controllers
                 {
                     if (filter.objTime.Length > 1)
                     {
-                        if (filter.objTime[1] == null) ret = DateTime.Compare(p.compCareer.objectiveTime, filter.objTime[0]) > 0;
-                        else if (filter.objTime[1] != null && filter.objTime[0] != null) ret = (DateTime.Compare(p.compCareer.objectiveTime, filter.objTime[0]) > 0 && DateTime.Compare(p.compCareer.objectiveTime, filter.objTime[1]) < 0);
-                        else if (filter.objTime[0] != null) ret = DateTime.Compare(p.compCareer.objectiveTime, filter.objTime[1]) < 0;
+                        if (filter.objTime[1] == null) ret = TimeSpan.Compare(p.compCareer.objectiveTime, filter.objTime[0]) > 0;
+                        else if (filter.objTime[1] != null && filter.objTime[0] != null) ret = (TimeSpan.Compare(p.compCareer.objectiveTime, filter.objTime[0]) > 0 && TimeSpan.Compare(p.compCareer.objectiveTime, filter.objTime[1]) < 0);
+                        else if (filter.objTime[0] != null) ret = TimeSpan.Compare(p.compCareer.objectiveTime, filter.objTime[1]) < 0;
                     }
                     else
                     {
-                        ret = DateTime.Compare(p.compCareer.objectiveTime, filter.objTime[0]) == 0;
+                        ret = TimeSpan.Compare(p.compCareer.objectiveTime, filter.objTime[0]) == 0;
                     }
                 }
 
@@ -219,13 +229,13 @@ namespace HalfPugg.Controllers
                 {
                     if (filter.onfire.Length > 1)
                     {
-                        if (filter.onfire[1] == null) ret = DateTime.Compare(p.compCareer.timeSpentOnFire, filter.onfire[0]) > 0;
-                        else if (filter.onfire[1] != null && filter.onfire[0] != null) ret = (DateTime.Compare(p.compCareer.timeSpentOnFire, filter.onfire[0]) > 0 && DateTime.Compare(p.compCareer.timeSpentOnFire, filter.onfire[1]) < 0);
-                        else if (filter.onfire[0] != null) ret = DateTime.Compare(p.compCareer.timeSpentOnFire, filter.onfire[1]) < 0;
+                        if (filter.onfire[1] == null) ret = TimeSpan.Compare(p.compCareer.timeSpentOnFire, filter.onfire[0]) > 0;
+                        else if (filter.onfire[1] != null && filter.onfire[0] != null) ret = (TimeSpan.Compare(p.compCareer.timeSpentOnFire, filter.onfire[0]) > 0 && TimeSpan.Compare(p.compCareer.timeSpentOnFire, filter.onfire[1]) < 0);
+                        else if (filter.onfire[0] != null) ret = TimeSpan.Compare(p.compCareer.timeSpentOnFire, filter.onfire[1]) < 0;
                     }
                     else
                     {
-                        ret = DateTime.Compare(p.compCareer.timeSpentOnFire, filter.onfire[0]) == 0;
+                        ret = TimeSpan.Compare(p.compCareer.timeSpentOnFire, filter.onfire[0]) == 0;
                     }
                 }
             }
@@ -285,13 +295,13 @@ namespace HalfPugg.Controllers
                 {
                     if (filter.objTime.Length > 1)
                     {
-                        if (filter.objTime[1] == null) ret = DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) > 0;
-                        else if (filter.objTime[1] != null && filter.objTime[0] != null) ret = (DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) > 0 && DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[1]) < 0);
-                        else if (filter.objTime[0] != null) ret = DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[1]) < 0;
+                        if (filter.objTime[1] == null) ret = TimeSpan.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) > 0;
+                        else if (filter.objTime[1] != null && filter.objTime[0] != null) ret = (TimeSpan.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) > 0 && TimeSpan.Compare(p.quickCareer.objectiveTime, filter.objTime[1]) < 0);
+                        else if (filter.objTime[0] != null) ret = TimeSpan.Compare(p.quickCareer.objectiveTime, filter.objTime[1]) < 0;
                     }
                     else
                     {
-                        ret = DateTime.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) == 0;
+                        ret = TimeSpan.Compare(p.quickCareer.objectiveTime, filter.objTime[0]) == 0;
                     }
                 }
 
@@ -301,13 +311,13 @@ namespace HalfPugg.Controllers
                 {
                     if (filter.onfire.Length > 1)
                     {
-                        if (filter.onfire[1] == null) ret = DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) > 0;
-                        else if (filter.onfire[1] != null && filter.onfire[0] != null) ret = (DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) > 0 && DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[1]) < 0);
-                        else if (filter.onfire[0] != null) ret = DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[1]) < 0;
+                        if (filter.onfire[1] == null) ret = TimeSpan.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) > 0;
+                        else if (filter.onfire[1] != null && filter.onfire[0] != null) ret = (TimeSpan.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) > 0 && TimeSpan.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[1]) < 0);
+                        else if (filter.onfire[0] != null) ret = TimeSpan.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[1]) < 0;
                     }
                     else
                     {
-                        ret = DateTime.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) == 0;
+                        ret = TimeSpan.Compare(p.quickCareer.timeSpentOnFire, filter.onfire[0]) == 0;
                     }
                 }
             }
