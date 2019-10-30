@@ -140,3 +140,4 @@ export default class Curriculo extends Component {
                 </Segment>
             );
         }
+}
