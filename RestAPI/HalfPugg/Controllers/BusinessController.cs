@@ -13,10 +13,6 @@ using System.Data.Entity;
 
 namespace HalfPugg.Controllers
 {
-   
-
-    
-
     public class BusinessController : ApiController
     {
       
@@ -46,7 +42,7 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(IEnumerable<player>))]
         [Route("api/GetOwMatchFilter")]
         [HttpGet]
-        public IHttpActionResult GetOwMatchFilter(int PlayerID, owFilter filter)
+        public IHttpActionResult GetOwMatchFilter(int PlayerID, [FromBody]owFilter filter)
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
@@ -66,14 +62,12 @@ namespace HalfPugg.Controllers
                     ids.Add(pg.IDGamer);
                 }
             }
-            if (p == null) return null;
+            if (p == null) return BadRequest(); //400
 
             var player = OwAPI.GetPlayer(p.IdAPI, region.us, p.IDGamer);
             var a = OwAPI.GetPlayer(names, regions, ids).Where(x => filterPlayer(x, filter));
 
-          
-
-            return Json(a);
+            return Ok(a);//201
         }
 
         bool filterPlayer(player p, owFilter filter)

@@ -97,7 +97,6 @@ namespace HalfPugg.Controllers
             return Json(gamers);
         }
 
-
         // PUT: api/Gamers/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutGamer(int id, Player gamer)

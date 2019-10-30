@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Comment, Form, TextArea } from 'semantic-ui-react'
+import { Button, Image } from 'semantic-ui-react'
 
 import './register2.css';
 export default  function({history}) {

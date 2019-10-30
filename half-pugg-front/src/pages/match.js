@@ -6,9 +6,10 @@ import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/header';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid } from 'semantic-ui-react';
+import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg'
+import { stringify } from 'querystring';
 
 export default class Match extends Component {
 
@@ -27,6 +28,17 @@ export default class Match extends Component {
         isMatching: false,
         toBio: false,
         hideCom: false,
+        Games: [],
+        OWFilter: false,
+        OWF: {
+            "role": 0,
+            "level": [0],
+            "rating": [0],
+            "damage": [0],
+            "healing": [0],
+            "elimination": [0],
+            "competitve": false,
+        }
     }
 
     async componentDidMount() {
@@ -52,10 +64,10 @@ export default class Match extends Component {
 
         this.setState(
         {
-            GamerLogado: myData
+            GamerLogado: myData.data
         })
         console.log(myData);
-        this.setState({Nickname: myData.Nickname})
+        this.setNickname(myData);
         
         if(myData !== undefined && myData.data !== null) {
             const MatchData = await api.get('api/GamersMatch',
@@ -75,13 +87,12 @@ export default class Match extends Component {
         }
     }
 
+    setNickname(myData) {
+        
+        this.setState({Nickname: myData.Nickname})
+    }
+
     connectMatch(matcher) {
-        console.log({
-            "IdPlayer": this.state.GamerLogado.ID,
-            "IdPlayer2": matcher.ID,
-            "Status": "F",
-            "IdFilters": 1
-        })
         const response = api.post('api/RequestedMatches', {
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
@@ -100,6 +111,12 @@ export default class Match extends Component {
                 this.setState({GamerMatch: array});
             }
         }
+    }
+
+    openGamersByFilter = () => {
+        console.log(this.state.OWF);
+        api.get('api/GetOwMatchFilter',{headers: { "PlayerID": 2} } ,this.state.OWF)
+        .then( res => this.setState({GamerMatch: res.data})).catch(err => console.log(err.message));
     }
 
     openRequests() {
@@ -145,6 +162,40 @@ export default class Match extends Component {
         this.setState({toBio: true})
     }
 
+    openOWFiltro = () => {
+        this.setState({OWFilter: true});
+    }
+
+    setRole = (role) => {
+        var owf = {...this.state.OWF}
+        owf.Role = role;
+        this.setState({OWF: owf});
+    }
+
+    setLevel = (level) => {
+        var owf = {...this.state.OWF}
+        owf.level[0] = parseInt(level);
+        this.setState({OWF: owf})
+    }
+
+    setDamage= (val) =>{
+        var owf = {...this.state.OWF}
+        owf.damage[0] = val
+        this.setState({OWF: owf})
+    }
+
+    setHealing = (val) => {
+        var owf = {...this.state.OWF}
+        owf.healing[0] = val
+        this.setState({OWF: owf})
+    }
+
+    setElimination= (val) => {
+        var owf = {...this.state.OWF}
+        owf.elimination[0] = val
+        this.setState({OWF: owf})
+    }
+
     render() {
         if(this.state.toLogin === true) {
             return <Redirect to="/"></Redirect>
@@ -160,10 +211,10 @@ export default class Match extends Component {
                 </div>  
                 <div className='submenu'>
                     <Menu compact>
-                        <Menu.Item onClick={e => this.openConnections()}>
+                        <Menu.Item onClick={e => this.openConnections}>
                             <Icon name='users'/> New Connections
                         </Menu.Item>
-                        <Menu.Item onClick={e => this.openRequests()}>
+                        <Menu.Item onClick={e => this.openRequests}>
                             <Icon name='mail'/> Pending Requests
                             <Label color='teal' floating>{this.state.NumberOfRequests}</Label>
                         </Menu.Item>
@@ -172,7 +223,7 @@ export default class Match extends Component {
                 {this.state.hideCom === false ?
                 <Segment id="incomplete-cadastro">
                     <p>Parece que tem informações faltando no seu perfil, atualize para que outros jogadores consigam saber mais de você!</p>
-                    <Button primary onClick={() => this.goToBio()}>Atualizar!</Button>
+                    <Button primary onClick={() => this.goToBio}>Atualizar!</Button>
                     <Button id='botao-complete-cadastro' labelPosition='right' floated='right' onClick={() => this.setState({hideCom: true})}>X</Button>
                 </Segment>
                 : <div/>}
@@ -250,7 +301,26 @@ export default class Match extends Component {
                             }
                             </Grid.Column>
                             <Grid.Column width={3}>
-                                
+                                Filtro
+                                <Checkbox label='Filtrar por Overwatch' onChange={this.openOWFiltro}/>
+                                {this.state.OWFilter === true ?
+                                <div>
+                                    <Input placeholder='role' value={this.state.OWF.role} 
+                                            onChange={e => this.setRole(e.target.value)}></Input>
+                                    <Input placeholder='level' value={this.state.OWF.level[0]} 
+                                            onChange={e => this.setLevel(e.target.value)}></Input>
+                                    <Input placeholder='rating' value={this.state.OWF.rating[0]} 
+                                            onChange={e => this.setRating(e.target.value)}></Input>
+                                    <Input placeholder='damage' value={this.state.OWF.damage[0]} 
+                                            onChange={e => this.setDamage(e.target.value)}></Input>
+                                    <Input placeholder='healing' value={this.state.OWF.healing[0]} 
+                                            onChange={e => this.setHealing(e.target.value)}></Input>
+                                    <Input placeholder='elimination' value={this.state.OWF.elimination[0]} 
+                                            onChange={e => this.setElimination(e.target.value)}></Input>
+                                    <Button onClick={this.openGamersByFilter}>Filtrar</Button>
+                                </div>
+                                :
+                                <div/>}
                             </Grid.Column>
                         </Grid>
                     </Segment>

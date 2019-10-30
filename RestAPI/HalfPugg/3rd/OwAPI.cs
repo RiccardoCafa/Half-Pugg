@@ -9,7 +9,7 @@ using System.Web.Http.Results;
 namespace OverwatchAPI
 {
     
-    public struct owFilter
+    public class owFilter
     { //-1 para não informado
         public int role;//1 tank, 2 damage, 4 support , <1 para não informado
         public int[] level;// level+endorsement
