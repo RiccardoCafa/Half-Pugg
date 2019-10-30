@@ -14,6 +14,7 @@ export default class header extends Component {
         Email: '',
         activeItem: '',
         toHome: false,
+        toMyConnections: false,
     }
     //4b0082
     handleItemClick = (e, { name }) => this.setState( {activeItem: name } );
@@ -28,7 +29,14 @@ export default class header extends Component {
         }
     }
 
+    goToMyConnections = () => {
+        this.setState({toMyConnections: true});
+    }
+
     render() {
+        if(this.state.toMyConnections === true) {
+            return <Redirect to="/MyConnections"></Redirect>
+        }
         const { activeItem } = this.state;
 
         if(this.state.toHome === true) {
@@ -49,7 +57,7 @@ export default class header extends Component {
                     <Menu.Item
                         name='My Connections'
                         active={activeItem === "Connect"}
-                        onClick={this.handleItemClick}
+                        onClick={this.goToMyConnections}
                         />
                     <Menu.Menu position='right'>
                         <Menu.Item >

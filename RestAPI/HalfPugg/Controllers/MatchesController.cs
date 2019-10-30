@@ -27,13 +27,34 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(Match))]
         public async Task<IHttpActionResult> GetMatch(int id)
         {
-            Match match = await db.Matches.FindAsync(id);
-            if (match == null)
+            Player procurando = await db.Gamers.FindAsync(id);
+
+            List<Match> match = db.Matches
+                                    .Where(x => x.IdPlayer1 == id || x.IdPlayer2 == id)
+                                    .AsEnumerable().ToList();
+            if (match != null)
             {
-                return NotFound();
+                return Ok(match);
             }
 
-            return Ok(match);
+            return NotFound();
+        }
+
+        [Route("api/Matches/ByGamer")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetMatchByGamer(int gamerid)
+        {
+            Player procurando = await db.Gamers.FindAsync(gamerid);
+
+            List<Match> match = db.Matches
+                                    .Where(x => x.IdPlayer1 == gamerid || x.IdPlayer2 == gamerid)
+                                    .AsEnumerable().ToList();
+            if(match != null)
+            {
+                return Ok(match);
+            }
+
+            return NotFound();
         }
 
         // PUT: api/Matches/5

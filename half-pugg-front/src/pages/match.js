@@ -38,7 +38,7 @@ export default class Match extends Component {
             "healing": [0],
             "elimination": [0],
             "competitve": false,
-        }
+        },
     }
 
     async componentDidMount() {
@@ -64,7 +64,7 @@ export default class Match extends Component {
 
         this.setState(
         {
-            GamerLogado: myData.data
+            GamerLogado: myData
         })
         console.log(myData);
         this.setNickname(myData);
@@ -92,7 +92,8 @@ export default class Match extends Component {
         this.setState({Nickname: myData.Nickname})
     }
 
-    connectMatch(matcher) {
+    connectMatch = (matcher) => {
+        console.log(this.state);
         const response = api.post('api/RequestedMatches', {
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
@@ -115,20 +116,21 @@ export default class Match extends Component {
 
     openGamersByFilter = () => {
         console.log(this.state.OWF);
-        api.get('api/GetOwMatchFilter',{headers: { "PlayerID": 2} } ,this.state.OWF)
+        api.get('api/GetOwMatchFilter?PlayerID=2' ,this.state.OWF)
         .then( res => this.setState({GamerMatch: res.data})).catch(err => console.log(err.message));
     }
 
-    openRequests() {
+    openRequests = () => {
         console.log(this.state.RequestedMatches.data);
         this.setState({NewConnections: true})
     }
 
-    openConnections() {
+    openConnections = () => {
+        console.log("sla");
         this.setState({NewConnections: false});
     }
 
-    async FazMatch(deuMatch, gamerMatch) {
+    FazMatch = async (deuMatch, gamerMatch) => {
         this.setState({isMatching: true});
         try {
             await api.put('api/RequestedMatches/1', {
@@ -196,6 +198,7 @@ export default class Match extends Component {
         this.setState({OWF: owf})
     }
 
+
     render() {
         if(this.state.toLogin === true) {
             return <Redirect to="/"></Redirect>
@@ -211,10 +214,10 @@ export default class Match extends Component {
                 </div>  
                 <div className='submenu'>
                     <Menu compact>
-                        <Menu.Item onClick={e => this.openConnections}>
+                        <Menu.Item onClick={this.openConnections}>
                             <Icon name='users'/> New Connections
                         </Menu.Item>
-                        <Menu.Item onClick={e => this.openRequests}>
+                        <Menu.Item onClick={() => this.openRequests()}>
                             <Icon name='mail'/> Pending Requests
                             <Label color='teal' floating>{this.state.NumberOfRequests}</Label>
                         </Menu.Item>
