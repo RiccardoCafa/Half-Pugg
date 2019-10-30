@@ -24,17 +24,28 @@ namespace HalfPugg.Controllers
         }
 
         // GET: api/Matches/5
-        [ResponseType(typeof(Match))]
+        [ResponseType(typeof(List<Player>))]
         public async Task<IHttpActionResult> GetMatch(int id)
         {
             Player procurando = await db.Gamers.FindAsync(id);
 
-            List<Match> match = db.Matches
-                                    .Where(x => x.IdPlayer1 == id || x.IdPlayer2 == id)
-                                    .AsEnumerable().ToList();
+            List<Match> match = db.Matches.AsEnumerable().ToList();
+            List<Player> myConnections = new List<Player>();
+
+            foreach(Match m in match)
+            {
+                if(m.IdPlayer1 != procurando.ID)
+                {
+                    myConnections.Add(db.Gamers.Find(m.IdPlayer1));
+                } else if(m.IdPlayer2 != procurando.ID)
+                {
+                    myConnections.Add(db.Gamers.Find(m.IdPlayer2));
+                }
+            }
+            //.Where(x => x.IdPlayer1 == id || x.IdPlayer2 == id)
             if (match != null)
             {
-                return Ok(match);
+                return Ok(myConnections);
             }
 
             return NotFound();

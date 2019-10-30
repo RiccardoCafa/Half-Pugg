@@ -26,8 +26,6 @@ export default class Match extends Component {
         toLogin: false,
         cadastroIncompleto: false,
         isMatching: false,
-        toBio: false,
-        hideCom: false,
         Games: [],
         OWFilter: false,
         OWF: {
@@ -160,10 +158,6 @@ export default class Match extends Component {
         }
     }
 
-    goToBio() {
-        this.setState({toBio: true})
-    }
-
     openOWFiltro = () => {
         this.setState({OWFilter: true});
     }
@@ -203,9 +197,6 @@ export default class Match extends Component {
         if(this.state.toLogin === true) {
             return <Redirect to="/"></Redirect>
         }
-        if(this.state.toBio === true) {
-            return <Redirect to="/bio"></Redirect>
-        }
         return (
             <div>
                 <Auth></Auth>
@@ -223,13 +214,6 @@ export default class Match extends Component {
                         </Menu.Item>
                     </Menu>
                 </div>
-                {this.state.hideCom === false ?
-                <Segment id="incomplete-cadastro">
-                    <p>Parece que tem informações faltando no seu perfil, atualize para que outros jogadores consigam saber mais de você!</p>
-                    <Button primary onClick={() => this.goToBio}>Atualizar!</Button>
-                    <Button id='botao-complete-cadastro' labelPosition='right' floated='right' onClick={() => this.setState({hideCom: true})}>X</Button>
-                </Segment>
-                : <div/>}
                 <div className='connections'>
                     <Segment>
                         <Grid columns={2} celled='internally' stackable>
