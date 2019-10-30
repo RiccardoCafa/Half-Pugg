@@ -23,7 +23,7 @@ namespace HalfPugg.Controllers
         private HalfPuggContext db = new HalfPuggContext();
 
         
-        [ResponseType(typeof(IEnumerable<player>))]
+        [ResponseType(typeof(IEnumerable<OwPlayer>))]
         [Route("api/GetPlayersOwerwatch")]
         [HttpGet]
         public IHttpActionResult GetPlayerOw()
@@ -43,7 +43,7 @@ namespace HalfPugg.Controllers
             return Json(a);
         }
 
-        [ResponseType(typeof(IEnumerable<player>))]
+        [ResponseType(typeof(IEnumerable<OwPlayer>))]
         [Route("api/GetOwMatchFilter")]
         [HttpGet]
         public IHttpActionResult GetOwMatchFilter(int PlayerID, owFilter filter)
@@ -76,7 +76,7 @@ namespace HalfPugg.Controllers
             return Json(a);
         }
 
-        bool filterPlayer(player p, owFilter filter)
+        bool filterPlayer(OwPlayer p, owFilter filter)
         {
             bool ret = true;
 

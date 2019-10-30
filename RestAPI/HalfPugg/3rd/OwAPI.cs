@@ -46,7 +46,7 @@ namespace OverwatchAPI
         public float soloKills;
         public TimeSpan timeSpentOnFire;
     }
-    public class player
+    public class OwPlayer
     {
         public int idHalf;
         public profile profile;
@@ -150,19 +150,19 @@ namespace OverwatchAPI
             client = new HttpClient();
         }
 
-        public static player GetPlayerProfile(string name, region reg, int id)
+        public static OwPlayer GetPlayerProfile(string name, region reg, int id)
         {
             string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
             JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
 
-            return new player
+            return new OwPlayer
             {
                 idHalf = id,
                 profile = getProfile(obj)
             };
         }
 
-        public static player GetPlayer(string name, region reg, int id)
+        public static OwPlayer GetPlayer(string name, region reg, int id)
         {
            
             string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
@@ -171,7 +171,7 @@ namespace OverwatchAPI
             JToken quickCr = obj["quickPlayStats"].HasValues? obj["quickPlayStats"]["careerStats"]["allHeroes"]["average"]:null;
             JToken compCr = obj["competitiveStats"].HasValues? obj["competitiveStats"]["careerStats"]["allHeroes"]["average"]:null;
 
-            return new player
+            return new OwPlayer
             {
                 idHalf = id,
                 profile =  getProfile(obj),
@@ -185,7 +185,7 @@ namespace OverwatchAPI
                 => JObject.Parse(client.GetAsync(ENDPOINT_API + regStr(reg) + $"/{name}/complete")
                                                                     .Result.Content.ReadAsStringAsync().Result);
 
-        public static IEnumerable<player> GetPlayerProfile(List<string> name, List<region> reg, List<int> ids)
+        public static IEnumerable<OwPlayer> GetPlayerProfile(List<string> name, List<region> reg, List<int> ids)
         {
             if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
 
@@ -205,7 +205,7 @@ namespace OverwatchAPI
             }
         }
 
-        public static IEnumerable<player> GetPlayer(List<string> name, List<region> reg, List<int> ids)
+        public static IEnumerable<OwPlayer> GetPlayer(List<string> name, List<region> reg, List<int> ids)
         {
             if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
 
@@ -219,7 +219,7 @@ namespace OverwatchAPI
                 JToken quickCr = obj["quickPlayStats"].HasValues ? obj["quickPlayStats"]["careerStats"]["allHeroes"]["average"] : null;
                 JToken compCr = obj["competitiveStats"].HasValues ? obj["competitiveStats"]["careerStats"]["allHeroes"]["average"] : null;
 
-                yield return new player
+                yield return new OwPlayer
                 {
                     idHalf = ids[i],
                     profile = getProfile(obj),
