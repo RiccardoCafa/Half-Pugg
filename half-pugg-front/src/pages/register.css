@@ -30,7 +30,7 @@
 
 .register-inputs ul li h4 {
     margin-left: 5%;
-    color: white;
+    color:black;
     margin-bottom: 0%;
 }
 
@@ -67,7 +67,7 @@
 }
 
 .register-title h1 {
-    color: white;
+    color: black;
 }
 
 .register-title img {
@@ -89,15 +89,15 @@
 }
 
 .ui.checkbox label {
-    color: white;
+    color: black;
 }
 
 .ui.checkbox label:hover {
-    color: white;
+    color: black;
 }
 
 .ui.checkbox input:focus~label {
-    color: white;
+    color: black;
 }
 
 .ui.radio.checkbox {

@@ -1,7 +1,7 @@
 import React, { Component, createRef } from 'react';
 
 import './curriculo.css';
-import {Icon, Image, Menu, Segment, Sidebar} from 'semantic-ui-react'
+import {Icon, Image, Menu, Segment, Sidebar, Redirect} from 'semantic-ui-react'
 import Header from '../Components/header';
 
 export default class Curriculo extends Component {
@@ -25,7 +25,7 @@ export default class Curriculo extends Component {
     
     render(){
             if(this.state.toLogin == true){
-                return <Redirect to="/"></Redirect>
+            //    return <Redirect to="/"></Redirect>
             }
             return (
                 <Segment>
@@ -123,16 +123,13 @@ export default class Curriculo extends Component {
                                     <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" class="ui medium image"></Image>
                                 </div>
                                 <div class="ui segment dimmable">
-                                    <h3 class="ui header">League of legends</h3>
+                                    <h3 class="ui header">League of Legends</h3>
                                     <div class="ui small ui small images images">
+                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image>
+                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image>
                                         <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image> 
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image>
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image>
                                     </div>
-                                    <Image
-                                        src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png"
-                                        class="ui medium image"
-                                    > </Image>
+                                    <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" class="ui medium image"></Image>
                                 </div>
                             </div>
                         </div>
