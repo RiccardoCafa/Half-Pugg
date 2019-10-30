@@ -20,14 +20,9 @@ namespace HalfPugg.Controllers
     public class BusinessController : ApiController
     {
       
-        
-        
         private HalfPuggContext db = new HalfPuggContext();
 
-        /// <summary>
-        /// Find all overwatch players
-        /// </summary>
-        /// <returns>(Json)IEnumerable<player></returns>
+        
         [ResponseType(typeof(IEnumerable<player>))]
         [Route("api/GetPlayersOwerwatch")]
         [HttpGet]
@@ -45,40 +40,6 @@ namespace HalfPugg.Controllers
                 Console.WriteLine(pg.IdAPI);
             }
             var a = OwAPI.GetPlayer(names, regions, ids);
-            return Json(a);
-        }
-
-        [ResponseType(typeof(IEnumerable<player>))]
-        [Route("api/GetOwerwatchMacth")]
-        [HttpGet]
-        public IHttpActionResult GetOwMatch(int PlayerID)
-        {
-            List<string> names = new List<string>();
-            List<region> regions = new List<region>();
-            List<int> ids = new List<int>();
-            PlayerGame p = null;
-            foreach (PlayerGame pg in db.PlayerGames.Where(x => x.IDGame == 1))
-            {
-                if (pg.IDGamer == PlayerID)
-                {
-                    p = pg;
-                }
-                else
-                {
-                    names.Add(pg.IdAPI);
-                    regions.Add(region.us);
-                    ids.Add(pg.IDGamer);
-                }
-            }
-            if (p == null) return null;
-           
-            var player = OwAPI.GetPlayer(p.IdAPI, region.us,p.IDGamer);
-            var a = OwAPI.GetPlayer(names, regions, ids).Where
-                (
-                m=> 
-                m.profile.rating > 1600
-                );
-           
             return Json(a);
         }
 

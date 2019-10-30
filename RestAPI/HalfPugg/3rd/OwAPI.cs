@@ -9,8 +9,7 @@ using System.Web.Http.Results;
 namespace OverwatchAPI
 {
     
-
-    public class owFilter
+    public struct owFilter
     { //-1 para não informado
         public int role;//1 tank, 2 damage, 4 support , <1 para não informado
         public int[] level;// level+endorsement
@@ -54,13 +53,11 @@ namespace OverwatchAPI
         public careerStats quickCareer;
         public careerStats compCareer;
     }
-
-  
-
     public enum region
     {
         us, eu, asia
     }
+
 
     public static class OwAPI
     {
