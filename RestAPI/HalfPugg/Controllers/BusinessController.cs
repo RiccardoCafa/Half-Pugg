@@ -20,15 +20,10 @@ namespace HalfPugg.Controllers
     public class BusinessController : ApiController
     {
       
-        
-        
         private HalfPuggContext db = new HalfPuggContext();
 
-        /// <summary>
-        /// Find all overwatch players
-        /// </summary>
-        /// <returns>(Json)IEnumerable<player></returns>
-        [ResponseType(typeof(IEnumerable<player>))]
+        
+        [ResponseType(typeof(IEnumerable<OwPlayer>))]
         [Route("api/GetPlayersOwerwatch")]
         [HttpGet]
         public IHttpActionResult GetPlayerOw()
@@ -48,41 +43,7 @@ namespace HalfPugg.Controllers
             return Json(a);
         }
 
-        [ResponseType(typeof(IEnumerable<player>))]
-        [Route("api/GetOwerwatchMacth")]
-        [HttpGet]
-        public IHttpActionResult GetOwMatch(int PlayerID)
-        {
-            List<string> names = new List<string>();
-            List<region> regions = new List<region>();
-            List<int> ids = new List<int>();
-            PlayerGame p = null;
-            foreach (PlayerGame pg in db.PlayerGames.Where(x => x.IDGame == 1))
-            {
-                if (pg.IDGamer == PlayerID)
-                {
-                    p = pg;
-                }
-                else
-                {
-                    names.Add(pg.IdAPI);
-                    regions.Add(region.us);
-                    ids.Add(pg.IDGamer);
-                }
-            }
-            if (p == null) return null;
-           
-            var player = OwAPI.GetPlayer(p.IdAPI, region.us,p.IDGamer);
-            var a = OwAPI.GetPlayer(names, regions, ids).Where
-                (
-                m=> 
-                m.profile.rating > 1600
-                );
-           
-            return Json(a);
-        }
-
-        [ResponseType(typeof(IEnumerable<player>))]
+        [ResponseType(typeof(IEnumerable<OwPlayer>))]
         [Route("api/GetOwMatchFilter")]
         [HttpGet]
         public IHttpActionResult GetOwMatchFilter(int PlayerID, owFilter filter)
@@ -115,7 +76,7 @@ namespace HalfPugg.Controllers
             return Json(a);
         }
 
-        bool filterPlayer(player p, owFilter filter)
+        bool filterPlayer(OwPlayer p, owFilter filter)
         {
             bool ret = true;
 
