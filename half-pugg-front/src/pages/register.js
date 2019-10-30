@@ -26,7 +26,7 @@ export default class register extends Component {
         const dts = this.state.Birthday.split("-");
         const dt = dts[1] + "/" + dts[2] + "/" + dts[0];
 
-        const respo = await api.post('api/Gamers', {
+        await api.post('api/Gamers', {
             "Name": this.state.Name,
             "LastName": this.state.LastName,
             "Nickname": this.state.Nickname,

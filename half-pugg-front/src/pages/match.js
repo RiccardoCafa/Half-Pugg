@@ -24,6 +24,9 @@ export default class Match extends Component {
         NewConnections: false,
         toLogin: false,
         cadastroIncompleto: false,
+        isMatching: false,
+        toBio: false,
+        hideCom: false,
     }
 
     async componentDidMount() {
@@ -82,7 +85,7 @@ export default class Match extends Component {
         const response = api.post('api/RequestedMatches', {
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
-            "Status": "F",
+            "Status": "A",
             "IdFilters": 1
         })
         .catch(function(error){
@@ -109,15 +112,16 @@ export default class Match extends Component {
     }
 
     async FazMatch(deuMatch, gamerMatch) {
+        this.setState({isMatching: true});
         try {
-            const reqResponse = await api.put('api/RequestedMatches/1', {
+            await api.put('api/RequestedMatches/1', {
                 "IdPlayer": gamerMatch.ID,
                 "IdPlayer2": this.state.GamerLogado.ID,
                 "Status": "F",
                 "IdFilters": 1,
             });
     
-            const response = await api.post('api/Matches', {
+            await api.post('api/Matches', {
                 "IdPlayer1": gamerMatch.ID,
                 "IdPlayer2": this.state.GamerLogado.ID,
                 "Status": deuMatch,
@@ -129,16 +133,24 @@ export default class Match extends Component {
             if(index !== -1) {
                 array.splice(index, 1);
                 this.setState({RequestedMatches: array});
-                this.setState({NumberOfRequests: this.state.RequestedMatches.length})
+                this.setState({NumberOfRequests: this.state.RequestedMatches.length});
+                this.setState({isMatching: true});
             }
         } catch(error) {
             console.log(error);
         }
     }
 
+    goToBio() {
+        this.setState({toBio: true})
+    }
+
     render() {
         if(this.state.toLogin === true) {
             return <Redirect to="/"></Redirect>
+        }
+        if(this.state.toBio === true) {
+            return <Redirect to="/bio"></Redirect>
         }
         return (
             <div>
@@ -157,9 +169,13 @@ export default class Match extends Component {
                         </Menu.Item>
                     </Menu>
                 </div>
+                {this.state.hideCom === false ?
                 <Segment id="incomplete-cadastro">
-                    <Button labelPosition='left'>X</Button>
+                    <p>Parece que tem informações faltando no seu perfil, atualize para que outros jogadores consigam saber mais de você!</p>
+                    <Button primary onClick={() => this.goToBio()}>Atualizar!</Button>
+                    <Button id='botao-complete-cadastro' labelPosition='right' floated='right' onClick={() => this.setState({hideCom: true})}>X</Button>
                 </Segment>
+                : <div/>}
                 <div className='connections'>
                     <Segment>
                         <Grid columns={2} celled='internally' stackable>
@@ -230,7 +246,7 @@ export default class Match extends Component {
                                         </Card.Content>
                                     </Card>
                                 )}
-                            </Card.Group>
+                                </Card.Group>
                             }
                             </Grid.Column>
                             <Grid.Column width={3}>

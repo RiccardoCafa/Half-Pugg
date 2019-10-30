@@ -12,15 +12,16 @@ class Auth extends Component {
     
     componentDidMount() {
         const jwt = localStorage.getItem("jwt");
-        if(!jwt){
+        if(!jwt && jwt !== null){
             this.setState({toLogin: true});
             
             api.get('api/ValidateToken', { headers: { "token-jwt": {jwt} }})
                .then(res => res.setState({ toMatch: true }))
                .catch(() => {
                     localStorage.removeItem("jwt");
+                    localStorage.clear();
                     this.setState({toLogin: true});
-            })
+                })
             console.log(this.state.user);
         }
     }

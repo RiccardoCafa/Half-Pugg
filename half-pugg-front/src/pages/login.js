@@ -34,7 +34,7 @@ export default class Login extends Component {
         e.preventDefault();
         this.setState({loading: true});
 
-        const response = await api.post('api/Login', {
+        await api.post('api/Login', {
             "Email": this.state.email,
             "HashPassword": this.state.senha
         }).then(res =>{

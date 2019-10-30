@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import './curriculo.css';
-import {Icon, Image, Menu, Segment, Sidebar, Grid} from 'semantic-ui-react'
+import { Image, Segment, Grid} from 'semantic-ui-react'
 import Header from '../Components/header';
+import api from '../services/api';
 
 export default class Curriculo extends Component {
 
     state = {
-        Nickname: ' ',
+        Nickname: '',
         Gamer: {
             "ID": 0,
         },
@@ -16,18 +17,48 @@ export default class Curriculo extends Component {
         toLogin: false,
     }
 
+    async componentDidMount() {
+        
+        const jwt = localStorage.getItem("jwt");
+        let stop = false;
+        //console.log(jwt);
+        let myData;
+        if(jwt){
+            console.log(jwt);
+            await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
+                myData = res.data
+                //console.log(res.data)
+            ).catch(error => stop = true)
+        } else {
+            stop = true;
+        }
+
+        if(stop) {
+            this.setState({toLogin: true});
+            return;
+        }
+
+        this.setState(
+        {
+            GamerLogado: myData
+        })
+        console.log(myData);
+        this.setState({Nickname: myData.Nickname})
+        
+    }
+
     OpenConnections(){
         this.setState({NewConnections: false});
     }
     
     render(){
-        if(this.state.toLogin == true){
+        if(this.state.toLogin === true){
             return <Redirect to="/"></Redirect>
         }
         return (
             <div>
                 <div>
-                    <Header/>
+                    <Header dataFP = {this.state.Nickname}/>
                 </div>
                 <div className="menu-container">
                     <Segment>
@@ -35,30 +66,30 @@ export default class Curriculo extends Component {
                             <Grid.Column width={2}>
                                 <div className="left-content">
                                     <div className="ui vertical labeled icon menu">
-                                        <a className="item">
+                                        <div className="item">
                                         <i aria-hidden="true" className="gamepad icon"></i>
                                         Conectar
-                                        </a>
-                                        <a className="item">
+                                        </div>
+                                        <div className="item">
                                         <i aria-hidden="true" className="video camera icon"></i>
                                         Criar salas
-                                        </a>
-                                        <a className="item">
+                                        </div>
+                                        <div className="item">
                                         <i aria-hidden="true" className="video play icon"></i>
                                         Meus grupos
-                                        </a>
-                                        <a className="item">
+                                        </div>
+                                        <div className="item">
                                         <i aria-hidden="true" className="gamepad icon"></i>
                                         Meus jogos
-                                        </a>
-                                        <a className="item">
+                                        </div>
+                                        <div className="item">
                                         <i aria-hidden="true" className="video camera icon"></i>
                                         Perfil
-                                        </a>
-                                        <a className="item">
+                                        </div>
+                                        <div className="item">
                                         <i aria-hidden="true" className="video play icon"></i>
                                         Ranking
-                                        </a>
+                                        </div>
                                     </div>
                                 </div>
                             </Grid.Column>
