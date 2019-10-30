@@ -35,14 +35,16 @@ namespace HalfPugg.Controllers
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
+            List<int> ids = new List<int>();
         
             foreach(PlayerGame pg in db.PlayerGames.Where(x=>x.IDGame == 1))
             {
                 names.Add(pg.IdAPI);
                 regions.Add(region.us);
+                ids.Add(pg.IDGamer);
                 Console.WriteLine(pg.IdAPI);
             }
-            var a = OwAPI.GetPlayer(names, regions);
+            var a = OwAPI.GetPlayer(names, regions, ids);
             return Json(a);
         }
 
@@ -53,6 +55,7 @@ namespace HalfPugg.Controllers
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
+            List<int> ids = new List<int>();
             PlayerGame p = null;
             foreach (PlayerGame pg in db.PlayerGames.Where(x => x.IDGame == 1))
             {
@@ -64,12 +67,13 @@ namespace HalfPugg.Controllers
                 {
                     names.Add(pg.IdAPI);
                     regions.Add(region.us);
+                    ids.Add(pg.IDGamer);
                 }
             }
             if (p == null) return null;
            
-            var player = OwAPI.GetPlayer(p.IdAPI, region.us);
-            var a = OwAPI.GetPlayer(names, regions).Where
+            var player = OwAPI.GetPlayer(p.IdAPI, region.us,p.IDGamer);
+            var a = OwAPI.GetPlayer(names, regions, ids).Where
                 (
                 m=> 
                 m.profile.rating > 1600
@@ -81,10 +85,11 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(IEnumerable<player>))]
         [Route("api/GetOwMatchFilter")]
         [HttpGet]
-        public IHttpActionResult GetOwMatchFilter(int PlayerID,owFilter filter)
+        public IHttpActionResult GetOwMatchFilter(int PlayerID, owFilter filter)
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
+            List<int> ids = new List<int>();
             PlayerGame p = null;
            
             foreach (PlayerGame pg in db.PlayerGames.Where(x => x.IDGame == 1))
@@ -97,14 +102,15 @@ namespace HalfPugg.Controllers
                 {
                     names.Add(pg.IdAPI);
                     regions.Add(region.us);
+                    ids.Add(pg.IDGamer);
                 }
             }
             if (p == null) return null;
 
-            var player = OwAPI.GetPlayer(p.IdAPI, region.us);
-            var a = OwAPI.GetPlayer(names, regions);
+            var player = OwAPI.GetPlayer(p.IdAPI, region.us, p.IDGamer);
+            var a = OwAPI.GetPlayer(names, regions, ids).Where(x => filterPlayer(x, filter));
 
-            a = a.Where(x => filterPlayer(x,filter));
+          
 
             return Json(a);
         }

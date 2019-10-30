@@ -49,10 +49,13 @@ namespace OverwatchAPI
     }
     public class player
     {
+        public int idHalf;
         public profile profile;
         public careerStats quickCareer;
         public careerStats compCareer;
     }
+
+  
 
     public enum region
     {
@@ -139,9 +142,9 @@ namespace OverwatchAPI
                  healingDone = token["healingDoneAvgPer10Min"].Value<float>(),
                  heroDamageDone = token["heroDamageDoneAvgPer10Min"].Value<float>(),
                  objectiveKills = token["objectiveKillsAvgPer10Min"].Value<float>(),
-                 objectiveTime = TimeSpan.ParseExact(token["objectiveTimeAvgPer10Min"].ToString(), "mm:ss", new CultureInfo("en-US")),
+                 objectiveTime = TimeSpan.ParseExact(token["objectiveTimeAvgPer10Min"].ToString(), @"mm\:ss", new CultureInfo("en-US")),
                  soloKills = token["soloKillsAvgPer10Min"].Value<float>(),
-                 timeSpentOnFire = TimeSpan.ParseExact(token["timeSpentOnFireAvgPer10Min"].ToString(), "mm:ss",new CultureInfo("en-US"))
+                 timeSpentOnFire = TimeSpan.ParseExact(token["timeSpentOnFireAvgPer10Min"].ToString(), @"mm\:ss",new CultureInfo("en-US"))
             }:null;
         }
 
@@ -150,18 +153,19 @@ namespace OverwatchAPI
             client = new HttpClient();
         }
 
-        public static player GetPlayerProfile(string name, region reg)
+        public static player GetPlayerProfile(string name, region reg, int id)
         {
             string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
             JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
 
             return new player
             {
+                idHalf = id,
                 profile = getProfile(obj)
             };
         }
 
-        public static player GetPlayer(string name, region reg)
+        public static player GetPlayer(string name, region reg, int id)
         {
            
             string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
@@ -172,6 +176,7 @@ namespace OverwatchAPI
 
             return new player
             {
+                idHalf = id,
                 profile =  getProfile(obj),
                 compCareer = getCareer(compCr),
                 quickCareer = getCareer(quickCr)
@@ -183,13 +188,13 @@ namespace OverwatchAPI
                 => JObject.Parse(client.GetAsync(ENDPOINT_API + regStr(reg) + $"/{name}/complete")
                                                                     .Result.Content.ReadAsStringAsync().Result);
 
-        public static IEnumerable<player> GetPlayerProfile(List<string> name, List<region> reg)
+        public static IEnumerable<player> GetPlayerProfile(List<string> name, List<region> reg, List<int> ids)
         {
             if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
 
             for (int i = 0; i < name.Count; i++)
             {
-                yield return GetPlayerProfile(name[i], reg[i]);
+                yield return GetPlayerProfile(name[i], reg[i],ids[i]);
             }
         }
 
@@ -203,7 +208,7 @@ namespace OverwatchAPI
             }
         }
 
-        public static IEnumerable<player> GetPlayer(List<string> name, List<region> reg)
+        public static IEnumerable<player> GetPlayer(List<string> name, List<region> reg, List<int> ids)
         {
             if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
 
@@ -219,6 +224,7 @@ namespace OverwatchAPI
 
                 yield return new player
                 {
+                    idHalf = ids[i],
                     profile = getProfile(obj),
                     compCareer = getCareer(compCr),
                     quickCareer = getCareer(quickCr)
