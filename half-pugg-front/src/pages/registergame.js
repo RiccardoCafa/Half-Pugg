@@ -51,7 +51,7 @@ export default  function({history}) {
                         </Button.Group>
                     </div>
                     <div class="ui segment dimmable">
-                            <h3 class="ui header">CS</h3>
+                            <h3 class="ui header">Couter-Strike</h3>
                             <div class="ui small ui small images images">
                                     <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image>
                                     <Image src="https://react.semantic-ui.com/images/wireframe/image.png" class="ui image"> </Image>
