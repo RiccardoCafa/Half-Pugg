@@ -55,7 +55,7 @@ namespace OverwatchAPI
     }
     public enum region
     {
-        us, eu, asia
+        us=0, eu=1, asia=2
     }
 
 

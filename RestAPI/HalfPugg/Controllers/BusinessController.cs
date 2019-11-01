@@ -19,10 +19,22 @@ namespace HalfPugg.Controllers
 
     public class BusinessController : ApiController
     {
-      
+      /// <summary>
+      /// PlayerID : id do jogador no half
+      /// Region : região do jogador 0-> us, 1-> eu, 2-> asia
+      /// </summary>
         private HalfPuggContext db = new HalfPuggContext();
+        [ResponseType(typeof(IEnumerable<OwPlayer>))]
+        [Route("api/GetPlayersOwerwatch")]
+        [HttpGet]
+        public IHttpActionResult GetPlayerOw(int PlayerID,region Region)
+        {
+            PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID).FirstOrDefault();
+            var a = OwAPI.GetPlayer(pg.IdAPI, Region, PlayerID);
+            if (a == null) return BadRequest();
+            return Ok(a);
+        }
 
-        
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
         [Route("api/GetPlayersOwerwatch")]
         [HttpGet]
