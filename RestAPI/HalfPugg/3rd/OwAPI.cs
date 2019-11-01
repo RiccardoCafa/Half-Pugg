@@ -130,18 +130,32 @@ namespace OverwatchAPI
             return (token != null) ?
              new careerStats
              {
-
-                 allDamageDone = token["allDamageDoneAvgPer10Min"].Value<float>(),
-                 barrierDamageDone = token["barrierDamageDoneAvgPer10Min"].Value<float>(),
-                 deaths = token["deathsAvgPer10Min"].Value<float>(),
-                 eliminations = token["eliminationsAvgPer10Min"].Value<float>(),
-                 finalBlows = token["finalBlowsAvgPer10Min"].Value<float>(),
-                 healingDone = token["healingDoneAvgPer10Min"].Value<float>(),
-                 heroDamageDone = token["heroDamageDoneAvgPer10Min"].Value<float>(),
-                 objectiveKills = token["objectiveKillsAvgPer10Min"].Value<float>(),
-                 objectiveTime = TimeSpan.ParseExact(token["objectiveTimeAvgPer10Min"].ToString(), @"mm\:ss", new CultureInfo("en-US")),
-                 soloKills = token["soloKillsAvgPer10Min"].Value<float>(),
-                 timeSpentOnFire = TimeSpan.ParseExact(token["timeSpentOnFireAvgPer10Min"].ToString(), @"mm\:ss",new CultureInfo("en-US"))
+                 allDamageDone =
+                    token["allDamageDoneAvgPer10Min"] != null ? token["allDamageDoneAvgPer10Min"].Value<float>() : 0f,
+                 barrierDamageDone =
+                    token["barrierDamageDoneAvgPer10Min"] != null ? token["barrierDamageDoneAvgPer10Min"].Value<float>() : 0f,
+                 deaths =
+                    token["deathsAvgPer10Min"] != null ? token["deathsAvgPer10Min"].Value<float>() : 0f,
+                 eliminations =
+                    token["eliminationsAvgPer10Min"] != null ? token["eliminationsAvgPer10Min"].Value<float>() : 0f,
+                 finalBlows =
+                    token["finalBlowsAvgPer10Min"] != null ? token["finalBlowsAvgPer10Min"].Value<float>() : 0f,
+                 healingDone =
+                    token["healingDoneAvgPer10Min"] != null ? token["healingDoneAvgPer10Min"].Value<float>() : 0f,
+                 heroDamageDone =
+                    token["heroDamageDoneAvgPer10Min"] != null ? token["heroDamageDoneAvgPer10Min"].Value<float>() : 0f,
+                 objectiveKills =
+                    token["objectiveKillsAvgPer10Min"] != null ? token["objectiveKillsAvgPer10Min"].Value<float>() : 0f,
+                 objectiveTime =
+                    token["objectiveTimeAvgPer10Min"] != null ?
+                    TimeSpan.ParseExact(token["objectiveTimeAvgPer10Min"].ToString(), @"mm\:ss", new CultureInfo("en-US")) :
+                    TimeSpan.Zero,
+                 soloKills =
+                    token["soloKillsAvgPer10Min"] != null ? token["soloKillsAvgPer10Min"].Value<float>() : 0f,
+                 timeSpentOnFire =
+                    token["timeSpentOnFireAvgPer10Min"] != null ?
+                    TimeSpan.ParseExact(token["timeSpentOnFireAvgPer10Min"].ToString(), @"mm\:ss", new CultureInfo("en-US")) :
+                    TimeSpan.Zero
             }:null;
         }
 

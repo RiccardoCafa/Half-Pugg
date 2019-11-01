@@ -26,6 +26,7 @@ namespace HalfPugg.Controllers
         public IHttpActionResult GetPlayerOw(int PlayerID,region Region)
         {
             PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID).FirstOrDefault();
+            if (pg == null) return NotFound();
             var a = OwAPI.GetPlayer(pg.IdAPI, Region, PlayerID);
             if (a == null) return BadRequest();
             return Ok(a);
