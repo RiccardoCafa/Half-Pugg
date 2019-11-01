@@ -4,12 +4,11 @@ import {Redirect} from 'react-router-dom';
 import './match.css'
 import api from '../services/api'
 import Auth from '../Components/auth';
-import Headera from '../Components/header';
+import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
 import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox } from 'semantic-ui-react';
 
-import gostosao from '../images/chris.jpg'
-import { stringify } from 'querystring';
+import gostosao from '../images/chris.jpg';
 
 export default class Match extends Component {
 
@@ -119,12 +118,10 @@ export default class Match extends Component {
     }
 
     openRequests = () => {
-        console.log(this.state.RequestedMatches.data);
         this.setState({NewConnections: true})
     }
 
     openConnections = () => {
-        console.log("sla");
         this.setState({NewConnections: false});
     }
 
@@ -201,14 +198,14 @@ export default class Match extends Component {
             <div>
                 <Auth></Auth>
                 <div>
-                    <Headera dataFP = {this.state.Nickname}/>
+                    <Headera HeaderGamer = { this.state.GamerLogado }/>
                 </div>  
                 <div className='submenu'>
                     <Menu compact>
                         <Menu.Item onClick={this.openConnections}>
                             <Icon name='users'/> New Connections
                         </Menu.Item>
-                        <Menu.Item onClick={() => this.openRequests()}>
+                        <Menu.Item onClick={this.openRequests}>
                             <Icon name='mail'/> Pending Requests
                             <Label color='teal' floating>{this.state.NumberOfRequests}</Label>
                         </Menu.Item>

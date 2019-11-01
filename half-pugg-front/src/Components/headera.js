@@ -13,15 +13,17 @@ export default class header extends Component {
         Nickname: '',
         Email: '',
         activeItem: '',
+        Gamer: {},
         toHome: false,
         toMyConnections: false,
         toBio: false,
+        toCurriculo: false,
         hideCom: false,
     }
     //4b0082
     handleItemClick = (e, { name }) => this.setState( {activeItem: name } );
 
-    handleLogoff() {
+    handleLogoff = () => {
         try {
             localStorage.removeItem("jwt");
             localStorage.clear();
@@ -35,30 +37,61 @@ export default class header extends Component {
         this.setState({toMyConnections: true});
     }
 
-    render() {
+    goToHome = () => {
+        this.setState({toHome: true});
+    }
+
+    goToCurriculo = () => {
+        this.setState({toCurriculo: true});
+    }
+
+    getGamer = () => {
+        this.setState({Gamer: this.props.HeaderGamer});
+    }
+
+    hideWindow = () => this.setState({hideCom: true});
+
+    componentDidMount = () => {
+        this.getGamer();
+    }
+
+    checkForBio = () => {
+        if(this.state.Gamer.Bio !== null && this.state.Gamer.Slogan !== null) {
+            if(!this.state.hideCom) this.hideWindow();
+        }
+    }
+
+    componentDidUpdate = () => {
+        this.checkForBio();
+    }
+
+    render = () => {
         if(this.state.toMyConnections === true) {
             return <Redirect to="/MyConnections"></Redirect>
         }
         const { activeItem } = this.state;
 
         if(this.state.toHome === true) {
-            return <Redirect to='/'></Redirect>
+            return <Redirect to='/match'></Redirect>
         } 
         if(this.state.toBio === true) {
-            return <Redirect to="/bio"></Redirect>
+            return <Redirect to='/bio'></Redirect>
         }
-
+        if(this.state.toCurriculo === true) {
+            return <Redirect to='/curriculo'></Redirect>
+        }
+        
         return (
             <div>
                 <div id='myHeader'>
                     <Menu secondary id='botoes-header'>
-                        <Menu.Item id='user-name-item' >
-                            Olá, {this.props.dataFP}
+                        <Menu.Item id='user-name-item' onClick={this.goToCurriculo}>
+                            Olá, {this.props.HeaderGamer.Nickname}
                         </Menu.Item>
                         <Menu.Item 
                             name='Home'
                             active={activeItem === 'Home'}
-                            onClick={this.handleItemClick}
+                            onClick={this.goToHome}
                             />
                         <Menu.Item
                             name='My Connections'
@@ -79,7 +112,7 @@ export default class header extends Component {
                     <Segment id="incomplete-cadastro">
                         <p>Parece que tem informações faltando no seu perfil, atualize para que outros jogadores consigam saber mais de você!</p>
                         <Button primary onClick={() => this.goToBio}>Atualizar!</Button>
-                        <Button id='botao-complete-cadastro' labelPosition='right' floated='right' onClick={() => this.setState({hideCom: true})}>X</Button>
+                        <Button id='botao-complete-cadastro' labelPosition='right' floated='right' onClick={this.hideWindow}>X</Button>
                     </Segment>
                     : <div/>}
             </div>

@@ -4,9 +4,9 @@ import {Redirect} from 'react-router-dom';
 import './match.css'
 import api from '../services/api'
 import Auth from '../Components/auth';
-import Headera from '../Components/header';
+import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox } from 'semantic-ui-react';
+import { Card, Image, Button, Segment } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
 
@@ -71,7 +71,7 @@ export default class MyConnections extends Component {
             <div>
                 <Auth></Auth>
                 <div>
-                    <Headera dataFP = {this.state.Nickname}/>
+                    <Headera HeaderGamer = {this.state.GamerLogado}/>
                 </div>  
                 <Segment>
                     <Card.Group>

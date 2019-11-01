@@ -3,8 +3,9 @@ import {Redirect} from 'react-router-dom';
 
 import './curriculo.css';
 import { Image, Segment, Grid} from 'semantic-ui-react'
-import Header from '../Components/header';
+import Header from '../Components/headera';
 import api from '../services/api';
+import gostosao from '../images/chris.jpg';
 
 export default class Curriculo extends Component {
 
@@ -58,7 +59,7 @@ export default class Curriculo extends Component {
         return (
             <div>
                 <div>
-                    <Header dataFP = {this.state.Nickname}/>
+                    <Header HeaderGamer = {this.state.GamerLogado}/>
                 </div>
                 <div className="menu-container">
                     <Segment>
@@ -97,8 +98,11 @@ export default class Curriculo extends Component {
                                 <div className="main-content">
                                 <div className="ui container">
                                         <h2 className="ui icon center aligned header">
-                                            <i aria-hidden="true" className="users circular icon"></i>
-                                            <div className="content">Fulaninho</div>
+                                            <Image circular aria-hidden="true" 
+                                                src={this.state.GamerLogado.ImagePath === null ? 
+                                                     gostosao : this.state.GamerLogado.ImagePath}></Image>
+                                            <div className="content">{this.state.GamerLogado.Nickname}</div>
+                                            <div className="content">{this.state.GamerLogado.Name} {this.state.GamerLogado.LastName}</div>
                                         </h2>
                                         <div className='space'>
                                         <div className="ui star rating" role="radiogroup">
@@ -134,11 +138,13 @@ export default class Curriculo extends Component {
                                         </div>
                                         <div className='space'> 
                                         <div className="ui message">
-                                            <div className="header">Características</div>
+                                            <div className="header">Meu grito de guerra</div>
                                             <ul className="list">
-                                                <li className="content">Like to talk</li>
-                                                <li className="content">Easy-going</li>
-                                                <li className="content">Living the best life</li>
+                                                <li className="content">{this.state.GamerLogado.Slogan}</li>
+                                            </ul>
+                                            <div className="header">História que cantam</div>
+                                            <ul className="list">
+                                                <li className="content">{this.state.GamerLogado.Bio}</li>
                                             </ul>
                                         </div>
                                         </div>
@@ -146,12 +152,8 @@ export default class Curriculo extends Component {
                                 <div>
                                     <div className="ui segment dimmable">
                                         <h3 className="ui header">Overwatch</h3>
-                                        <div className="ui small ui small images images">
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
+                                        <div className="ui small images">
                                         </div>
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" className="ui medium image"></Image>
                                     </div>
                                     <div className="ui segment dimmable">
                                         <h3 className="ui header">League of legends</h3>
