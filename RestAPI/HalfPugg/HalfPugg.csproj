@@ -212,6 +212,7 @@
     <Compile Include="Controllers\Classification_GameController.cs" />
     <Compile Include="Controllers\Classification_GamerController.cs" />
     <Compile Include="Controllers\Classification_MatchController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\FiltersController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\GameInGamesController.cs" />

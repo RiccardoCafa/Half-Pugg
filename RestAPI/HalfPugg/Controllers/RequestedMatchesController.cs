@@ -135,10 +135,14 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            db.RequestedMatchs.Add(requestedMatch);
-            await db.SaveChangesAsync();
-
+            try
+            {
+                db.RequestedMatchs.Add(requestedMatch);
+                await db.SaveChangesAsync();
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             return CreatedAtRoute("DefaultApi", new { id = requestedMatch.ID }, requestedMatch);
         }
 

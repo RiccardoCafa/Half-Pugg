@@ -34,13 +34,13 @@ export default class Login extends Component {
         e.preventDefault();
         this.setState({loading: true});
 
-        const response = await api.post('api/Login', {
+        await api.post('api/Login', {
             "Email": this.state.email,
             "HashPassword": this.state.senha
         }).then(res =>{
             localStorage.setItem("jwt", res.data);
             this.setState({goToMatch: true});
-        }).catch(function(error){
+        }).catch(error => {
             console.log(error);
             this.setState({loading: false});
             switch(error.response.status) {
@@ -75,7 +75,7 @@ export default class Login extends Component {
         }
         return (
             <div>
-                <div className = "login-container">
+                <div className = "login-container-2">
                     {this.state.loading !== true ?
                     <Segment>
                     <Grid columns={2} relaxed='very' stackable>

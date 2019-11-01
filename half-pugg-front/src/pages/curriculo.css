@@ -1,13 +1,11 @@
 
 .menu-container {
     max-width: 100%;
-    margin: 80px auto 50px;
     display: flex;
     font-family: 'Poppins', Arial, sans-serif;
 }
 
 .left-content {
-    max-width: 500px;
     text-align: center;
     margin-left: 15px;
     display: flex;
@@ -19,8 +17,8 @@
 }
 
 .main-content {
-    max-width: 500px;
-    margin-left: 465px;
+    margin-top: 5%;
+    margin-left: 15%;
 }
 
 .main-content h1 {

@@ -4,11 +4,11 @@ import {Redirect} from 'react-router-dom';
 import './match.css'
 import api from '../services/api'
 import Auth from '../Components/auth';
-import Headera from '../Components/header';
+import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid } from 'semantic-ui-react';
+import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox } from 'semantic-ui-react';
 
-import gostosao from '../images/chris.jpg'
+import gostosao from '../images/chris.jpg';
 
 export default class Match extends Component {
 
@@ -23,6 +23,19 @@ export default class Match extends Component {
         NumberOfRequests: 0,
         NewConnections: false,
         toLogin: false,
+        cadastroIncompleto: false,
+        isMatching: false,
+        Games: [],
+        OWFilter: false,
+        OWF: {
+            "role": 0,
+            "level": [0],
+            "rating": [0],
+            "damage": [0],
+            "healing": [0],
+            "elimination": [0],
+            "competitve": false,
+        },
     }
 
     async componentDidMount() {
@@ -51,7 +64,7 @@ export default class Match extends Component {
             GamerLogado: myData
         })
         console.log(myData);
-        this.setState({Nickname: myData.Nickname})
+        this.setNickname(myData);
         
         if(myData !== undefined && myData.data !== null) {
             const MatchData = await api.get('api/GamersMatch',
@@ -71,17 +84,18 @@ export default class Match extends Component {
         }
     }
 
-    connectMatch(matcher) {
-        console.log({
-            "IdPlayer": this.state.GamerLogado.ID,
-            "IdPlayer2": matcher.ID,
-            "Status": "A",
-        })
+    setNickname(myData) {
+        
+        this.setState({Nickname: myData.Nickname})
+    }
+
+    connectMatch = (matcher) => {
+        console.log(this.state);
         const response = api.post('api/RequestedMatches', {
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
             "Status": "A",
-            "IdFilters": 0
+            "IdFilters": 1
         })
         .catch(function(error){
             console.log(error);
@@ -97,24 +111,31 @@ export default class Match extends Component {
         }
     }
 
-    openRequests() {
-        console.log(this.state.RequestedMatches.data);
+    openGamersByFilter = () => {
+        console.log(this.state.OWF);
+        api.get('api/GetOwMatchFilter?PlayerID=2' ,this.state.OWF)
+        .then( res => this.setState({GamerMatch: res.data})).catch(err => console.log(err.message));
+    }
+
+    openRequests = () => {
         this.setState({NewConnections: true})
     }
 
-    openConnections() {
+    openConnections = () => {
         this.setState({NewConnections: false});
     }
 
-    async FazMatch(deuMatch, gamerMatch) {
+    FazMatch = async (deuMatch, gamerMatch) => {
+        this.setState({isMatching: true});
         try {
-            const reqResponse = await api.put('api/RequestedMatches/1', {
+            await api.put('api/RequestedMatches/1', {
                 "IdPlayer": gamerMatch.ID,
                 "IdPlayer2": this.state.GamerLogado.ID,
-                "Status": "F"
+                "Status": "F",
+                "IdFilters": 1,
             });
     
-            const response = await api.post('api/Matches', {
+            await api.post('api/Matches', {
                 "IdPlayer1": gamerMatch.ID,
                 "IdPlayer2": this.state.GamerLogado.ID,
                 "Status": deuMatch,
@@ -126,12 +147,48 @@ export default class Match extends Component {
             if(index !== -1) {
                 array.splice(index, 1);
                 this.setState({RequestedMatches: array});
-                this.setState({NumberOfRequests: this.state.RequestedMatches.length})
+                this.setState({NumberOfRequests: this.state.RequestedMatches.length});
+                this.setState({isMatching: true});
             }
         } catch(error) {
             console.log(error);
         }
     }
+
+    openOWFiltro = () => {
+        this.setState({OWFilter: true});
+    }
+
+    setRole = (role) => {
+        var owf = {...this.state.OWF}
+        owf.Role = role;
+        this.setState({OWF: owf});
+    }
+
+    setLevel = (level) => {
+        var owf = {...this.state.OWF}
+        owf.level[0] = parseInt(level);
+        this.setState({OWF: owf})
+    }
+
+    setDamage= (val) =>{
+        var owf = {...this.state.OWF}
+        owf.damage[0] = val
+        this.setState({OWF: owf})
+    }
+
+    setHealing = (val) => {
+        var owf = {...this.state.OWF}
+        owf.healing[0] = val
+        this.setState({OWF: owf})
+    }
+
+    setElimination= (val) => {
+        var owf = {...this.state.OWF}
+        owf.elimination[0] = val
+        this.setState({OWF: owf})
+    }
+
 
     render() {
         if(this.state.toLogin === true) {
@@ -141,14 +198,14 @@ export default class Match extends Component {
             <div>
                 <Auth></Auth>
                 <div>
-                    <Headera dataFP = {this.state.Nickname}/>
+                    <Headera HeaderGamer = { this.state.GamerLogado }/>
                 </div>  
                 <div className='submenu'>
                     <Menu compact>
-                        <Menu.Item onClick={e => this.openConnections()}>
+                        <Menu.Item onClick={this.openConnections}>
                             <Icon name='users'/> New Connections
                         </Menu.Item>
-                        <Menu.Item onClick={e => this.openRequests()}>
+                        <Menu.Item onClick={this.openRequests}>
                             <Icon name='mail'/> Pending Requests
                             <Label color='teal' floating>{this.state.NumberOfRequests}</Label>
                         </Menu.Item>
@@ -224,11 +281,30 @@ export default class Match extends Component {
                                         </Card.Content>
                                     </Card>
                                 )}
-                            </Card.Group>
+                                </Card.Group>
                             }
                             </Grid.Column>
                             <Grid.Column width={3}>
-                                
+                                Filtro
+                                <Checkbox label='Filtrar por Overwatch' onChange={this.openOWFiltro}/>
+                                {this.state.OWFilter === true ?
+                                <div>
+                                    <Input placeholder='role' value={this.state.OWF.role} 
+                                            onChange={e => this.setRole(e.target.value)}></Input>
+                                    <Input placeholder='level' value={this.state.OWF.level[0]} 
+                                            onChange={e => this.setLevel(e.target.value)}></Input>
+                                    <Input placeholder='rating' value={this.state.OWF.rating[0]} 
+                                            onChange={e => this.setRating(e.target.value)}></Input>
+                                    <Input placeholder='damage' value={this.state.OWF.damage[0]} 
+                                            onChange={e => this.setDamage(e.target.value)}></Input>
+                                    <Input placeholder='healing' value={this.state.OWF.healing[0]} 
+                                            onChange={e => this.setHealing(e.target.value)}></Input>
+                                    <Input placeholder='elimination' value={this.state.OWF.elimination[0]} 
+                                            onChange={e => this.setElimination(e.target.value)}></Input>
+                                    <Button onClick={this.openGamersByFilter}>Filtrar</Button>
+                                </div>
+                                :
+                                <div/>}
                             </Grid.Column>
                         </Grid>
                     </Segment>
