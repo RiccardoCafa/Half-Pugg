@@ -1,11 +1,21 @@
-
 .register-container {
     height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5%;
+    margin-top: 0%;
     margin-bottom: 0%;
     flex-direction: column;
+}
+
+#botoes {
+    margin-top: 20px;
+    margin-left: 25%;
+    transition: all .2s;
+}
+
+#title {
+    margin-top: 5px;
+    margin-left: 0%;
 }
