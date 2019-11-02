@@ -15,7 +15,6 @@ namespace HalfPugg.Models
         
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
-
         [JsonIgnore] public virtual Player Player1 { get; set; }
         [JsonIgnore] public virtual Player Player2 { get; set; }
     }

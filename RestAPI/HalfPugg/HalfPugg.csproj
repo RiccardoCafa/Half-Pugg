@@ -239,9 +239,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910292323586_Init.cs" />
-    <Compile Include="Migrations\201910292323586_Init.Designer.cs">
-      <DependentUpon>201910292323586_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201911021548069_init.cs" />
+    <Compile Include="Migrations\201911021548069_init.Designer.cs">
+      <DependentUpon>201911021548069_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
@@ -499,8 +499,8 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910292323586_Init.resx">
-      <DependentUpon>201910292323586_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911021548069_init.resx">
+      <DependentUpon>201911021548069_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
