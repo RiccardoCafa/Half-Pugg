@@ -13,13 +13,16 @@ using System.Data.Entity;
 
 namespace HalfPugg.Controllers
 {
-    public class BusinessController : ApiController
+    public class OverwatchController : ApiController
     {
       /// <summary>
       /// PlayerID : id do jogador no half
       /// Region : região do jogador 0-> us, 1-> eu, 2-> asia
       /// </summary>
         private HalfPuggContext db = new HalfPuggContext();
+
+
+        #region GET
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
         [Route("api/GetPlayersOwerwatch")]
         [HttpGet]
@@ -83,6 +86,32 @@ namespace HalfPugg.Controllers
             return Ok(a);//201
         }
 
+        #endregion
+
+        #region POST
+        [ResponseType(typeof(PlayerGame))]
+        [Route("api/PostPlayerInOw")]
+        [HttpPost]
+        public async Task<IHttpActionResult> PostPlayerInOw(PlayerGame playerGame,region Region)
+        {
+            if (OwAPI.GetPlayerProfile(playerGame.IdAPI, Region, playerGame.IDGamer) == null)
+            {
+                return BadRequest($"{playerGame.IdAPI} não possui conta associada a overwatch ou conta não é publica");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            playerGame.Game = db.Games.Find(playerGame.IDGame);
+            playerGame.Gamer = db.Gamers.Find(playerGame.IDGamer);
+            db.PlayerGames.Add(playerGame);
+            await db.SaveChangesAsync();
+
+            return CreatedAtRoute("DefaultApi", new { id = playerGame.ID }, playerGame);
+        }
+
+        #endregion
+       
         bool filterPlayer(OwPlayer p, owFilter filter)
         {
             bool ret = true;

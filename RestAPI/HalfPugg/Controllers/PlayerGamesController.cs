@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
+using OverwatchAPI;
 
 namespace HalfPugg.Controllers
 {
@@ -87,6 +88,7 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(PlayerGame))]
         public async Task<IHttpActionResult> PostPlayerGame(PlayerGame playerGame)
         {
+           
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
