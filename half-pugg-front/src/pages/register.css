@@ -1,11 +1,10 @@
-
-.register-container {
+.register-container-3 {
     height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5%;
+    margin-top: 10%;
     margin-bottom: 0%;
     flex-direction: column;
 }
@@ -24,38 +23,38 @@
 }
 
 .register-inputs ul li {
-    max-height: 60px;
+    max-height: 60px;   
     margin-bottom: 3px;
 }
 
 .register-inputs ul li h4 {
     margin-left: 5%;
-    color: white;
+    color: black;
     margin-bottom: 0%;
 }
 
 .register-inputs form input {
     margin-top: 4px;
-    border: 2px solid rgb(62, 1, 130);
+    border: 2px solid #0dbb6b;
     border-radius: 4px;
     height: 30px;
     font-size: 16px;
-    color: #eeeeee;
-    background: rgb(62, 1, 112);
+    color: black;
+    background: #0dbb6b;
     margin-left: 10px;
     width: 300px;
     padding-left: 10px;
 }
 
 .register-inputs form input:hover {
-    border: 2px solid rgb(49, 1, 104);
+    border: 2px solid #3cdd92;
 }
 
 .register-inputs form input:focus {
-    border: 2px solid rgb(82, 25, 146);
+    border: 2px solid #097c47;
 }
 
-.register-container Button {
+.register-container-3 Button {
     margin-top: 20px;
     margin-left: 35%;
     background: rgb(25, 172, 61);
@@ -67,7 +66,7 @@
 }
 
 .register-title h1 {
-    color: white;
+    color: black;
 }
 
 .register-title img {
@@ -89,15 +88,15 @@
 }
 
 .ui.checkbox label {
-    color: white;
+    color: black;
 }
 
 .ui.checkbox label:hover {
-    color: white;
+    color: black;
 }
 
 .ui.checkbox input:focus~label {
-    color: white;
+    color: black;
 }
 
 .ui.radio.checkbox {

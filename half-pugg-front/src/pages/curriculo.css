@@ -1,10 +1,75 @@
-.curriculo-container {
-    height: 200%;
-    width: 100%;
+
+.menu-container {
+    max-width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2%;
-    margin-bottom: 0%;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+.left-content {
+    text-align: center;
+    margin-left: 15px;
+    display: flex;
+    align-content: left;
+}
+.space{
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.main-content {
+    margin-top: 5%;
+    margin-left: 15%;
+}
+
+.main-content h1 {
+    font: 700 50px;
+    color: #309AAC;
+}
+
+.main-content h2 {
+    font-weight: 600; 
+    font-size: 28px;
+    color: #309AAC;
+    margin-bottom: 18px;
+}
+
+.main-content form {
+    display: flex;
     flex-direction: column;
+}
+
+.main-content form label {
+    font-weight: 400;
+    font-size: 15px;
+    font-style: italic;
+    color: #5a5a5a;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.main-content form input {
+    max-width: 80px;
+    height: 40px;
+    padding: 10px;
+    margin-bottom: 30px;
+
+    border: 1px solid grey;
+    border-radius: 4px;
+    
+    font: 400 18px Bahnschrift, Arial, sans-serif;
+    color: #3f3f3f;
+}
+
+.main-content form button {
+    max-width: 200px;
+    height: 40px;
+    margin-bottom: 60px;
+
+    border: transparent;
+    border-radius: 20px;
+
+    font: italic 300 14px Bahnschrift, Arial, sans-serif;
+    color: white;
+    background-color: rgb(42, 136, 153);
+    cursor: pointer;
 }

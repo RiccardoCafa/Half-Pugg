@@ -3,7 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { Button, Checkbox } from 'semantic-ui-react';
 
 import './register.css';
-import pugg from '../images/Logo_Pugg.png';
 import api from '../services/api';
 
 export default class register extends Component {
@@ -27,7 +26,7 @@ export default class register extends Component {
         const dts = this.state.Birthday.split("-");
         const dt = dts[1] + "/" + dts[2] + "/" + dts[0];
 
-        const respo = await api.post('api/Gamers', {
+        await api.post('api/Gamers', {
             "Name": this.state.Name,
             "LastName": this.state.LastName,
             "Nickname": this.state.Nickname,
@@ -37,14 +36,12 @@ export default class register extends Component {
             "Type": "F",
             "Sex": this.state.Sex,
             "ID_Branch": -1,
-        }).catch(function (error) {
+        }).then(
+            this.setState({toLogin: true})
+        ).catch(function (error) {
             console.log(error.response);
             console.log("Error: " + error.message);
         });
-        if(respo != null){
-            this.setState({toRegister2: true});
-        }
-        //useHistory().push('/');
         console.log(dt);
     }
 
@@ -53,16 +50,15 @@ export default class register extends Component {
     }
 
     render(){
-        if(this.state.toRegister2 === true) {
-            return <Redirect to='/bio'></Redirect>
+        if(this.state.toLogin === true) {
+            return <Redirect to='/'></Redirect>
         }
         return (
-            <div className = "register-container">    
+            <div className = "register-container-3">    
             <div className= "register-title">
                 <Link to = "/">
-                    <img src={pugg} width="100" height="100" alt="pugg logo"/>
+                    <h1>Half Pugg</h1>
                 </Link>
-                <h1>Half Pugg</h1>
             </div>
             <div className = "register-inputs">
             <form onSubmit={this.handleSubmit}>

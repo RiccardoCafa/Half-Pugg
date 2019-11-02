@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
+using HalfPugg.TokenJWT;
+using Newtonsoft.Json;
 
 namespace HalfPugg.Controllers
 {
@@ -40,7 +42,22 @@ namespace HalfPugg.Controllers
         [HttpGet]
         public IHttpActionResult GetRequestedMatchForLogg()
         {
-            Player gamerlogado = LoginController.GamerLogado;
+            Player gamerlogado = null;
+
+            var headers = Request.Headers;
+
+            if (headers.Contains("token-jwt"))
+            {
+                string token = headers.GetValues("token-jwt").First();
+                TokenValidation validation = new TokenValidation();
+                string userValidated = validation.ValidateToken(token);
+                if (userValidated != null)
+                {
+                    TokenData data = JsonConvert.DeserializeObject<TokenData>(userValidated);
+                    gamerlogado = db.Gamers.FirstOrDefault(g => g.ID == data.ID);
+                }
+            }
+
             if (gamerlogado == null) return BadRequest();
             List<RequestedMatch> reqMatches = db.RequestedMatchs
                                                      .Where(x => x.IdPlayer2 == gamerlogado.ID)
@@ -118,10 +135,14 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            db.RequestedMatchs.Add(requestedMatch);
-            await db.SaveChangesAsync();
-
+            try
+            {
+                db.RequestedMatchs.Add(requestedMatch);
+                await db.SaveChangesAsync();
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             return CreatedAtRoute("DefaultApi", new { id = requestedMatch.ID }, requestedMatch);
         }
 
