@@ -168,8 +168,8 @@ namespace OverwatchAPI
         {
             string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
             JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
-
-            return new OwPlayer
+            if (obj.ContainsKey("error")) return null;
+                return new OwPlayer
             {
                 idHalf = id,
                 profile = getProfile(obj)
@@ -181,7 +181,7 @@ namespace OverwatchAPI
            
             string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
             JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
-            if (obj.ContainsKey("error")) throw new Exception($"[{name}] " + obj["error"].Value<string>());
+            if (obj.ContainsKey("error")) return null;// throw new Exception($"[{name}] " + obj["error"].Value<string>());
             JToken quickCr = obj["quickPlayStats"].HasValues? obj["quickPlayStats"]["careerStats"]["allHeroes"]["average"]:null;
             JToken compCr = obj["competitiveStats"].HasValues? obj["competitiveStats"]["careerStats"]["allHeroes"]["average"]:null;
 

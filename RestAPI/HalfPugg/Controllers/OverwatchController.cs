@@ -92,7 +92,7 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(PlayerGame))]
         [Route("api/PostPlayerInOw")]
         [HttpPost]
-        public async Task<IHttpActionResult> PostPlayerInOw(PlayerGame playerGame,region Region)
+        public async Task<IHttpActionResult> PostPlayerInOw([FromBody]PlayerGame playerGame,[FromUri]region Region)
         {
             if (OwAPI.GetPlayerProfile(playerGame.IdAPI, Region, playerGame.IDGamer) == null)
             {
