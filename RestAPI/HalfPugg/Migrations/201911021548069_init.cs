@@ -3,7 +3,7 @@ namespace HalfPugg.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Init : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -80,6 +80,24 @@ namespace HalfPugg.Migrations
                     })
                 .PrimaryKey(t => t.ID)
                 .Index(t => t.Nickname, unique: true);
+            
+            CreateTable(
+                "dbo.Matches",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        IdPlayer1 = c.Int(nullable: false),
+                        IdPlayer2 = c.Int(nullable: false),
+                        Status = c.Boolean(nullable: false),
+                        Weight = c.Single(nullable: false),
+                        CreateAt = c.DateTime(nullable: false),
+                        AlteredAt = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.ID)
+                .ForeignKey("dbo.Players", t => t.IdPlayer2, cascadeDelete: true)
+                .ForeignKey("dbo.Players", t => t.IdPlayer1, cascadeDelete: true)
+                .Index(t => t.IdPlayer1)
+                .Index(t => t.IdPlayer2);
             
             CreateTable(
                 "dbo.MessageHalls",
@@ -225,24 +243,6 @@ namespace HalfPugg.Migrations
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Filters", t => t.ID_Filter, cascadeDelete: true)
                 .Index(t => t.ID_Filter);
-            
-            CreateTable(
-                "dbo.Matches",
-                c => new
-                    {
-                        ID = c.Int(nullable: false, identity: true),
-                        IdPlayer1 = c.Int(nullable: false),
-                        IdPlayer2 = c.Int(nullable: false),
-                        Status = c.Boolean(nullable: false),
-                        Weight = c.Single(nullable: false),
-                        CreateAt = c.DateTime(nullable: false),
-                        AlteredAt = c.DateTime(nullable: false),
-                    })
-                .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Players", t => t.IdPlayer1, cascadeDelete: true)
-                .ForeignKey("dbo.Players", t => t.IdPlayer2, cascadeDelete: true)
-                .Index(t => t.IdPlayer1)
-                .Index(t => t.IdPlayer2);
             
             CreateTable(
                 "dbo.MessagePlayers",
@@ -496,8 +496,6 @@ namespace HalfPugg.Migrations
             DropForeignKey("dbo.MessageGroups", "ID_Recipient", "dbo.Groups");
             DropForeignKey("dbo.MessagePlayers", "ID_User", "dbo.Players");
             DropForeignKey("dbo.MessagePlayers", "ID_Recipient", "dbo.Players");
-            DropForeignKey("dbo.Matches", "IdPlayer2", "dbo.Players");
-            DropForeignKey("dbo.Matches", "IdPlayer1", "dbo.Players");
             DropForeignKey("dbo.Labels", "ID_Filter", "dbo.Filters");
             DropForeignKey("dbo.GameInGames", "IdPlayerGame", "dbo.PlayerGames");
             DropForeignKey("dbo.PlayerGames", "IDGamer", "dbo.Players");
@@ -517,6 +515,8 @@ namespace HalfPugg.Migrations
             DropForeignKey("dbo.GameFilters", "Filter_ID_Filter", "dbo.Filters");
             DropForeignKey("dbo.GameFilters", "Game_ID_Game", "dbo.Games");
             DropForeignKey("dbo.Halls", "IdAdmin", "dbo.Players");
+            DropForeignKey("dbo.Matches", "IdPlayer1", "dbo.Players");
+            DropForeignKey("dbo.Matches", "IdPlayer2", "dbo.Players");
             DropForeignKey("dbo.ClassificationPlayers", "IdClassification", "dbo.Classification_Gamer");
             DropIndex("dbo.FilterHalls", new[] { "Hall_ID_Hall" });
             DropIndex("dbo.FilterHalls", new[] { "Filter_ID_Filter" });
@@ -546,8 +546,6 @@ namespace HalfPugg.Migrations
             DropIndex("dbo.MessageGroups", new[] { "ID_User" });
             DropIndex("dbo.MessagePlayers", new[] { "ID_Recipient" });
             DropIndex("dbo.MessagePlayers", new[] { "ID_User" });
-            DropIndex("dbo.Matches", new[] { "IdPlayer2" });
-            DropIndex("dbo.Matches", new[] { "IdPlayer1" });
             DropIndex("dbo.Labels", new[] { "ID_Filter" });
             DropIndex("dbo.PlayerGames", new[] { "IdAPI" });
             DropIndex("dbo.PlayerGames", new[] { "IDGamer" });
@@ -561,6 +559,8 @@ namespace HalfPugg.Migrations
             DropIndex("dbo.Halls", new[] { "IdGame" });
             DropIndex("dbo.MessageHalls", new[] { "ID_Recipient" });
             DropIndex("dbo.MessageHalls", new[] { "ID_User" });
+            DropIndex("dbo.Matches", new[] { "IdPlayer2" });
+            DropIndex("dbo.Matches", new[] { "IdPlayer1" });
             DropIndex("dbo.Players", new[] { "Nickname" });
             DropIndex("dbo.ClassificationPlayers", new[] { "IdClassification" });
             DropIndex("dbo.ClassificationPlayers", new[] { "IdPlayer" });
@@ -578,7 +578,6 @@ namespace HalfPugg.Migrations
             DropTable("dbo.Numbereds");
             DropTable("dbo.MessageGroups");
             DropTable("dbo.MessagePlayers");
-            DropTable("dbo.Matches");
             DropTable("dbo.Labels");
             DropTable("dbo.PlayerGames");
             DropTable("dbo.GameInGames");
@@ -588,6 +587,7 @@ namespace HalfPugg.Migrations
             DropTable("dbo.Filters");
             DropTable("dbo.Halls");
             DropTable("dbo.MessageHalls");
+            DropTable("dbo.Matches");
             DropTable("dbo.Players");
             DropTable("dbo.ClassificationPlayers");
             DropTable("dbo.Classification_Match");
