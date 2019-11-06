@@ -1,19 +1,20 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace HalfPugg.Models
 {
-    public class ClassificationPlayer
+    public class GroupMatch
     {
         [Key] public int ID { get; set; }
+        [Required] [ForeignKey("Group")] public int IdGroup { get; set; }
         [Required] [ForeignKey("Player")] public int IdPlayer { get; set; }
-        [Required] [ForeignKey("Classification")] public int IdClassification { get; set; }
-        [Required] public float Points { get; set; }
+        [Required] public bool Status { get; set; }
+        [Required] public float Weight { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
+        [JsonIgnore] public virtual Group Group { get; set; }
         [JsonIgnore] public virtual Player Player { get; set; }
-        public virtual Classification_Gamer Classification { get; set; }
     }
 }

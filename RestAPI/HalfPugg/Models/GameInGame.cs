@@ -13,7 +13,7 @@ namespace HalfPugg.Models
         [Required] public float Points { get; set; }        
         public DateTime CreateAt { get; set; }        
         public DateTime AlteredAt { get; set; }
-        [JsonIgnore] public virtual Classification_Gamer Classification { get; set; }
+        [JsonIgnore] public virtual Classification_Player Classification { get; set; }
         [JsonIgnore] public virtual PlayerGame PlayerGame { get; set; }
     }
 }

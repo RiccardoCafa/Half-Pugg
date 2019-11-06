@@ -217,6 +217,26 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\GameInGamesController.cs" />
     <Compile Include="Controllers\GamerControler.cs" />
+    <Compile Include="Migrations\201911060027305_Procedure.cs" />
+    <Compile Include="Migrations\201911060027305_Procedure.Designer.cs">
+      <DependentUpon>201911060027305_Procedure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911060808106_Procedure2.cs" />
+    <Compile Include="Migrations\201911060808106_Procedure2.Designer.cs">
+      <DependentUpon>201911060808106_Procedure2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911060814243_Procedure3.cs" />
+    <Compile Include="Migrations\201911060814243_Procedure3.Designer.cs">
+      <DependentUpon>201911060814243_Procedure3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911060846040_Procedure4.cs" />
+    <Compile Include="Migrations\201911060846040_Procedure4.Designer.cs">
+      <DependentUpon>201911060846040_Procedure4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ClassificationInMatch.cs" />
+    <Compile Include="Models\Classification_Game.cs" />
+    <Compile Include="Models\Classification_Gamer.cs" />
+    <Compile Include="Models\GroupMatch.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HallsController.cs" />
     <Compile Include="Controllers\HashTagsController.cs" />
@@ -247,10 +267,10 @@
     <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
     <Compile Include="Models\Classification_Player.cs" />
-    <Compile Include="Models\Classification_Gamer.cs" />
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GameInGame.cs" />
+    <Compile Include="Models\HallMatch.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\HalfPuggContext.cs" />
     <Compile Include="Models\HashTag.cs" />
@@ -501,6 +521,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201911021548069_init.resx">
       <DependentUpon>201911021548069_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911060027305_Procedure.resx">
+      <DependentUpon>201911060027305_Procedure.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911060808106_Procedure2.resx">
+      <DependentUpon>201911060808106_Procedure2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911060814243_Procedure3.resx">
+      <DependentUpon>201911060814243_Procedure3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911060846040_Procedure4.resx">
+      <DependentUpon>201911060846040_Procedure4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
