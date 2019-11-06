@@ -39,16 +39,13 @@ export default class Match extends Component {
     }
 
     async componentDidMount() {
-
+        // Pega o usuário a partir do token
         const jwt = localStorage.getItem("jwt");
         let stop = false;
-        //console.log(jwt);
         let myData;
         if(jwt){
-            console.log(jwt);
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
                 myData = res.data
-                //console.log(res.data)
             ).catch(error => stop = true)
         } else {
             stop = true;
@@ -59,18 +56,13 @@ export default class Match extends Component {
             return;
         }
 
-        this.setState(
-        {
-            GamerLogado: myData
-        })
-        console.log(myData);
+        this.setState({GamerLogado: myData})
         this.setNickname(myData);
         
+        // Pega os dados de match do jogador
         if(myData !== undefined && myData.data !== null) {
-            const MatchData = await api.get('api/GamersMatch',
-                { headers: { "token-jwt": jwt }});
+            const MatchData = await api.get('api/GamersMatch', { headers: { "token-jwt": jwt }});
             if(MatchData.data != null){
-                console.log(MatchData.data);
                 this.setState({GamerMatch: MatchData.data});
             }
     
@@ -78,28 +70,27 @@ export default class Match extends Component {
                 { headers: { "token-jwt": jwt }});
             if(requestedMatch.data !== null) {
                 this.setState({RequestedMatches: requestedMatch.data});
-                console.log(requestedMatch.data);
                 this.setState({NumberOfRequests: requestedMatch.data.length});
             }
         }
     }
 
     setNickname(myData) {
-        
         this.setState({Nickname: myData.Nickname})
     }
 
+    // Faz uma requisição de match para outro gamer
     connectMatch = (matcher) => {
-        console.log(this.state);
+        console.log(matcher);
         const response = api.post('api/RequestedMatches', {
-            "IdPlayer": this.state.GamerLogado.ID,
-            "IdPlayer2": matcher.ID,
+            "IdPlayer1": this.state.GamerLogado.ID,
+            "IdPlayer2": matcher.playerFound.ID,
             "Status": "A",
             "IdFilters": 1
         })
-        .catch(function(error){
-            console.log(error);
-        });
+        .catch(error => 
+            console.log(error)
+        );
         
         if(response !== null) {
             var array = [...this.state.GamerMatch];
@@ -111,36 +102,54 @@ export default class Match extends Component {
         }
     }
 
+    // Remove um gamer da lista de sugestões de match
+    desconnectMatch = (matcher) => {
+        console.log(matcher);
+        var array = [...this.state.GamerMatch];
+        console.log(this.state.GamerMatch);
+        var index = array.indexOf(matcher);
+        if(index !== -1) {
+            console.log('removendo');
+            array.splice(index, 1);
+            this.setState({GamerMatch: array});
+        }
+    }
+
+    // Seta o filtro para a busca
     openGamersByFilter = () => {
         console.log(this.state.OWF);
         api.get('api/GetOwMatchFilter?PlayerID=2' ,this.state.OWF)
         .then( res => this.setState({GamerMatch: res.data})).catch(err => console.log(err.message));
     }
 
+    // Abre as requisições de match
     openRequests = () => {
         this.setState({NewConnections: true})
     }
 
+    // Abre a tela de novas conexões que podem ser feitas
     openConnections = () => {
         this.setState({NewConnections: false});
     }
 
+    // Atualiza uma requisição de match, podendo ser aceita ou não
     FazMatch = async (deuMatch, gamerMatch) => {
         this.setState({isMatching: true});
         try {
             await api.put('api/RequestedMatches/1', {
-                "IdPlayer": gamerMatch.ID,
+                "ID": 1,
+                "IdPlayer1": gamerMatch.ID,
                 "IdPlayer2": this.state.GamerLogado.ID,
-                "Status": "F",
+                "Status": "M",
                 "IdFilters": 1,
             });
     
-            await api.post('api/Matches', {
-                "IdPlayer1": gamerMatch.ID,
-                "IdPlayer2": this.state.GamerLogado.ID,
-                "Status": deuMatch,
-                "Weight": 0,
-            });
+            // await api.post('api/Matches', {
+            //     "IdPlayer1": gamerMatch.ID,
+            //     "IdPlayer2": this.state.GamerLogado.ID,
+            //     "Status": deuMatch,
+            //     "Weight": 0,
+            // });
     
             var array = [...this.state.RequestedMatches];
             var index = array.indexOf(gamerMatch);
@@ -155,10 +164,9 @@ export default class Match extends Component {
         }
     }
 
-    openOWFiltro = () => {
-        this.setState({OWFilter: true});
-    }
-
+    // Filtros do Overwatch
+    openOWFiltro = () => this.setState({OWFilter: true});
+    
     setRole = (role) => {
         var owf = {...this.state.OWF}
         owf.Role = role;
@@ -218,16 +226,20 @@ export default class Match extends Component {
                             {this.state.NewConnections === false ?
                             <Card.Group>
                                 {this.state.GamerMatch.map((matcher) => 
-                                    <Card key={matcher.ID} >
+                                    <Card key={matcher.playerFound.ID} >
                                         <Card.Content>
                                             <Image
                                                 floated='right'
                                                 size='mini'
-                                                src={(matcher.ImagePath === "" || matcher.ImagePath === null) ? gostosao : matcher.ImagePath}
+                                                src={(matcher.playerFound.ImagePath === "" || matcher.playerFound.ImagePath === null) 
+                                                    ? gostosao : matcher.playerFound.ImagePath}
                                                 />
-                                            <Card.Header>{matcher.Nickname}</Card.Header>
-                                            <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
-                                            <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
+                                            <Card.Header>{matcher.playerFound.Nickname}</Card.Header>
+                                            <Card.Meta>Sugestão de {matcher.PlayerRecName}</Card.Meta>
+                                            <Card.Description><b>Moto de vida</b> <br></br>
+                                                                {matcher.playerFound.Slogan === null ?
+                                                                "Esse cara não possui..." : 
+                                                                matcher.playerFound.Slogan}</Card.Description>
                                         </Card.Content>
                                         <Card.Content extra>
                                             <div className='ui two buttons'>
@@ -240,13 +252,13 @@ export default class Match extends Component {
                                                 <Button 
                                                     id='btn-acpden' 
                                                     basic color='red' 
-                                                    onClick={this.desconnectMatch}
+                                                    onClick={() => this.desconnectMatch(matcher)}
                                                     content='Not Interested!'
                                                     />
                                             </div>
                                         </Card.Content>
                                         <Card.Content extra>
-                                            <OpenCurriculum matcher={matcher}></OpenCurriculum>
+                                            <OpenCurriculum matcher={matcher.playerFound}></OpenCurriculum>
                                         </Card.Content>
                                     </Card>
                                 )}

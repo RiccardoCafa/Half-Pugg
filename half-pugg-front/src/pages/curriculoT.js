@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import './curriculo.css';
-import { Image, Segment, Grid, Checkbox, List} from 'semantic-ui-react'
+import { Image, Segment, Grid, Checkbox, List, Loader, Statistic} from 'semantic-ui-react'
 import Header from '../Components/headera';
 import api from '../services/api';
 import gostosao from '../images/chris.jpg';
@@ -19,6 +19,8 @@ export default class Curriculo extends Component {
         toLogin: false,
         compCareerCollapse: false,
         quickCareerCollapse: false,
+        loadedOW: false,
+        ConnectionsLength: 0,
     }
 
     async componentDidMount() {
@@ -28,7 +30,6 @@ export default class Curriculo extends Component {
         //console.log(jwt);
         let myData;
         if(jwt){
-            console.log(jwt);
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
                 myData = res.data
                 //console.log(res.data)
@@ -49,11 +50,16 @@ export default class Curriculo extends Component {
         
         this.setState({Nickname: myData.Nickname})
         
-        let OWData = await api.get('api/GetPlayersOwerwatch?PlayerID=' + myData.ID + '&Region=0');
-        if(OWData !== null) {
-            this.setState({OverwatchInfo: OWData.data});
+        let CurriculoData = await api.get('api/Curriculo?GamerID=' + myData.ID);
+        if(CurriculoData !== null) {
+            if(CurriculoData.data.OverwatchInfo !== undefined) {
+                this.setState({
+                    OverwatchInfo: CurriculoData.data.OverwatchInfo
+                    , loadedOW: true
+                });
+            }
+            this.setState({ConnectionsLength: CurriculoData.data.ConnectionsLenght});
         }
-        console.log(OWData);
     }
 
     OpenConnections(){
@@ -266,7 +272,7 @@ export default class Curriculo extends Component {
                                             </List> : <div/>}</div>
                                         : <div />}
                                     </div>
-                                    : <div/>}
+                                    : <Loader/>}
                                     <div className="ui segment dimmable">
                                         <h3 className="ui header">League of legends</h3>
                                         <div className="ui small ui small images images">
@@ -281,6 +287,9 @@ export default class Curriculo extends Component {
                                     </div>
                                     </div>
                                 </div>
+                            </Grid.Column>
+                            <Grid.Column width={1} id='coluna-3'>
+                                <Statistic value={this.state.ConnectionsLength} label='conexoes'></Statistic>
                             </Grid.Column>
                         </Grid>
                         

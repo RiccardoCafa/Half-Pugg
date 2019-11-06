@@ -29,7 +29,9 @@ namespace HalfPugg.Controllers
         {
             Player procurando = await db.Gamers.FindAsync(id);
 
-            List<Match> match = db.Matches.AsEnumerable().ToList();
+            List<Match> match = db.Matches
+                                    .Where(x => x.IdPlayer1 == id || x.IdPlayer2 == id)
+                                    .AsEnumerable().ToList();
             List<Player> myConnections = new List<Player>();
 
             foreach(Match m in match)

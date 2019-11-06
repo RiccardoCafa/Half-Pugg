@@ -8,6 +8,7 @@ import match from './pages/match';
 import curriculoT from './pages/curriculoT';
 import registergame from './pages/registergame';
 import MyConnections from './pages/MyConnections';
+import interesses from './pages/interesses';
 
 export default function () {
     return (
@@ -19,6 +20,7 @@ export default function () {
             <Route path="/curriculo" component={curriculoT}/>
             <Route path="/registergame" component={registergame}/>
             <Route path="/MyConnections" component={MyConnections}/>
+           <Route path="/Interesse" component={interesses}/>
         </BrowserRouter>
     );
 }

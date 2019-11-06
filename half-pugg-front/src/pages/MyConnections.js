@@ -6,7 +6,7 @@ import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Segment } from 'semantic-ui-react';
+import { Card, Image, Button, Segment, Statistic, StatisticGroup } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
 
@@ -20,16 +20,16 @@ export default class MyConnections extends Component {
         },
         GamerLogado: {},
         Matches: [],
+        toMatch: false,
     }
 
-    async componentDidMount() {
+    componentDidMount = async () => {
 
         const jwt = localStorage.getItem("jwt");
         let stop = false;
         //console.log(jwt);
         let myData;
         if(jwt){
-            console.log(jwt);
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
                 myData = res.data
                 //console.log(res.data)
@@ -47,18 +47,19 @@ export default class MyConnections extends Component {
         {
             GamerLogado: myData
         })
-        console.log(myData);
         this.setNickname(myData);
         
         if(myData !== undefined && myData.data !== null) {
-            console.log(myData.ID);
             const MatchData = await api.get('api/Matches/' + myData.ID);
             //{ headers: { "token-jwt": jwt }}
             if(MatchData.data != null){
-                console.log(MatchData.data);
                 this.setState({Matches: MatchData.data});
             }
         }
+    }
+
+    componentWillMount() {
+
     }
 
     setNickname(myData) {
@@ -66,7 +67,14 @@ export default class MyConnections extends Component {
         this.setState({Nickname: myData.Nickname})
     }
 
+    goToBio = () => {
+        this.setState({toMatch: true});
+    }
+
     render() {
+        if(this.state.toMatch === true) {
+            return <Redirect to='/match'></Redirect>
+        }
         return (
             <div>
                 <Auth></Auth>
@@ -74,6 +82,17 @@ export default class MyConnections extends Component {
                     <Headera HeaderGamer = {this.state.GamerLogado}/>
                 </div>  
                 <Segment>
+                    {this.state.Matches.length === 0 ?
+                    <div>
+                        <Statistic.Group>
+                            <Statistic
+                            value = "Ops! Parece que você não possui conexões..."
+                            label = "Experimente conectar-se com outros gamers!"
+                            text
+                            id="sem-conexao-texto"></Statistic>
+                        </Statistic.Group>
+                        <Button id="sem-conexao-button" label="Quero me conectar!" basic icon='users' onClick={this.goToBio}></Button>
+                    </div>:<div/>}
                     <Card.Group>
                         {this.state.Matches.map((matcher) => 
                             <Card key={matcher.ID} >
