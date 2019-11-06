@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HalfPugg.Models
 {
     public class Group
     {
-        [Key]
-        public int ID_Group { get; set; }
-        [StringLength(70)]
-        public string Name { get; set; }
-        public Game Game { get; set; }
-        public int Capacity { get; set; }
+        [Key] public int ID_Group { get; set; }
+        [StringLength(70)] [Required] public string Name { get; set; }
+        [Required] [ForeignKey("Game")] public int IdGame { get; set; }
+        [Required] public int Capacity { get; set; }
+        [Required] [ForeignKey("Player")] public int IdAdmin { get; set; }
+        public DateTime CreateAt { get; set; }
+        public DateTime AlteredAt { get; set; }
+        [JsonIgnore] public virtual Game Game { get; set; }
+        [JsonIgnore] public virtual Player Player { get; set; }
 
-        public IList<Filter> Filters { get; set; }
-        public Gamer Admin { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public IList<Gamer> Components { get; set; }
-        public IList<MessageGroup> Chat { get; set; }
 
-            
 
     }
 }

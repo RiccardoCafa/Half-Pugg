@@ -1,49 +1,101 @@
 ﻿using HalfPugg.Models;
+using HalfPugg.TokenJWT;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 
 namespace HalfPugg.Controllers
 {
+
+    public class TokenData
+    {
+        public int ID;
+        public float Exp;
+    }
+
     public class LoginController : ApiController
     {
         HalfPuggContext db;
+        public static Player GamerLogado = null;
 
         public LoginController()
         {
             db = new HalfPuggContext();
         }
 
+        [Route("api/ValidateToken")]
+        [HttpGet]
+        public IHttpActionResult ValidateToken()
+        {
+            var headers = Request.Headers;
+            if (headers.Contains("token-jwt"))
+            {
+                string token = headers.GetValues("token-jwt").First();
+                TokenValidation validation = new TokenValidation();
+                string userValidated = validation.ValidateToken(token);
+                if (userValidated != null)
+                {
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
+
         // GET: api/Login
         public IHttpActionResult Get()
         {
-            if (HttpContext.Current.Session["ID"] != null)
+            var headers = Request.Headers;
+            //var gamerLogged = db.Gamers.FirstOrDefault(g => g.ID == GamerLogado.ID);
+            if (headers.Contains("token-jwt"))
             {
-                var gamer = db.Gamers
-                                .FirstOrDefault(g => 
-                                    g.ID == int.Parse(HttpContext.Current.Session["ID"].ToString()));
-                if (gamer != null)
-                    return Ok<Gamer>(gamer);
-                else return BadRequest();
+                string token = headers.GetValues("token-jwt").First();
+                TokenValidation validation = new TokenValidation();
+                string userValidated = validation.ValidateToken(token);
+                if(userValidated != null)
+                {
+                    TokenData data = JsonConvert.DeserializeObject<TokenData>(userValidated);
+                    Player g2 = db.Gamers.FirstOrDefault(g => g.ID == data.ID);
+                    return Ok(g2);
+                } else
+                {
+                    return BadRequest();
+                }
+            } else
+            {
+                return BadRequest();
             }
-            else return NotFound();
         }
 
         // POST: api/Login
-        public IHttpActionResult Post(Gamer gamer)
+        public IHttpActionResult Post(Player gamer)
         {
-            var gamerLogged = db.Gamers.FirstOrDefault(g => g.ID == gamer.ID && g.HashPassword == gamer.HashPassword);
+            var gamerLogged = db.Gamers.FirstOrDefault(g => g.Email == gamer.Email && g.HashPassword == gamer.HashPassword);
 
-            if(gamerLogged != null)
+            if (gamerLogged != null)
             {
-                HttpContext.Current.Session["ID"] = gamer.ID;
-                return Json<Gamer>(gamer);
+                TokenMaker token = new TokenMaker();
+                Dictionary<string, object> payload = new Dictionary<string, object>()
+                {
+                    {"ID", gamerLogged.ID }
+                };
+                var generatedToken = token.MakeToken(payload, 3 * 60 * 60);
+                return Ok(generatedToken);
             }
             return NotFound();
+        }
+
+        [HttpDelete]
+        [Route("api/logoff")]
+        public IHttpActionResult DeleteLogin(Player gamer)
+        {
+            return Ok();
         }
     }
 }

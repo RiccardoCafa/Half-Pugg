@@ -1,0 +1,25 @@
+.connections {
+    margin-left: 2%;
+    margin-top: 2%;
+    margin-right: 2%;
+}
+
+.submenu {
+    margin-top: 1.5%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 1%;
+}
+
+#btn-acpden {
+    font-size: 13px;
+}
+
+#incomplete-cadastro {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+#botao-complete-cadastro {
+    margin-left: 0%;
+}
