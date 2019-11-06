@@ -4,7 +4,7 @@ import { Button, Comment, Form, TextArea, Image } from 'semantic-ui-react';
 
 import './registergame.css';
 
-export default class Register2 extends Component {
+export default class registergame extends Component {
 
     state = {
         slogan: '',
