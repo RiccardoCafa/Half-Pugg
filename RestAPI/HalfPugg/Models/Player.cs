@@ -23,7 +23,6 @@ namespace HalfPugg.Models
         [Required] [StringLength(1)] public string Sex { get; set; }
         [StringLength(100)] public string Genre { get; set; }  
         public ICollection<MessageHall> MessageHalls { get; set; }
-        [InverseProperty("Player1")] public ICollection<Match> Match { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
 
