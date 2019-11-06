@@ -1,0 +1,44 @@
+CREATE FUNCTION Match() RETURNS trigger AS $create_link$
+    BEGIN
+        
+        IF NEW.IdPlayer1 IS NULL OR NEW.IdPlayer2 IS NULL THEN
+            RAISE EXCEPTION 'IdPlayer cannot be null';
+
+        END IF;
+
+        IF EXISTS (
+            SELECT *
+            FROM "dbo"."RequestedMatches"
+            WHERE (IdPlayer1 = NEW.IdPlayer2 AND IdPlayer2 = NEW.IdPlayer1 )
+        )THEN
+            INSERT INTO "dbo"."Match" VALUES (NEW.IdPlayer1, NEW.IdPlayer2 , 'T', 1.0 , NOW(), NULL);
+        END IF;
+    RETURN NEW;
+    END;
+$create_link$ LANGUAGE plpgsql;
+
+CREATE TRIGGER CreateMatch BEFORE INSERT OR UPDATE ON "dbo"."RequestedMatches"
+    FOR EACH ROW EXECUTE PROCEDURE Match();
+
+
+CREATE OR REPLACE FUNCTION groupMatch() RETURNS trigger AS $create_link$
+    BEGIN
+        
+        IF NEW.IdPlayer1 IS NULL OR NEW.IdPlayer2 THEN
+            RAISE EXCEPTION 'IdPlayer cannot be null';
+
+        END IF;
+
+        IF EXISTS (
+            SELECT *
+            FROM "dbo"."RequestedMatches"
+            WHERE (IdPlayer1 = NEW.IdPlayer2 AND IdPlayer2 = NEW.IdPlayer1 )
+        )THEN
+            INSERT INTO "dbo"."Match" VALUES (NEW.IdPlayer1, NEW.IdPlayer2 , 'T', 1.0 , NOW(), NULL);
+        END IF;
+    RETURN NEW;
+    END;
+$create_link$ LANGUAGE plpgsql;
+
+CREATE TRIGGER CreateMatch BEFORE INSERT OR UPDATE ON "dbo"."RequestedMatches"
+    FOR EACH ROW EXECUTE PROCEDURE Match();

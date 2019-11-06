@@ -67,7 +67,7 @@ namespace HalfPugg.Controllers
             foreach (RequestedMatch reqMatch in reqMatches)
             {
                 if (reqMatch.Status == "F") continue;
-                Player findMe = db.Gamers.Find(reqMatch.IdPlayer);
+                Player findMe = db.Gamers.Find(reqMatch.IdPlayer1);
                 if(findMe != null)
                 {
                     gamersReq.Add(new Player()
@@ -94,7 +94,7 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
 
-            var req2 = db.Set<RequestedMatch>().FirstOrDefault(req => req.IdPlayer == requestedMatch.IdPlayer
+            var req2 = db.Set<RequestedMatch>().FirstOrDefault(req => req.IdPlayer1 == requestedMatch.IdPlayer1
                                                   && req.IdPlayer2 == requestedMatch.IdPlayer2);
             if (req2 == null) return BadRequest();
             id = req2.ID;

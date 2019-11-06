@@ -135,7 +135,7 @@ namespace HalfPugg.Controllers
                                     .Where(ma => ma.IdPlayer1 == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
                                     .AsEnumerable().ToList();
             List<RequestedMatch> reqMatches = db.RequestedMatchs
-                                                .Where(ma => ma.IdPlayer == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
+                                                .Where(ma => ma.IdPlayer1 == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
                                                 .AsEnumerable().ToList();
             foreach (Player gMatch in db.Gamers)
             {
@@ -145,7 +145,7 @@ namespace HalfPugg.Controllers
                      x.IdPlayer2 == gMatch.ID || x.IdPlayer1 == gMatch.ID);
 
                     RequestedMatch Requested = reqMatches.FirstOrDefault(x =>
-                    x.IdPlayer2 == gMatch.ID || x.IdPlayer == gMatch.ID);
+                    x.IdPlayer2 == gMatch.ID || x.IdPlayer1 == gMatch.ID);
 
                     if (found == null && Requested == null)
                     {
