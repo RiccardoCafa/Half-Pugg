@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import './curriculo.css';
-import { Image, Segment, Grid, Checkbox, List, Loader, Statistic} from 'semantic-ui-react'
+import { Image, Segment, Grid, Loader, Statistic} from 'semantic-ui-react'
 import Header from '../Components/headera';
 import api from '../services/api';
 import gostosao from '../images/chris.jpg';
+import OWCard from '../Components/OWCard';
 
 export default class Curriculo extends Component {
 
@@ -17,8 +18,6 @@ export default class Curriculo extends Component {
         GamerLogado: {},
         OverwatchInfo: {},
         toLogin: false,
-        compCareerCollapse: false,
-        quickCareerCollapse: false,
         loadedOW: false,
         ConnectionsLength: 0,
     }
@@ -66,19 +65,9 @@ export default class Curriculo extends Component {
         this.setState({NewConnections: false});
     }
     
-    handleQuickCareerCollapse = (ligado) => this.setState({quickCareerCollapse: ligado});
-    handleCareerCollapse = (ligado) => this.setState({compCareerCollapse: ligado});
-
     render(){
         if(this.state.toLogin === true){
             return <Redirect to="/"></Redirect>
-        }
-        const { compCareerCollapse } = this.state;
-        const { quickCareerCollapse } = this.state;
-
-        let owLevel = 1;
-        if(this.state.OverwatchInfo.profile !== undefined){
-            owLevel = this.state.OverwatchInfo.profile.endorsement * 100 + this.state.OverwatchInfo.profile.level;
         }
 
         return (
@@ -176,102 +165,7 @@ export default class Curriculo extends Component {
                                 </div>
                                 <div>
                                     {this.state.OverwatchInfo.profile !== undefined ?
-                                    <div className="ui segment dimmable">
-                                        <h3 className="ui header">Overwatch</h3>
-                                        <div>
-                                            <div className="header">Nome: {this.state.OverwatchInfo.profile.name}</div>
-                                            <div className="header">level: {owLevel}</div>
-                                            <div className="header">prestige: {this.state.OverwatchInfo.profile.prestige}</div>
-                                            <div className="header">rating: {this.state.OverwatchInfo.profile.rating}</div>
-                                            <div className="header">tank_rating: {this.state.OverwatchInfo.profile.tank_rating}</div>
-                                            <div className="header">damage_rating: {this.state.OverwatchInfo.profile.damage_rating}</div>
-                                            <div className="header">support_rating: {this.state.OverwatchInfo.profile.support_rating}</div>
-                                        </div>
-                                        {this.state.OverwatchInfo.quickCareer !== undefined ?
-                                            <div><Checkbox
-                                                label='quick career'
-                                                onChange={() => this.handleQuickCareerCollapse(!quickCareerCollapse)}
-                                            />
-                                            {quickCareerCollapse === true ?
-                                            <List>
-                                                <List.Item>
-                                                    <List.Content>All Damage done = {this.state.OverwatchInfo.quickCareer.allDamageDone}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Barrier Damage Done = {this.state.OverwatchInfo.quickCareer.barrierDamageDone}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Deaths = {this.state.OverwatchInfo.quickCareer.deaths}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Eliminations = {this.state.OverwatchInfo.quickCareer.eliminations}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Final Blows {this.state.OverwatchInfo.quickCareer.finalBlows}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Healing Done {this.state.OverwatchInfo.quickCareer.healingDone}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Hero Damage Done {this.state.OverwatchInfo.quickCareer.heroDamageDone}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Objective Kills {this.state.OverwatchInfo.quickCareer.objectiveKills}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Objective Time {this.state.OverwatchInfo.quickCareer.objectiveTime}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Solo Kills {this.state.OverwatchInfo.quickCareer.soloKills}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Time Spent On Fire {this.state.OverwatchInfo.quickCareer.timeSpentOnFire}</List.Content>
-                                                </List.Item>
-                                            </List> : <div/>}</div>
-                                        : <div />}
-                                        {this.state.OverwatchInfo.compCareer !== undefined ?
-                                            <div><Checkbox
-                                                label='career comp'
-                                                onChange={() => this.handleCareerCollapse(!compCareerCollapse)}
-                                            />
-                                            {compCareerCollapse === true ?
-                                            <List>
-                                                <List.Item>
-                                                    <List.Content>All Damage done = {this.state.OverwatchInfo.compCareer.allDamageDone}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Barrier Damage Done = {this.state.OverwatchInfo.compCareer.barrierDamageDone}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Deaths = {this.state.OverwatchInfo.compCareer.deaths}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Eliminations = {this.state.OverwatchInfo.compCareer.eliminations}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Final Blows {this.state.OverwatchInfo.compCareer.finalBlows}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Healing Done {this.state.OverwatchInfo.compCareer.healingDone}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Hero Damage Done {this.state.OverwatchInfo.compCareer.heroDamageDone}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Objective Kills {this.state.OverwatchInfo.compCareer.objectiveKills}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Objective Time {this.state.OverwatchInfo.compCareer.objectiveTime}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Solo Kills {this.state.OverwatchInfo.compCareer.soloKills}</List.Content>
-                                                </List.Item>
-                                                <List.Item>
-                                                    <List.Content>Time Spent On Fire {this.state.OverwatchInfo.compCareer.timeSpentOnFire}</List.Content>
-                                                </List.Item>
-                                            </List> : <div/>}</div>
-                                        : <div />}
-                                    </div>
+                                    <OWCard {...this.state.OverwatchInfo}></OWCard>
                                     : <Loader/>}
                                     <div className="ui segment dimmable">
                                         <h3 className="ui header">League of legends</h3>

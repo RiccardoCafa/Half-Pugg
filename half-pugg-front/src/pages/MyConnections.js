@@ -6,7 +6,7 @@ import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Segment, Statistic, StatisticGroup } from 'semantic-ui-react';
+import { Card, Image, Button, Segment, Statistic } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
 
