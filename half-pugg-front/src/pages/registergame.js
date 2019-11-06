@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Comment, Form, TextArea } from 'semantic-ui-react'
 
-import './register2.css';
+import './registergame.css';
 export default  function({history}) {
 
     const [ descricao, setDescricao ] = useState(''); 
