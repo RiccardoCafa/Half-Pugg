@@ -30,7 +30,7 @@ namespace HalfPugg.Controllers
             curriculoInfo = new CurriculoInformation();
             Player p1 = db.Gamers.Find(GamerID);
             curriculoInfo.gamer = db.Gamers.Find(GamerID);
-            curriculoInfo.ConnectionsLenght = p1.Match == null ? 0 : p1.Match.Count;
+            //curriculoInfo.ConnectionsLenght = p1.Match == null ? 0 : p1.Match.Count;
             OverwatchController owController = new OverwatchController();
             OwPlayer owp = owController.GetPlayerOwObject(p1.ID, region.us);
             curriculoInfo.OverwatchInfo = owp;
