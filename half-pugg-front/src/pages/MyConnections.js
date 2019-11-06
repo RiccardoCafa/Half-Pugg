@@ -27,12 +27,10 @@ export default class MyConnections extends Component {
 
         const jwt = localStorage.getItem("jwt");
         let stop = false;
-        //console.log(jwt);
         let myData;
         if(jwt){
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
                 myData = res.data
-                //console.log(res.data)
             ).catch(error => stop = true)
         } else {
             stop = true;
@@ -95,29 +93,30 @@ export default class MyConnections extends Component {
                     </div>:<div/>}
                     <Card.Group>
                         {this.state.Matches.map((matcher) => 
-                            <Card key={matcher.ID} >
+                            <Card key={matcher.matchPlayer.ID} >
                                 <Card.Content>
                                     <Image
                                         floated='right'
                                         size='mini'
-                                        src={(matcher.ImagePath === "" || matcher.ImagePath === null) ? gostosao : matcher.ImagePath}
+                                        src={(matcher.matchPlayer.ImagePath === "" || matcher.matchPlayer.ImagePath === null) ?
+                                                gostosao : matcher.matchPlayer.ImagePath}
                                         />
-                                    <Card.Header>{matcher.Nickname}</Card.Header>
-                                    <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
-                                    <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
+                                    <Card.Header>{matcher.matchPlayer.Nickname}</Card.Header>
+                                    <Card.Meta>Afinidade de {matcher.afinidade}%</Card.Meta>
+                                    <Card.Description>{matcher.matchPlayer.Slogan === null ?
+                                                        "Gamer Casual" :matcher.matchPlayer.Slogan}</Card.Description>
                                 </Card.Content>
                                 <Card.Content extra>
                                     <div className='ui two buttons'>
                                         <Button 
                                             id='btn-acpden' 
                                             basic color='green' 
-                                            onClick={() => this.connectMatch(matcher)}
                                             content='Invite to Group!'
                                             />
                                     </div>
                                 </Card.Content>
                                 <Card.Content extra>
-                                    <OpenCurriculum matcher={matcher}></OpenCurriculum>
+                                    <OpenCurriculum matcher={matcher.matchPlayer}></OpenCurriculum>
                                 </Card.Content>
                             </Card>
                         )}
