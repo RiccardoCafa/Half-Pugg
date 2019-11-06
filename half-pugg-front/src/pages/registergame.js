@@ -18,11 +18,7 @@ export default class registergame extends Component {
         GamerLogado: {},
         OverwatchInfo: {},
     }
-
-//    handleSubmit(e) {
-       
-//    }
-
+    
     componentDidMount = async () => {
         
         const jwt = localStorage.getItem("jwt");
@@ -50,14 +46,11 @@ export default class registergame extends Component {
         });
 
         const resposta = await api.get('api/GetGamesInPlayer?PlayerID=' + myData.ID).catch(err => console.log(err))
-        console.log(resposta.data);
         resposta.data.map(async (playergame) => {
             let jogo = playergame;
-            console.log(playergame);
             if(jogo.IDGame === 1){
                 // Overwatch
                 const ow = await api.get('api/GetPlayersOwerwatch?PlayerID='+jogo.IDGamer + '&Region=0').catch(err => console.log(err));
-                console.log(ow);
             }
         })
     }

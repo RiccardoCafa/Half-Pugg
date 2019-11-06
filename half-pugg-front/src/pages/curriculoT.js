@@ -30,7 +30,6 @@ export default class Curriculo extends Component {
         //console.log(jwt);
         let myData;
         if(jwt){
-            console.log(jwt);
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
                 myData = res.data
                 //console.log(res.data)
@@ -61,7 +60,6 @@ export default class Curriculo extends Component {
             }
             this.setState({ConnectionsLength: CurriculoData.data.ConnectionsLenght});
         }
-        console.log(CurriculoData);
     }
 
     OpenConnections(){

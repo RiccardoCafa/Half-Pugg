@@ -23,14 +23,13 @@ export default class MyConnections extends Component {
         toMatch: false,
     }
 
-    async componentDidMount() {
+    componentDidMount = async () => {
 
         const jwt = localStorage.getItem("jwt");
         let stop = false;
         //console.log(jwt);
         let myData;
         if(jwt){
-            console.log(jwt);
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
                 myData = res.data
                 //console.log(res.data)
@@ -48,18 +47,19 @@ export default class MyConnections extends Component {
         {
             GamerLogado: myData
         })
-        console.log(myData);
         this.setNickname(myData);
         
         if(myData !== undefined && myData.data !== null) {
-            console.log(myData.ID);
             const MatchData = await api.get('api/Matches/' + myData.ID);
             //{ headers: { "token-jwt": jwt }}
             if(MatchData.data != null){
-                console.log(MatchData.data);
                 this.setState({Matches: MatchData.data});
             }
         }
+    }
+
+    componentWillMount() {
+
     }
 
     setNickname(myData) {

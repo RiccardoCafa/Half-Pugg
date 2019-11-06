@@ -14,10 +14,6 @@ class header extends Component {
         Email: '',
         activeItem: '',
         Gamer: {},
-        toHome: false,
-        toMyConnections: false,
-        toBio: false,
-        toCurriculo: false,
         hideCom: false,
     }
     //4b0082
@@ -27,7 +23,7 @@ class header extends Component {
         try {
             localStorage.removeItem("jwt");
             localStorage.clear();
-            this.setState({toHome: true});
+            this.props.history.push('/');
         } catch(error) {
             console.log(error);
         }
