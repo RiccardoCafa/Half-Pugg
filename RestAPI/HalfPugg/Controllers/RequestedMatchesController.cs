@@ -142,6 +142,7 @@ namespace HalfPugg.Controllers
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message);
+                return BadRequest();
             }
             return CreatedAtRoute("DefaultApi", new { id = requestedMatch.ID }, requestedMatch);
         }

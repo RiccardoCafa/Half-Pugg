@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { Menu, Input, Button, Segment } from 'semantic-ui-react';
 
 import './header.css';
 
-export default class header extends Component {
+class header extends Component {
 
     state = {
         Name: '',
@@ -65,38 +65,29 @@ export default class header extends Component {
         this.checkForBio();
     }
 
-    render = () => {
-        if(this.state.toMyConnections === true) {
-            return <Redirect to="/MyConnections"></Redirect>
-        }
-        const { activeItem } = this.state;
+    loadPage = (route) => {
+        this.props.history.push(route);
+    }
 
-        if(this.state.toHome === true) {
-            return <Redirect to='/match'></Redirect>
-        } 
-        if(this.state.toBio === true) {
-            return <Redirect to='/bio'></Redirect>
-        }
-        if(this.state.toCurriculo === true) {
-            return <Redirect to='/curriculo'></Redirect>
-        }
+    render = () => {
+        const { activeItem } = this.state;
         
         return (
             <div>
                 <div id='myHeader'>
                     <Menu secondary id='botoes-header'>
-                        <Menu.Item id='user-name-item' onClick={this.goToCurriculo}>
+                        <Menu.Item id='user-name-item' onClick={() => this.loadPage('/curriculo')}>
                             Olá, {this.props.HeaderGamer.Nickname}
                         </Menu.Item>
                         <Menu.Item 
                             name='Home'
                             active={activeItem === 'Home'}
-                            onClick={this.goToHome}
+                            onClick={() => this.loadPage('/match')}
                             />
                         <Menu.Item
                             name='My Connections'
                             active={activeItem === "Connect"}
-                            onClick={this.goToMyConnections}
+                            onClick={() => this.loadPage('/MyConnections')}
                             />
                         <Menu.Menu position='right'>
                             <Menu.Item >
@@ -111,7 +102,7 @@ export default class header extends Component {
                 {this.state.hideCom === false ?
                     <Segment id="incomplete-cadastro">
                         <p>Parece que tem informações faltando no seu perfil, atualize para que outros jogadores consigam saber mais de você!</p>
-                        <Button primary onClick={() => this.goToBio}>Atualizar!</Button>
+                        <Button primary onClick={() => this.loadPage('/bio')}>Atualizar!</Button>
                         <Button id='botao-complete-cadastro' labelPosition='right' floated='right' onClick={this.hideWindow}>X</Button>
                     </Segment>
                     : <div/>}
@@ -119,3 +110,5 @@ export default class header extends Component {
         );
     }
 }
+
+export default withRouter(header);

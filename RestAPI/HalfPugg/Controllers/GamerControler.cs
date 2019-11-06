@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
@@ -13,9 +14,29 @@ using Newtonsoft.Json;
 
 namespace HalfPugg.Controllers
 {
+    public class PlayerRecomendation
+    {
+        public Player playerFound;
+        public string PlayerRecName;
+        public float aproximity;
+    }
+
     public class GamersController : ApiController
     {
         private HalfPuggContext db = new HalfPuggContext();
+
+        private Player GetPlayerFromToken(string token)
+        {
+            Player gamerL = null;
+            TokenValidation validation = new TokenValidation();
+            string userValidated = validation.ValidateToken(token);
+            if (userValidated != null)
+            {
+                TokenData data = JsonConvert.DeserializeObject<TokenData>(userValidated);
+                gamerL = db.Gamers.FirstOrDefault(g => g.ID == data.ID);
+            }
+            return gamerL;
+        }
 
         // GET: api/Gamers
         public IQueryable<Player> GetGamers()
@@ -38,6 +59,61 @@ namespace HalfPugg.Controllers
 
         [Route("api/GamersMatch")]
         [HttpGet]
+        public IHttpActionResult GetGamerMatch(int recType)
+        {
+            Player gamerL = null; // para testes, use> db.Gamers.Find(1); (comentar o token)
+            var headers = Request.Headers;
+            if (headers.Contains(WebApiConfig.tokenHeader))
+            {
+                string token = headers.GetValues(WebApiConfig.tokenHeader).First();
+                gamerL = GetPlayerFromToken(token);
+            }
+            if (gamerL == null) return NotFound();
+
+            switch (recType)
+            {
+                case 1:
+                    // Por conhecido de conhecidos
+                    // TODO tratar a aproximidade
+                    return Ok(adjPlayersConnections(gamerL));
+            }
+            return BadRequest();
+        }
+
+        private List<PlayerRecomendation> adjPlayersConnections(Player logado)
+        {
+            List<Match> logadoMatches = db.Matches
+                                    .Where(x => x.IdPlayer1 == logado.ID || x.IdPlayer2 == logado.ID)
+                                    .AsEnumerable().ToList();
+            List<PlayerRecomendation> players = new List<PlayerRecomendation>();
+            foreach (Match m in logadoMatches)
+            {
+                Player found = m.IdPlayer1 == logado.ID ? m.Player2 : m.Player1;//await db.Gamers.FindAsync(idToFind);
+                PlayerRecomendation recomendation = new PlayerRecomendation()
+                { PlayerRecName = found.Nickname, aproximity = 0 };
+                if (found != null)
+                {
+                    List<Match> matchesAdj = db.Matches
+                                               .Where(y => (y.IdPlayer1 != logado.ID && y.IdPlayer2 != logado.ID) &&
+                                                            (y.IdPlayer1 == found.ID || y.IdPlayer2 == found.ID))
+                                               .AsEnumerable().ToList();
+                    foreach(Match m2 in matchesAdj)
+                    {
+                        Player adj = m2.IdPlayer1 == logado.ID ? m2.Player2 : m2.Player1;
+                        if (adj != null)
+                        {
+                            recomendation.playerFound = adj;
+                            players.Add(recomendation);
+                        }
+                    }
+                }
+            }
+
+            return players;
+        }
+
+        [Route("api/GamersMatch")]
+        [HttpGet]
         public IHttpActionResult GetGamerMatch()
         {
             Player gamerL = null;
@@ -47,20 +123,14 @@ namespace HalfPugg.Controllers
             if (headers.Contains("token-jwt"))
             {
                 string token = headers.GetValues("token-jwt").First();
-                TokenValidation validation = new TokenValidation();
-                string userValidated = validation.ValidateToken(token);
-                if (userValidated != null)
-                {
-                    TokenData data = JsonConvert.DeserializeObject<TokenData>(userValidated);
-                    gamerL = db.Gamers.FirstOrDefault(g => g.ID == data.ID);
-                }
+                gamerL = GetPlayerFromToken(token);
             }
 
             if (gamerL == null)
             {
                 return NotFound();
             }
-            List<Player> gamers = new List<Player>();
+            List<PlayerRecomendation> gamers = new List<PlayerRecomendation>();
             List<Match> matches = db.Matches
                                     .Where(ma => ma.IdPlayer1 == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
                                     .AsEnumerable().ToList();
@@ -79,15 +149,22 @@ namespace HalfPugg.Controllers
 
                     if (found == null && Requested == null)
                     {
-                        gamers.Add(new Player()
+                        gamers.Add(new PlayerRecomendation()
                         {
-                            ID = gMatch.ID,
-                            Nickname = gMatch.Nickname,
-                            Name = gMatch.Name,
-                            LastName = gMatch.LastName,
-                            Email = gMatch.Email,
-                            ImagePath = gMatch.ImagePath,
-                            Bio = gMatch.Bio,
+                            playerFound = new Player()
+                            {
+                                ID = gMatch.ID,
+                                Nickname = gMatch.Nickname,
+                                Name = gMatch.Name,
+                                LastName = gMatch.LastName,
+                                Email = gMatch.Email,
+                                ImagePath = gMatch.ImagePath,
+                                Bio = gMatch.Bio,
+                                Slogan = gMatch.Slogan,
+                                Sex = gMatch.Sex,
+                            },
+                            PlayerRecName = "pessoas aleatórias.",
+                            aproximity = 0f,
                         });
 
                     }

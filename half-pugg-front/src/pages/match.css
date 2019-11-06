@@ -23,3 +23,15 @@
 #botao-complete-cadastro {
     margin-left: 0%;
 }
+
+#sem-conexao-texto {
+    margin-top: 10%;
+    margin-bottom: 4%;
+    margin-left: 25%;
+}
+
+#sem-conexao-button {
+    align-content: center;
+    margin-left: 43%;
+    margin-bottom: 10%;
+}

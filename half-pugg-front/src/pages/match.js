@@ -90,16 +90,16 @@ export default class Match extends Component {
     }
 
     connectMatch = (matcher) => {
-        console.log(this.state);
+        console.log(matcher);
         const response = api.post('api/RequestedMatches', {
             "IdPlayer": this.state.GamerLogado.ID,
             "IdPlayer2": matcher.ID,
             "Status": "A",
             "IdFilters": 1
         })
-        .catch(function(error){
-            console.log(error);
-        });
+        .catch(error => 
+            console.log(error)
+        );
         
         if(response !== null) {
             var array = [...this.state.GamerMatch];
@@ -218,23 +218,27 @@ export default class Match extends Component {
                             {this.state.NewConnections === false ?
                             <Card.Group>
                                 {this.state.GamerMatch.map((matcher) => 
-                                    <Card key={matcher.ID} >
+                                    <Card key={matcher.playerFound.ID} >
                                         <Card.Content>
                                             <Image
                                                 floated='right'
                                                 size='mini'
-                                                src={(matcher.ImagePath === "" || matcher.ImagePath === null) ? gostosao : matcher.ImagePath}
+                                                src={(matcher.playerFound.ImagePath === "" || matcher.playerFound.ImagePath === null) 
+                                                    ? gostosao : matcher.playerFound.ImagePath}
                                                 />
-                                            <Card.Header>{matcher.Nickname}</Card.Header>
-                                            <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
-                                            <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
+                                            <Card.Header>{matcher.playerFound.Nickname}</Card.Header>
+                                            <Card.Meta>Sugestão de {matcher.PlayerRecName}</Card.Meta>
+                                            <Card.Description><b>Moto de vida</b> <br></br>
+                                                                {matcher.playerFound.Slogan === null ?
+                                                                "Esse cara não possui..." : 
+                                                                matcher.playerFound.Slogan}</Card.Description>
                                         </Card.Content>
                                         <Card.Content extra>
                                             <div className='ui two buttons'>
                                                 <Button 
                                                     id='btn-acpden' 
                                                     basic color='green' 
-                                                    onClick={() => this.connectMatch(matcher)}
+                                                    onClick={() => this.connectMatch(matcher.playerFound)}
                                                     content='Connect!'
                                                     />
                                                 <Button 
@@ -246,7 +250,7 @@ export default class Match extends Component {
                                             </div>
                                         </Card.Content>
                                         <Card.Content extra>
-                                            <OpenCurriculum matcher={matcher}></OpenCurriculum>
+                                            <OpenCurriculum matcher={matcher.playerFound}></OpenCurriculum>
                                         </Card.Content>
                                     </Card>
                                 )}
