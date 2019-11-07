@@ -31,8 +31,17 @@ namespace HalfPugg.Controllers
             PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID).FirstOrDefault();
             if (pg == null) return NotFound();
             var a = OwAPI.GetPlayer(pg.IdAPI, Region, PlayerID);
-            if (a == null) return BadRequest();
+            if (a == null) return NotFound();
             return Ok(a);
+        }
+
+        public OwPlayer GetPlayerOwObject(int PlayerID, region Region)
+        {
+            PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID).FirstOrDefault();
+            if (pg == null) return null;
+            var a = OwAPI.GetPlayer(pg.IdAPI, Region, PlayerID);
+            if (a == null) return null;
+            return a;
         }
 
         [ResponseType(typeof(IEnumerable<OwPlayer>))]

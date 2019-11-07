@@ -5,6 +5,8 @@ namespace HalfPugg
 {
     public static class WebApiConfig
     {
+        public static string tokenHeader = "token-jwt";
+
         public static void Register(HttpConfiguration config)
         {
             // Serviços e configuração da API da Web
