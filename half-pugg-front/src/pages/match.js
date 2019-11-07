@@ -6,7 +6,7 @@ import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox } from 'semantic-ui-react';
+import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
 
@@ -265,6 +265,16 @@ export default class Match extends Component {
                             </Card.Group>
                             :
                             <Card.Group>
+                                {this.state.RequestedMatches.length === 0 ? 
+                                    <Statistic.Group>
+                                        <Statistic
+                                        value = "Oh :( você não possui convites de conexão..."
+                                        label = "Experimente conectar-se com mais gamers para que seja encontrado!"
+                                        text size='mini'
+                                        id="sem-conexao-texto"></Statistic>
+                                    </Statistic.Group>
+                                :
+                                <div>
                                 {this.state.RequestedMatches.map((requests) => 
                                     <Card key = {requests.ID} >
                                         <Card.Content>
@@ -293,9 +303,12 @@ export default class Match extends Component {
                                         </Card.Content>
                                     </Card>
                                 )}
+                                </div>
+                                }
                                 </Card.Group>
                             }
                             </Grid.Column>
+                            {this.state.NewConnections === false ?
                             <Grid.Column width={3}>
                                 Filtro
                                 <Checkbox label='Filtrar por Overwatch' onChange={this.openOWFiltro}/>
@@ -318,6 +331,7 @@ export default class Match extends Component {
                                 :
                                 <div/>}
                             </Grid.Column>
+                            :<div/>}
                         </Grid>
                     </Segment>
                     
