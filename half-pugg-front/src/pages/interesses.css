@@ -9,6 +9,11 @@
     flex-direction: column;
 }
 
+#title {
+    margin-top: 10px;
+    margin-left: 30%;
+}
+
 #botoes {
     margin-top: 20px;
     margin-left: 25%;
