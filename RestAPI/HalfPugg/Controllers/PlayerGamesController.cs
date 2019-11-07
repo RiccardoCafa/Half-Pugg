@@ -88,7 +88,7 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(PlayerGame))]
         public async Task<IHttpActionResult> PostPlayerGame(PlayerGame playerGame)
         {
-           
+            return BadRequest("Use a rota especifica do jogo");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
