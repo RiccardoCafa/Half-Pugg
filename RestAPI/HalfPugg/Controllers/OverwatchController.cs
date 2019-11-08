@@ -99,7 +99,7 @@ namespace HalfPugg.Controllers
 
         #region POST
         [ResponseType(typeof(PlayerGame))]
-        [Route("api/PostPlayerInOw")]
+        [Route("api/PostPlayerInOw", Name = "PostPlayerInOw")]
         [HttpPost]
         public async Task<IHttpActionResult> PostPlayerInOw([FromBody]PlayerGame playerGame,[FromUri]region Region)
         {
@@ -153,7 +153,7 @@ namespace HalfPugg.Controllers
             //level 
             if (filter.level != null)
             {
-                int l = p.profile.level + p.profile.endorsement * 100;
+                int l = p.profile.level + p.profile.prestige * 100;
                 if (filter.level.Length > 1)
                 {
                     if (filter.level[1] == -1) ret = l > filter.level[0];
