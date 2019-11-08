@@ -1,0 +1,33 @@
+.interesses-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    flex-direction: column;
+}
+
+#title {
+    margin-top: 10px;
+    margin-left: 30%;
+}
+
+#botoes {
+    margin-top: 20px;
+    margin-left: 25%;
+    margin-bottom: 20px;
+    transition: all .2s;
+}
+
+#goback{
+    margin-top: 5px;
+    margin-left: 20%;
+    margin-bottom: 10px;
+}
+
+#divider{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

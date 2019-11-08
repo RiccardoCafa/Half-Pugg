@@ -20,7 +20,7 @@ export default function () {
             <Route path="/curriculo" component={curriculoT}/>
             <Route path="/registergame" component={registergame}/>
             <Route path="/MyConnections" component={MyConnections}/>
-           <Route path="/Interesse" component={interesses}/>
+            <Route path="/Interesse" component={interesses}/>
         </BrowserRouter>
     );
 }

@@ -8,12 +8,13 @@ class OWCard extends Component {
         compCareerCollapse: false,
         quickCareerCollapse: false,
     }
+    
     constructor(owgamer){
         super();
         this.state.OWGamer = owgamer;
         console.log(owgamer);
     }
-
+    
     handleQuickCareerCollapse = (ligado) => this.setState({quickCareerCollapse: ligado});
     handleCareerCollapse = (ligado) => this.setState({compCareerCollapse: ligado});
 
