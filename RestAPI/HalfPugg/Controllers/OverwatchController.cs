@@ -65,7 +65,7 @@ namespace HalfPugg.Controllers
         }
 
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
-        [Route("api/GetOwMatchFilter")]
+        [Route("api/FilterPlayerOverwatch")]
         [HttpGet]
         public IHttpActionResult GetOwMatchFilter(int PlayerID, [FromUri]owFilter filter)
         {
@@ -87,7 +87,7 @@ namespace HalfPugg.Controllers
                     ids.Add(pg.IDGamer);
                 }
             }
-            if (p == null) return BadRequest(); //400
+            if (p == null) return BadRequest("Jogador que requisitou o match não consta no banco"); //400
 
             var player = OwAPI.GetPlayer(p.IdAPI, region.us, p.IDGamer);
             var a = OwAPI.GetPlayer(names, regions, ids).Where(x => filterPlayer(x, filter));
@@ -128,6 +128,9 @@ namespace HalfPugg.Controllers
             if (filter.role == 1) ret = p.profile.tank_rating > 0;
             else if (filter.role == 2) ret = p.profile.damage_rating > 0;
             else if (filter.role == 4) ret = p.profile.support_rating > 0;
+            else if (filter.role == 3) ret = (p.profile.tank_rating > 0 || p.profile.damage_rating > 0);
+            else if (filter.role == 5) ret = (p.profile.tank_rating > 0 || p.profile.support_rating > 0);
+            else if (filter.role == 6) ret = (p.profile.damage_rating > 0 || p.profile.support_rating > 0);
 
             if (!ret) return false;
 
