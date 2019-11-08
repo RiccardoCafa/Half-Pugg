@@ -67,7 +67,7 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
         [Route("api/GetOwMatchFilter")]
         [HttpGet]
-        public IHttpActionResult GetOwMatchFilter(int PlayerID, [FromBody]owFilter filter)
+        public IHttpActionResult GetOwMatchFilter(int PlayerID, [FromUri]owFilter filter)
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
