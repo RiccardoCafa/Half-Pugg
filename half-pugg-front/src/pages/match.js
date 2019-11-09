@@ -6,7 +6,7 @@ import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table } from 'semantic-ui-react';
+import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
 
@@ -36,6 +36,7 @@ export default class Match extends Component {
             "elimination": [],
             "competitve": false,
         },
+        loadingFilter: false,
     }
 
     async componentDidMount() {
@@ -118,7 +119,8 @@ export default class Match extends Component {
     // Seta o filtro para a busca
     openGamersByFilter = () => {
         console.log(this.state.OWF);
-        api.get('api/GetOwMatchFilter?PlayerID=' + this.state.GamerLogado.ID, {
+        this.setState({loadingFilter: true});
+        api.get('api/FilterPlayerRecOverwatch?PlayerID=' + this.state.GamerLogado.ID, {
             "role": [this.state.OWF.role],
             "level": [this.state.OWF.level[0], this.state.OWF.level[1]],
             "rating": [this.state.OWF.rating[0], this.state.OWF.rating[1]],
@@ -126,7 +128,7 @@ export default class Match extends Component {
             "elimination": [this.state.OWF.elimination[0], this.state.OWF.elimination[1]],
             "competitve": false
         })
-        .then( res => this.setState({GamerMatch: res.data})).catch(err => console.log(err.message));
+        .then( res => this.setState({GamerMatch: res.data, loadingFilter: false})).catch(err => console.log(err.message));
     }
     
     // Abre as requisições de match
@@ -151,13 +153,6 @@ export default class Match extends Component {
                 "IdFilters": 1,
             });
     
-            // await api.post('api/Matches', {
-            //     "IdPlayer1": gamerMatch.ID,
-            //     "IdPlayer2": this.state.GamerLogado.ID,
-            //     "Status": deuMatch,
-            //     "Weight": 0,
-            // });
-    
             var array = [...this.state.RequestedMatches];
             var index = array.indexOf(gamerMatch);
             if(index !== -1) {
@@ -172,7 +167,7 @@ export default class Match extends Component {
     }
 
     // Filtros do Overwatch
-    openOWFiltro = () => this.setState({OWFilter: true});
+    openOWFiltro = () => this.setState({OWFilter: !this.state.OWFilter});
     
     setRole = (role) => {
         this.setState( prevOWF => ({
@@ -284,7 +279,7 @@ export default class Match extends Component {
                                             </div>
                                         </Card.Content>
                                         <Card.Content extra>
-                                            <OpenCurriculum matcher={matcher.playerFound}></OpenCurriculum>
+                                            <OpenCurriculum {...matcher.playerFound}></OpenCurriculum>
                                         </Card.Content>
                                     </Card>
                                 )}
@@ -336,7 +331,7 @@ export default class Match extends Component {
                             </Grid.Column>
                             {this.state.NewConnections === false ?
                             <Grid.Column width={3}>
-                                Filtro
+                                Filtro <br/>
                                 <Checkbox label='Filtrar por Overwatch' onChange={this.openOWFiltro}/>
                                 {this.state.OWFilter === true ?
                                 <div>
@@ -421,7 +416,10 @@ export default class Match extends Component {
                                             </Table.Row>
                                         </Table.Body>
                                     </Table>
-                                    <Button onClick={this.openGamersByFilter}>Filtrar</Button>
+                                    {this.state.loadingFilter ?
+                                    <Loader ></Loader>
+                                    : <Button onClick={this.openGamersByFilter}>Filtrar</Button>
+                                    }
                                 </div>
                                 :
                                 <div/>}

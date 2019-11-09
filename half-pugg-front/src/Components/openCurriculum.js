@@ -5,11 +5,11 @@ import OWCard from './OWCard';
 
 export default class OpenCurriculum extends Component {
     state ={
-        OWGamer: {},
+        Gamer: {},
     }
-    constructor(owgamer){
+    constructor(gamer){
         super();
-        this.state.OWGamer = owgamer;
+        this.state.Gamer = gamer;
     }
 
     render() {
@@ -23,20 +23,20 @@ export default class OpenCurriculum extends Component {
                         </Button>
                     }>
                     <Modal.Header>
-                        {'Gamerlum de ' + this.props.matcher.Nickname}
+                        {'Gamerlum de ' + this.state.Gamer.Nickname}
                     </Modal.Header>
                     <Modal.Content image>
                         <Image wrapped size ='small' 
-                        src={(this.props.matcher.ImagePath === "" || this.props.matcher.ImagePath === null) 
-                            ? gostosao : this.props.matcher.ImagePath}
+                        src={(this.state.Gamer.ImagePath === "" || this.state.Gamer.ImagePath === null) 
+                            ? gostosao : this.state.Gamer.ImagePath}
                         circular/>
                         <Modal.Description>
-                            <b>{this.props.matcher.Slogan}</b><br/><br/>
-                            <b>História épica></b><br/>{this.props.matcher.Bio === null ? 'Gamer normal' : this.props.matcher.Bio}
+                            <b>{this.state.Gamer.Slogan}</b><br/><br/>
+                            <b>História épica></b><br/>{this.state.Gamer.Bio === null ? 'Gamer normal' : this.state.Gamer.Bio}
                         </Modal.Description>
-                        {this.state.OWGamer !== undefined ?
-                        <OWCard {...this.state.OWGamer}></OWCard>
-                        : <div/>}
+                    </Modal.Content>
+                    <Modal.Content>
+                        <OWCard {...this.state.Gamer}></OWCard>
                     </Modal.Content>
                 </Modal>
             </div>

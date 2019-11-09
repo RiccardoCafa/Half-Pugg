@@ -26,11 +26,23 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
         [Route("api/GetPlayersOwerwatch")]
         [HttpGet]
-        public IHttpActionResult GetPlayerOw(int PlayerID,region Region)
+        public IHttpActionResult GetPlayerOw(int PlayerID, region Region)
         {
-            PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID).FirstOrDefault();
+            PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID && x.IDGame == (int)Games.Overwatch).FirstOrDefault();
             if (pg == null) return NotFound();
             var a = OwAPI.GetPlayer(pg.IdAPI, Region, PlayerID);
+            if (a == null) return NotFound();
+            return Ok(a);
+        }
+
+        [ResponseType(typeof(OwPlayer))]
+        [Route("api/GetPlayerOwerwatch")]
+        [HttpGet]
+        public IHttpActionResult GetPlayerOw(int PlayerID)
+        {
+            PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID && x.IDGame == (int)Games.Overwatch).FirstOrDefault();
+            if (pg == null) return NotFound();
+            var a = OwAPI.GetPlayer(pg.IdAPI, region.us, PlayerID);
             if (a == null) return NotFound();
             return Ok(a);
         }
@@ -69,11 +81,23 @@ namespace HalfPugg.Controllers
         [HttpGet]
         public IHttpActionResult GetOwMatchFilter(int PlayerID, [FromUri]owFilter filter)
         {
+            var ows = OwMatchFilter(PlayerID, filter);
+            if(ows == null)
+            {
+                return BadRequest("Jogador que requisitou o match não consta no banco");
+            } else
+            {
+                return Ok(ows);
+            }
+        }
+
+        public IEnumerable<OwPlayer> OwMatchFilter(int PlayerID, [FromUri]owFilter filter)
+        {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
             List<int> ids = new List<int>();
             PlayerGame p = null;
-           
+
             foreach (PlayerGame pg in db.PlayerGames.Where(x => x.IDGame == 1))
             {
                 if (pg.IDGamer == PlayerID)
@@ -87,12 +111,40 @@ namespace HalfPugg.Controllers
                     ids.Add(pg.IDGamer);
                 }
             }
-            if (p == null) return BadRequest("Jogador que requisitou o match não consta no banco"); //400
+            if (p == null) return null;//BadRequest("Jogador que requisitou o match não consta no banco"); //400
 
             var player = OwAPI.GetPlayer(p.IdAPI, region.us, p.IDGamer);
             var a = OwAPI.GetPlayer(names, regions, ids).Where(x => filterPlayer(x, filter));
 
-            return Ok(a);//201
+            return a;//201
+        }
+
+        [ResponseType(typeof(IEnumerable<PlayerRecomendation>))]
+        [Route("api/FilterPlayerRecOverwatch")]
+        [HttpGet]
+        public IHttpActionResult GetOwPlayerRecFilter(int PlayerID, [FromUri]owFilter filter)
+        {
+            var Ows = OwMatchFilter(PlayerID, filter);
+            List<PlayerRecomendation> recom = new List<PlayerRecomendation>();
+            if(Ows == null)
+            {
+                return BadRequest("Jogador que requisitou o match não consta no banco");
+            } else
+            {
+                foreach(OwPlayer ow in Ows)
+                {
+                    PlayerRecomendation reco = new PlayerRecomendation()
+                    {
+                        playerFound = db.Gamers.Find(ow.idHalf),
+                        PlayerRecName = "filtro Overwatch",
+                        aproximity = 0f
+                    };
+                    recom.Add(reco);
+                }
+            }
+
+            return Ok(recom);
+            
         }
 
         #endregion

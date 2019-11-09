@@ -165,7 +165,7 @@ export default class Curriculo extends Component {
                                 </div>
                                 <div>
                                     {this.state.OverwatchInfo.profile !== undefined ?
-                                    <OWCard {...this.state.OverwatchInfo}></OWCard>
+                                    <OWCard {...this.state.GamerLogado}></OWCard>
                                     : <Loader/>}
                                     <div className="ui segment dimmable">
                                         <h3 className="ui header">League of legends</h3>

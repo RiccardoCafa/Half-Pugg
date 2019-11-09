@@ -114,7 +114,7 @@ export default class registergame extends Component {
                                             <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
                                             <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
                                     </div>
-                                            <Image src={lol} circular size= 'small'></Image>
+                                            <Image circular size= 'small'></Image>
                             </div>
                             <div id="gameapi">
                             <Input value={this.state.overwatchIDAPI} onChange={e => this.handleAPIInput(e)} placeholder='Game API'></Input>
@@ -133,7 +133,7 @@ export default class registergame extends Component {
                                             <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
                                             <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
                                     </div>
-                                            <Image src={cs} circular size= 'small'></Image>
+                                            <Image circular size= 'small'></Image>
                             </div>
                             <div id="gameapi">
                             <Input value={this.state.overwatchIDAPI} onChange={e => this.handleAPIInput(e)} placeholder='Game API'></Input>
