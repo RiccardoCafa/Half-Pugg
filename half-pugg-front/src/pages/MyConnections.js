@@ -116,7 +116,7 @@ export default class MyConnections extends Component {
                                     </div>
                                 </Card.Content>
                                 <Card.Content extra>
-                                    <OpenCurriculum matcher={matcher.matchPlayer}></OpenCurriculum>
+                                    <OpenCurriculum {...matcher.matchPlayer}></OpenCurriculum>
                                 </Card.Content>
                             </Card>
                         )}

@@ -121,11 +121,12 @@ namespace HalfPugg.Controllers
 
         [ResponseType(typeof(IEnumerable<PlayerRecomendation>))]
         [Route("api/FilterPlayerRecOverwatch")]
-        [HttpGet]
-        public IHttpActionResult GetOwPlayerRecFilter(int PlayerID, [FromUri]owFilter filter)
+        [HttpPost]
+        public IHttpActionResult GetOwPlayerRecFilter(int PlayerID, owFilter filter)
         {
             var Ows = OwMatchFilter(PlayerID, filter);
             List<PlayerRecomendation> recom = new List<PlayerRecomendation>();
+            List<Match> playerMatches = db.Matches.Where(x => x.IdPlayer1 == PlayerID || x.IdPlayer2 == PlayerID).AsEnumerable().ToList();
             if(Ows == null)
             {
                 return BadRequest("Jogador que requisitou o match não consta no banco");
@@ -133,6 +134,10 @@ namespace HalfPugg.Controllers
             {
                 foreach(OwPlayer ow in Ows)
                 {
+                    if(playerMatches.Find(pm => pm.IdPlayer1 == ow.idHalf || pm.IdPlayer2 == ow.idHalf) != null)
+                    {
+                        continue;
+                    }
                     PlayerRecomendation reco = new PlayerRecomendation()
                     {
                         playerFound = db.Gamers.Find(ow.idHalf),
@@ -144,7 +149,6 @@ namespace HalfPugg.Controllers
             }
 
             return Ok(recom);
-            
         }
 
         #endregion

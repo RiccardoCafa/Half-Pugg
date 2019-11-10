@@ -29,18 +29,6 @@ class header extends Component {
         }
     }
 
-    goToMyConnections = () => {
-        this.setState({toMyConnections: true});
-    }
-
-    goToHome = () => {
-        this.setState({toHome: true});
-    }
-
-    goToCurriculo = () => {
-        this.setState({toCurriculo: true});
-    }
-
     getGamer = () => {
         this.setState({Gamer: this.props.HeaderGamer});
     }

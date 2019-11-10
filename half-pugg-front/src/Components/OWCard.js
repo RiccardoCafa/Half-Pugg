@@ -44,11 +44,10 @@ class OWCard extends Component {
                     <div>
                         <div className="header">Nome: {this.state.OWGamer.profile.name}</div>
                         <div className="header">level: {owLevel}</div>
-                        <div className="header">endorsment: {this.state.OWGamer.profile.endorsment}</div>
                         <div className="header">rating: {this.state.OWGamer.profile.rating}</div>
-                        <div className="header">tank_rating: {this.state.OWGamer.profile.tank_rating}</div>
-                        <div className="header">damage_rating: {this.state.OWGamer.profile.damage_rating}</div>
-                        <div className="header">support_rating: {this.state.OWGamer.profile.support_rating}</div>
+                        <div className="header">tank rating: {this.state.OWGamer.profile.tank_rating}</div>
+                        <div className="header">damage rating: {this.state.OWGamer.profile.damage_rating}</div>
+                        <div className="header">support rating: {this.state.OWGamer.profile.support_rating}</div>
                     </div>
                     {this.state.OWGamer.quickCareer !== undefined ?
                         <div><Checkbox

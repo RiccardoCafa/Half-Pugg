@@ -6,7 +6,7 @@ import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader } from 'semantic-ui-react';
+import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
 
@@ -29,14 +29,36 @@ export default class Match extends Component {
         OWFilter: false,
         OWF: {
             "role": Number,
-            "level": [],
-            "rating": [],
-            "damage": [],
-            "healing": [],
-            "elimination": [],
+            "level": [null, null],
+            "rating": [null, null],
+            "damage": [null,null],
+            "healing": [null,null],
+            "elimination": [null,null],
             "competitve": false,
         },
         loadingFilter: false,
+        tiposProcura: [
+            {
+                key: 1,
+                text: 'Pessoas Aleatórias',
+                value: 'Pessoas Aleatórias'
+            },
+            {
+                key: 2,
+                text: 'Jogo',
+                value: 'Jogo',
+            },
+            {
+                key: 3,
+                text: 'Conhecidos',
+                value: 'Conhecidos',
+            },
+            {
+                key: 4,
+                text: 'Interesse',
+                value: 'Interesse'
+            }
+        ],
     }
 
     async componentDidMount() {
@@ -120,13 +142,14 @@ export default class Match extends Component {
     openGamersByFilter = () => {
         console.log(this.state.OWF);
         this.setState({loadingFilter: true});
-        api.get('api/FilterPlayerRecOverwatch?PlayerID=' + this.state.GamerLogado.ID, {
-            "role": [this.state.OWF.role],
+        api.post('api/FilterPlayerRecOverwatch?PlayerID=' + this.state.GamerLogado.ID, {
+            "role": this.state.OWF.role,
             "level": [this.state.OWF.level[0], this.state.OWF.level[1]],
             "rating": [this.state.OWF.rating[0], this.state.OWF.rating[1]],
             "damage":[this.state.OWF.damage[0], this.state.OWF.damage[1]],
             "elimination": [this.state.OWF.elimination[0], this.state.OWF.elimination[1]],
             "competitve": false
+
         })
         .then( res => this.setState({GamerMatch: res.data, loadingFilter: false})).catch(err => console.log(err.message));
     }
@@ -168,7 +191,12 @@ export default class Match extends Component {
 
     // Filtros do Overwatch
     openOWFiltro = () => this.setState({OWFilter: !this.state.OWFilter});
+
+    applyFiltroSearch = eve => {
+        console.log(eve.target);
+    }
     
+    //#region filtro ow
     setRole = (role) => {
         this.setState( prevOWF => ({
             OWF: {
@@ -217,7 +245,7 @@ export default class Match extends Component {
             OWF: owf,
         })
     }
-
+    //#endregion
 
     render() {
         if(this.state.toLogin === true) {
@@ -331,7 +359,22 @@ export default class Match extends Component {
                             </Grid.Column>
                             {this.state.NewConnections === false ?
                             <Grid.Column width={3}>
-                                Filtro <br/>
+                                Filtro <br/><br/>
+                                <Grid>
+                                    <Grid.Column width={15}>
+                                        <Dropdown 
+                                            icon='filter' 
+                                            placeholder='Tipo de Procura'
+                                            floating labeled
+                                            options={this.state.tiposProcura}
+                                            onChange={eve => this.applyFiltroSearch(eve)}
+                                        ></Dropdown>
+                                    </Grid.Column>
+                                    <Grid.Column width={8}>
+                                        <Button>Pesquisar!</Button>
+                                    </Grid.Column>
+                                </Grid>
+                                <br></br>
                                 <Checkbox label='Filtrar por Overwatch' onChange={this.openOWFiltro}/>
                                 {this.state.OWFilter === true ?
                                 <div>
@@ -360,9 +403,9 @@ export default class Match extends Component {
                                                     Level
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Input placeholder='min level' value={this.state.OWF.level[0]} 
+                                                    <Input placeholder='menor que' value={this.state.OWF.level[0]} 
                                                         onChange={e => this.setLevel(e.target.value, 0)} size='mini'></Input>
-                                                    <Input placeholder='max level' value={this.state.OWF.level[1]} 
+                                                    <Input placeholder='maior que' value={this.state.OWF.level[1]} 
                                                         onChange={e => this.setLevel(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>
@@ -372,9 +415,9 @@ export default class Match extends Component {
                                                     Rating
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Input placeholder='min rating' value={this.state.OWF.rating[0]} 
+                                                    <Input placeholder='menor que' value={this.state.OWF.rating[0]} 
                                                         onChange={e => this.setRating(e.target.value, 0)} size='mini'></Input>
-                                                    <Input placeholder='max rating' value={this.state.OWF.rating[1]} 
+                                                    <Input placeholder='maior que' value={this.state.OWF.rating[1]} 
                                                         onChange={e => this.setRating(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>
@@ -384,9 +427,9 @@ export default class Match extends Component {
                                                     Damage
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Input placeholder='min damage' value={this.state.OWF.damage[0]} 
+                                                    <Input placeholder='menor que' value={this.state.OWF.damage[0]} 
                                                         onChange={e => this.setDamage(e.target.value, 0)} size='mini'></Input>
-                                                    <Input placeholder='max damage' value={this.state.OWF.damage[1]} 
+                                                    <Input placeholder='maior que' value={this.state.OWF.damage[1]} 
                                                         onChange={e => this.setDamage(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>
@@ -396,9 +439,9 @@ export default class Match extends Component {
                                                     Healing
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Input placeholder='min healing' value={this.state.OWF.healing[0]} 
+                                                    <Input placeholder='menor que' value={this.state.OWF.healing[0]} 
                                                         onChange={e => this.setHealing(e.target.value, 0)} size='mini'></Input>
-                                                    <Input placeholder='max healing' value={this.state.OWF.healing[1]} 
+                                                    <Input placeholder='maior que' value={this.state.OWF.healing[1]} 
                                                         onChange={e => this.setHealing(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>
@@ -408,16 +451,16 @@ export default class Match extends Component {
                                                     Elimination
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Input placeholder='min elimination' value={this.state.OWF.elimination[0]} 
+                                                    <Input placeholder='menor que' value={this.state.OWF.elimination[0]} 
                                                         onChange={e => this.setElimination(e.target.value, 0)} size='mini'></Input>
-                                                    <Input placeholder='max elimination' value={this.state.OWF.elimination[1]} 
+                                                    <Input placeholder='maior que' value={this.state.OWF.elimination[1]} 
                                                         onChange={e => this.setElimination(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>
                                         </Table.Body>
                                     </Table>
                                     {this.state.loadingFilter ?
-                                    <Loader ></Loader>
+                                    <Loader active inline></Loader>
                                     : <Button onClick={this.openGamersByFilter}>Filtrar</Button>
                                     }
                                 </div>
