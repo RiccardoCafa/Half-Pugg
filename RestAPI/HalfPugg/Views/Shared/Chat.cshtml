@@ -35,6 +35,7 @@
 
             var chat = $.connection.chatHub;
 
+            //recebe a mensagem do chat hub
             chat.client.SendMessage = function (name, message) {
 
                 $('#discussion').append('<strong>' + htmlEncode(name)
@@ -47,8 +48,8 @@
 
             $.connection.hub.start().done(function () {
                 $('#sendmessage').click(function () {
-
-                    chat.server.send($('#username').val(), $('#message').val());
+                    //envia mensagem para o chat hub
+                    chat.server.receiveMessage($('#username').val(), $('#message').val());
 
                     $('#message').val('').focus();
                 });
