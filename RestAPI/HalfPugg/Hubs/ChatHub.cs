@@ -11,7 +11,7 @@ namespace HalfPugg
         
         public void Send(string name, string message)
         {
-            // Call the addNewMessageToPage method to update clients.
+            // envia a mensagem para os clientes
             Clients.All.SendMessage(name, message);
         }
     }
