@@ -65,6 +65,8 @@ namespace OverwatchAPI
 
         public const string ENDPOINT_API = "https://ow-api.com/v1/stats/pc/";
 
+        
+
         private static string regStr(region reg)
         {
             switch (reg)
@@ -131,7 +133,7 @@ namespace OverwatchAPI
              new careerStats
              {
                  allDamageDone =
-                    token["allDamageDoneAvgPer10Min"] != null ? token["allDamageDoneAvgPer10Min"].Value<float>() : 0f,
+                    token["allDamageDoneAvgPer10Min"]!=null ? token["allDamageDoneAvgPer10Min"].Value<float>() : 0f,
                  barrierDamageDone =
                     token["barrierDamageDoneAvgPer10Min"] != null ? token["barrierDamageDoneAvgPer10Min"].Value<float>() : 0f,
                  deaths =
@@ -146,12 +148,14 @@ namespace OverwatchAPI
                     token["heroDamageDoneAvgPer10Min"] != null ? token["heroDamageDoneAvgPer10Min"].Value<float>() : 0f,
                  objectiveKills =
                     token["objectiveKillsAvgPer10Min"] != null ? token["objectiveKillsAvgPer10Min"].Value<float>() : 0f,
+                 soloKills =
+                    token["soloKillsAvgPer10Min"] != null ? token["soloKillsAvgPer10Min"].Value<float>() : 0f,
+
                  objectiveTime =
                     token["objectiveTimeAvgPer10Min"] != null ?
                     TimeSpan.ParseExact(token["objectiveTimeAvgPer10Min"].ToString(), @"mm\:ss", new CultureInfo("en-US")) :
                     TimeSpan.Zero,
-                 soloKills =
-                    token["soloKillsAvgPer10Min"] != null ? token["soloKillsAvgPer10Min"].Value<float>() : 0f,
+                 
                  timeSpentOnFire =
                     token["timeSpentOnFireAvgPer10Min"] != null ?
                     TimeSpan.ParseExact(token["timeSpentOnFireAvgPer10Min"].ToString(), @"mm\:ss", new CultureInfo("en-US")) :
@@ -159,17 +163,20 @@ namespace OverwatchAPI
             }:null;
         }
 
+        
         static OwAPI()
         {
             client = new HttpClient();
         }
 
+
+
         public static OwPlayer GetPlayerProfile(string name, region reg, int id)
         {
-            string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
-            JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
-            if (obj.ContainsKey("error")) return null;
-                return new OwPlayer
+            JObject obj = JObject.Parse(client.GetAsync(ENDPOINT_API + regStr(reg) + $"/{name}/profile").Result.Content.ReadAsStringAsync().Result);
+            if (obj.ContainsKey("error")) return null;// throw new Exception($"[{name}] " + obj["error"].Value<string>());
+
+            return new OwPlayer
             {
                 idHalf = id,
                 profile = getProfile(obj)
@@ -179,12 +186,12 @@ namespace OverwatchAPI
         public static OwPlayer GetPlayer(string name, region reg, int id)
         {
            
-            string url = ENDPOINT_API + regStr(reg) + $"/{name}/complete";
-            JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
+            JObject obj = JObject.Parse(client.GetAsync(ENDPOINT_API + regStr(reg) + $"/{name}/complete").Result.Content.ReadAsStringAsync().Result);
             if (obj.ContainsKey("error")) return null;// throw new Exception($"[{name}] " + obj["error"].Value<string>());
-            JToken quickCr = obj["quickPlayStats"].HasValues? obj["quickPlayStats"]["careerStats"]["allHeroes"]["average"]:null;
-            JToken compCr = obj["competitiveStats"].HasValues? obj["competitiveStats"]["careerStats"]["allHeroes"]["average"]:null;
-
+            
+            JToken quickCr = obj.SelectToken("quickPlayStats.careerStats.allHeroes.average");
+            JToken compCr = obj.SelectToken("competitiveStats.careerStats.allHeroes.average");
+            
             return new OwPlayer
             {
                 idHalf = id,
@@ -199,9 +206,11 @@ namespace OverwatchAPI
                 => JObject.Parse(client.GetAsync(ENDPOINT_API + regStr(reg) + $"/{name}/complete")
                                                                     .Result.Content.ReadAsStringAsync().Result);
 
+
+
         public static IEnumerable<OwPlayer> GetPlayerProfile(List<string> name, List<region> reg, List<int> ids)
         {
-            if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
+            if (name.Count != reg.Count|| reg.Count != ids.Count || name.Count != ids.Count) throw new Exception("Tamanho das listas não batem");
 
             for (int i = 0; i < name.Count; i++)
             {
@@ -221,17 +230,19 @@ namespace OverwatchAPI
 
         public static IEnumerable<OwPlayer> GetPlayer(List<string> name, List<region> reg, List<int> ids)
         {
-            if (name.Count != reg.Count) throw new Exception("Tamanho das listas não batem");
+            if (name.Count != reg.Count || reg.Count != ids.Count || name.Count != ids.Count) throw new Exception("Tamanho das listas não batem");
 
             for (int i = 0; i < name.Count; i++)
             {
-                string url = ENDPOINT_API + regStr(reg[i]) + $"/{name[i]}/complete";
+                string currentName = name[i];
+                string url = ENDPOINT_API + regStr(reg[i]) + $"/{currentName}/complete";
                 JObject obj = JObject.Parse(client.GetAsync(url).Result.Content.ReadAsStringAsync().Result);
                 if (obj.ContainsKey("error")) {
                     continue;
                 }
-                JToken quickCr = obj["quickPlayStats"].HasValues ? obj["quickPlayStats"]["careerStats"]["allHeroes"]["average"] : null;
-                JToken compCr = obj["competitiveStats"].HasValues ? obj["competitiveStats"]["careerStats"]["allHeroes"]["average"] : null;
+                
+                JToken quickCr = obj.SelectToken("quickPlayStats.careerStats.allHeroes.average");
+                JToken compCr = obj.SelectToken("competitiveStats.careerStats.allHeroes.average");
 
                 yield return new OwPlayer
                 {

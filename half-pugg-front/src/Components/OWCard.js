@@ -8,13 +8,11 @@ class OWCard extends Component {
         compCareerCollapse: false,
         quickCareerCollapse: false,
     }
-    
     constructor(owgamer){
         super();
         this.state.OWGamer = owgamer;
         console.log(owgamer);
     }
-    
     handleQuickCareerCollapse = (ligado) => this.setState({quickCareerCollapse: ligado});
     handleCareerCollapse = (ligado) => this.setState({compCareerCollapse: ligado});
 
@@ -82,7 +80,7 @@ class OWCard extends Component {
                                 <List.Content>Time Spent On Fire {this.state.OWGamer.quickCareer.timeSpentOnFire}</List.Content>
                             </List.Item>
                         </List> : <div/>}</div>
-                    : <div>Deu caca</div>}
+                    : <div />}
                     {this.state.OWGamer.compCareer !== undefined ?
                         <div><Checkbox
                             label='career comp'

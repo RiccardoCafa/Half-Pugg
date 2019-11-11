@@ -66,7 +66,7 @@ namespace HalfPugg.Controllers
             List<Player> gamersReq = new List<Player>();
             foreach (RequestedMatch reqMatch in reqMatches)
             {
-                if (reqMatch.Status == "F") continue;
+                if (reqMatch.Status != "A") continue;
                 Player findMe = db.Gamers.Find(reqMatch.IdPlayer1);
                 if(findMe != null)
                 {
@@ -85,10 +85,11 @@ namespace HalfPugg.Controllers
             return Ok(gamersReq);
         }
 
-        // PUT: api/RequestedMatches/5
+        // PUT: api/RequestedMatches
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutRequestedMatch(int id, RequestedMatch requestedMatch)
+        public async Task<IHttpActionResult> PutRequestedMatch(RequestedMatch requestedMatch)
         {
+            int id;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -105,9 +106,23 @@ namespace HalfPugg.Controllers
                 return BadRequest();
             }
 
+            if(requestedMatch.Status != "A")
+            {
+                bool deuMatch = requestedMatch.Status == "M" ? true : false;
+                Match match = new Match()
+                {
+                    ID = 0,
+                    IdPlayer1 = requestedMatch.IdPlayer1,
+                    IdPlayer2 = requestedMatch.IdPlayer2,
+                    Status = deuMatch,
+                    Weight = 0
+                };
+                db.Matches.Add(match);
+            }
+
             db.Entry(req2).State = EntityState.Detached;
             db.Entry(requestedMatch).State = EntityState.Modified;
-
+            
             try
             {
                 await db.SaveChangesAsync();
@@ -142,6 +157,7 @@ namespace HalfPugg.Controllers
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message);
+                return BadRequest();
             }
             return CreatedAtRoute("DefaultApi", new { id = requestedMatch.ID }, requestedMatch);
         }

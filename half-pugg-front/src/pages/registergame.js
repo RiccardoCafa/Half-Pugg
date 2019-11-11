@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Input, Image, Placeholder } from 'semantic-ui-react';
 
@@ -15,7 +15,6 @@ export default class registergame extends Component {
         slogan: '',
         descricao: '',
         MyImage: '',
-        Gamer: {},
         toLogin: false,
         overwatchIDAPI: '',
         renderize: true,

@@ -31,8 +31,17 @@ namespace HalfPugg.Controllers
             PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID).FirstOrDefault();
             if (pg == null) return NotFound();
             var a = OwAPI.GetPlayer(pg.IdAPI, Region, PlayerID);
-            if (a == null) return BadRequest();
+            if (a == null) return NotFound();
             return Ok(a);
+        }
+
+        public OwPlayer GetPlayerOwObject(int PlayerID, region Region)
+        {
+            PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID).FirstOrDefault();
+            if (pg == null) return null;
+            var a = OwAPI.GetPlayer(pg.IdAPI, Region, PlayerID);
+            if (a == null) return null;
+            return a;
         }
 
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
@@ -56,7 +65,7 @@ namespace HalfPugg.Controllers
         }
 
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
-        [Route("api/GetOwMatchFilter")]
+        [Route("api/FilterPlayerOverwatch")]
         [HttpGet]
         public IHttpActionResult GetOwMatchFilter(int PlayerID, [FromBody]owFilter filter)
         {
@@ -78,7 +87,7 @@ namespace HalfPugg.Controllers
                     ids.Add(pg.IDGamer);
                 }
             }
-            if (p == null) return BadRequest(); //400
+            if (p == null) return BadRequest("Jogador que requisitou o match não consta no banco"); //400
 
             var player = OwAPI.GetPlayer(p.IdAPI, region.us, p.IDGamer);
             var a = OwAPI.GetPlayer(names, regions, ids).Where(x => filterPlayer(x, filter));
@@ -90,7 +99,7 @@ namespace HalfPugg.Controllers
 
         #region POST
         [ResponseType(typeof(PlayerGame))]
-        [Route("api/PostPlayerInOw")]
+        [Route("api/PostPlayerInOw", Name = "PostPlayerInOw")]
         [HttpPost]
         public async Task<IHttpActionResult> PostPlayerInOw([FromBody]PlayerGame playerGame,[FromUri]region Region)
         {
@@ -119,6 +128,9 @@ namespace HalfPugg.Controllers
             if (filter.role == 1) ret = p.profile.tank_rating > 0;
             else if (filter.role == 2) ret = p.profile.damage_rating > 0;
             else if (filter.role == 4) ret = p.profile.support_rating > 0;
+            else if (filter.role == 3) ret = (p.profile.tank_rating > 0 || p.profile.damage_rating > 0);
+            else if (filter.role == 5) ret = (p.profile.tank_rating > 0 || p.profile.support_rating > 0);
+            else if (filter.role == 6) ret = (p.profile.damage_rating > 0 || p.profile.support_rating > 0);
 
             if (!ret) return false;
 
@@ -141,7 +153,7 @@ namespace HalfPugg.Controllers
             //level 
             if (filter.level != null)
             {
-                int l = p.profile.level + p.profile.endorsement * 100;
+                int l = p.profile.level + p.profile.prestige * 100;
                 if (filter.level.Length > 1)
                 {
                     if (filter.level[1] == -1) ret = l > filter.level[0];
