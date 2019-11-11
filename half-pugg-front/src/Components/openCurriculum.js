@@ -1,12 +1,22 @@
 import React, {Component} from 'react';
 import { Modal, Header, Button, Image } from 'semantic-ui-react';
 import gostosao from '../images/chris.jpg'
+import OWCard from './OWCard';
 
 export default class OpenCurriculum extends Component {
+    state ={
+        OWGamer: {},
+    }
+    constructor(owgamer){
+        super();
+        this.state.OWGamer = owgamer;
+    }
+
     render() {
         return (
             <div>
                 <Modal
+                size='small'
                     trigger={
                         <Button fluid basic color='blue'>
                             Open Curriculum
@@ -21,8 +31,12 @@ export default class OpenCurriculum extends Component {
                             ? gostosao : this.props.matcher.ImagePath}
                         circular/>
                         <Modal.Description>
-                            <Header>{this.props.matcher.Bio === null ? 'Gamer normal' : this.props.matcher.Bio}</Header>
+                            <b>{this.props.matcher.Slogan}</b><br/><br/>
+                            <b>História épica></b><br/>{this.props.matcher.Bio === null ? 'Gamer normal' : this.props.matcher.Bio}
                         </Modal.Description>
+                        {this.state.OWGamer !== undefined ?
+                        <OWCard {...this.state.OWGamer}></OWCard>
+                        : <div/>}
                     </Modal.Content>
                 </Modal>
             </div>

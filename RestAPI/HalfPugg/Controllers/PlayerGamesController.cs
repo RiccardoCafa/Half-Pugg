@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
+using OverwatchAPI;
 
 namespace HalfPugg.Controllers
 {
@@ -43,9 +44,10 @@ namespace HalfPugg.Controllers
         }
 
         [Route("api/GetGamesInPlayer")]
-        public IQueryable<PlayerGame> GetGameInPlayer(int PlayerID)
+        [ResponseType(typeof(List<PlayerGame>))]
+        public IHttpActionResult GetGameInPlayer(int PlayerID)
         {
-            return db.PlayerGames.Where(x => x.IDGamer == PlayerID);
+            return Ok(db.PlayerGames.Where(x => x.IDGamer == PlayerID));
         }
 
         // PUT: api/PlayerGames/5
@@ -87,6 +89,7 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(PlayerGame))]
         public async Task<IHttpActionResult> PostPlayerGame(PlayerGame playerGame)
         {
+           // return BadRequest("Use a rota especifica do jogo");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

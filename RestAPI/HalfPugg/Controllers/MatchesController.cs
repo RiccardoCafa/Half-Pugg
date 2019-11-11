@@ -13,6 +13,11 @@ using HalfPugg.Models;
 
 namespace HalfPugg.Controllers
 {
+    public class PlayerMatchInfo
+    {
+        public Player matchPlayer;
+        public float afinidade;
+    }
     public class MatchesController : ApiController
     {
         private HalfPuggContext db = new HalfPuggContext();
@@ -24,28 +29,37 @@ namespace HalfPugg.Controllers
         }
 
         // GET: api/Matches/5
-        [ResponseType(typeof(List<Player>))]
+        [ResponseType(typeof(List<PlayerMatchInfo>))]
         public async Task<IHttpActionResult> GetMatch(int id)
         {
+            List<PlayerMatchInfo> playersInfo = new List<PlayerMatchInfo>();
             Player procurando = await db.Gamers.FindAsync(id);
 
-            List<Match> match = db.Matches.AsEnumerable().ToList();
-            List<Player> myConnections = new List<Player>();
+            List<Match> match = db.Matches
+                                    .Where(x => x.IdPlayer1 == id || x.IdPlayer2 == id)
+                                    .AsEnumerable().ToList();
+            //List<Player> myConnections = new List<Player>();
 
             foreach(Match m in match)
             {
+                Player mp = null;
                 if(m.IdPlayer1 != procurando.ID)
                 {
-                    myConnections.Add(db.Gamers.Find(m.IdPlayer1));
-                } else if(m.IdPlayer2 != procurando.ID)
+                    mp = db.Gamers.Find(m.IdPlayer1);
+                } else
                 {
-                    myConnections.Add(db.Gamers.Find(m.IdPlayer2));
+                    mp = db.Gamers.Find(m.IdPlayer2);
                 }
+                playersInfo.Add(new PlayerMatchInfo()
+                {
+                    matchPlayer = mp,
+                    afinidade = m.Weight,
+                });
             }
             //.Where(x => x.IdPlayer1 == id || x.IdPlayer2 == id)
             if (match != null)
             {
-                return Ok(myConnections);
+                return Ok(playersInfo);
             }
 
             return NotFound();
