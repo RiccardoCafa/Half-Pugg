@@ -255,6 +255,10 @@
     <Compile Include="Migrations\201911060846040_Procedure4.Designer.cs">
       <DependentUpon>201911060846040_Procedure4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911121301230_ClassificationPlayer.cs" />
+    <Compile Include="Migrations\201911121301230_ClassificationPlayer.Designer.cs">
+      <DependentUpon>201911121301230_ClassificationPlayer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ClassificationInMatch.cs" />
     <Compile Include="Models\Classification_Game.cs" />
     <Compile Include="Models\Classification_Gamer.cs" />
@@ -558,6 +562,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911060846040_Procedure4.resx">
       <DependentUpon>201911060846040_Procedure4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911121301230_ClassificationPlayer.resx">
+      <DependentUpon>201911121301230_ClassificationPlayer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

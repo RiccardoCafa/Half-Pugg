@@ -12,6 +12,12 @@ using HalfPugg.Models;
 
 namespace HalfPugg.Controllers
 {
+    public enum Games
+    {
+        Overwatch = 1,
+        LeagueOfLegends = 2
+    }
+
     public class GamesController : ApiController
     {
         private HalfPuggContext db = new HalfPuggContext();
