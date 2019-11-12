@@ -28,14 +28,36 @@ export default class Match extends Component {
         Games: [],
         OWFilter: false,
         OWF: {
-            "role": Number,
-            "level": [null, null],
-            "rating": [null, null],
-            "damage": [null,null],
-            "healing": [null,null],
-            "elimination": [null,null],
+            "role": -2,
+            "level": [-2, -2],
+            "rating": [-2, -2],
+            "damage": [-2,-2],
+            "healing": [-2,-2],
+            "elimination": [-2,-2],
             "competitve": false,
         },
+        owfType: [
+            {
+                key: 1,
+                text: 'Maior que',
+                value: 1
+            },
+            {
+                key: 2,
+                text: 'Menor que',
+                value: 2
+            },
+            {
+                key: 3,
+                text: 'Entre dois valores',
+                value: 3,
+            },
+            {
+                key: 4,
+                text: 'Igual que',
+                value: 4,
+            }
+        ], 
         loadingFilter: false,
         tiposProcura: [
             {
@@ -195,9 +217,16 @@ export default class Match extends Component {
     applyFiltroSearch = eve => {
         console.log(eve.target);
     }
+
+    setFilterType = (e, {value}) => {
+        console.log(value);
+    }
     
     //#region filtro ow
     setRole = (role) => {
+        if(role === '') {
+            role = -2;
+        }
         this.setState( prevOWF => ({
             OWF: {
                 ...prevOWF.OWF,
@@ -207,6 +236,7 @@ export default class Match extends Component {
     }
 
     setLevel = (level, ind) => {
+        if(level === ''){ level = -2; }
         let owf = {...this.state.OWF}
         owf.level[ind] = level;
         this.setState({
@@ -214,7 +244,8 @@ export default class Match extends Component {
         })
     }
 
-    setDamage= (val, ind) =>{
+    setDamage = (val, ind) =>{
+        if(val === '') { val = -2; }
         let owf = {...this.state.OWF};
         owf.damage[ind] = val;
         this.setState({
@@ -223,6 +254,7 @@ export default class Match extends Component {
     }
 
     setHealing = (val, ind) => {
+        if(val === '') { val = -2; }
         let owf = {...this.state.OWF};
         owf.healing[ind] = val;
         this.setState({
@@ -231,6 +263,7 @@ export default class Match extends Component {
     }
 
     setElimination= (val, ind) => {
+        if(val === ''){ val = -2; }
         let owf = {...this.state.OWF};
         owf.elimination[ind] = val;
         this.setState({
@@ -239,6 +272,7 @@ export default class Match extends Component {
     }
 
     setRating = (val, ind) => {
+        if(val === ''){ val = -2; }
         let owf = {...this.state.OWF};
         owf.rating[ind] = val;
         this.setState({
@@ -255,7 +289,7 @@ export default class Match extends Component {
             <div>
                 <Auth></Auth>
                 <div>
-                    <Headera HeaderGamer = { this.state.GamerLogado }/>
+                    <Headera gamer = {this.state.GamerLogado }/>
                 </div>  
                 <div className='submenu'>
                     <Menu compact>
@@ -382,7 +416,7 @@ export default class Match extends Component {
                                         <Table.Header>
                                             <Table.Row>
                                             <Table.HeaderCell>Filtro</Table.HeaderCell>
-                                            <Table.HeaderCell>Min/Max</Table.HeaderCell>
+                                            <Table.HeaderCell>Valores</Table.HeaderCell>
                                             </Table.Row>
                                         </Table.Header>
                                         <Table.Body>
@@ -392,7 +426,7 @@ export default class Match extends Component {
                                                 </Table.Cell>
                                                 <Table.Cell>
                                                     <Input  placeholder='role' 
-                                                        value={this.state.OWF.role === undefined ? this.state.OWF.role.toString(2) : undefined} 
+                                                        value={this.state.OWF.role >= 0 ? this.state.OWF.role.toString(2) : ''} 
                                                         onChange={e => this.setRole(e.target.value)}
                                                         size='mini'>
                                                         </Input>
@@ -403,9 +437,13 @@ export default class Match extends Component {
                                                     Level
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Input placeholder='menor que' value={this.state.OWF.level[0]} 
+                                                    <Dropdown options={this.state.owfType} placeholder='Tipo de filtro' 
+                                                    onChange={this.setFilterType} />
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.OWF.level[0] >= 0 ? this.state.OWF.level[0].toString(2) : ''} 
                                                         onChange={e => this.setLevel(e.target.value, 0)} size='mini'></Input>
-                                                    <Input placeholder='maior que' value={this.state.OWF.level[1]} 
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.OWF.level[1] >= 0 ? this.state.OWF.level[1].toString(2) : ''} 
                                                         onChange={e => this.setLevel(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>
@@ -415,9 +453,11 @@ export default class Match extends Component {
                                                     Rating
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Input placeholder='menor que' value={this.state.OWF.rating[0]} 
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.OWF.rating[0] >= 0 ? this.state.OWF.rating[0].toString(2) : ''} 
                                                         onChange={e => this.setRating(e.target.value, 0)} size='mini'></Input>
-                                                    <Input placeholder='maior que' value={this.state.OWF.rating[1]} 
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.OWF.rating[1] >= 0 ? this.state.OWF.rating[1].toString(2):''} 
                                                         onChange={e => this.setRating(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>
@@ -427,9 +467,11 @@ export default class Match extends Component {
                                                     Damage
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Input placeholder='menor que' value={this.state.OWF.damage[0]} 
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.OWF.damage[0] >= 0 ? this.state.OWF.damage[0].toString(2):''} 
                                                         onChange={e => this.setDamage(e.target.value, 0)} size='mini'></Input>
-                                                    <Input placeholder='maior que' value={this.state.OWF.damage[1]} 
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.OWF.damage[1] >= 0 ? this.state.OWF.damage[1].toString(2):''} 
                                                         onChange={e => this.setDamage(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>
@@ -439,9 +481,11 @@ export default class Match extends Component {
                                                     Healing
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Input placeholder='menor que' value={this.state.OWF.healing[0]} 
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.OWF.healing[0] >= 0 ? this.state.OWF.healing[0].toString(2):''} 
                                                         onChange={e => this.setHealing(e.target.value, 0)} size='mini'></Input>
-                                                    <Input placeholder='maior que' value={this.state.OWF.healing[1]} 
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.OWF.healing[1] >= 0 ? this.state.OWF.healing[1].toString(2):''} 
                                                         onChange={e => this.setHealing(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>
@@ -451,9 +495,11 @@ export default class Match extends Component {
                                                     Elimination
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Input placeholder='menor que' value={this.state.OWF.elimination[0]} 
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.OWF.elimination[0]  >= 0 ? this.state.OWF.elimination[0].toString(2):''} 
                                                         onChange={e => this.setElimination(e.target.value, 0)} size='mini'></Input>
-                                                    <Input placeholder='maior que' value={this.state.OWF.elimination[1]} 
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.OWF.elimination[1] >= 0 ? this.state.OWF.elimination[1].toString(2):''} 
                                                         onChange={e => this.setElimination(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>

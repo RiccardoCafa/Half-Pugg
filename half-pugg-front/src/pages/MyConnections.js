@@ -77,7 +77,7 @@ export default class MyConnections extends Component {
             <div>
                 <Auth></Auth>
                 <div>
-                    <Headera HeaderGamer = {this.state.GamerLogado}/>
+                    <Headera gamer = {this.state.GamerLogado}/>
                 </div>  
                 <Segment>
                     {this.state.Matches.length === 0 ?

@@ -15,13 +15,12 @@ class OWCard extends Component {
     constructor(gamer){
         super();
         this.state.Gamer = gamer; 
-        
     }
 
     componentDidMount = async () => {
         await api.get('api/GetPlayerOwerwatch?PlayerID=' + this.state.Gamer.ID).then(res =>
             this.setState({OWGamer: res.data})
-        ).catch(err => console.log(err));
+        ).catch(err => console.log('jogador não possui conta overwatch cadastrada!'));
     }
     
     handleQuickCareerCollapse = (ligado) => this.setState({quickCareerCollapse: ligado});
