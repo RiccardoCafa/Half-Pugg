@@ -2,17 +2,27 @@ import React, {Component} from 'react';
 
 import {List, Checkbox} from 'semantic-ui-react';
 
+import api from '../services/api';
+
 class OWCard extends Component {
     state = {
+        Gamer: {},
         OWGamer: {},
         compCareerCollapse: false,
         quickCareerCollapse: false,
     }
-    constructor(owgamer){
+    
+    constructor(gamer){
         super();
-        this.state.OWGamer = owgamer;
-        console.log(owgamer);
+        this.state.Gamer = gamer; 
     }
+
+    componentDidMount = async () => {
+        await api.get('api/GetPlayerOwerwatch?PlayerID=' + this.state.Gamer.ID).then(res =>
+            this.setState({OWGamer: res.data})
+        ).catch(err => console.log('jogador não possui conta overwatch cadastrada!'));
+    }
+    
     handleQuickCareerCollapse = (ligado) => this.setState({quickCareerCollapse: ligado});
     handleCareerCollapse = (ligado) => this.setState({compCareerCollapse: ligado});
 
@@ -22,7 +32,7 @@ class OWCard extends Component {
 
         let owLevel = 1;
         if(this.state.OWGamer.profile !== undefined){
-            owLevel = this.state.OWGamer.profile.endorsement * 100 + this.state.OWGamer.profile.level;
+            owLevel = this.state.OWGamer.profile.prestige * 100 + this.state.OWGamer.profile.level;
         }
 
         return (
@@ -33,11 +43,10 @@ class OWCard extends Component {
                     <div>
                         <div className="header">Nome: {this.state.OWGamer.profile.name}</div>
                         <div className="header">level: {owLevel}</div>
-                        <div className="header">prestige: {this.state.OWGamer.profile.prestige}</div>
                         <div className="header">rating: {this.state.OWGamer.profile.rating}</div>
-                        <div className="header">tank_rating: {this.state.OWGamer.profile.tank_rating}</div>
-                        <div className="header">damage_rating: {this.state.OWGamer.profile.damage_rating}</div>
-                        <div className="header">support_rating: {this.state.OWGamer.profile.support_rating}</div>
+                        <div className="header">tank rating: {this.state.OWGamer.profile.tank_rating}</div>
+                        <div className="header">damage rating: {this.state.OWGamer.profile.damage_rating}</div>
+                        <div className="header">support rating: {this.state.OWGamer.profile.support_rating}</div>
                     </div>
                     {this.state.OWGamer.quickCareer !== undefined ?
                         <div><Checkbox

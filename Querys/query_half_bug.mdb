@@ -1,44 +1,57 @@
-CREATE FUNCTION Match() RETURNS trigger AS $create_link$
+CREATE OR REPLACE FUNCTION Match() RETURNS trigger AS $create_link$
     BEGIN
         
-        IF NEW.IdPlayer1 IS NULL OR NEW.IdPlayer2 IS NULL THEN
-            RAISE EXCEPTION 'IdPlayer cannot be null';
-
+        IF NEW."IdPlayer1" IS NULL OR NEW."IdPlayer2" IS NULL THEN
+          RAISE EXCEPTION 'IdPlayer cannot be null';
         END IF;
 
-        IF EXISTS (
+      IF EXISTS (
             SELECT *
             FROM "dbo"."RequestedMatches"
-            WHERE (IdPlayer1 = NEW.IdPlayer2 AND IdPlayer2 = NEW.IdPlayer1 )
+            WHERE ("dbo"."RequestedMatches"."IdPlayer1" = NEW."IdPlayer2" AND "dbo"."RequestedMatches"."IdPlayer2" = NEW."IdPlayer1" )
         )THEN
-            INSERT INTO "dbo"."Match" VALUES (NEW.IdPlayer1, NEW.IdPlayer2 , 'T', 1.0 , NOW(), NULL);
+            INSERT INTO "dbo"."Matches" ("AlteredAt", "CreateAt", "Status", "IdPlayer1", "IdPlayer2","Weight")VALUES (NOW(), NOW(), TRUE, NEW."IdPlayer1", NEW."IdPlayer2" , 1.0 );
         END IF;
     RETURN NEW;
     END;
 $create_link$ LANGUAGE plpgsql;
 
-CREATE TRIGGER CreateMatch BEFORE INSERT OR UPDATE ON "dbo"."RequestedMatches"
-    FOR EACH ROW EXECUTE PROCEDURE Match();
+--CREATE TRIGGER CreateMatch BEFORE INSERT OR UPDATE ON "dbo"."RequestedMatches"
+    --FOR EACH ROW EXECUTE PROCEDURE Match();
 
 
-CREATE OR REPLACE FUNCTION groupMatch() RETURNS trigger AS $create_link$
-    BEGIN
-        
-        IF NEW.IdPlayer1 IS NULL OR NEW.IdPlayer2 THEN
+
+    CREATE OR REPLACE FUNCTION MatchGroup() RETURNS trigger AS $create_link$
+        BEGIN
+            
+            IF NEW."IdPlayer1" IS NULL OR NEW."IdPlayer2" IS NULL THEN
             RAISE EXCEPTION 'IdPlayer cannot be null';
-
-        END IF;
+            END IF;
 
         IF EXISTS (
-            SELECT *
-            FROM "dbo"."RequestedMatches"
-            WHERE (IdPlayer1 = NEW.IdPlayer2 AND IdPlayer2 = NEW.IdPlayer1 )
-        )THEN
-            INSERT INTO "dbo"."Match" VALUES (NEW.IdPlayer1, NEW.IdPlayer2 , 'T', 1.0 , NOW(), NULL);
-        END IF;
-    RETURN NEW;
-    END;
-$create_link$ LANGUAGE plpgsql;
+                SELECT *
+                FROM "dbo"."RequestedMatches"
+                WHERE ("dbo"."RequestedMatches"."IdPlayer1" = NEW."IdPlayer2" AND "dbo"."RequestedMatches"."IdPlayer2" = NEW."IdPlayer1" )
+            )THEN
+                INSERT INTO "dbo"."Matches" ("AlteredAt", "CreateAt", "Status", "IdPlayer1", "IdPlayer2","Weight")VALUES (NOW(), NOW(), TRUE, NEW."IdPlayer1", NEW."IdPlayer2" , 1.0 );
+            END IF;
+        RETURN NEW;
+        END;
+    $create_link$ LANGUAGE plpgsql;
 
-CREATE TRIGGER CreateMatch BEFORE INSERT OR UPDATE ON "dbo"."RequestedMatches"
-    FOR EACH ROW EXECUTE PROCEDURE Match();
+    --CREATE TRIGGER CreateMatch BEFORE INSERT OR UPDATE ON "dbo"."RequestedMatches"
+        --FOR EACH ROW EXECUTE PROCEDURE Match();
+
+
+
+CREATE OR REPLACE FUNCTION MatchesOfPlayer(ID_p INTEGER) RETURNS TABLE (
+      ID_PLAYER INT
+) 
+AS $$
+    BEGIN
+    RETURN QUERY SELECT * FROM
+                 (SELECT "dbo"."Matches"."IdPlayer1" as ID_PLAYER FROM "dbo"."Matches" WHERE ( "dbo"."Matches"."IdPlayer2" = ID_p )) AS P1
+                 UNION
+                 (SELECT "dbo"."Matches"."IdPlayer2" as ID_PLAYER FROM "dbo"."Matches" WHERE ( "dbo"."Matches"."IdPlayer1" = ID_p ) ) ;
+    END;
+$$ LANGUAGE plpgsql; 

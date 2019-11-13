@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Input, Image, Placeholder } from 'semantic-ui-react';
+import { Button, Input, Image } from 'semantic-ui-react';
 
 import api from '../services/api'
-import lol from '../images/lol.jpg';
-import cs from '../images/cs.jpg';
 
 import './registergame.css';
 import OWCard from '../Components/OWCard';
@@ -116,7 +114,7 @@ export default class registergame extends Component {
                                             <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
                                             <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
                                     </div>
-                                            <Image src={lol} circular size= 'small'></Image>
+                                            <Image circular size= 'small'></Image>
                             </div>
                             <div id="gameapi">
                             <Input value={this.state.overwatchIDAPI} onChange={e => this.handleAPIInput(e)} placeholder='Game API'></Input>
@@ -135,7 +133,7 @@ export default class registergame extends Component {
                                             <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
                                             <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
                                     </div>
-                                            <Image src={cs} circular size= 'small'></Image>
+                                            <Image circular size= 'small'></Image>
                             </div>
                             <div id="gameapi">
                             <Input value={this.state.overwatchIDAPI} onChange={e => this.handleAPIInput(e)} placeholder='Game API'></Input>
