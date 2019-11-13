@@ -12,6 +12,8 @@ export default class interesses extends Component {
         MyImage: '',
         Gamer: {},
         toLogin: false,
+        RPGlike: false,
+        MOBAlike: false,
     }
 //    handleSubmit(e) {
        
