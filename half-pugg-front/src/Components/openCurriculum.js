@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Modal, Header, Button, Image } from 'semantic-ui-react';
+import { Modal, Button, Image } from 'semantic-ui-react';
 import gostosao from '../images/chris.jpg'
 import OWCard from './OWCard';
 
@@ -25,7 +25,7 @@ export default class OpenCurriculum extends Component {
                     <Modal.Header>
                         {'Gamerlum de ' + this.state.Gamer.Nickname}
                     </Modal.Header>
-                    <Modal.Content image>
+                    <Modal.Content image scrolling>
                         <Image wrapped size ='small' 
                         src={(this.state.Gamer.ImagePath === "" || this.state.Gamer.ImagePath === null) 
                             ? gostosao : this.state.Gamer.ImagePath}

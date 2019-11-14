@@ -6,9 +6,11 @@ import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Segment, Statistic } from 'semantic-ui-react';
+import Classification from '../Components/classification';
+import { Card, Image, Button, Segment, Statistic, Loader } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
+import UserContentCard from '../Components/UserContentCard';
 
 export default class MyConnections extends Component {
 
@@ -21,6 +23,7 @@ export default class MyConnections extends Component {
         GamerLogado: {},
         Matches: [],
         toMatch: false,
+        loaded: false,
     }
 
     componentDidMount = async () => {
@@ -54,6 +57,7 @@ export default class MyConnections extends Component {
                 this.setState({Matches: MatchData.data});
             }
         }
+        this.setState({loaded: true});
     }
 
     componentWillMount() {
@@ -73,6 +77,10 @@ export default class MyConnections extends Component {
         if(this.state.toMatch === true) {
             return <Redirect to='/match'></Redirect>
         }
+        if(!this.state.loaded) {
+            return <Loader active></Loader>
+        }
+
         return (
             <div>
                 <Auth></Auth>
@@ -93,19 +101,8 @@ export default class MyConnections extends Component {
                     </div>:<div/>}
                     <Card.Group>
                         {this.state.Matches.map((matcher) => 
-                            <Card key={matcher.matchPlayer.ID} >
-                                <Card.Content>
-                                    <Image
-                                        floated='right'
-                                        size='mini'
-                                        src={(matcher.matchPlayer.ImagePath === "" || matcher.matchPlayer.ImagePath === null) ?
-                                                gostosao : matcher.matchPlayer.ImagePath}
-                                        />
-                                    <Card.Header>{matcher.matchPlayer.Nickname}</Card.Header>
-                                    <Card.Meta>Afinidade de {matcher.afinidade}%</Card.Meta>
-                                    <Card.Description>{matcher.matchPlayer.Slogan === null ?
-                                                        "Gamer Casual" :matcher.matchPlayer.Slogan}</Card.Description>
-                                </Card.Content>
+                            <Card key={matcher.matchPlayer.ID}>
+                                <UserContentCard gamer={this.state.GamerLogado} gamerMatch={matcher}></UserContentCard>
                                 <Card.Content extra>
                                     <div className='ui two buttons'>
                                         <Button 
@@ -117,6 +114,7 @@ export default class MyConnections extends Component {
                                 </Card.Content>
                                 <Card.Content extra>
                                     <OpenCurriculum {...matcher.matchPlayer}></OpenCurriculum>
+                                    <Classification gamer={this.state.GamerLogado} gamerclassf={matcher.matchPlayer}></Classification>
                                 </Card.Content>
                             </Card>
                         )}
