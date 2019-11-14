@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Results;
 using HalfPugg.Models;
 
 namespace HalfPugg.Controllers
@@ -34,6 +35,21 @@ namespace HalfPugg.Controllers
             }
 
             return Ok(classificationPlayer);
+        }
+
+        [ResponseType(typeof(ClassificationPlayer))]
+        [HttpGet]
+        [Route("api/classificationPlayers/Match")]
+        public IHttpActionResult GetClassificationMatch(int idJudge, int idJudger)
+        {
+            ClassificationPlayer classfPlayer = db.Classification_Players
+                                                  .Where(clfp => clfp.IdJudgePlayer == idJudge && clfp.IdPlayer == idJudger)
+                                                  .AsEnumerable().FirstOrDefault();
+            if(classfPlayer != null)
+            {
+                return Ok(classfPlayer);
+            }
+            return NotFound();
         }
 
         // PUT: api/ClassificationPlayers/5
@@ -79,6 +95,16 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            //ClassificationPlayer findMe = db.Classification_Players.Where(clf => clf.IdPlayer == classificationPlayer.ID
+            //&& clf.IdJudgePlayer == classificationPlayer.IdJudgePlayer).AsEnumerable().FirstOrDefault();
+
+            //if(findMe != null)
+            //{
+            //    findMe.Points = classificationPlayer.Points;
+            //    findMe.IdClassification = classificationPlayer.IdClassification;
+            //    return await PutClassificationPlayer(findMe.ID, findMe);
+            //}
 
             db.Classification_Players.Add(classificationPlayer);
             await db.SaveChangesAsync();
