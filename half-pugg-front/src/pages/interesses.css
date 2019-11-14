@@ -8,7 +8,10 @@
     margin-bottom: 0%;
     flex-direction: column;
 }
-
+.caixa{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
 #title {
     margin-top: 10px;
     margin-left: 30%;
