@@ -11,9 +11,7 @@ namespace HalfPugg.Models
         [StringLength(400)] [Required] public string Content { get; set; }
         [Required] [ForeignKey("User")] public int ID_User { get; set; }
         [Required] [ForeignKey("Recipient")] public int ID_Recipient { get; set; }
-        [Required] [StringLength(1)] public string Status { get; set; }
-        public DateTime CreateAt { get; set; }
-        public DateTime AlteredAt { get; set; }
+        public DateTime? CreateAt { get; set; }
         [JsonIgnore] public virtual Player User { get; set; }
         [JsonIgnore] public virtual Player Recipient { get; set; }
 

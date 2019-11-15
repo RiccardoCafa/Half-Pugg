@@ -259,10 +259,18 @@
     <Compile Include="Migrations\201911121301230_ClassificationPlayer.Designer.cs">
       <DependentUpon>201911121301230_ClassificationPlayer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911141454461_Menssagem.cs" />
+    <Compile Include="Migrations\201911141454461_Menssagem.Designer.cs">
+      <DependentUpon>201911141454461_Menssagem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911152054486_Menssages.cs" />
+    <Compile Include="Migrations\201911152054486_Menssages.Designer.cs">
+      <DependentUpon>201911152054486_Menssages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ClassificationInMatch.cs" />
     <Compile Include="Models\Classification_Game.cs" />
     <Compile Include="Models\Classification_Gamer.cs" />
-    <Compile Include="Models\GroupMatch.cs" />
+    <Compile Include="Models\PlayerGroup.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HallsController.cs" />
     <Compile Include="Controllers\HashTagsController.cs" />
@@ -296,7 +304,7 @@
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GameInGame.cs" />
-    <Compile Include="Models\HallMatch.cs" />
+    <Compile Include="Models\PlayerHall.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\HalfPuggContext.cs" />
     <Compile Include="Models\HashTag.cs" />
@@ -309,8 +317,6 @@
     <Compile Include="Models\MessageHall.cs" />
     <Compile Include="Models\Numbered.cs" />
     <Compile Include="Models\PlayerGame.cs" />
-    <Compile Include="Models\PlayerGroup.cs" />
-    <Compile Include="Models\PlayerHall.cs" />
     <Compile Include="Models\PlayerHashtag.cs" />
     <Compile Include="Models\Range.cs" />
     <Compile Include="Models\RequestedGroup.cs" />
@@ -565,6 +571,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911121301230_ClassificationPlayer.resx">
       <DependentUpon>201911121301230_ClassificationPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911141454461_Menssagem.resx">
+      <DependentUpon>201911141454461_Menssagem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911152054486_Menssages.resx">
+      <DependentUpon>201911152054486_Menssages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

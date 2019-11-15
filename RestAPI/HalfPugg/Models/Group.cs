@@ -7,9 +7,9 @@ namespace HalfPugg.Models
 {
     public class Group
     {
-        [Key] public int ID_Group { get; set; }
+        [Key] [InverseProperty("Recipient")]public int ID_Group { get; set; }
         [StringLength(70)] [Required] public string Name { get; set; }
-        [Required] [ForeignKey("Game")] public int IdGame { get; set; }
+        [ForeignKey("Game")] public int? IdGame { get; set; }
         [Required] public int Capacity { get; set; }
         [Required] [ForeignKey("Player")] public int IdAdmin { get; set; }
         public DateTime CreateAt { get; set; }
