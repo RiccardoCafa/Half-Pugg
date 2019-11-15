@@ -13,49 +13,12 @@ using System.Data.Entity;
 
 namespace HalfPugg.Controllers
 {
-    public class OverwatchController : ApiController
+    public class BusinessController : ApiController
     {
-      /// <summary>
-      /// PlayerID : id do jogador no half
-      /// Region : região do jogador 0-> us, 1-> eu, 2-> asia
-      /// </summary>
+      
         private HalfPuggContext db = new HalfPuggContext();
 
-
-        #region GET
-        [ResponseType(typeof(IEnumerable<OwPlayer>))]
-        [Route("api/GetPlayersOwerwatch")]
-        [HttpGet]
-        public IHttpActionResult GetPlayerOw(int PlayerID, region Region)
-        {
-            PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID && x.IDGame == (int)Games.Overwatch).FirstOrDefault();
-            if (pg == null) return NotFound();
-            var a = OwAPI.GetPlayer(pg.IdAPI, Region, PlayerID);
-            if (a == null) return NotFound();
-            return Ok(a);
-        }
-
-        [ResponseType(typeof(OwPlayer))]
-        [Route("api/GetPlayerOwerwatch")]
-        [HttpGet]
-        public IHttpActionResult GetPlayerOw(int PlayerID)
-        {
-            PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID && x.IDGame == (int)Games.Overwatch).FirstOrDefault();
-            if (pg == null) return NotFound();
-            var a = OwAPI.GetPlayer(pg.IdAPI, region.us, PlayerID);
-            if (a == null) return NotFound();
-            return Ok(a);
-        }
-
-        public OwPlayer GetPlayerOwObject(int PlayerID, region Region)
-        {
-            PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID).FirstOrDefault();
-            if (pg == null) return null;
-            var a = OwAPI.GetPlayer(pg.IdAPI, Region, PlayerID);
-            if (a == null) return null;
-            return a;
-        }
-
+        
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
         [Route("api/GetPlayersOwerwatch")]
         [HttpGet]
@@ -77,27 +40,15 @@ namespace HalfPugg.Controllers
         }
 
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
-        [Route("api/FilterPlayerOverwatch")]
+        [Route("api/GetOwMatchFilter")]
         [HttpGet]
-        public IHttpActionResult GetOwMatchFilter(int PlayerID, [FromUri]owFilter filter)
-        {
-            var ows = OwMatchFilter(PlayerID, filter);
-            if(ows == null)
-            {
-                return BadRequest("Jogador que requisitou o match não consta no banco");
-            } else
-            {
-                return Ok(ows);
-            }
-        }
-
-        public IEnumerable<OwPlayer> OwMatchFilter(int PlayerID, [FromUri]owFilter filter)
+        public IHttpActionResult GetOwMatchFilter(int PlayerID, [FromBody]owFilter filter)
         {
             List<string> names = new List<string>();
             List<region> regions = new List<region>();
             List<int> ids = new List<int>();
             PlayerGame p = null;
-
+           
             foreach (PlayerGame pg in db.PlayerGames.Where(x => x.IDGame == 1))
             {
                 if (pg.IDGamer == PlayerID)
@@ -111,72 +62,14 @@ namespace HalfPugg.Controllers
                     ids.Add(pg.IDGamer);
                 }
             }
-            if (p == null) return null;//BadRequest("Jogador que requisitou o match não consta no banco"); //400
+            if (p == null) return BadRequest(); //400
 
             var player = OwAPI.GetPlayer(p.IdAPI, region.us, p.IDGamer);
             var a = OwAPI.GetPlayer(names, regions, ids).Where(x => filterPlayer(x, filter));
 
-            return a;//201
+            return Ok(a);//201
         }
 
-        [ResponseType(typeof(IEnumerable<PlayerRecomendation>))]
-        [Route("api/FilterPlayerRecOverwatch")]
-        [HttpPost]
-        public IHttpActionResult GetOwPlayerRecFilter(int PlayerID, owFilter filter)
-        {
-            var Ows = OwMatchFilter(PlayerID, filter);
-            List<PlayerRecomendation> recom = new List<PlayerRecomendation>();
-            List<Match> playerMatches = db.Matches.Where(x => x.IdPlayer1 == PlayerID || x.IdPlayer2 == PlayerID).AsEnumerable().ToList();
-            if(Ows == null)
-            {
-                return BadRequest("Jogador que requisitou o match não consta no banco");
-            } else
-            {
-                foreach(OwPlayer ow in Ows)
-                {
-                    if(playerMatches.Find(pm => pm.IdPlayer1 == ow.idHalf || pm.IdPlayer2 == ow.idHalf) != null)
-                    {
-                        continue;
-                    }
-                    PlayerRecomendation reco = new PlayerRecomendation()
-                    {
-                        playerFound = db.Gamers.Find(ow.idHalf),
-                        PlayerRecName = "filtro Overwatch",
-                        aproximity = 0f
-                    };
-                    recom.Add(reco);
-                }
-            }
-
-            return Ok(recom);
-        }
-
-        #endregion
-
-        #region POST
-        [ResponseType(typeof(PlayerGame))]
-        [Route("api/PostPlayerInOw", Name = "PostPlayerInOw")]
-        [HttpPost]
-        public async Task<IHttpActionResult> PostPlayerInOw([FromBody]PlayerGame playerGame,[FromUri]region Region)
-        {
-            if (OwAPI.GetPlayerProfile(playerGame.IdAPI, Region, playerGame.IDGamer) == null)
-            {
-                return BadRequest($"{playerGame.IdAPI} não possui conta associada a overwatch ou conta não é publica");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            playerGame.Game = db.Games.Find(playerGame.IDGame);
-            playerGame.Gamer = db.Gamers.Find(playerGame.IDGamer);
-            db.PlayerGames.Add(playerGame);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = playerGame.ID }, playerGame);
-        }
-
-        #endregion
-       
         bool filterPlayer(OwPlayer p, owFilter filter)
         {
             bool ret = true;
@@ -184,9 +77,6 @@ namespace HalfPugg.Controllers
             if (filter.role == 1) ret = p.profile.tank_rating > 0;
             else if (filter.role == 2) ret = p.profile.damage_rating > 0;
             else if (filter.role == 4) ret = p.profile.support_rating > 0;
-            else if (filter.role == 3) ret = (p.profile.tank_rating > 0 || p.profile.damage_rating > 0);
-            else if (filter.role == 5) ret = (p.profile.tank_rating > 0 || p.profile.support_rating > 0);
-            else if (filter.role == 6) ret = (p.profile.damage_rating > 0 || p.profile.support_rating > 0);
 
             if (!ret) return false;
 
@@ -209,7 +99,7 @@ namespace HalfPugg.Controllers
             //level 
             if (filter.level != null)
             {
-                int l = p.profile.level + p.profile.prestige * 100;
+                int l = p.profile.level + p.profile.endorsement * 100;
                 if (filter.level.Length > 1)
                 {
                     if (filter.level[1] == -1) ret = l > filter.level[0];

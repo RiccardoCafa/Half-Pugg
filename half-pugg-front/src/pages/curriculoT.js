@@ -12,14 +12,12 @@ export default class Curriculo extends Component {
 
     state = {
         Nickname: '',
-        Gamer: {
-            "ID": 0,
-        },
-        GamerLogado: {},
+        Gamer: {},
         OverwatchInfo: {},
         toLogin: false,
         loadedOW: false,
         ConnectionsLength: 0,
+        loaded: false,
     }
 
     async componentDidMount() {
@@ -31,7 +29,6 @@ export default class Curriculo extends Component {
         if(jwt){
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
                 myData = res.data
-                //console.log(res.data)
             ).catch(error => stop = true)
         } else {
             stop = true;
@@ -41,12 +38,10 @@ export default class Curriculo extends Component {
             this.setState({toLogin: true});
             return;
         }
-
         this.setState(
         {
-            GamerLogado: myData
+            Gamer: myData
         })
-        
         this.setState({Nickname: myData.Nickname})
         
         let CurriculoData = await api.get('api/Curriculo?GamerID=' + myData.ID);
@@ -59,6 +54,8 @@ export default class Curriculo extends Component {
             }
             this.setState({ConnectionsLength: CurriculoData.data.ConnectionsLenght});
         }
+
+        this.setState({loaded: true});
     }
 
     OpenConnections(){
@@ -69,11 +66,13 @@ export default class Curriculo extends Component {
         if(this.state.toLogin === true){
             return <Redirect to="/"></Redirect>
         }
-
+        const { Gamer } = this.state;
         return (
             <div>
                 <div>
-                    <Header HeaderGamer = {this.state.GamerLogado}/>
+                    {this.state.loaded ?
+                    <Header gamer = {Gamer}/>
+                    : null}
                 </div>
                 <div className="menu-container">
                     <Segment>
@@ -113,10 +112,10 @@ export default class Curriculo extends Component {
                                 <div className="ui container">
                                         <h2 className="ui icon center aligned header">
                                             <Image circular aria-hidden="true" 
-                                                src={this.state.GamerLogado.ImagePath === null ? 
-                                                     gostosao : this.state.GamerLogado.ImagePath}></Image>
-                                            <div className="content">{this.state.GamerLogado.Nickname}</div>
-                                            <div className="content">{this.state.GamerLogado.Name} {this.state.GamerLogado.LastName}</div>
+                                                src={this.state.Gamer.ImagePath === null ? 
+                                                     gostosao : this.state.Gamer.ImagePath}></Image>
+                                            <div className="content">{this.state.Gamer.Nickname}</div>
+                                            <div className="content">{this.state.Gamer.Name} {this.state.Gamer.LastName}</div>
                                         </h2>
                                         <div className='space'>
                                         <div className="ui star rating" role="radiogroup">
@@ -154,18 +153,18 @@ export default class Curriculo extends Component {
                                         <div className="ui message">
                                             <div className="header">Meu grito de guerra</div>
                                             <ul className="list">
-                                                <li className="content">{this.state.GamerLogado.Slogan}</li>
+                                                <li className="content">{this.state.Gamer.Slogan}</li>
                                             </ul>
                                             <div className="header">História que cantam</div>
                                             <ul className="list">
-                                                <li className="content">{this.state.GamerLogado.Bio}</li>
+                                                <li className="content">{this.state.Gamer.Bio}</li>
                                             </ul>
                                         </div>
                                         </div>
                                 </div>
                                 <div>
-                                    {this.state.OverwatchInfo.profile !== undefined ?
-                                    <OWCard {...this.state.OverwatchInfo}></OWCard>
+                                    {this.state.OverwatchInfo !== null && this.state.OverwatchInfo.profile !== undefined ?
+                                    <OWCard {...this.state.Gamer}></OWCard>
                                     : <Loader/>}
                                     <div className="ui segment dimmable">
                                         <h3 className="ui header">League of legends</h3>

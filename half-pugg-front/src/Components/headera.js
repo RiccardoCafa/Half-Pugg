@@ -5,7 +5,7 @@ import { Menu, Input, Button, Segment } from 'semantic-ui-react';
 
 import './header.css';
 
-class header extends Component {
+class Header extends Component {
 
     state = {
         Name: '',
@@ -29,36 +29,18 @@ class header extends Component {
         }
     }
 
-    goToMyConnections = () => {
-        this.setState({toMyConnections: true});
-    }
-
-    goToHome = () => {
-        this.setState({toHome: true});
-    }
-
-    goToCurriculo = () => {
-        this.setState({toCurriculo: true});
-    }
-
-    getGamer = () => {
-        this.setState({Gamer: this.props.HeaderGamer});
-    }
-
     hideWindow = () => this.setState({hideCom: true});
 
-    componentDidMount = () => {
-        this.getGamer();
-    }
-
-    checkForBio = () => {
-        if(this.state.Gamer.Bio !== null && this.state.Gamer.Slogan !== null) {
-            if(!this.state.hideCom) this.hideWindow();
+    checkForBio = (gamer) => {
+        if(gamer.Bio !== null && gamer.Slogan !== null) {
+            if(!this.state.hideCom) {
+                this.setState({hideCom: true})
+            }
         }
     }
 
-    componentDidUpdate = () => {
-        this.checkForBio();
+    componentDidMount = () => {
+        this.checkForBio(this.props.gamer);
     }
 
     loadPage = (route) => {
@@ -73,7 +55,7 @@ class header extends Component {
                 <div id='myHeader'>
                     <Menu secondary id='botoes-header'>
                         <Menu.Item id='user-name-item' onClick={() => this.loadPage('/curriculo')}>
-                            Olá, {this.props.HeaderGamer.Nickname}
+                            Olá, {this.props.gamer.Nickname}
                         </Menu.Item>
                         <Menu.Item 
                             name='Home'
@@ -107,4 +89,4 @@ class header extends Component {
     }
 }
 
-export default withRouter(header);
+export default withRouter(Header);
