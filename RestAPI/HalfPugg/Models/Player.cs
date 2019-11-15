@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HalfPugg.Hubs;
 using Newtonsoft.Json;
 
 namespace HalfPugg.Models
@@ -26,5 +27,10 @@ namespace HalfPugg.Models
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }
 
+        //Chat
+
+        public ICollection<ChatConnection> ChatConnections { get; set; }
+        public ICollection<Group> Groups { get; set; }
+        public ICollection<Hall> Halls { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != messageGamer.ID_Message)
+            if (id != messageGamer.ID)
             {
                 return BadRequest();
             }
@@ -83,7 +83,7 @@ namespace HalfPugg.Controllers
             db.MessageGamers.Add(messageGamer);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = messageGamer.ID_Message }, messageGamer);
+            return CreatedAtRoute("DefaultApi", new { id = messageGamer.ID }, messageGamer);
         }
 
         // DELETE: api/MessageGamers/5
@@ -113,7 +113,7 @@ namespace HalfPugg.Controllers
 
         private bool MessageGamerExists(int id)
         {
-            return db.MessageGamers.Count(e => e.ID_Message == id) > 0;
+            return db.MessageGamers.Count(e => e.ID == id) > 0;
         }
     }
 }
