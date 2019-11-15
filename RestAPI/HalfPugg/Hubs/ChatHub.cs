@@ -120,6 +120,7 @@ namespace HalfPugg
             return true;
         }
 
+
         public async Task<bool> ExitFromGroup(int UserID, int GroupID)
         {
             Task<Group> tg = api.GetGroupAsync(GroupID);

@@ -260,6 +260,7 @@
     <Compile Include="Migrations\201911152021195_ChatHub.cs" />
     <Compile Include="Migrations\201911152021195_ChatHub.Designer.cs">
       <DependentUpon>201911152021195_ChatHub.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201911121301230_ClassificationPlayer.cs" />
     <Compile Include="Migrations\201911121301230_ClassificationPlayer.Designer.cs">
       <DependentUpon>201911121301230_ClassificationPlayer.cs</DependentUpon>
