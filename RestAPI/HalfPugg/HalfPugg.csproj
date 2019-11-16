@@ -241,6 +241,10 @@
     <Compile Include="Controllers\GamerControler.cs" />
     <Compile Include="Hubs\ConnectionManager.cs" />
     <Compile Include="Hubs\Startup.cs" />
+    <Compile Include="Migrations\201911160354558_Init.cs" />
+    <Compile Include="Migrations\201911160354558_Init.Designer.cs">
+      <DependentUpon>201911160354558_Init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInMatch.cs" />
     <Compile Include="Models\Classification_Game.cs" />
@@ -521,6 +525,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201911160354558_Init.resx">
+      <DependentUpon>201911160354558_Init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
