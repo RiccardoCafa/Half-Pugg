@@ -21,8 +21,8 @@ namespace HalfPugg.Models
         [JsonIgnore] public virtual Player Admin { get; set; }
 
 
-        public IList<Filter> Filters { get; set; }
-        public ICollection<Player> Integrants { get; set; }
+        [JsonIgnore] public IList<Filter> Filters { get; set; }
+        [JsonIgnore] public ICollection<PlayerHall> Integrants { get; set; }
         [JsonIgnore] public ICollection<MessageHall> Messages { get; set; }
     }
 }
