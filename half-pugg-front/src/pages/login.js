@@ -32,7 +32,7 @@ export default class Login extends Component {
 
     async handleSubmit(e) {
         e.preventDefault();
-        this.setState({loading: true});
+        this.setState({loading: true}); 
 
         await api.post('api/Login', { 
             "Email": this.state.email,
