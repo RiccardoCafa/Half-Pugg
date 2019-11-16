@@ -18,6 +18,7 @@ export default class registergame extends Component {
         renderize: true,
         GamerLogado: {},
         OverwatchInfo: {},
+        loaded: false,
     }
     
     componentDidMount = async () => {
@@ -56,6 +57,8 @@ export default class registergame extends Component {
                 this.setState({OverwatchInfo: ow.data});
             }
         })
+
+        this.setState({loaded: true});
     }
 
     handleAPIInput = (e) => {
@@ -89,70 +92,74 @@ export default class registergame extends Component {
                 <form> 
                     <h1 id='title'>Half Pugg</h1>
                     <div>
-                        <h2>Your games</h2>
-                        {this.state.OverwatchInfo.profile !== undefined ?
-                            <OWCard {...this.state.OverwatchInfo}> </OWCard>
-                            :
+                        {this.state.loaded === true ?
+                        <div>
+                            <h2>Your games</h2>
+                            {this.state.OverwatchInfo.profile !== undefined ?
+                                <OWCard {...this.state.GamerLogado}> </OWCard>
+                                :
+                                <div>
+                                    <div className="ui segment dimmable">
+                                            <h3 className="ui header">Overwatch</h3>
+                                            <div className="ui small ui small images images">
+                                                    <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
+                                                    <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
+                                                    <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
+                                            </div>
+                                                    <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" className="ui medium image"></Image>
+                                    </div>
+                                </div>
+                            }
+                            <h2>Choose a new game</h2>
                             <div>
                                 <div className="ui segment dimmable">
-                                        <h3 className="ui header">Overwatch</h3>
+                                        <h3 className="ui header">League of Legends</h3>
                                         <div className="ui small ui small images images">
                                                 <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
                                                 <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
                                                 <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
                                         </div>
-                                                <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" className="ui medium image"></Image>
+                                                <Image circular size= 'small'></Image>
+                                </div>
+                                <div id="gameapi">
+                                <Input value={this.state.overwatchIDAPI} onChange={e => this.handleAPIInput(e)} placeholder='Game API'></Input>
+                                <Button.Group id="botoes">
+                                    <Button color='green' onClick={e => this.handleAdicionarButton(e)}>
+                                        Add
+                                    </Button>
+                                </Button.Group>
                                 </div>
                             </div>
-                        }
-                        <h2>Choose a new game</h2>
-                        <div>
-                            <div className="ui segment dimmable">
-                                    <h3 className="ui header">League of Legends</h3>
-                                    <div className="ui small ui small images images">
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
-                                    </div>
-                                            <Image circular size= 'small'></Image>
+                            <div>
+                                <div className="ui segment dimmable">
+                                        <h3 className="ui header">Counter Strike</h3>
+                                        <div className="ui small ui small images images">
+                                                <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
+                                                <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
+                                                <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
+                                        </div>
+                                                <Image circular size= 'small'></Image>
+                                </div>
+                                <div id="gameapi">
+                                <Input value={this.state.overwatchIDAPI} onChange={e => this.handleAPIInput(e)} placeholder='Game API'></Input>
+                                <Button.Group id="botoes">
+                                    <Button color='green' onClick={e => this.handleAdicionarButton(e)}>
+                                        Add
+                                    </Button>
+                                </Button.Group>
+                                </div>
                             </div>
-                            <div id="gameapi">
-                            <Input value={this.state.overwatchIDAPI} onChange={e => this.handleAPIInput(e)} placeholder='Game API'></Input>
-                            <Button.Group id="botoes">
-                                <Button color='green' onClick={e => this.handleAdicionarButton(e)}>
-                                    Add
-                                </Button>
-                            </Button.Group>
+                            <hr id='divider'></hr>
+                            <div id="goback">
+                                <Button.Group id="botoes">
+                                    <Button color='blue' onClick={e => this.handleAdicionarButton(e)}>
+                                        Go back
+                                    </Button>
+                                </Button.Group>
                             </div>
+                            <hr id='divider'></hr>
                         </div>
-                        <div>
-                            <div className="ui segment dimmable">
-                                    <h3 className="ui header">Counter Strike</h3>
-                                    <div className="ui small ui small images images">
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
-                                    </div>
-                                            <Image circular size= 'small'></Image>
-                            </div>
-                            <div id="gameapi">
-                            <Input value={this.state.overwatchIDAPI} onChange={e => this.handleAPIInput(e)} placeholder='Game API'></Input>
-                            <Button.Group id="botoes">
-                                <Button color='green' onClick={e => this.handleAdicionarButton(e)}>
-                                    Add
-                                </Button>
-                            </Button.Group>
-                            </div>
-                        </div>
-                        <hr id='divider'></hr>
-                        <div id="goback">
-                            <Button.Group id="botoes">
-                                <Button color='blue' onClick={e => this.handleAdicionarButton(e)}>
-                                    Go back
-                                </Button>
-                            </Button.Group>
-                        </div>
-                        <hr id='divider'></hr>
+                        : null }
                     </div>
                 </form>
             </div>

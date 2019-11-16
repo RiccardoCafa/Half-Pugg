@@ -9,6 +9,7 @@ import curriculoT from './pages/curriculoT';
 import registergame from './pages/registergame';
 import MyConnections from './pages/MyConnections';
 import interesses from './pages/interesses';
+import editcurriculo from './pages/editcurriculo';
 
 export default function () {
     return (
@@ -21,6 +22,7 @@ export default function () {
             <Route path="/registergame" component={registergame}/>
             <Route path="/MyConnections" component={MyConnections}/>
             <Route path="/Interesse" component={interesses}/>
+            <Route path="/editar" component={editcurriculo}/>
         </BrowserRouter>
     );
 }
