@@ -45,7 +45,7 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != hall.ID_Hall)
+            if (id != hall.ID)
             {
                 return BadRequest();
             }
@@ -83,7 +83,7 @@ namespace HalfPugg.Controllers
             db.Halls.Add(hall);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = hall.ID_Hall }, hall);
+            return CreatedAtRoute("DefaultApi", new { id = hall.ID }, hall);
         }
 
         // DELETE: api/Halls/5
@@ -113,7 +113,7 @@ namespace HalfPugg.Controllers
 
         private bool HallExists(int id)
         {
-            return db.Halls.Count(e => e.ID_Hall == id) > 0;
+            return db.Halls.Count(e => e.ID == id) > 0;
         }
     }
 }

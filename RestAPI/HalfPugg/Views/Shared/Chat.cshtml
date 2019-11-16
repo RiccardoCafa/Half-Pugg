@@ -18,6 +18,11 @@
     <text id="curname"></text>
     <input type="text" id="message" />
     <input type="button" id="sendmessage" value="Send" />
+    <br />
+    <text ><strong>Group name: </strong></text>
+    <input type="text" id="group_name" />
+    <input type="button" id="joingroup" value="Join" />
+
 
 </div>
 @section scripts {
@@ -37,19 +42,25 @@
 
             //recebe a mensagem do chat hub
             chat.client.SendMessage = function (name, message) {
-
-                $('#discussion').append('<strong>' + htmlEncode(name)
+                if (name == $('#username').val()) {
+                    $('#discussion').append('<strong>Me: </strong>'+ htmlEncode(message) + '<br/>');
+                } else {
+                    $('#discussion').append('<strong>' + htmlEncode(name)
                     + '</strong>: ' + htmlEncode(message) + '<br/>');
+                }
+                
             };
 
-
+            $('#joingroup').click(function () {
+                chat.server.joinGroup($('#username').val(),$('#group_name').val());
+            });
 
             $('#message').focus();
 
             $.connection.hub.start().done(function () {
                 $('#sendmessage').click(function () {
                     //envia mensagem para o chat hub
-                    chat.server.receiveMessage($('#username').val(), $('#message').val());
+                    chat.server.receiveMessageGroup($('#username').val(), $('#message').val(),$('#group_name').val());
 
                     $('#message').val('').focus();
                 });

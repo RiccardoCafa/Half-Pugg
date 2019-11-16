@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using HalfPugg.Models;
 using HalfPugg.TokenJWT;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
 
 namespace HalfPugg.Controllers
 {
@@ -219,6 +220,8 @@ namespace HalfPugg.Controllers
             }
             try
             {
+                //vf;v  rvar md5 = MD5.Create();l4 l,1,r
+                
                 db.Gamers.Add(gamer);
                 db.SaveChanges();
             } catch(Exception)

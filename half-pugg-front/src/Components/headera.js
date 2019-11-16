@@ -16,10 +16,6 @@ class Header extends Component {
         Gamer: {},
         hideCom: false,
     }
-
-    constructor(){
-        super();
-    }
     //4b0082
     handleItemClick = (e, { name }) => this.setState( {activeItem: name } );
 

@@ -12,6 +12,9 @@ export default class interesses extends Component {
         MyImage: '',
         Gamer: {},
         toLogin: false,
+        RPGlike: false,
+        MOBAlike: false,
+        FPSlike: false,
     }
 //    handleSubmit(e) {
        
@@ -19,29 +22,29 @@ export default class interesses extends Component {
 
 handleShowRPG = (e) => {
     e.preventDefault();
-    this.setState({ active: true })
+    this.setState({ RPGlike: true })
 }
 handleHideRPG = (e) => {
     e.preventDefault();
-    this.setState({ active: false })
+    this.setState({ RPGlike: false })
 }
 
 handleShowMOBA = (y) => {
     y.preventDefault();
-    this.setState({ active: true })
+    this.setState({ MOBAlike: true })
 }
 handleHideMOBA = (y) => {
     y.preventDefault();
-    this.setState({ active: false })
+    this.setState({ MOBAlike: false })
 }
 
 handleShowFPS = (x) => {
     x.preventDefault();
-    this.setState({ active: true })
+    this.setState({ FPSlike: true })
 }
 handleHideFPS = (x) => {
     x.preventDefault();
-    this.setState({ active: false })
+    this.setState({ FPSlike: false })
 }
 
  
@@ -54,7 +57,7 @@ render() {
         <div className = "interesses-container">
             <form> 
                 <h1 id='title'>Half Pugg</h1>
-                <div>
+                <div className ='caixa'>
                     <Dimmer.Dimmable as={Segment} dimmed={active} size='medium'>
                     <Header as='h3'>RPG</Header>
                     <Image size='medium' src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
@@ -73,7 +76,7 @@ render() {
                     </Button.Group>
                 </div>
 
-                <div>
+                <div className ='caixa'>
                     <Dimmer.Dimmable as={Segment} dimmed={active} size='medium'>
                     <Header as='h3'>MOBA</Header>
                     <Image size='medium' src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
@@ -92,7 +95,7 @@ render() {
                     </Button.Group>
                 </div>
 
-                <div>
+                <div className ='caixa'>
                     <Dimmer.Dimmable as={Segment} dimmed={active} size='medium'>
                     <Header as='h3'>FPS</Header>
                     <Image size='medium' src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
