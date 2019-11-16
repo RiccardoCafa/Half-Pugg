@@ -226,6 +226,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Hubs\ChatConnection.cs" />
     <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Controllers\CurriculoController.cs" />
     <Compile Include="Controllers\OverwatchController.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\GameInGamesController.cs" />
     <Compile Include="Controllers\GamerControler.cs" />
+    <Compile Include="Hubs\ConnectionManager.cs" />
     <Compile Include="Hubs\Startup.cs" />
     <Compile Include="Migrations\201911060027305_Procedure.cs" />
     <Compile Include="Migrations\201911060027305_Procedure.Designer.cs">
@@ -254,6 +256,10 @@
     <Compile Include="Migrations\201911060846040_Procedure4.cs" />
     <Compile Include="Migrations\201911060846040_Procedure4.Designer.cs">
       <DependentUpon>201911060846040_Procedure4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911152021195_ChatHub.cs" />
+    <Compile Include="Migrations\201911152021195_ChatHub.Designer.cs">
+      <DependentUpon>201911152021195_ChatHub.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201911121301230_ClassificationPlayer.cs" />
     <Compile Include="Migrations\201911121301230_ClassificationPlayer.Designer.cs">
@@ -304,7 +310,8 @@
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GameInGame.cs" />
-    <Compile Include="Models\PlayerHall.cs" />
+    <Compile Include="Models\HallMatch.cs" />
+    <Compile Include="Models\MessageStatus.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\HalfPuggContext.cs" />
     <Compile Include="Models\HashTag.cs" />
@@ -568,6 +575,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911060846040_Procedure4.resx">
       <DependentUpon>201911060846040_Procedure4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911152021195_ChatHub.resx">
+      <DependentUpon>201911152021195_ChatHub.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911121301230_ClassificationPlayer.resx">
       <DependentUpon>201911121301230_ClassificationPlayer.cs</DependentUpon>

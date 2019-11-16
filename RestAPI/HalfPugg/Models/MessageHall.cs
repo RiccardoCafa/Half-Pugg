@@ -7,12 +7,22 @@ namespace HalfPugg.Models
 {
     public class MessageHall
     {
-        [Key] public int ID { get; set; }
-        [StringLength(400)] [Required] public string Content { get; set; }
-        public DateTime? Send_Time { get; set; }
-        [Required] [ForeignKey("User")] public int ID_User { get; set; }
-        [Required] [ForeignKey("Recipient")] public int ID_Recipient { get; set; }
-        [JsonIgnore] public virtual Player User { get; set; }
-        [JsonIgnore] public virtual Hall Recipient { get; set; }
+        [Key]
+        public int ID { get; set; }
+        [StringLength(500)] public string Content { get; set; }
+
+        [Required] public DateTime Send_Time { get; set; }
+        [Required] public DateTime View_Time { get; set; }
+
+
+
+        [Required] [ForeignKey("Sender")] public int ID_Sender { get; set; }
+        [Required] [ForeignKey("Destination")] public int ID_Destination { get; set; }
+        [JsonIgnore] public virtual Player Sender { get; set; }
+        [JsonIgnore] public virtual Hall Destination { get; set; }
+
+
+        public DateTime AlteredAt { get; set; }
+        public MessageStatus Status { get; set; }
     }
 }
