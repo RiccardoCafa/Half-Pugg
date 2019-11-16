@@ -272,7 +272,6 @@
     <Compile Include="Models\ClassificationInMatch.cs" />
     <Compile Include="Models\Classification_Game.cs" />
     <Compile Include="Models\Classification_Gamer.cs" />
-    <Compile Include="Models\PlayerGroup.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HallsController.cs" />
     <Compile Include="Controllers\HashTagsController.cs" />
@@ -319,7 +318,6 @@
     <Compile Include="Models\MessageHall.cs" />
     <Compile Include="Models\Numbered.cs" />
     <Compile Include="Models\PlayerGame.cs" />
-    <Compile Include="Models\PlayerHall.cs" />
     <Compile Include="Models\PlayerHashtag.cs" />
     <Compile Include="Models\Range.cs" />
     <Compile Include="Models\RequestedGroup.cs" />
