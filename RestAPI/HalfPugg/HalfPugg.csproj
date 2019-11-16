@@ -319,6 +319,7 @@
     <Compile Include="Models\MessageHall.cs" />
     <Compile Include="Models\Numbered.cs" />
     <Compile Include="Models\PlayerGame.cs" />
+    <Compile Include="Models\PlayerHall.cs" />
     <Compile Include="Models\PlayerHashtag.cs" />
     <Compile Include="Models\Range.cs" />
     <Compile Include="Models\RequestedGroup.cs" />
