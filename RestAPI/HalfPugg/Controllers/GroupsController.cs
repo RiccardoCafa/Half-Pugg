@@ -36,7 +36,50 @@ namespace HalfPugg.Controllers
             return Ok(group);
         }
 
+        //[ResponseType(typeof(void))]
+        //[Route("api/Groups/JoinGroup")]
+        //[HttpPut]
+        //public async Task<IHttpActionResult> JoinInGroup(int GroupID, int PlayerID)
+        //{
+        //    Group g = await db.Groups.FindAsync(GroupID);
+        //    if (g == null) return NotFound();
+        //    Player p = await db.Gamers.FindAsync(PlayerID);
+        //    if (p == null) return NotFound();
+
+        //    if (!g.Integrants.Contains(p))
+        //    {
+        //        p.Groups.Add(g);
+        //        g.Integrants.Add(p);
+        //        await db.SaveChangesAsync();
+        //    }
+
+        //    return Ok();
+
+        //}
+        //[ResponseType(typeof(void))]
+        //[Route("api/Groups/RemoveFromGroup")]
+        //[HttpPut]
+        //public async Task<IHttpActionResult> RemoveFromGroup(int GroupID, int PlayerID)
+        //{
+        //    Group g = await db.Groups.FindAsync(GroupID);
+        //    if (g == null) return NotFound();
+        //    Player p = await db.Gamers.FindAsync(PlayerID);
+        //    if (p == null) return NotFound();
+
+        //    if (g.Integrants.Contains(p))
+        //    {
+        //        p.Groups.Remove(g);
+        //        g.Integrants.Remove(p);
+        //        await db.SaveChangesAsync();
+        //    }
+
+        //    return Ok();
+
+        //}
+
         // PUT: api/Groups/5
+
+
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutGroup(int id, Group group)
         {
@@ -45,7 +88,7 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != group.ID_Group)
+            if (id != group.ID)
             {
                 return BadRequest();
             }
@@ -83,7 +126,7 @@ namespace HalfPugg.Controllers
             db.Groups.Add(group);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = group.ID_Group }, group);
+            return CreatedAtRoute("DefaultApi", new { id = group.ID }, group);
         }
 
         // DELETE: api/Groups/5
@@ -113,7 +156,7 @@ namespace HalfPugg.Controllers
 
         private bool GroupExists(int id)
         {
-            return db.Groups.Count(e => e.ID_Group == id) > 0;
+            return db.Groups.Count(e => e.ID == id) > 0;
         }
     }
 }
