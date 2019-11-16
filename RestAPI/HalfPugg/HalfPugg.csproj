@@ -241,34 +241,7 @@
     <Compile Include="Controllers\GamerControler.cs" />
     <Compile Include="Hubs\ConnectionManager.cs" />
     <Compile Include="Hubs\Startup.cs" />
-    <Compile Include="Migrations\201911060027305_Procedure.cs" />
-    <Compile Include="Migrations\201911060027305_Procedure.Designer.cs">
-      <DependentUpon>201911060027305_Procedure.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911060808106_Procedure2.cs" />
-    <Compile Include="Migrations\201911060808106_Procedure2.Designer.cs">
-      <DependentUpon>201911060808106_Procedure2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911060814243_Procedure3.cs" />
-    <Compile Include="Migrations\201911060814243_Procedure3.Designer.cs">
-      <DependentUpon>201911060814243_Procedure3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911060846040_Procedure4.cs" />
-    <Compile Include="Migrations\201911060846040_Procedure4.Designer.cs">
-      <DependentUpon>201911060846040_Procedure4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911121301230_ClassificationPlayer.cs" />
-    <Compile Include="Migrations\201911121301230_ClassificationPlayer.Designer.cs">
-      <DependentUpon>201911121301230_ClassificationPlayer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911141454461_Menssagem.cs" />
-    <Compile Include="Migrations\201911141454461_Menssagem.Designer.cs">
-      <DependentUpon>201911141454461_Menssagem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911152054486_Menssages.cs" />
-    <Compile Include="Migrations\201911152054486_Menssages.Designer.cs">
-      <DependentUpon>201911152054486_Menssages.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInMatch.cs" />
     <Compile Include="Models\Classification_Game.cs" />
     <Compile Include="Models\Classification_Gamer.cs" />
@@ -294,11 +267,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201911021548069_init.cs" />
-    <Compile Include="Migrations\201911021548069_init.Designer.cs">
-      <DependentUpon>201911021548069_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInPlayer.cs" />
     <Compile Include="Models\Classification_Match.cs" />
     <Compile Include="Models\Classification_Player.cs" />
@@ -553,32 +521,6 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911021548069_init.resx">
-      <DependentUpon>201911021548069_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911060027305_Procedure.resx">
-      <DependentUpon>201911060027305_Procedure.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911060808106_Procedure2.resx">
-      <DependentUpon>201911060808106_Procedure2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911060814243_Procedure3.resx">
-      <DependentUpon>201911060814243_Procedure3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911060846040_Procedure4.resx">
-      <DependentUpon>201911060846040_Procedure4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911121301230_ClassificationPlayer.resx">
-      <DependentUpon>201911121301230_ClassificationPlayer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911141454461_Menssagem.resx">
-      <DependentUpon>201911141454461_Menssagem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911152054486_Menssages.resx">
-      <DependentUpon>201911152054486_Menssages.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
