@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
-import './curriculo.css';
+import './editcurriculo.css';
 import { Image, Segment, Grid, Loader, Statistic, Button} from 'semantic-ui-react'
 import Header from '../Components/headera';
 import api from '../services/api';
@@ -74,40 +74,9 @@ export default class Curriculo extends Component {
                     <Header gamer = {Gamer}/>
                     : null}
                 </div>
-                <div className="menu-container">
+                <div>
                     <Segment>
                         <Grid columns={2} relaxed='very' stackable>
-                            <Grid.Column width={2}>
-                                <div className="left-content">
-                                    <div className="ui vertical labeled icon menu">
-                                        <div className="item">
-                                        <i aria-hidden="true" className="plug icon"></i>
-                                        Conectar
-                                        </div>
-                                        <div className="item">
-                                        <i aria-hidden="true" className="space shuttle icon"></i>
-                                        Criar salas
-                                        </div>
-                                        <div className="item">
-                                        <i aria-hidden="true" className="users icon"></i>
-                                        Meus grupos
-                                        </div>
-                                        <div className="item">
-                                        <i aria-hidden="true" className="gamepad icon"></i>
-                                        Meus jogos
-                                        </div>
-                                        <div className="item">
-                                        <i aria-hidden="true" className="user.j icon"></i>
-                                        Editar curriculo
-                                        </div>
-                                    </div>
-                                </div>
-                                <Button.Group id="botoes">
-                                    <Button color='green' >
-                                        Voltar
-                                    </Button>
-                                </Button.Group>
-                            </Grid.Column>
                             <Grid.Column width={10}>
                                 <div className="main-content">
                                 <div className="ui container">
@@ -163,27 +132,8 @@ export default class Curriculo extends Component {
                                         </div>
                                         </div>
                                 </div>
-                                <div>
-                                    {this.state.OverwatchInfo !== null && this.state.OverwatchInfo.profile !== undefined ?
-                                    <OWCard {...this.state.Gamer}></OWCard>
-                                    : <Loader/>}
-                                    <div className="ui segment dimmable">
-                                        <h3 className="ui header">League of legends</h3>
-                                        <div className="ui small ui small images images">
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                        </div>
-                                        <Image
-                                            src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png"
-                                            className="ui medium image"
-                                        />
-                                    </div>
-                                    </div>
+                                
                                 </div>
-                            </Grid.Column>
-                            <Grid.Column width={1} id='coluna-3'>
-                                <Statistic value={this.state.ConnectionsLength} label='conexoes'></Statistic>
                             </Grid.Column>
                         </Grid>
                         
