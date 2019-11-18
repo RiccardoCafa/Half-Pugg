@@ -95,12 +95,12 @@ export default class registergame extends Component {
             'IDGamer': this.state.GamerLogado.ID,
             'IdAPI': apid,
             'Weight': 0
-        }).then(res => {
+        }).then(res => 
             this.setState({
                 openMessageBox: true,
                 textMessageBox: 'Conta adicionada com sucesso!'
             })
-        }).catch(
+        ).catch(err =>
             this.setState({
                 openMessageBox: true,
                 textMessageBox: 'Conta não encontrada ou não está pública!'
@@ -146,7 +146,7 @@ export default class registergame extends Component {
                             <Card.Group>
                                 {this.state.OverwatchInfo.profile === undefined ?
                                 <Card >
-                                    <Image size='medium' src={overwatchImage} wrapped ui='false'/>
+                                    <Image src={overwatchImage} fluid style={{height:'150px'}} />
                                     <Card.Content>
                                         <Card.Header>Overwatch</Card.Header>
                                         <Card.Meta>
@@ -167,7 +167,7 @@ export default class registergame extends Component {
                                 </Card> : null }
 
                                 <Card >
-                                    <Image size='medium' src={lolImage} wrapped ui='false'/>
+                                    <Image src={lolImage} fluid style={{height:'150px'}} />
                                     <Card.Content>
                                         <Card.Header>League of Legends</Card.Header>
                                         <Card.Meta>
@@ -186,7 +186,7 @@ export default class registergame extends Component {
                                 </Card>
 
                                 <Card >
-                                    <Image size='medium' src={csImage} wrapped ui='false'/>
+                                    <Image src={csImage} fluid style={{height:'150px'}} />
                                     <Card.Content>
                                         <Card.Header>Counter Strike</Card.Header>
                                         <Card.Meta>

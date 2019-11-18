@@ -172,7 +172,7 @@ namespace HalfPugg.Controllers
             db.PlayerGames.Add(playerGame);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = playerGame.ID }, playerGame);
+            return Ok(playerGame);
         }
 
         #endregion
