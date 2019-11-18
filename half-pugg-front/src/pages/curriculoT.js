@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import './curriculo.css';
-import { Image, Segment, Grid, Loader, Statistic, Button} from 'semantic-ui-react'
+import { Image, Segment, Grid, Loader, Statistic, Button, Icon, Menu, Sidebar, Container, Rating } from 'semantic-ui-react'
 import Header from '../Components/headera';
 import api from '../services/api';
 import gostosao from '../images/chris.jpg';
@@ -18,6 +18,7 @@ export default class Curriculo extends Component {
         loadedOW: false,
         ConnectionsLength: 0,
         loaded: false,
+        stars: 0,
     }
 
     async componentDidMount() {
@@ -52,7 +53,7 @@ export default class Curriculo extends Component {
                     , loadedOW: true
                 });
             }
-            this.setState({ConnectionsLength: CurriculoData.data.ConnectionsLenght});
+            this.setState({ConnectionsLength: CurriculoData.data.ConnectionsLenght, stars: CurriculoData.data.Stars});
         }
 
         this.setState({loaded: true});
@@ -79,28 +80,24 @@ export default class Curriculo extends Component {
                         <Grid columns={2} relaxed='very' stackable>
                             <Grid.Column width={2}>
                                 <div className="left-content">
-                                    <div className="ui vertical labeled icon menu">
-                                        <div className="item">
-                                        <i aria-hidden="true" className="plug icon"></i>
-                                        Conectar
-                                        </div>
-                                        <div className="item">
-                                        <i aria-hidden="true" className="space shuttle icon"></i>
-                                        Criar salas
-                                        </div>
-                                        <div className="item">
-                                        <i aria-hidden="true" className="users icon"></i>
-                                        Meus grupos
-                                        </div>
-                                        <div className="item">
-                                        <i aria-hidden="true" className="gamepad icon"></i>
-                                        Meus jogos
-                                        </div>
-                                        <div className="item">
-                                        <i aria-hidden="true" className="user.j icon"></i>
-                                        Editar curriculo
-                                        </div>
-                                    </div>
+                                    <Menu vertical icon="labeled">
+                                        <Menu.Item style={{cursor:'pointer'}} onClick={() => {this.props.history.push('/match')}}>
+                                            <Icon aria-hidden="true" name="plug" >
+                                            </Icon> Conectar
+                                        </Menu.Item>
+                                        <Menu.Item style={{cursor:'pointer'}}>
+                                            <Icon name="space shuttle"/> Criar Salas
+                                        </Menu.Item>
+                                        <Menu.Item style={{cursor:'pointer'}}>
+                                            <Icon name="users"/> Meus Grupos
+                                        </Menu.Item>
+                                        <Menu.Item style={{cursor:'pointer'}} onClick={() => {this.props.history.push('/registergame')}}>
+                                            <Icon name="gamepad"/> Meus jogos
+                                        </Menu.Item>
+                                        <Menu.Item style={{cursor:'pointer'}} onClick={() => {this.props.history.push('/bio')}}>
+                                            <Icon name="edit"/> Editar Currículo
+                                        </Menu.Item>
+                                    </Menu>
                                 </div>
                                 <Button.Group id="botoes">
                                     <Button color='green' >
@@ -119,46 +116,19 @@ export default class Curriculo extends Component {
                                             <div id='realname' className="content">{this.state.Gamer.Name} {this.state.Gamer.LastName}</div>
                                         </h2>
                                         <div className='space'>
-                                        <div className="ui star rating" role="radiogroup">
-                                            <i
-                                                aria-checked="false"
-                                                aria-posinset="1"
-                                                aria-setsize="4"
-                                                className="active icon"
-                                                role="radio"
-                                            ></i>
-                                            <i
-                                                aria-checked="false"
-                                                aria-posinset="2"
-                                                aria-setsize="4"
-                                                className="active icon"
-                                                role="radio"
-                                            ></i>
-                                            <i
-                                                aria-checked="true"
-                                                aria-posinset="3"
-                                                aria-setsize="4"
-                                                className="active icon"
-                                                role="radio"
-                                            ></i>
-                                            <i
-                                                aria-checked="false"
-                                                aria-posinset="4"
-                                                aria-setsize="4"
-                                                className="icon"
-                                                role="radio"
-                                            ></i>
-                                        </div>
+                                        <Rating rating={this.state.stars} maxRating={5} disabled></Rating>
                                         </div>
                                         <div className='space'> 
                                         <div className="ui message">
                                             <div className="header">Meu grito de guerra</div>
                                             <ul className="list">
-                                                <span className="content">{this.state.Gamer.Slogan}</span>
+                                                <Container textAlign='center'><i>{this.state.Gamer.Slogan}</i></Container>
+                                                <br/>
                                             </ul>
                                             <div className="header">História que cantam</div>
                                             <ul className="list">
-                                                <span className="content">{this.state.Gamer.Bio}</span>
+                                                <Container textAlign="center"><i>{this.state.Gamer.Bio}</i></Container>
+                                                <br/>
                                             </ul>
                                         </div>
                                         </div>

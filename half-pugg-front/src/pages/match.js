@@ -214,8 +214,8 @@ export default class Match extends Component {
     // Filtros do Overwatch
     openOWFiltro = () => this.setState({OWFilter: !this.state.OWFilter});
 
-    applyFiltroSearch = eve => {
-        console.log(eve.target);
+    applyFiltroSearch = (eve, {value}) => {
+        console.log(value);
     }
 
     setFilterType = (e, {value}) => {
@@ -401,7 +401,7 @@ export default class Match extends Component {
                                             placeholder='Tipo de Procura'
                                             floating labeled
                                             options={this.state.tiposProcura}
-                                            onChange={eve => this.applyFiltroSearch(eve)}
+                                            onChange={this.applyFiltroSearch}
                                         ></Dropdown>
                                     </Grid.Column>
                                     <Grid.Column width={8}>

@@ -96,15 +96,12 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
 
-            //ClassificationPlayer findMe = db.Classification_Players.Where(clf => clf.IdPlayer == classificationPlayer.ID
-            //&& clf.IdJudgePlayer == classificationPlayer.IdJudgePlayer).AsEnumerable().FirstOrDefault();
+            ClassificationPlayer clfp = db.Classification_Players.Where(clf => clf.IdJudgePlayer == classificationPlayer.IdJudgePlayer && clf.IdPlayer == classificationPlayer.IdPlayer).AsEnumerable().FirstOrDefault();
 
-            //if(findMe != null)
-            //{
-            //    findMe.Points = classificationPlayer.Points;
-            //    findMe.IdClassification = classificationPlayer.IdClassification;
-            //    return await PutClassificationPlayer(findMe.ID, findMe);
-            //}
+            if(clfp != null)
+            {
+                return BadRequest();
+            }
 
             db.Classification_Players.Add(classificationPlayer);
             await db.SaveChangesAsync();

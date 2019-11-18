@@ -23,6 +23,8 @@ class OWCard extends Component {
         ).catch(err => console.log('jogador não possui conta overwatch cadastrada!'));
     }
     
+    componentWillUnmount = () => {}
+
     handleQuickCareerCollapse = (ligado) => this.setState({quickCareerCollapse: ligado});
     handleCareerCollapse = (ligado) => this.setState({compCareerCollapse: ligado});
 
