@@ -18,11 +18,11 @@ export default function () {
             <Route path="/register" component={register}/>
             <Route path="/bio" component={register2}/>
             <Route path="/match" exact component={match}/>
-            <Route path="/curriculo" component={curriculoT}/>
+            <Route path="/curriculo" exact component={curriculoT}/>
             <Route path="/registergame" component={registergame}/>
             <Route path="/MyConnections" component={MyConnections}/>
             <Route path="/Interesse" component={interesses}/>
-            <Route path="/editar" component={editcurriculo}/>
+            <Route path="/curriculo/editar" exact component={editcurriculo}/>
         </BrowserRouter>
     );
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import './curriculo.css';
-import { Image, Segment, Grid, Loader, Statistic, Button, Icon, Menu, Sidebar, Container } from 'semantic-ui-react'
+import { Image, Segment, Grid, Loader, Statistic, Button, Icon, Menu, Sidebar, Container, Rating } from 'semantic-ui-react'
 import Header from '../Components/headera';
 import api from '../services/api';
 import gostosao from '../images/chris.jpg';
@@ -18,6 +18,7 @@ export default class Curriculo extends Component {
         loadedOW: false,
         ConnectionsLength: 0,
         loaded: false,
+        stars: 0,
     }
 
     async componentDidMount() {
@@ -52,7 +53,7 @@ export default class Curriculo extends Component {
                     , loadedOW: true
                 });
             }
-            this.setState({ConnectionsLength: CurriculoData.data.ConnectionsLenght});
+            this.setState({ConnectionsLength: CurriculoData.data.ConnectionsLenght, stars: CurriculoData.data.Stars});
         }
 
         this.setState({loaded: true});
@@ -115,36 +116,7 @@ export default class Curriculo extends Component {
                                             <div id='realname' className="content">{this.state.Gamer.Name} {this.state.Gamer.LastName}</div>
                                         </h2>
                                         <div className='space'>
-                                        <div className="ui star rating" role="radiogroup">
-                                            <i
-                                                aria-checked="false"
-                                                aria-posinset="1"
-                                                aria-setsize="4"
-                                                className="active icon"
-                                                role="radio"
-                                            ></i>
-                                            <i
-                                                aria-checked="false"
-                                                aria-posinset="2"
-                                                aria-setsize="4"
-                                                className="active icon"
-                                                role="radio"
-                                            ></i>
-                                            <i
-                                                aria-checked="true"
-                                                aria-posinset="3"
-                                                aria-setsize="4"
-                                                className="active icon"
-                                                role="radio"
-                                            ></i>
-                                            <i
-                                                aria-checked="false"
-                                                aria-posinset="4"
-                                                aria-setsize="4"
-                                                className="icon"
-                                                role="radio"
-                                            ></i>
-                                        </div>
+                                        <Rating rating={this.state.stars} maxRating={5} disabled></Rating>
                                         </div>
                                         <div className='space'> 
                                         <div className="ui message">
