@@ -28,6 +28,8 @@ namespace HalfPugg.Models
         public DateTime AlteredAt { get; set; }
 
         //Chat
+        [ForeignKey("Groups")] public int? IdGroups { get; set; }
+        [ForeignKey("Halls")] public int? IdHalls { get; set; }
 
         public ICollection<ChatConnection> ChatConnections { get; set; }
         public ICollection<Group> Groups { get; set; }
