@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Image, TextArea, Form, Segment } from 'semantic-ui-react';
+import { Button, Image, TextArea, Form, Segment, Modal } from 'semantic-ui-react';
 import gostosao from '../images/chris.jpg';
 import api from '../services/api';
 
@@ -14,6 +14,7 @@ export default class Register2 extends Component {
         MyImage: '',
         Gamer: {},
         toLogin: false,
+        showMessage: false,
     }
 
     componentDidMount() {
@@ -51,6 +52,12 @@ export default class Register2 extends Component {
         newGamer.Slogan = this.state.slogan;
 
         api.put('api/Gamers/' + this.state.Gamer.ID, newGamer);
+
+        this.setState({showMessage: true});
+    }
+
+    confirmBox = () => {
+        this.props.history.push('/curriculo');
     }
 
     render() {
@@ -59,10 +66,21 @@ export default class Register2 extends Component {
         }
         return (
             <div className = "login-container">
-                <h1 id='title'>Half Pugg</h1>
+                <h1>Half Pugg</h1>
                 <div id="biography">
+                    <Modal open={this.state.showMessage}>
+                        <Modal.Header>
+                            Tudo certo!
+                        </Modal.Header>
+                        <Modal.Content>
+                        Agora vamos te redirecionar para o seu currículo
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button positive labelPosition='left' icon='checkmark' content='Ok' onClick={this.confirmBox}></Button>
+                        </Modal.Actions>
+                    </Modal>
                 <Segment>
-                    <Image circular src={this.state.MyImage === null ? gostosao : this.state.MyImage} size="small" centered></Image>
+                    <Image circular src={this.state.MyImage === null ? gostosao : this.state.MyImage} size="tiny" centered></Image>
                     <h4>SEU GRITO DE GUERRA (50)</h4>
                     <Form>
                         <TextArea placeholder="Qual seu recado?" rows="3" 
@@ -77,11 +95,15 @@ export default class Register2 extends Component {
                                   value={this.state.descricao}>
                         </TextArea>
                     </Form>
-                    <h4>IMAGEM</h4>
+                    <h4>CARREGUE UMA FOTO DE PERFIL</h4>
                     <Button fluid icon='upload'></Button>
-                    <Button.Group id={"botoes"}>
+                    <br/>
+                    <Button.Group>
                         <Button color='green' onClick={e => this.handleSubmit(e)}>
-                            Confirm
+                            Confirmar
+                        </Button>
+                        <Button color='red' onClick={this.confirmBox}>
+                            Descartar
                         </Button>
                     </Button.Group>
                 </Segment>
