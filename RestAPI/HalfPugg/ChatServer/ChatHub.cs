@@ -14,11 +14,7 @@ namespace HalfPugg
 
         ConnectionManager api = new ConnectionManager();
 
-        public ChatHub()
-        {
-            Console.WriteLine($"Chat inited {api != null}");
-        }
-
+      
         public async Task ConnectToAPI(int UserID)
         {
             Player player =  await api.ConnectUser(UserID, Context.ConnectionId);
