@@ -3,67 +3,45 @@
 }
 
 
-
-<h2>Chat</h2>
-
-<div class="boxed" style = "border:1px solid green">
-    <ul id="discussion" >
-    </ul>
-</div>
-<br />
 <div class="container">
 
-
-    <input type="text" id="username" placeholder="username" hidden="hidden" />
-    <text id="curname"></text>
-    <input type="text" id="message" />
-    <input type="button" id="sendmessage" value="Send" />
+    <text id="conn">non connected</text>
     <br />
-    <text ><strong>Group name: </strong></text>
-    <input type="text" id="group_name" />
+    <text id="curname">UserID</text>
+    <input type="text" id="UserID" />
+
+    <text id="curname">GroupID</text>
+    <input type="text" id="GroupID" />
+
+
     <input type="button" id="joingroup" value="Join" />
 
 
 </div>
 @section scripts {
-
     <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
 
     <script src="~/signalr/hubs"></script>
 
     <script>
-      
+
         $(function () {
-            $('#username').val(prompt("Your name:"));
-            $('#curname').append('<strong>' + htmlEncode($('#username').val())
-                    + '</strong>:' );
 
             var chat = $.connection.chatHub;
+         
+           
 
-            //recebe a mensagem do chat hub
-            chat.client.SendMessage = function (name, message) {
-                if (name == $('#username').val()) {
-                    $('#discussion').append('<strong>Me: </strong>'+ htmlEncode(message) + '<br/>');
-                } else {
-                    $('#discussion').append('<strong>' + htmlEncode(name)
-                    + '</strong>: ' + htmlEncode(message) + '<br/>');
-                }
-                
-            };
 
             $('#joingroup').click(function () {
-                chat.server.joinGroup($('#username').val(),$('#group_name').val());
+                chat.server.joinInGroup($('#UserID').val(), $('#GroupID').val());
             });
 
-            $('#message').focus();
+
 
             $.connection.hub.start().done(function () {
-                $('#sendmessage').click(function () {
-                    //envia mensagem para o chat hub
-                    chat.server.receiveMessageGroup($('#username').val(), $('#message').val(),$('#group_name').val());
-
-                    $('#message').val('').focus();
-                });
+                $('conn').append("connected");
+                chat.server.connectToAPI(prompt("Your ID:"));
+                console.log("Connected");
             });
         });
 

@@ -226,8 +226,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Hubs\ChatConnection.cs" />
-    <Compile Include="Hubs\ChatHub.cs" />
+    <Compile Include="ChatServer\ChatConnection.cs" />
+    <Compile Include="ChatServer\ChatHub.cs" />
     <Compile Include="Controllers\CurriculoController.cs" />
     <Compile Include="Controllers\OverwatchController.cs" />
     <Compile Include="Controllers\ClassificationPlayersController.cs" />
@@ -239,11 +239,15 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\GameInGamesController.cs" />
     <Compile Include="Controllers\GamerControler.cs" />
-    <Compile Include="Hubs\ConnectionManager.cs" />
-    <Compile Include="Hubs\Startup.cs" />
+    <Compile Include="ChatServer\ConnectionManager.cs" />
+    <Compile Include="ChatServer\Startup.cs" />
     <Compile Include="Migrations\201911160354558_Init.cs" />
     <Compile Include="Migrations\201911160354558_Init.Designer.cs">
       <DependentUpon>201911160354558_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911172335224_Chat-ForeingKeys.cs" />
+    <Compile Include="Migrations\201911172335224_Chat-ForeingKeys.Designer.cs">
+      <DependentUpon>201911172335224_Chat-ForeingKeys.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInMatch.cs" />
@@ -529,6 +533,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201911160354558_Init.resx">
       <DependentUpon>201911160354558_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911172335224_Chat-ForeingKeys.resx">
+      <DependentUpon>201911172335224_Chat-ForeingKeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
