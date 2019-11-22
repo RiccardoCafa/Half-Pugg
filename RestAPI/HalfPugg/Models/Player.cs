@@ -26,6 +26,8 @@ namespace HalfPugg.Models
         [JsonIgnore] public ICollection<MessageHall> MessageHalls { get; set; }
         [JsonIgnore] public ICollection<MessageGroup> MessageGroups { get; set; }
         //Chat
+        [ForeignKey("Groups")] public int? IdGroups { get; set; }
+        [ForeignKey("Halls")] public int? IdHalls { get; set; }
 
         [JsonIgnore] public ICollection<ChatConnection> ChatConnections { get; set; }
         [JsonIgnore] public ICollection<PlayerGroup> Groups { get; set; }

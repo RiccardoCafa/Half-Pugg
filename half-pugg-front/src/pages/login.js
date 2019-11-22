@@ -14,6 +14,7 @@ export default class Login extends Component {
         goToMatch: false,
         goToRegister: false,
         loading: false,
+        closePop: false,
     }
 
     async componentDidMount() {
@@ -66,6 +67,10 @@ export default class Login extends Component {
         console.log('Branch Connect');
     }
 
+    closePopUp = () => {
+        this.setState({showPopUp: false});
+    }
+
     render() {
         if(this.state.goToMatch) {
             return <Redirect to='/match'></Redirect>
@@ -83,7 +88,7 @@ export default class Login extends Component {
                             <Form >
                                 <h1 id="title">Half Pugg</h1>
                                 {this.state.showPopUp ? 
-                                    <Popup 
+                                    <Popup onClose={this.closePopUp} closeOnTriggerClick
                                         content='Email ou Senha errada!'
                                         pinned 
                                         on='click'

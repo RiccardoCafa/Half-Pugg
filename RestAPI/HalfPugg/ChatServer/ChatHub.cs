@@ -14,10 +14,15 @@ namespace HalfPugg
 
         ConnectionManager api = new ConnectionManager();
 
+        public ChatHub()
+        {
+            Console.WriteLine($"Chat inited {api != null}");
+        }
+
         public async Task ConnectToAPI(int UserID)
         {
             Player player =  await api.ConnectUser(UserID, Context.ConnectionId);
-            
+          
             //Adciona esta ConnectionID aos grupos do usuario correspondente
             foreach(var g in player.Groups)
             {
@@ -79,6 +84,8 @@ namespace HalfPugg
 
         public async Task<bool> JoinInGroup(int UserID, int GroupID)
         {
+
+           
             Task<Group> tg =  api.GetGroupAsync(GroupID);
             Task<Player> tp = api.GetPlayerAsync(UserID);
 

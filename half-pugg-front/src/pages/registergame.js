@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Input, Image } from 'semantic-ui-react';
+import { Button, Input, Image, Card, Container, Loader, Modal } from 'semantic-ui-react';
 
 import api from '../services/api'
 
 import './registergame.css';
 import OWCard from '../Components/OWCard';
+
+import overwatchImage from '../images/overwatch.jpg';
+import lolImage from '../images/lol.jpg';
+import csImage from '../images/cs.jpg';
 
 export default class registergame extends Component {
 
@@ -15,10 +19,14 @@ export default class registergame extends Component {
         MyImage: '',
         toLogin: false,
         overwatchIDAPI: '',
+        lolIDAPI: '',
+        csIDAPI: '',
         renderize: true,
         GamerLogado: {},
         OverwatchInfo: {},
         loaded: false,
+        openMessageBox: false,
+        textMessageBox: '',
     }
     
     componentDidMount = async () => {
@@ -28,7 +36,6 @@ export default class registergame extends Component {
         //console.log(jwt);
         let myData;
         if(jwt){
-            console.log(jwt);
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
                 myData = res.data
                 //console.log(res.data)
@@ -42,46 +49,70 @@ export default class registergame extends Component {
             return;
         }
 
-        this.setState(
-        {
-            GamerLogado: myData
-        });
+        this.setState({GamerLogado: myData});
 
-        const resposta = await api.get('api/GetGamesInPlayer?PlayerID=' + myData.ID).catch(err => console.log(err))
-        resposta.data.map(async (playergame) => {
-            let jogo = playergame;
-            if(jogo.IDGame === 1){
-                // Overwatch
-                const ow = await api.get('api/GetPlayersOwerwatch?PlayerID='+jogo.IDGamer + '&Region=0').catch(err => console.log(err));
-                console.log(ow.data);
-                this.setState({OverwatchInfo: ow.data});
+        await api.get('api/GetGamesInPlayer?PlayerID=' + myData.ID).catch(err => console.log(err)).then(
+            resposta => {
+                resposta.data.map(async (playergame) => {
+                    let jogo = playergame;
+                    if(jogo.IDGame === 1){
+                        // Overwatch
+                        const ow = await api.get('api/GetPlayersOwerwatch?PlayerID='+jogo.IDGamer + '&Region=0').catch(err => console.log(err));
+                        this.setState({OverwatchInfo: ow.data});
+                    }
+                })
+                this.setState({loaded: true})
             }
-        })
-
-        this.setState({loaded: true});
+        )
     }
 
-    handleAPIInput = (e) => {
+    handleOWAPIInput = (e) => {
         this.setState({overwatchIDAPI: e.target.value});
     }
 
-    handleAdicionarButton = (e) => {
-        e.preventDefault();
-        let idGame = 1; // do Overwatch
-        api.post('api/PlayerGames', {
-            "ID": 1,
-            "Description": "Jogando",
-            "IDGame": idGame,
-            "IDGamer": this.state.GamerLogado.ID,
-            "IdAPI": this.state.overwatchIDAPI,
-            "Weight": 0,
-        }
-        ).then(res => {
-            console.log('foi');
-        }).catch(err => {
-           console.log('id api inválida'); 
-        });
+    handleLOLAPIInput = (e) => {
+        this.setState({lolIDAPI: e.target.value});
     }
+
+    handleCSAPIInput = (e) => {
+        this.setState({csIDAPI: e.target.value});
+    }
+
+    handleAdicionarButton = (e, idGame) => {
+        e.preventDefault();
+        // 1 do Overwatch
+        let apid;
+        switch(idGame){
+            case 1: apid = this.state.overwatchIDAPI; break;
+            case 2: apid = this.state.lolIDAPI; break;
+            default: return;
+        }
+
+        api.post('api/PostPlayerInOw?Region=0', {
+            'ID': 0,
+            'Description': 'Jogando',
+            'IDGame': idGame,
+            'IDGamer': this.state.GamerLogado.ID,
+            'IdAPI': apid,
+            'Weight': 0
+        }).then(res => 
+            this.setState({
+                openMessageBox: true,
+                textMessageBox: 'Conta adicionada com sucesso!'
+            })
+        ).catch(err =>
+            this.setState({
+                openMessageBox: true,
+                textMessageBox: 'Conta não encontrada ou não está pública!'
+            })
+        );
+    }
+
+    goBack = () => {
+        this.props.history.push('/curriculo');
+    }
+
+    closeBox = () => this.setState({openMessageBox: false});
 
     render() {
         if(this.state.toLogin) {
@@ -95,71 +126,92 @@ export default class registergame extends Component {
                         {this.state.loaded === true ?
                         <div>
                             <h2>Your games</h2>
+                            <Modal open={this.state.openMessageBox} onClose={this.closeBox} size='mini'>
+                                <Modal.Header>
+                                    Adição de Jogo ao seu perfil
+                                </Modal.Header>
+                                <Modal.Content>
+                                    {this.state.textMessageBox}
+                                </Modal.Content>
+                                <Modal.Actions>
+                                    <Button
+                                    positive icon='checkmark' labelPosition='right' content='Ok' onClick={this.closeBox}
+                                    />
+                                </Modal.Actions>
+                            </Modal>
                             {this.state.OverwatchInfo.profile !== undefined ?
                                 <OWCard {...this.state.GamerLogado}> </OWCard>
-                                :
-                                <div>
-                                    <div className="ui segment dimmable">
-                                            <h3 className="ui header">Overwatch</h3>
-                                            <div className="ui small ui small images images">
-                                                    <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                                    <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                                    <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
-                                            </div>
-                                                    <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" className="ui medium image"></Image>
-                                    </div>
-                                </div>
-                            }
+                                : null }
                             <h2>Choose a new game</h2>
-                            <div>
-                                <div className="ui segment dimmable">
-                                        <h3 className="ui header">League of Legends</h3>
-                                        <div className="ui small ui small images images">
-                                                <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                                <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                                <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
-                                        </div>
-                                                <Image circular size= 'small'></Image>
-                                </div>
-                                <div id="gameapi">
-                                <Input value={this.state.overwatchIDAPI} onChange={e => this.handleAPIInput(e)} placeholder='Game API'></Input>
-                                <Button.Group id="botoes">
-                                    <Button color='green' onClick={e => this.handleAdicionarButton(e)}>
-                                        Add
-                                    </Button>
-                                </Button.Group>
-                                </div>
-                            </div>
-                            <div>
-                                <div className="ui segment dimmable">
-                                        <h3 className="ui header">Counter Strike</h3>
-                                        <div className="ui small ui small images images">
-                                                <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                                <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                                <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
-                                        </div>
-                                                <Image circular size= 'small'></Image>
-                                </div>
-                                <div id="gameapi">
-                                <Input value={this.state.overwatchIDAPI} onChange={e => this.handleAPIInput(e)} placeholder='Game API'></Input>
-                                <Button.Group id="botoes">
-                                    <Button color='green' onClick={e => this.handleAdicionarButton(e)}>
-                                        Add
-                                    </Button>
-                                </Button.Group>
-                                </div>
-                            </div>
-                            <hr id='divider'></hr>
-                            <div id="goback">
-                                <Button.Group id="botoes">
-                                    <Button color='blue' onClick={e => this.handleAdicionarButton(e)}>
-                                        Go back
-                                    </Button>
-                                </Button.Group>
-                            </div>
-                            <hr id='divider'></hr>
+                            <Card.Group>
+                                {this.state.OverwatchInfo.profile === undefined ?
+                                <Card >
+                                    <Image src={overwatchImage} fluid style={{height:'150px'}} />
+                                    <Card.Content>
+                                        <Card.Header>Overwatch</Card.Header>
+                                        <Card.Meta>
+                                            FPS
+                                        </Card.Meta>
+                                        <Card.Description>Insira seu id da blizzard, nesse formato -> <br/> Exemplo-1234
+                                        </Card.Description>
+                                    </Card.Content>
+                                    <Card.Content extra>
+                                        <Input value={this.state.overwatchIDAPI} 
+                                            onChange={e => this.handleOWAPIInput(e)} placeholder='Battle.net ID'></Input>
+                                        <Button.Group >
+                                            <Button color='green' onClick={e => this.handleAdicionarButton(e, 1)}>
+                                                Add
+                                            </Button>
+                                        </Button.Group>
+                                    </Card.Content>
+                                </Card> : null }
+
+                                <Card >
+                                    <Image src={lolImage} fluid style={{height:'150px'}} />
+                                    <Card.Content>
+                                        <Card.Header>League of Legends</Card.Header>
+                                        <Card.Meta>
+                                            MOBA
+                                        </Card.Meta>
+                                        <Card.Description>Insira seu id do riot</Card.Description>
+                                    </Card.Content>
+                                    <Card.Content extra>
+                                        <Input value={this.state.lolIDAPI} onChange={e => this.handleLOLAPIInput(e)} placeholder='Game ID'></Input>
+                                        <Button.Group >
+                                            <Button color='green' onClick={e => this.handleAdicionarButton(e, 2)}>
+                                                Add
+                                            </Button>
+                                        </Button.Group>
+                                    </Card.Content>
+                                </Card>
+
+                                <Card >
+                                    <Image src={csImage} fluid style={{height:'150px'}} />
+                                    <Card.Content>
+                                        <Card.Header>Counter Strike</Card.Header>
+                                        <Card.Meta>
+                                            FPS
+                                        </Card.Meta>
+                                        <Card.Description>Insira seu id da steam</Card.Description>
+                                    </Card.Content>
+                                    <Card.Content extra>
+                                        <Input value={this.state.csIDAPI} onChange={e => this.handleCSAPIInput(e)} placeholder='Game ID'></Input>
+                                        <Button.Group >
+                                            <Button color='green' onClick={e => this.handleAdicionarButton(e, 2)}>
+                                                Add
+                                            </Button>
+                                        </Button.Group>
+                                    </Card.Content>
+                                </Card>
+                            </Card.Group>
+                            <br></br>
+                            <Button.Group >
+                                <Button color='blue' id="botoes" onClick={this.goBack}>
+                                    Go back
+                                </Button>
+                            </Button.Group>
                         </div>
-                        : null }
+                        : <Loader active></Loader> }
                     </div>
                 </form>
             </div>
