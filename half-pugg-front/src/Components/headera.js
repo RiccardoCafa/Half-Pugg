@@ -67,6 +67,11 @@ class Header extends Component {
                             active={activeItem === "Connect"}
                             onClick={() => this.loadPage('/MyConnections')}
                             />
+                        <Menu.Item
+                            name='My Groups'
+                            active={activeItem === "Connect"}
+                            onClick={() => this.loadPage('/MyGroups')}
+                            />
                         <Menu.Menu position='right'>
                             <Menu.Item >
                                 <Input icon='search' placeholder='Search in Half-Pugg'></Input>

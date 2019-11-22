@@ -10,6 +10,7 @@ import registergame from './pages/registergame';
 import MyConnections from './pages/MyConnections';
 import interesses from './pages/interesses';
 import editcurriculo from './pages/editcurriculo';
+import MyGroups from './pages/MyGroups';
 
 export default function () {
     return (
@@ -23,6 +24,7 @@ export default function () {
             <Route path="/MyConnections" component={MyConnections}/>
             <Route path="/Interesse" component={interesses}/>
             <Route path="/editar" component={editcurriculo}/>
+            <Route path="/MyGroups" component={MyGroups}/>
         </BrowserRouter>
     );
 }
