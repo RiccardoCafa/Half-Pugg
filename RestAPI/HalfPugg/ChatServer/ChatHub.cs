@@ -38,25 +38,22 @@ namespace HalfPugg
 
         public async Task SendMessageGroup(string Message,int UserID, int GroupID)
         {
-            Group g = await api.GetGroupAsync(GroupID);
-            if (g == null) return;
             
-            Player p = await api.GetPlayerAsync(UserID);
-            if (p == null) return;
+            
+            
 
-            MessageGroup mg = new MessageGroup()
+            /*MessageGroup mg = new MessageGroup()
             {
                 Content = Message,
                 ID_Destination = GroupID,
                 ID_Sender = UserID,
                 Status = MessageStatus.None,
                 Send_Time = DateTime.Now,
-                Destination =  g,
-                Sender =  p
+                
             };
             g.Messages.Add(mg);
            await Clients.Group("group_" + GroupID).ReceiveMessageGroup(mg);
-           await api.db.SaveChangesAsync();
+           await api.db.SaveChangesAsync();*/
         }
         public async Task SendMessageHall(string Message,int UserID, int HallID)
         {
@@ -66,7 +63,7 @@ namespace HalfPugg
             Player p = await api.GetPlayerAsync(UserID);
             if (p == null) return;
 
-            MessageHall mh = new MessageHall()
+            /*MessageHall mh = new MessageHall()
             {
                 Content = Message,
                 ID_Destination = HallID,
@@ -78,7 +75,7 @@ namespace HalfPugg
             };
 
             h.Messages.Add(mh);
-            await Clients.Group("hall_" + HallID).ReceiveMessageHall(mh);
+            await Clients.Group("hall_" + HallID).ReceiveMessageHall(mh);*/
             await api.db.SaveChangesAsync();
         }
 

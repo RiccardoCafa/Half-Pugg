@@ -23,11 +23,12 @@ namespace HalfPugg.Models
         public string Slogan { get; set; }
         [Required] [StringLength(1)] public string Sex { get; set; }
         [StringLength(100)] public string Genre { get; set; }
-        [JsonIgnore] public ICollection<MessageHall> MessageHalls { get; set; }
-        [JsonIgnore] public ICollection<MessageGroup> MessageGroups { get; set; }
         //Chat
         [JsonIgnore] public ICollection<ChatConnection> ChatConnections { get; set; }
-        
+
+        public ICollection<PlayerGroup> Groups { get; set; }
+        public ICollection<PlayerHall> Halls { get; set; }
+
         public DateTime? CreateAt { get; set; }
         public DateTime? AlteredAt { get; set; }
     }

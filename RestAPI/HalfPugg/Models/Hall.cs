@@ -19,10 +19,7 @@ namespace HalfPugg.Models
         [Required] [ForeignKey("Admin")] public int IdAdmin { get; set; }
         [JsonIgnore] public virtual Game Game { get; set; }
         [JsonIgnore] public virtual Player Admin { get; set; }
-
-
         public IList<Filter> Filters { get; set; }
-        
-        [JsonIgnore] public ICollection<MessageHall> Messages { get; set; }
+        [JsonIgnore] public ICollection<PlayerHall> Integrants { get; set; }
     }
 }

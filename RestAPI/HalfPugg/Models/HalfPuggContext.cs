@@ -32,8 +32,8 @@ namespace HalfPugg.Models
         public DbSet<RequestedGroup> RequestedGroups { get; set; }
         public DbSet<RequestedHall> RequestedHalls { get; set; }
         public DbSet<RequestedMatch> RequestedMatchs { get; set; }
-        public DbSet<Template> Templates { get; set; }       
         public DbSet<ChatConnection> ChatConnections { get; set; }
+        public DbSet<PlayerRequestedGroup> PlayerRequestedGroup { get; set; }
 
     }
 }
