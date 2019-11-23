@@ -26,7 +26,7 @@ namespace HalfPugg
             }
 
             //Adciona esta ConnectionID aos halls do usuario correspondente
-            foreach (var h in player.Halls.Where(x=>x.Active))
+            foreach (var h in player.Halls.Where(x=>x.Hall.Active))
             {
                 await Groups.Add(Context.ConnectionId, "hall_" + h.ID.ToString());
             }
@@ -34,25 +34,22 @@ namespace HalfPugg
 
         public async Task SendMessageGroup(string Message,int UserID, int GroupID)
         {
-            Group g = await api.GetGroupAsync(GroupID);
-            if (g == null) return;
             
-            Player p = await api.GetPlayerAsync(UserID);
-            if (p == null) return;
+            
+            
 
-            MessageGroup mg = new MessageGroup()
+            /*MessageGroup mg = new MessageGroup()
             {
                 Content = Message,
                 ID_Destination = GroupID,
                 ID_Sender = UserID,
                 Status = MessageStatus.None,
                 Send_Time = DateTime.Now,
-                Destination =  g,
-                Sender =  p
+                
             };
             g.Messages.Add(mg);
            await Clients.Group("group_" + GroupID).ReceiveMessageGroup(mg);
-           await api.db.SaveChangesAsync();
+           await api.db.SaveChangesAsync();*/
         }
         public async Task SendMessageHall(string Message,int UserID, int HallID)
         {
@@ -62,7 +59,7 @@ namespace HalfPugg
             Player p = await api.GetPlayerAsync(UserID);
             if (p == null) return;
 
-            MessageHall mh = new MessageHall()
+            /*MessageHall mh = new MessageHall()
             {
                 Content = Message,
                 ID_Destination = HallID,
@@ -74,7 +71,7 @@ namespace HalfPugg
             };
 
             h.Messages.Add(mh);
-            await Clients.Group("hall_" + HallID).ReceiveMessageHall(mh);
+            await Clients.Group("hall_" + HallID).ReceiveMessageHall(mh);*/
             await api.db.SaveChangesAsync();
         }
 
@@ -87,14 +84,14 @@ namespace HalfPugg
 
             Group g = tg.Result;
             Player p = tp.Result;
-
+            
             if (p == null || g == null) return false;
-
-            if (!g.Integrants.Contains(p))
+            PlayerGroup obj = (PlayerGroup)api.db.PlayerGroups.ToList().Where(x => x.IdGroup == g.ID && x.IdPlayer == p.ID );
+            if (!g.Integrants.Contains(obj))
             {
-                p.Groups.Add(g);
-                g.Integrants.Add(p);
-                api.db.SaveChangesAsync();
+                p.Groups.Add(obj);
+                g.Integrants.Add(obj);
+                await api.db.SaveChangesAsync();
             }
 
             await Groups.Add(Context.ConnectionId, "group_" + GroupID);
@@ -111,11 +108,12 @@ namespace HalfPugg
 
             if (p == null || h ==null || !h.Active) return false;
 
-            if (!h.Integrants.Contains(p))
+            PlayerHall obj = (PlayerHall)api.db.PlayerHalls.ToList().Where(x => x.IdHall == h.ID && x.IdPlayer == p.ID);
+            if (!h.Integrants.Contains(obj))
             {
-                p.Halls.Add(h);
-                h.Integrants.Add(p);
-                api.db.SaveChangesAsync();
+                p.Halls.Add(obj);
+                h.Integrants.Add(obj);
+                await api.db.SaveChangesAsync();
             }
 
             await Groups.Add(Context.ConnectionId, "group_" + HallID);
@@ -134,11 +132,12 @@ namespace HalfPugg
 
             if (p == null || g == null) return false;
 
-            if (g.Integrants.Contains(p))
+            PlayerGroup obj = (PlayerGroup)api.db.PlayerGroups.ToList().Where(x => x.IdGroup == g.ID && x.IdPlayer == p.ID);
+            if (g.Integrants.Contains(obj))
             {
-                p.Groups.Remove(g);
-                g.Integrants.Remove(p);
-                api.db.SaveChangesAsync();
+                p.Groups.Remove(obj);
+                g.Integrants.Remove(obj);
+                await api.db.SaveChangesAsync();
             }
 
             await Groups.Add(Context.ConnectionId, "group_" + GroupID);
@@ -154,12 +153,12 @@ namespace HalfPugg
             Player p = tp.Result;
 
             if (p == null || h == null || !h.Active) return false;
-
-            if (h.Integrants.Contains(p))
+            PlayerHall obj = (PlayerHall)api.db.PlayerHalls.ToList().Where(x => x.IdHall == h.ID && x.IdPlayer == p.ID);
+            if (h.Integrants.Contains(obj))
             {
-                p.Halls.Remove(h);
-                h.Integrants.Remove(p);
-                api.db.SaveChangesAsync();
+                p.Halls.Remove(obj);
+                h.Integrants.Remove(obj);
+                await api.db.SaveChangesAsync();
             }
 
             await Groups.Remove(Context.ConnectionId, "group_" + HallID);

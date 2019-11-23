@@ -7,13 +7,13 @@ namespace HalfPugg.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ChatForeingKeys : IMigrationMetadata
+    public sealed partial class Message : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ChatForeingKeys));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Message));
         
         string IMigrationMetadata.Id
         {
-            get { return "201911172335224_Chat-ForeingKeys"; }
+            get { return "201911230118390_Message"; }
         }
         
         string IMigrationMetadata.Source

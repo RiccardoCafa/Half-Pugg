@@ -19,20 +19,17 @@ namespace HalfPugg.Models
         [Required] public DateTime Birthday { get; set; }
         [StringLength(500)] public string ImagePath { get; set; }
         [Required] [StringLength(1)] public string Type { get; set; }
-        public int ID_Branch { get; set; }
+        public string? ID_Branch { get; set; }
         public string Slogan { get; set; }
         [Required] [StringLength(1)] public string Sex { get; set; }
-        [StringLength(100)] public string Genre { get; set; }  
-        public ICollection<MessageHall> MessageHalls { get; set; }
-        public DateTime CreateAt { get; set; }
-        public DateTime AlteredAt { get; set; }
-
+        [StringLength(100)] public string Genre { get; set; }
         //Chat
-        [ForeignKey("Groups")] public int? IdGroups { get; set; }
-        [ForeignKey("Halls")] public int? IdHalls { get; set; }
+        [JsonIgnore] public ICollection<ChatConnection> ChatConnections { get; set; }
 
-        public ICollection<ChatConnection> ChatConnections { get; set; }
-        public ICollection<Group> Groups { get; set; }
-        public ICollection<Hall> Halls { get; set; }
+        public ICollection<PlayerGroup> Groups { get; set; }
+        public ICollection<PlayerHall> Halls { get; set; }
+
+        public DateTime? CreateAt { get; set; }
+        public DateTime? AlteredAt { get; set; }
     }
 }

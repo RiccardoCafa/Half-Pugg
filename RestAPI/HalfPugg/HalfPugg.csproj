@@ -36,6 +36,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,6 +46,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -241,13 +243,13 @@
     <Compile Include="Controllers\GamerControler.cs" />
     <Compile Include="ChatServer\ConnectionManager.cs" />
     <Compile Include="ChatServer\Startup.cs" />
-    <Compile Include="Migrations\201911160354558_Init.cs" />
-    <Compile Include="Migrations\201911160354558_Init.Designer.cs">
-      <DependentUpon>201911160354558_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201911230107169_Init.cs" />
+    <Compile Include="Migrations\201911230107169_Init.Designer.cs">
+      <DependentUpon>201911230107169_Init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201911172335224_Chat-ForeingKeys.cs" />
-    <Compile Include="Migrations\201911172335224_Chat-ForeingKeys.Designer.cs">
-      <DependentUpon>201911172335224_Chat-ForeingKeys.cs</DependentUpon>
+    <Compile Include="Migrations\201911230118390_Message.cs" />
+    <Compile Include="Migrations\201911230118390_Message.Designer.cs">
+      <DependentUpon>201911230118390_Message.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInMatch.cs" />
@@ -269,7 +271,6 @@
     <Compile Include="Controllers\RequestedGroupsController.cs" />
     <Compile Include="Controllers\RequestedHallsController.cs" />
     <Compile Include="Controllers\RequestedMatchesController.cs" />
-    <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
@@ -294,12 +295,14 @@
     <Compile Include="Models\MessageHall.cs" />
     <Compile Include="Models\Numbered.cs" />
     <Compile Include="Models\PlayerGame.cs" />
+    <Compile Include="Models\PlayerGroup.cs" />
+    <Compile Include="Models\PlayerHall.cs" />
     <Compile Include="Models\PlayerHashtag.cs" />
+    <Compile Include="Models\PlayerRequestedGroup.cs" />
     <Compile Include="Models\Range.cs" />
     <Compile Include="Models\RequestedGroup.cs" />
     <Compile Include="Models\RequestedMatch.cs" />
     <Compile Include="Models\RequestedHall.cs" />
-    <Compile Include="Models\Template .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenJWT\TokenMaker.cs" />
   </ItemGroup>
@@ -531,11 +534,11 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911160354558_Init.resx">
-      <DependentUpon>201911160354558_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911230107169_Init.resx">
+      <DependentUpon>201911230107169_Init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911172335224_Chat-ForeingKeys.resx">
-      <DependentUpon>201911172335224_Chat-ForeingKeys.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911230118390_Message.resx">
+      <DependentUpon>201911230118390_Message.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
