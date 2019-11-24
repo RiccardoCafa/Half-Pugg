@@ -160,5 +160,26 @@ namespace HalfPugg.Controllers
         {
             return db.Groups.Count(e => e.ID == id) > 0;
         }
+
+        [Route("api/GroupIntegrants")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetGamerMatchAsync(int IdGroup)
+        {
+            Group group = await db.Groups.FindAsync(IdGroup);
+            if (group == null)
+            {
+                return NotFound();
+            }
+            var query = db.Groups   
+                        .Join(db.PlayerGroups, 
+                        group => group.ID,        
+                        pg => pg.IdGroup,   
+                        (group, pg) => new { Group = group, Pg = pg }) 
+                        .Where(dbs =>dbs.Group.ID == IdGroup).Select(dbs => dbs.Pg.Player).ToList<Player>(); 
+            if (query == null) return BadRequest();
+            return Ok(query);
+        }
     }
+
+
 }

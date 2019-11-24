@@ -7,5 +7,6 @@ namespace HalfPugg.Models
 {
     public class FilterGame
     {
+
     }
 }
