@@ -32,13 +32,13 @@ namespace HalfPugg
             //Adciona esta ConnectionID aos grupos do usuario correspondente
             foreach (var g in player.Groups)
             {
-                await Groups.Add(Context.ConnectionId, "group_" + g.ID.ToString());
+                await Groups.Add(Context.ConnectionId, "group_" + g.IdGroup);
             }
 
             //Adciona esta ConnectionID aos halls do usuario correspondente
             foreach (var h in player.Halls.Where(x => x.Hall.Active))
             {
-                await Groups.Add(Context.ConnectionId, "hall_" + h.ID.ToString());
+                await Groups.Add(Context.ConnectionId, "hall_" + h.IdHall);
             }
 
             Clients.All.receiveAlert($"{UserID} conectado a API");
@@ -97,20 +97,24 @@ namespace HalfPugg
         public async Task<bool> JoinInGroup(int UserID, int GroupID)
         {
 
+            PlayerGroup pg = db.PlayerGroups.Where(x => x.IdPlayer == UserID && x.IdGroup == GroupID).FirstOrDefault();
+            if (pg == null)
+            {
+                Group g = await db.Groups.FindAsync(GroupID);
+                Player p = await db.Gamers.FindAsync(UserID);
 
-            Group g = await db.Groups.FindAsync(GroupID);
-            Player p = await db.Gamers.FindAsync(UserID);
+                if (p == null || g == null) return false;
 
-            if (p == null || g == null) return false;
-
-            PlayerGroup pg = new PlayerGroup { Group = g, IdGroup = GroupID, Player = p, IdPlayer = UserID };
-            db.PlayerGroups.Add(pg);
-            await db.SaveChangesAsync();
+                PlayerGroup npg = new PlayerGroup { Group = g, IdGroup = GroupID, Player = p, IdPlayer = UserID };
+                db.PlayerGroups.Add(npg);
+                await db.SaveChangesAsync();
 
 
-            await Groups.Add(Context.ConnectionId, "group_" + GroupID);
-            Clients.Caller.joinedInGroup(g);
-            Clients.Group("group_" + GroupID).receiveAlert($"{p.Name} joined");
+                await Groups.Add(Context.ConnectionId, "group_" + GroupID);
+                Clients.Caller.joinedInGroup(g);
+                Clients.Group("group_" + GroupID).receiveAlert($"{p.Name} joined");
+            }
+           
             return true;
         }
         public async Task<bool> JoinInHall(int UserID, int HallID)

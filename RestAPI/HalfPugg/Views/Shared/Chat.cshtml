@@ -17,7 +17,7 @@
 <div class="Chat">
     <br />
     <h1 id="txt_chatName">Group</h1>
-    <ul id="ul_chat" style="border-color:forestgreen">
+    <ul id="ul_chat" style="border-color:forestgreen" prefix="">
     </ul>
     <input type="text" width="200" id="inp_message" />
     <input type="button" id="bnt_sendMes" class="btn-success" value="Send!" />
@@ -39,6 +39,7 @@
 
             $('#bnt_conPlayer').click(function () {
                 player_id = $('#inp_playerId').val();
+                console.log('Connect player: ' + player_id);
                 chat.server.connectToAPI(player_id);
             });
 
@@ -51,7 +52,9 @@
 
 
             chat.client.receiveMessageGroup = function (msg) {
-                $('#ul_chat').append(htmlEncode(mg + '<br/>'));
+                console.log("Received Message from Group")
+                $('#ul_chat').append('<li>' + htmlEncode(msg.Content)+'<li/>');
+                
             };
 
             $.connection.hub.start().done(function () {
