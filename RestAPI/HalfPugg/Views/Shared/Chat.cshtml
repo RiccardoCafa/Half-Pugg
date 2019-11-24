@@ -34,16 +34,18 @@
         $(function () {
 
             var chat = $.connection.chatHub;
-        
+            var player_id;
+            var group_id;
 
             $('#bnt_conPlayer').click(function () {
-               
-                chat.server.connectToAPI($('#inp_playerId').val());
+                player_id = $('#inp_playerId').val();
+                chat.server.connectToAPI(player_id);
             });
 
             $('#bnt_conGroup').click(function () {
-             
-                chat.server.joinInGroup($('#inp_playerId').val(), $('#inp_groupId').val());
+
+                group_id = $('#inp_groupId').val();
+                chat.server.joinInGroup(player_id, group_id);
             });
 
 
@@ -55,6 +57,7 @@
             $.connection.hub.start().done(function () {
                 $('#bnt_sendMes').click(function () {
                     chat.server.sendMessageGroup($('#inp_message').val(), player_id, group_id);
+                     console.log("Msg Sended");
                 });
                 console.log("Connected");
             });
