@@ -32,6 +32,12 @@ namespace HalfPugg.Hubs
             return player;
         }
 
+        //public async Task<Player> GetUserConnected(string ConnectionID)
+        //{
+        //  var ci=  db.ChatConnections.Where(x => x.ConnectionID == ConnectionID).FirstOrDefault();
+            
+        //}
+
         public async Task Desconnect(string ConnectionId)
         {
             ChatConnection con = await db.ChatConnections.FindAsync(ConnectionId);
