@@ -234,6 +234,22 @@ namespace HalfPugg.Controllers
             return CreatedAtRoute("DefaultApi", new { id = gamer.ID }, gamer);
         }
 
+        [ResponseType(typeof(List<Player>))]
+        [HttpPost]
+        [Route("api/ListaGamers")]
+        public IHttpActionResult PostListGamers(List<Player> gamers)
+        {
+            foreach(Player player in gamers)
+            {
+                if (db.Gamers.Where(g => g.Nickname == player.Nickname).Count() == 0)
+                {
+                    db.Gamers.Add(player);
+                }
+            }
+            db.SaveChanges();
+            return Ok();
+        }
+
         // DELETE: api/Gamers/5
         [ResponseType(typeof(Player))]
         public IHttpActionResult DeleteGamer(int id)
