@@ -22,7 +22,6 @@ export default class Match extends Component {
         GamerLogado: {},
         RequestedMatches: [],
         RequestedGroups: [],
-        RequestedGroups :[],
         Groups :[] ,
         NumberOfRequests: 0,
         NewConnections: false,
@@ -115,17 +114,14 @@ export default class Match extends Component {
                 this.setState({GamerMatch: MatchData.data});
             }
     
-            //const requestedMatch = await api.get('api/RequestedGroup',
-            //    { headers: { "token-jwt": jwt }});
-            //if(requestedMatch.data !== null) {
-            //    this.setState({RequestedGroups: requestedGroup.data});
-            //    this.setState({NumberOfRequests: requestedGroup.data.length});
-            //}
-
-            
-        }
-
-                
+            const requestedMatch = await api.get('api/RequestedMatchesLoggedGamer',
+                { headers: { "token-jwt": jwt }});
+            if(requestedMatch.data !== null) {
+                //this.setState({RequestedGroups: requestedGroup.data});
+                this.setState({RequestedMatches: requestedMatch.data});
+                this.setState({NumberOfRequests: requestedMatch.data.length});
+            }
+        }        
     }
 
     setNickname(myData) {
@@ -414,7 +410,7 @@ export default class Match extends Component {
                                             </div>
                                         </Card.Content> 
                                         <Card.Content extra>
-                                            <OpenCurriculum matcher={requests}></OpenCurriculum>
+                                            <OpenCurriculum {...requests}></OpenCurriculum>
                                         </Card.Content>
                                     </Card>
                                 )}
