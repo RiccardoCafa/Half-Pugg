@@ -94,7 +94,7 @@ export default class Curriculo extends Component {
                                         <Menu.Item style={{cursor:'pointer'}} onClick={() => {this.props.history.push('/registergame')}}>
                                             <Icon name="gamepad"/> Meus jogos
                                         </Menu.Item>
-                                        <Menu.Item style={{cursor:'pointer'}}>
+                                        <Menu.Item style={{cursor:'pointer'}} onClick={() => {this.props.history.push('/bio')}}>
                                             <Icon name="edit"/> Editar Currículo
                                         </Menu.Item>
                                     </Menu>

@@ -66,6 +66,8 @@ export default class registergame extends Component {
         )
     }
 
+    componentWillUnmount = () => {}
+
     handleOWAPIInput = (e) => {
         this.setState({overwatchIDAPI: e.target.value});
     }

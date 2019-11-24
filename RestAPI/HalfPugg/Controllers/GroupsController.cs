@@ -123,6 +123,8 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
 
+            
+
             db.Groups.Add(group);
             await db.SaveChangesAsync();
 

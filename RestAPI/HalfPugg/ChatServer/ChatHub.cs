@@ -13,169 +13,174 @@ namespace HalfPugg
     {
 
         ConnectionManager api = new ConnectionManager();
+        HalfPuggContext db = new HalfPuggContext();
 
-        public ChatHub()
-        {
-            Console.WriteLine($"Chat inited {api != null}");
-        }
 
+        /// <summary>
+        /// associa a ConnectionID atual ao ID do usuario no Half, é necessário que seja feita esta
+        /// conexão antes de tudo pois o mesmo usuario pode estar usando o chat por dois dispositivos diferentes
+        /// e cada um gera uma ConnectionID propria sendo assim necessário mapear-las para o usuario correspondente
+        /// </summary>
+        /// <param name="UserID"> ID do usuario a ser conectado</param>
+        /// <returns></returns>
         public async Task ConnectToAPI(int UserID)
         {
-            Player player =  await api.ConnectUser(UserID, Context.ConnectionId);
-          
+            Player player = await api.ConnectUser(UserID, Context.ConnectionId);
+            if (player == null) return;
+
             //Adciona esta ConnectionID aos grupos do usuario correspondente
-            foreach(var g in player.Groups)
+            foreach (var g in player.Groups)
             {
-              await Groups.Add(Context.ConnectionId, "group_"+g.ID.ToString());
+                await Groups.Add(Context.ConnectionId, "group_" + g.ID.ToString());
             }
 
             //Adciona esta ConnectionID aos halls do usuario correspondente
-            foreach (var h in player.Halls.Where(x=>x.Hall.Active))
+            foreach (var h in player.Halls.Where(x => x.Hall.Active))
             {
                 await Groups.Add(Context.ConnectionId, "hall_" + h.ID.ToString());
             }
+
+            Clients.All.receiveAlert($"{UserID} conectado a API");
         }
 
-        public async Task SendMessageGroup(string Message,int UserID, int GroupID)
+        /// <summary>
+        /// Envia uma mensagem para um grupo, caso o grupo ou o usuario não existam no banco será chamada
+        /// a função receiveAlert
+        /// </summary>
+        /// <param name="Message"></param>
+        /// <param name="UserID"></param>
+        /// <param name="GroupID"></param>
+        /// <returns></returns>
+        public async Task<bool> SendMessageGroup(string Message, int UserID, int GroupID)
         {
-            
-            
-            
+            PlayerGroup pg = db.PlayerGroups.Where(x => x.IdPlayer == UserID && x.IdGroup == GroupID).FirstOrDefault();
 
-            /*MessageGroup mg = new MessageGroup()
+            if (pg == null)return false;
+
+            MessageGroup mg = new MessageGroup()
             {
                 Content = Message,
-                ID_Destination = GroupID,
-                ID_Sender = UserID,
+             
                 Status = MessageStatus.None,
                 Send_Time = DateTime.Now,
-                
+                ID_Relation = pg.ID,
+                PlayerGroup = pg
             };
-            g.Messages.Add(mg);
-           await Clients.Group("group_" + GroupID).ReceiveMessageGroup(mg);
-           await api.db.SaveChangesAsync();*/
+            db.MessageGroups.Add(mg);
+            await Clients.Group("group_" + GroupID).receiveMessageGroup(mg);
+            await db.SaveChangesAsync();
+            return true;
         }
-        public async Task SendMessageHall(string Message,int UserID, int HallID)
+        public async Task SendMessageHall(string Message, int UserID, int HallID)
         {
-            Hall h = await api.GetHallAsync(HallID);
-            if (h == null || !h.Active) return;
-            
-            Player p = await api.GetPlayerAsync(UserID);
-            if (p == null) return;
+            PlayerHall ph = db.PlayerHalls.Where(x => x.IdPlayer == UserID && x.IdHall == HallID).FirstOrDefault();
 
-            /*MessageHall mh = new MessageHall()
+            if (ph == null) Clients.Caller.receiveAlert("User or hall not finded");
+
+            MessageHall mh = new MessageHall()
             {
                 Content = Message,
-                ID_Destination = HallID,
-                ID_Sender = UserID,
+            
                 Status = MessageStatus.None,
                 Send_Time = DateTime.Now,
-                Destination = h,
-                Sender = p
+                ID_Relation = ph.ID,
+                PlayerHall = ph
+
             };
 
-            h.Messages.Add(mh);
-            await Clients.Group("hall_" + HallID).ReceiveMessageHall(mh);*/
-            await api.db.SaveChangesAsync();
+            db.MessageHalls.Add(mh);
+            await Clients.Group("hall_" + HallID).receiveMessageHall(mh);
+            await db.SaveChangesAsync();
         }
 
         public async Task<bool> JoinInGroup(int UserID, int GroupID)
         {
 
-           
-            Task<Group> tg =  api.GetGroupAsync(GroupID);
-            Task<Player> tp = api.GetPlayerAsync(UserID);
 
-            Group g = tg.Result;
-            Player p = tp.Result;
-            
+            Group g = await db.Groups.FindAsync(GroupID);
+            Player p = await db.Gamers.FindAsync(UserID);
+
             if (p == null || g == null) return false;
-            PlayerGroup obj = (PlayerGroup)api.db.PlayerGroups.ToList().Where(x => x.IdGroup == g.ID && x.IdPlayer == p.ID );
-            if (!g.Integrants.Contains(obj))
-            {
-                p.Groups.Add(obj);
-                g.Integrants.Add(obj);
-                await api.db.SaveChangesAsync();
-            }
+
+            PlayerGroup pg = new PlayerGroup { Group = g, IdGroup = GroupID, Player = p, IdPlayer = UserID };
+            db.PlayerGroups.Add(pg);
+            await db.SaveChangesAsync();
+
 
             await Groups.Add(Context.ConnectionId, "group_" + GroupID);
-            Clients.Group("group_" + GroupID).ReceiveAlert($"{p.Name} joined");
+            Clients.Caller.joinedInGroup(g);
+            Clients.Group("group_" + GroupID).receiveAlert($"{p.Name} joined");
             return true;
         }
         public async Task<bool> JoinInHall(int UserID, int HallID)
         {
-            Task<Hall> th = api.GetHallAsync(HallID);
-            Task<Player> tp = api.GetPlayerAsync(UserID);
+            Hall h = await db.Halls.FindAsync(HallID);
+            Player p = await db.Gamers.FindAsync(UserID);
 
-            Hall h = th.Result;
-            Player p = tp.Result;
+            if (p == null || h == null || !h.Active) return false;
 
-            if (p == null || h ==null || !h.Active) return false;
+            var ph = new PlayerHall { Hall = h, IdHall = h.ID, Player = p, IdPlayer = p.ID };
+            db.PlayerHalls.Add(ph);
+            await db.SaveChangesAsync();
 
-            PlayerHall obj = (PlayerHall)api.db.PlayerHalls.ToList().Where(x => x.IdHall == h.ID && x.IdPlayer == p.ID);
-            if (!h.Integrants.Contains(obj))
-            {
-                p.Halls.Add(obj);
-                h.Integrants.Add(obj);
-                await api.db.SaveChangesAsync();
-            }
 
-            await Groups.Add(Context.ConnectionId, "group_" + HallID);
-            Clients.Group("group_" + HallID).ReceiveAlert($"{p.Name} joined");
+            await Groups.Add(Context.ConnectionId, "hall_" + HallID);
+            Clients.Caller.joinedInHall(h);
+            Clients.Group("hall_" + HallID).ReceiveAlert($"{p.Name} joined");
             return true;
         }
 
-
         public async Task<bool> ExitFromGroup(int UserID, int GroupID)
         {
-            Task<Group> tg = api.GetGroupAsync(GroupID);
-            Task<Player> tp = api.GetPlayerAsync(UserID);
+            Player p = await db.Gamers.FindAsync(UserID);
+            Group g = await db.Groups.FindAsync(GroupID);
+            PlayerGroup pg = db.PlayerGroups.Where(x => x.IdGroup == GroupID && x.IdPlayer == UserID).FirstOrDefault();
 
-            Group g = tg.Result;
-            Player p = tp.Result;
+            if (pg == null) return false;
 
-            if (p == null || g == null) return false;
+            db.PlayerGroups.Remove(pg);
+            await db.SaveChangesAsync();
 
-            PlayerGroup obj = (PlayerGroup)api.db.PlayerGroups.ToList().Where(x => x.IdGroup == g.ID && x.IdPlayer == p.ID);
-            if (g.Integrants.Contains(obj))
-            {
-                p.Groups.Remove(obj);
-                g.Integrants.Remove(obj);
-                await api.db.SaveChangesAsync();
-            }
 
-            await Groups.Add(Context.ConnectionId, "group_" + GroupID);
+            await Groups.Remove(Context.ConnectionId, "group_" + GroupID);
+            Clients.Caller.leavedGroup(g);
             Clients.Group("group_" + GroupID).ReceiveAlert($"{p.Name} exited");
             return true;
         }
         public async Task<bool> ExitFromHall(int UserID, int HallID)
         {
-            Task<Hall> th = api.GetHallAsync(HallID);
-            Task<Player> tp = api.GetPlayerAsync(UserID);
+            Player p = await db.Gamers.FindAsync(UserID);
+            Hall h = await db.Halls.FindAsync(HallID);
+            PlayerHall ph = db.PlayerHalls.Where(x => x.IdHall == HallID && x.IdPlayer == UserID).FirstOrDefault();
 
-            Hall h = th.Result;
-            Player p = tp.Result;
+            if (ph == null) return false;
 
-            if (p == null || h == null || !h.Active) return false;
-            PlayerHall obj = (PlayerHall)api.db.PlayerHalls.ToList().Where(x => x.IdHall == h.ID && x.IdPlayer == p.ID);
-            if (h.Integrants.Contains(obj))
-            {
-                p.Halls.Remove(obj);
-                h.Integrants.Remove(obj);
-                await api.db.SaveChangesAsync();
-            }
+            db.PlayerHalls.Remove(ph);
+            await db.SaveChangesAsync();
 
-            await Groups.Remove(Context.ConnectionId, "group_" + HallID);
-            Clients.Group("group_" + HallID).ReceiveAlert($"{p.Name} exited");
+
+            await Groups.Remove(Context.ConnectionId, "hall_" + HallID);
+            Clients.Caller.leavedHall(h);
+            Clients.Group("hall_" + HallID).ReceiveAlert($"{p.Name} exited");
             return true;
+        }
+
+        public async Task<Group> GetGroup(int GroupID)
+        {
+            return await db.Groups.FindAsync(GroupID);
+        }
+        public async Task<Hall> GetHall(int HallID)
+        {
+            return await db.Halls.FindAsync(HallID);
         }
 
         public override Task OnReconnected()
         {
-             api.db.ChatConnections.Find(Context.ConnectionId).Connected = true;
+            var con = db.ChatConnections.Find(Context.ConnectionId);
+            con.Connected = true;
+            db.SaveChanges();
             return base.OnReconnected();
         }
-
         public override Task OnDisconnected(bool stopCalled)
         {
             api.Desconnect(Context.ConnectionId);

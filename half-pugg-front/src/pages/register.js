@@ -144,6 +144,14 @@ export default class register extends Component {
                             checked={this.state.Sex === 'F'}
                             onChange={e => this.handleCheckBox(e, 'F')}
                         />
+                        <Checkbox
+                            radio
+                            label='Outros'
+                            name='checkboxRadioGroup'
+                            value='F'
+                            checked={this.state.Sex === 'O'}
+                            onChange={e => this.handleCheckBox(e, 'O')}
+                        />
                     </li>
                 </ul>
                 <Button id='botao-registro' size='mini' color='green' type="submit" >
