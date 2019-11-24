@@ -2,19 +2,25 @@
     ViewBag.Title = "Chat";
 }
 
-
-<div class="container">
-
-    <text id="conn">non connected</text>
+<div class="login_area">
+    <h1>Login</h1>
     <br />
-    <text id="curname">UserID</text>
-    <input type="text" id="UserID" />
+    <text> Player ID: </text>
+    <input type="number" id="inp_playerId" />
+    <input type="button" id="bnt_conPlayer" class="btn-success" value="Conect!" />
+    <br />
+    <text> Group ID: </text>
+    <input type="number" id="inp_groupId" />
+    <input type="button" id="bnt_conGroup" class="btn-success" value="Join!" />
+</div>
 
-    <text id="curname">GroupID</text>
-    <input type="text" id="GroupID" />
-
-
-    <input type="button" id="joingroup" value="Join" />
+<div class="Chat">
+    <br />
+    <h1 id="txt_chatName">Group</h1>
+    <ul id="ul_chat" style="border-color:forestgreen">
+    </ul>
+    <input type="text" width="200" id="inp_message" />
+    <input type="button" id="bnt_sendMes" class="btn-success" value="Send!" />
 
 
 </div>
@@ -28,19 +34,28 @@
         $(function () {
 
             var chat = $.connection.chatHub;
-         
-           
+        
 
+            $('#bnt_conPlayer').click(function () {
+               
+                chat.server.connectToAPI($('#inp_playerId').val());
+            });
 
-            $('#joingroup').click(function () {
-                chat.server.joinInGroup($('#UserID').val(), $('#GroupID').val());
+            $('#bnt_conGroup').click(function () {
+             
+                chat.server.joinInGroup($('#inp_playerId').val(), $('#inp_groupId').val());
             });
 
 
 
+            chat.client.receiveMessageGroup = function (msg) {
+                $('#ul_chat').append(htmlEncode(mg + '<br/>'));
+            };
+
             $.connection.hub.start().done(function () {
-                $('conn').append("connected");
-                chat.server.connectToAPI(prompt("Your ID:"));
+                $('#bnt_sendMes').click(function () {
+                    chat.server.sendMessageGroup($('#inp_message').val(), player_id, group_id);
+                });
                 console.log("Connected");
             });
         });

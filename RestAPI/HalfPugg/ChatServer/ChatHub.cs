@@ -15,6 +15,14 @@ namespace HalfPugg
         ConnectionManager api = new ConnectionManager();
         HalfPuggContext db = new HalfPuggContext();
 
+
+        /// <summary>
+        /// associa a ConnectionID atual ao ID do usuario no Half, é necessário que seja feita esta
+        /// conexão antes de tudo pois o mesmo usuario pode estar usando o chat por dois dispositivos diferentes
+        /// e cada um gera uma ConnectionID propria sendo assim necessário mapear-las para o usuario correspondente
+        /// </summary>
+        /// <param name="UserID"> ID do usuario a ser conectado</param>
+        /// <returns></returns>
         public async Task ConnectToAPI(int UserID)
         {
             Player player = await api.ConnectUser(UserID, Context.ConnectionId);
@@ -35,11 +43,19 @@ namespace HalfPugg
             Clients.All.receiveAlert($"{UserID} conectado a API");
         }
 
-        public async Task SendMessageGroup(string Message, int UserID, int GroupID)
+        /// <summary>
+        /// Envia uma mensagem para um grupo, caso o grupo ou o usuario não existam no banco será chamada
+        /// a função receiveAlert
+        /// </summary>
+        /// <param name="Message"></param>
+        /// <param name="UserID"></param>
+        /// <param name="GroupID"></param>
+        /// <returns></returns>
+        public async Task<bool> SendMessageGroup(string Message, int UserID, int GroupID)
         {
             PlayerGroup pg = db.PlayerGroups.Where(x => x.IdPlayer == UserID && x.IdGroup == GroupID).FirstOrDefault();
 
-            if (pg == null) Clients.Caller.ReceiveAlert("User or group not finded");
+            if (pg == null)return false;
 
             MessageGroup mg = new MessageGroup()
             {
@@ -51,14 +67,15 @@ namespace HalfPugg
                 PlayerGroup = pg
             };
             db.MessageGroups.Add(mg);
-            await Clients.Group("group_" + GroupID).ReceiveMessageGroup(mg);
+            await Clients.Group("group_" + GroupID).receiveMessageGroup(mg);
             await db.SaveChangesAsync();
+            return true;
         }
         public async Task SendMessageHall(string Message, int UserID, int HallID)
         {
             PlayerHall ph = db.PlayerHalls.Where(x => x.IdPlayer == UserID && x.IdHall == HallID).FirstOrDefault();
 
-            if (ph == null) Clients.Caller.ReceiveAlert("User or hall not finded");
+            if (ph == null) Clients.Caller.receiveAlert("User or hall not finded");
 
             MessageHall mh = new MessageHall()
             {
@@ -72,7 +89,7 @@ namespace HalfPugg
             };
 
             db.MessageHalls.Add(mh);
-            await Clients.Group("hall_" + HallID).ReceiveMessageHall(mh);
+            await Clients.Group("hall_" + HallID).receiveMessageHall(mh);
             await db.SaveChangesAsync();
         }
 
