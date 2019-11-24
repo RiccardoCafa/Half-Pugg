@@ -1,22 +1,47 @@
 ﻿@{
     ViewBag.Title = "Chat";
 }
+<style type="text/css">
+    .ul_chat li {
+    list-style-type: none;
+    }
+
+    .border_color {
+        border-style: dashed;
+        border-color:forestgreen;
+    }
+</style>
 
 
-<div class="container">
-
-    <text id="conn">non connected</text>
+<div class="login_area">
+    <h1>Login</h1>
     <br />
-    <text id="curname">UserID</text>
-    <input type="text" id="UserID" />
+    <text> Player ID: </text>
+    <input type="number" id="inp_playerId" />
+    <input type="button" id="bnt_conPlayer" class="btn-success" value="Conect!" />
+    <br />
+    <text> Group ID: </text>
+    <input type="number" id="inp_groupId" />
+    <input type="button" id="bnt_conGroup" class="btn-success" value="Join!" />
+    <input type="button" id="bnt_exiGroup" class="btn-danger" value="Leave!" />
+</div>
 
-    <text id="curname">GroupID</text>
-    <input type="text" id="GroupID" />
+<div class="Chat">
+    <br />
+    <h1 id="txt_chatName">Group</h1>
+    <ul class="border_color ul_chat" id="ul_chat">
+    </ul>
+    <input type="text" width="200" id="inp_message" />
+    <input type="button" id="bnt_sendMes" class="btn-success" value="Send!" />
 
+</div>
 
-    <input type="button" id="joingroup" value="Join" />
-
-
+<div class="Log">
+    <br />
+    <h2 id="txt_chatName">Log</h2>
+    <ul class="border_color ul_chat" id="ul_log">
+    </ul>
+ 
 </div>
 @section scripts {
     <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
@@ -28,20 +53,49 @@
         $(function () {
 
             var chat = $.connection.chatHub;
-         
-           
+            var player_id;
+            var group_id;
 
+            $('#bnt_conPlayer').click(function () {
+                player_id = $('#inp_playerId').val();
+                chat.server.connectToAPI(player_id);
+            });
 
-            $('#joingroup').click(function () {
-                chat.server.joinInGroup($('#UserID').val(), $('#GroupID').val());
+            $('#bnt_conGroup').click(function () {
+
+                group_id = $('#inp_groupId').val();
+                chat.server.joinInGroup(player_id, group_id);
+            });
+
+             $('#bnt_exiGroup').click(function () {
+
+                group_id = $('#inp_groupId').val();
+                chat.server.exitFromGroup(player_id, group_id);
             });
 
 
 
+            chat.client.receiveMessageGroup = function (msg) {
+                $('#ul_chat').append('<li>' + htmlEncode(msg.Content) + '<li/>');
+
+            };
+
+            chat.client.receiveAlert = function (msg) {
+                $('#ul_log').append('<li>' + htmlEncode(msg) + '<li/>');
+            };
+
+            chat.client.receiveGroupAlert = function (msg){
+                 $('#ul_chat').append('<li style = "color: green">' + htmlEncode(msg) + '<li/>');
+            };
+
+            chat.client.receiveHallAlert = function (msg){
+                 $('#ul_chat').append('<li style = "color: green">' + htmlEncode(msg) + '<li/>');
+            };
+
             $.connection.hub.start().done(function () {
-                $('conn').append("connected");
-                chat.server.connectToAPI(prompt("Your ID:"));
-                console.log("Connected");
+                $('#bnt_sendMes').click(function () {
+                    chat.server.sendMessageGroup($('#inp_message').val(), player_id, group_id);
+                });
             });
         });
 

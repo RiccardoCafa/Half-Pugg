@@ -8,6 +8,8 @@ namespace HalfPugg.Models
         public HalfPuggContext() : base("Half-Pugg"){ }
                
         public DbSet<Player> Gamers { get; set; }
+        public DbSet<PlayerHall> PlayerHalls { get; set; }
+        public DbSet<PlayerGroup> PlayerGroups { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Classification_Gamer> Classification_Gamers { get; set; }
         public DbSet<ClassificationPlayer> Classification_Players { get; set; }
@@ -30,8 +32,8 @@ namespace HalfPugg.Models
         public DbSet<RequestedGroup> RequestedGroups { get; set; }
         public DbSet<RequestedHall> RequestedHalls { get; set; }
         public DbSet<RequestedMatch> RequestedMatchs { get; set; }
-        public DbSet<Template> Templates { get; set; }       
         public DbSet<ChatConnection> ChatConnections { get; set; }
+        public DbSet<PlayerRequestedGroup> PlayerRequestedGroup { get; set; }
 
     }
 }

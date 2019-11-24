@@ -9,23 +9,38 @@ namespace HalfPugg.Hubs
 {
     public class ConnectionManager
     {
-       public HalfPuggContext db = new HalfPuggContext();
+        private HalfPuggContext db = new HalfPuggContext();
 
         public async Task<Player> ConnectUser(int UserID, string ConnectionId)
         {
+
+
             Player player = await db.Gamers.FindAsync(UserID);
+
             if (player != null)
             {
-                if (player.ChatConnections == null) player.ChatConnections = new List<ChatConnection>();
+                if (db.ChatConnections.Find(ConnectionId) != null) return player;
+
+                if (player.ChatConnections == null)
+                {
+                    player.ChatConnections = new List<ChatConnection>();
+                }
+
                 player.ChatConnections.Add(new ChatConnection { Connected = true, ConnectionID = ConnectionId });
                 await db.SaveChangesAsync();
             }
             return player;
         }
 
+        //public async Task<Player> GetUserConnected(string ConnectionID)
+        //{
+        //  var ci=  db.ChatConnections.Where(x => x.ConnectionID == ConnectionID).FirstOrDefault();
+            
+        //}
+
         public async Task Desconnect(string ConnectionId)
         {
-           ChatConnection con= await db.ChatConnections.FindAsync(ConnectionId);
+            ChatConnection con = await db.ChatConnections.FindAsync(ConnectionId);
             con.Connected = false;
             await db.SaveChangesAsync();
         }
@@ -36,17 +51,6 @@ namespace HalfPugg.Hubs
             return p.ChatConnections.Where(x => x.Connected).Count() > 0;
         }
 
-        public async Task<Player> GetPlayerAsync(int UserID)
-        {
-            return await db.Gamers.FindAsync(UserID);
-        }
-        public async Task<Group> GetGroupAsync(int GroupID)
-        {
-            return await db.Groups.FindAsync(GroupID);
-        }
-        public async Task<Hall> GetHallAsync(int HallID)
-        {
-            return await db.Halls.FindAsync(HallID);
-        }
+
     }
 }

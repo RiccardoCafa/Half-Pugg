@@ -9,7 +9,7 @@ namespace HalfPugg.Hubs
 {
     public class ChatConnection
     {
-      [Key] public string ConnectionID { get; set; }
+       [Key] public string ConnectionID { get; set; }
         public bool Connected { get; set; }
     }
 }

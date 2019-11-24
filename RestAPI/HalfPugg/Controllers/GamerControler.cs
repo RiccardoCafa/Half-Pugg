@@ -54,7 +54,9 @@ namespace HalfPugg.Controllers
             {
                 return NotFound();
             }
-
+            gamer.Groups = db.PlayerGroups.Where(x => x.IdPlayer == id).ToList();
+            gamer.Halls = db.PlayerHalls.Where(x => x.IdPlayer == id).ToList();
+          
             return Ok(gamer);
         }
 

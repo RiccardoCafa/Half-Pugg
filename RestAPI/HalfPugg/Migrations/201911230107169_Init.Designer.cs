@@ -13,7 +13,7 @@ namespace HalfPugg.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201911160354558_Init"; }
+            get { return "201911230107169_Init"; }
         }
         
         string IMigrationMetadata.Source

@@ -13,44 +13,44 @@ using HalfPugg.Models;
 
 namespace HalfPugg.Controllers
 {
-    public class TemplatesController : ApiController
+    public class PlayerGroupsController : ApiController
     {
         private HalfPuggContext db = new HalfPuggContext();
 
-        // GET: api/Templates
-        public IQueryable<Template> GetTemplates()
+        // GET: api/PlayerGroups
+        public IQueryable<PlayerGroup> GetPlayerGroups()
         {
-            return db.Templates;
+            return db.PlayerGroups;
         }
 
-        // GET: api/Templates/5
-        [ResponseType(typeof(Template))]
-        public async Task<IHttpActionResult> GetTemplate(int id)
+        // GET: api/PlayerGroups/5
+        [ResponseType(typeof(PlayerGroup))]
+        public async Task<IHttpActionResult> GetPlayerGroup(int id)
         {
-            Template template = await db.Templates.FindAsync(id);
-            if (template == null)
+            PlayerGroup playerGroup = await db.PlayerGroups.FindAsync(id);
+            if (playerGroup == null)
             {
                 return NotFound();
             }
-
-            return Ok(template);
+         
+            return Ok(playerGroup);
         }
 
-        // PUT: api/Templates/5
+        // PUT: api/PlayerGroups/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutTemplate(int id, Template template)
+        public async Task<IHttpActionResult> PutPlayerGroup(int id, PlayerGroup playerGroup)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != template.ID_Template)
+            if (id != playerGroup.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(template).State = EntityState.Modified;
+            db.Entry(playerGroup).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +58,7 @@ namespace HalfPugg.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TemplateExists(id))
+                if (!PlayerGroupExists(id))
                 {
                     return NotFound();
                 }
@@ -71,35 +71,35 @@ namespace HalfPugg.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Templates
-        [ResponseType(typeof(Template))]
-        public async Task<IHttpActionResult> PostTemplate(Template template)
+        // POST: api/PlayerGroups
+        [ResponseType(typeof(PlayerGroup))]
+        public async Task<IHttpActionResult> PostPlayerGroup(PlayerGroup playerGroup)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Templates.Add(template);
+            db.PlayerGroups.Add(playerGroup);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = template.ID_Template }, template);
+            return CreatedAtRoute("DefaultApi", new { id = playerGroup.ID }, playerGroup);
         }
 
-        // DELETE: api/Templates/5
-        [ResponseType(typeof(Template))]
-        public async Task<IHttpActionResult> DeleteTemplate(int id)
+        // DELETE: api/PlayerGroups/5
+        [ResponseType(typeof(PlayerGroup))]
+        public async Task<IHttpActionResult> DeletePlayerGroup(int id)
         {
-            Template template = await db.Templates.FindAsync(id);
-            if (template == null)
+            PlayerGroup playerGroup = await db.PlayerGroups.FindAsync(id);
+            if (playerGroup == null)
             {
                 return NotFound();
             }
 
-            db.Templates.Remove(template);
+            db.PlayerGroups.Remove(playerGroup);
             await db.SaveChangesAsync();
 
-            return Ok(template);
+            return Ok(playerGroup);
         }
 
         protected override void Dispose(bool disposing)
@@ -111,9 +111,9 @@ namespace HalfPugg.Controllers
             base.Dispose(disposing);
         }
 
-        private bool TemplateExists(int id)
+        private bool PlayerGroupExists(int id)
         {
-            return db.Templates.Count(e => e.ID_Template == id) > 0;
+            return db.PlayerGroups.Count(e => e.ID == id) > 0;
         }
     }
 }
