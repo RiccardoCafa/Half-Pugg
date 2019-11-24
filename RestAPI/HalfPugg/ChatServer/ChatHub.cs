@@ -26,6 +26,7 @@ namespace HalfPugg
         public async Task ConnectToAPI(int UserID)
         {
             Player player = await api.ConnectUser(UserID, Context.ConnectionId);
+            player.Groups = db.PlayerGroups.Where(x => x.IdPlayer == UserID).ToList();
             if (player == null) return;
 
             //Adciona esta ConnectionID aos grupos do usuario correspondente
