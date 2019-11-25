@@ -11,6 +11,8 @@ using System.Web.Http.Description;
 using HalfPugg.Models;
 using HalfPugg.TokenJWT;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.MVC; 
 
 namespace HalfPugg.Controllers
 {
@@ -243,6 +245,19 @@ namespace HalfPugg.Controllers
             db.SaveChanges();
 
             return Ok(gamer);
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UploadFoto(HttpPostedFileBase file)
+        {
+     
+            if (file == null)
+            {
+                file = this.Request.Files[0];
+            }
+
+            return null;
         }
 
         protected override void Dispose(bool disposing)
