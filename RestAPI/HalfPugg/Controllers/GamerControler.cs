@@ -250,6 +250,19 @@ namespace HalfPugg.Controllers
             return Ok(gamer);
         }
 
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UploadFoto(HttpPostedFileBase file)
+        {
+     
+            if (file == null)
+            {
+                file = this.Request.Files[0];
+            }
+
+            return null;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
