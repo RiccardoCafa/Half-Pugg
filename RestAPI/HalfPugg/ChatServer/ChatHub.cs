@@ -28,7 +28,7 @@ namespace HalfPugg
             Player player = await api.ConnectUser(UserID, Context.ConnectionId);
 
             if (player == null) {
-                await Clients.All.receiveAlert($"{UserID} not finded");
+                await Clients.All.receiveAlert($"User: {UserID} not finded");
                 return;
             }
 
@@ -139,8 +139,7 @@ namespace HalfPugg
                 }
                 await Clients.Group("group_" + GroupID).receiveGroupAlert($"{p.Name} joined");
                 await Clients.Caller.receiveAlert($"{pg.Player.Name} joined into {pg.Group.Name}");
-       //         Clients.Caller.joinedInGroup(g);
-                
+      
             }
             else
             {
@@ -173,7 +172,6 @@ namespace HalfPugg
                     await Groups.Add(c.ConnectionID, "hall_" + HallID);
                 }
              
-             //   await Clients.Caller.joinedInHall(h);
                 await Clients.Group("hall_" + HallID).receiveHallAlert($"{p.Name} joined");
                 await Clients.Caller.receiveAlert($"{ph.Player.Name} joined into {ph.Hall.Name}");
             }
@@ -208,9 +206,7 @@ namespace HalfPugg
            
             await Clients.Caller.receiveAlert($"{pg.Player.Name} leaved {pg.Group.Name}");
             await Clients.Group("group_" + GroupID).ReceiveGroupAlert($"{p.Name} exited");
-           // await Clients.Caller.leavedGroup(g);
-           
-
+        
             return true;
         }
         public async Task<bool> ExitFromHall(int UserID, int HallID)
@@ -223,7 +219,6 @@ namespace HalfPugg
 
             await Clients.Caller.receiveAlert($"{ph.Player.Name} leaved {ph.Hall.Name}");          
             await Clients.Group("hall_" + HallID).ReceiveHallAlert($"{p.Name} exited");
-            //  await Clients.Caller.leavedHall(h);
           
             foreach (var c in p.ChatConnections)
             {
@@ -249,6 +244,7 @@ namespace HalfPugg
         public override Task OnReconnected()
         {
             var con = db.ChatConnections.Find(Context.ConnectionId);
+            if (con == null) return null;
             Clients.Caller.receiveAlert($"{Context.ConnectionId} reconected");
             con.Connected = true;
             db.SaveChanges();
