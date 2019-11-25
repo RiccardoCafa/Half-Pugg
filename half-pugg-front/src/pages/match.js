@@ -82,6 +82,11 @@ export default class Match extends Component {
                 key: 4,
                 text: 'Interesse',
                 value: 'Interesse'
+            },
+            {
+                key: 5,
+                text: 'Por Nickname',
+                value: 'Por Nickname'
             }
         ],
         tipoSelecionado: Number,
@@ -95,6 +100,7 @@ export default class Match extends Component {
         ],
         searchDelegate: Function,
         typeSearch: 2,
+        NicknameToFind: '',
     }
 
     async componentDidMount() {
@@ -316,8 +322,24 @@ export default class Match extends Component {
             case 4: 
                 // interesses
             break;
+            case 5:
+                this.setState({searchDelegate: this.getPlayerByNickname});
+            break;
         }
     }
+
+    getPlayerByNickname = async () => {
+        if(this.state.NicknameToFind === '') {
+            return; // todo tratar
+        }
+        this.setState({loadingFilter: true});
+        const response = await api.get('api/Gamers?nickname=' + this.state.NicknameToFind);
+        if(response){
+            this.setState({GamerMatch: response.data, loadingFilter: false});
+        }
+    }
+
+    setNicknameToFind = (e) => this.setState({NicknameToFind: e.target.value});
 
     setGameFilter = () => {
         this.setState({gameSelected: 1});
@@ -608,10 +630,12 @@ export default class Match extends Component {
                                         </Table.Body>
                                     </Table>
                                 </div>
-                                :
-                                <div/>}
-                            </div>
-                            }
+                                : null}
+                                </div>
+                                }
+                                {this.state.tipoSelecionado === 5 ?
+                                <Input placeholder='Nickname' onChange={this.setNicknameToFind} label='Nickname'></Input>    
+                                :null}
                             <Divider/>
                             {this.state.loadingFilter ?
                             <Loader active inline></Loader>
