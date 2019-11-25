@@ -52,7 +52,7 @@ namespace HalfPugg.Controllers
         public IHttpActionResult Get()
         {
             var headers = Request.Headers;
-            var gamerLogged = db.Gamers.FirstOrDefault(g => g.ID == GamerLogado.ID);
+         
             if (headers.Contains("token-jwt"))
             {
                 string token = headers.GetValues("token-jwt").First();
