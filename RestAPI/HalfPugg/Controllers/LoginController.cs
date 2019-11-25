@@ -58,18 +58,16 @@ namespace HalfPugg.Controllers
                 string token = headers.GetValues("token-jwt").First();
                 TokenValidation validation = new TokenValidation();
                 string userValidated = validation.ValidateToken(token);
-                if (userValidated != null)
+                if(userValidated != null)
                 {
                     TokenData data = JsonConvert.DeserializeObject<TokenData>(userValidated);
                     Player g2 = db.Gamers.FirstOrDefault(g => g.ID == data.ID);
                     return Ok(g2);
-                }
-                else
+                } else
                 {
                     return BadRequest();
                 }
-            }
-            else
+            } else
             {
                 return BadRequest();
             }

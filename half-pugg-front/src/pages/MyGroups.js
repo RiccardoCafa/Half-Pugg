@@ -7,11 +7,11 @@ import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown } from 'semantic-ui-react';
 
-export default class MyGroups extends Component {
+export default class MyConnections extends Component {
 
     state = {
         Nickname: '',
-        GamerGroup: [],
+        GamerMatch: [],
         Gamer: {
             "ID": 0,
         },
@@ -39,7 +39,7 @@ export default class MyGroups extends Component {
         }
 
         this.setState({GamerLogado: myData})
-        this.setNickname(myData);
+        //this.setNickname(myData);
         
         
     }
