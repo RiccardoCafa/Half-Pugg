@@ -224,6 +224,7 @@ namespace HalfPugg.Controllers
 
             if (filter.competitive)
             {
+                if (p.compCareer == null) return false;
                 if (!ret) return false;
                 //damage quick
                 if (filter.damage != null )
@@ -306,6 +307,7 @@ namespace HalfPugg.Controllers
             }
             else
             {
+                if (p.quickCareer == null) return false;
                 if (!ret) return false;
                 //damage quick
                 if (filter.damage != null)

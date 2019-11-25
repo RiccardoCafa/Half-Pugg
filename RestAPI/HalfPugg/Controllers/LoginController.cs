@@ -52,7 +52,7 @@ namespace HalfPugg.Controllers
         public IHttpActionResult Get()
         {
             var headers = Request.Headers;
-
+         
             if (headers.Contains("token-jwt"))
             {
                 string token = headers.GetValues("token-jwt").First();

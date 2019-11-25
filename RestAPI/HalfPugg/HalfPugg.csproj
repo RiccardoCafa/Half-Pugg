@@ -231,6 +231,7 @@
     <Compile Include="ChatServer\ChatConnection.cs" />
     <Compile Include="ChatServer\ChatHub.cs" />
     <Compile Include="Controllers\CurriculoController.cs" />
+    <Compile Include="Controllers\GraphController.cs" />
     <Compile Include="Controllers\OverwatchController.cs" />
     <Compile Include="Controllers\ClassificationPlayersController.cs" />
     <Compile Include="Controllers\Classification_GameController.cs" />
