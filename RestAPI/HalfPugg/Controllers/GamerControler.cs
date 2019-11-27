@@ -6,8 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+//using System.Web.Mvc;
 using HalfPugg.Models;
 using HalfPugg.TokenJWT;
 using Newtonsoft.Json;
@@ -251,13 +253,13 @@ namespace HalfPugg.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult UploadFoto(HttpPostedFileBase file)
+        [System.Web.Mvc.AcceptVerbs(System.Web.Mvc.HttpVerbs.Post)]
+        public System.Web.Mvc.ActionResult UploadFoto(HttpPostedFileBase file)
         {
-     
+
             if (file == null)
             {
-                file = this.Request.Files[0];
+            //    file = this.Request.Files[0];
             }
 
             return null;
