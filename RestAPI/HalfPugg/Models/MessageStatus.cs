@@ -9,7 +9,6 @@ namespace HalfPugg.Models
     {
         None = 1,
         Altered = 2,
-        Deleted = 4,
-        NoReceived = 8
+        Deleted = 4
     }
 }
