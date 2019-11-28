@@ -57,7 +57,7 @@ export default class registergame extends Component {
                     let jogo = playergame;
                     if(jogo.IDGame === 1){
                         // Overwatch
-                        const ow = await api.get('api/GetPlayersOwerwatch?PlayerID='+jogo.IDGamer + '&Region=0').catch(err => console.log(err));
+                        const ow = await api.get('api/Overwatch/GetPlayers?PlayerID='+jogo.IDGamer + '&Region=0').catch(err => console.log(err));
                         this.setState({OverwatchInfo: ow.data});
                     }
                 })
@@ -90,7 +90,7 @@ export default class registergame extends Component {
             default: return;
         }
 
-        api.post('api/PostPlayerInOw?Region=0', {
+        api.post('api/Overwatch/PostPlayer?Region=0', {
             'ID': 0,
             'Description': 'Jogando',
             'IDGame': idGame,
