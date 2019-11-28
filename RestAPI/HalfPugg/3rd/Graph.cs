@@ -15,6 +15,7 @@ public class Graph<VERTICE, EDGE_DATA, VERT_ID> where VERT_ID : IComparable
     public delegate bool edgeFilter(Edge data);
     public delegate bool conectCondition(Vertice a, Vertice b);
     public delegate bool verticeFilter(Vertice data);
+    public delegate T verticeIdentifier<T>(Vertice data);
 
 
     public class Edge
@@ -42,7 +43,7 @@ public class Graph<VERTICE, EDGE_DATA, VERT_ID> where VERT_ID : IComparable
 
     public int vertCount { get { return vertices.Count; } }
 
-    public Graph(calcWeight weightFnc, bool digraph = false, int capacity = 0)
+    public Graph(calcWeight weightFnc = null, bool digraph = false, int capacity = 0)
     {
         this.digraph = digraph;
         calcWeightFnc = weightFnc;
@@ -68,7 +69,7 @@ public class Graph<VERTICE, EDGE_DATA, VERT_ID> where VERT_ID : IComparable
         if (condition == null) condition = ConectConditionDefault;
         if (condition?.Invoke(vertices[from], vertices[to]) == false) return;
 
-        double w = calcWeightFnc(data);
+        double w = (calcWeightFnc !=null) ? calcWeightFnc(data):0;
 
         Edge e = new Edge
         {
@@ -181,12 +182,111 @@ public class Graph<VERTICE, EDGE_DATA, VERT_ID> where VERT_ID : IComparable
 
         return distances;
     }
+    public string ToNet<T>(verticeIdentifier<T> identifier)
+    {
+        StringBuilder file = new StringBuilder();
+        Dictionary<VERT_ID, uint> vert_index = new Dictionary<VERT_ID, uint>(vertCount);
+        HashSet<long> edgeIds = new HashSet<long>(vertCount);
+
+        long getEdgeID(uint a,uint b)
+        {
+            if (b < a)
+            {
+                uint aux = a;
+                a = b;
+                b = aux;    
+            }
+            return long.Parse($"{a}{b}");
+        }
+
+        file.AppendLine($"*vertices {vertCount}");
+        uint i = 1;
+        foreach (var v in vertices)
+        {
+            file.AppendLine($"{i} \"{identifier(v.Value)}\"");
+            vert_index.Add(v.Key, i);
+            i++;
+        }
+        if (digraph) file.AppendLine("*arcs");
+        else file.AppendLine("*edges");
+
+        if (!digraph)
+        {
+            if (calcWeightFnc != null)
+            {
+                foreach (var v in vertices)
+                {
+                    foreach (var arc in v.Value.connections)
+                    {
+                        long n = getEdgeID(vert_index[v.Key], vert_index[arc.connectedTo.id]);
+                        if (edgeIds.Contains(n)) continue;
+                        file.AppendLine($"{vert_index[v.Key]} {vert_index[arc.connectedTo.id]} {arc.weight.ToString().Replace(',', '.')}");
+                        edgeIds.Add(n);
+                    }
+
+                }
+            }
+            else
+            {
+                foreach (var v in vertices)
+                {
+                    foreach (var arc in v.Value.connections)
+                    {
+                        long n = getEdgeID(vert_index[v.Key], vert_index[arc.connectedTo.id]);
+                        if (edgeIds.Contains(n)) continue;
+                        file.AppendLine($"{vert_index[v.Key]} {vert_index[arc.connectedTo.id]}");
+                        edgeIds.Add(n);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (calcWeightFnc != null)
+            {
+                foreach (var v in vertices)
+                {
+                    foreach (var arc in v.Value.connections)
+                    {
+
+                        file.AppendLine($"{vert_index[v.Key]} {vert_index[arc.connectedTo.id]} {arc.weight.ToString().Replace(',', '.')}");
+                    }
+
+                }
+            }
+            else
+            {
+                foreach (var v in vertices)
+                {
+                    foreach (var arc in v.Value.connections)
+                    {
+                        file.AppendLine($"{vert_index[v.Key]} {vert_index[arc.connectedTo.id]}");
+                    }
+                }
+            }
+        }
+
+        return file.ToString();
+    }
     public string ToNet()
     {
         StringBuilder file = new StringBuilder();
         Dictionary<VERT_ID, uint> vert_index = new Dictionary<VERT_ID, uint>(vertCount);
+        HashSet<long> edgeIds = new HashSet<long>(vertCount);
+
+        long getEdgeID(uint a, uint b)
+        {
+            if (b < a)
+            {
+                uint aux = a;
+                a = b;
+                b = aux;
+            }
+            return long.Parse($"{a}{b}");
+        }
 
         file.AppendLine($"*vertices {vertCount}");
+      
         uint i = 1;
         foreach (var v in vertices)
         {
@@ -194,21 +294,69 @@ public class Graph<VERTICE, EDGE_DATA, VERT_ID> where VERT_ID : IComparable
             vert_index.Add(v.Key, i);
             i++;
         }
+        
         if (digraph) file.AppendLine("*arcs");
         else file.AppendLine("*edges");
-        foreach (var v in vertices)
-        {
-            foreach (var arc in v.Value.connections)
-            {
-                file.AppendLine($"{vert_index[v.Key]} {vert_index[arc.connectedTo.id]} {arc.weight.ToString().Replace(',', '.')}");
-            }
 
+        if (!digraph)
+        {
+            if (calcWeightFnc != null)
+            {
+                foreach (var v in vertices)
+                {
+                    foreach (var arc in v.Value.connections)
+                    {
+                        long n = getEdgeID(vert_index[v.Key], vert_index[arc.connectedTo.id]);
+                        if (edgeIds.Contains(n)) continue;
+                        file.AppendLine($"{vert_index[v.Key]} {vert_index[arc.connectedTo.id]} {arc.weight.ToString().Replace(',', '.')}");
+                        edgeIds.Add(n);
+                    }
+
+                }
+            }
+            else
+            {
+                foreach (var v in vertices)
+                {
+                    foreach (var arc in v.Value.connections)
+                    {
+                        long n = getEdgeID(vert_index[v.Key], vert_index[arc.connectedTo.id]);
+                        if (edgeIds.Contains(n)) continue;
+                        file.AppendLine($"{vert_index[v.Key]} {vert_index[arc.connectedTo.id]}");
+                        edgeIds.Add(n);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (calcWeightFnc != null)
+            {
+                foreach (var v in vertices)
+                {
+                    foreach (var arc in v.Value.connections)
+                    {
+
+                        file.AppendLine($"{vert_index[v.Key]} {vert_index[arc.connectedTo.id]} {arc.weight.ToString().Replace(',', '.')}");
+                    }
+
+                }
+            }
+            else
+            {
+                foreach (var v in vertices)
+                {
+                    foreach (var arc in v.Value.connections)
+                    {
+                        file.AppendLine($"{vert_index[v.Key]} {vert_index[arc.connectedTo.id]}");
+                    }
+                }
+            }
         }
 
 
         return file.ToString();
     }
-
     public override string ToString()
     {
         return ToNet();

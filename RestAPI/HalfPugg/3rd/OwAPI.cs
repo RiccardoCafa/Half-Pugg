@@ -129,6 +129,7 @@ namespace OverwatchAPI
 
         private static careerStats getCareer(JToken token)
         {
+           
             return (token != null) ?
              new careerStats
              {
