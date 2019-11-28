@@ -71,9 +71,7 @@ export default class Curriculo extends Component {
         return (
             <div>
                 <div>
-                    {this.state.loaded ?
                     <Header gamer = {Gamer}/>
-                    : null}
                 </div>
                 <div className="menu-container">
                     <Segment>

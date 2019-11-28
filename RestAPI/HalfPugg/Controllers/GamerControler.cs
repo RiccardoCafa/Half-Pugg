@@ -62,6 +62,35 @@ namespace HalfPugg.Controllers
             return Ok(gamer);
         }
 
+        [HttpGet]
+        [ResponseType(typeof(List<PlayerRecomendation>))]
+        public IHttpActionResult GetGamer(string nickname)
+        {
+            List<PlayerRecomendation> playerRecomendations = new List<PlayerRecomendation>();
+            List<Player> players = db.Gamers.Where(g => g.Nickname.Contains(nickname)).AsEnumerable().ToList();
+            foreach(Player p1 in players)
+            {
+                playerRecomendations.Add(new PlayerRecomendation()
+                {
+                    aproximity = (nickname.Length / p1.Nickname.Length) * 100,
+                    playerFound = p1,
+                    PlayerRecName = "busca por nickname"
+                });
+            }
+            players = db.Gamers.Where(g => (g.Name + " " + g.LastName).Contains(nickname)).AsEnumerable().ToList();
+            foreach (Player p1 in players)
+            {
+                if (players.Contains(p1)) continue;
+                playerRecomendations.Add(new PlayerRecomendation()
+                {
+                    aproximity = (nickname.Length / p1.Nickname.Length) * 100,
+                    playerFound = p1,
+                    PlayerRecName = "busca por nome completo"
+                });
+            }
+            return Ok(playerRecomendations);
+        }
+
         [Route("api/GamersMatch")]
         [HttpGet]
         public IHttpActionResult GetGamerMatch(int recType)
@@ -78,9 +107,9 @@ namespace HalfPugg.Controllers
             switch (recType)
             {
                 case 1:
-                    // Por conhecido de conhecidos
-                    // TODO tratar a aproximidade
                     return Ok(adjPlayersConnections(gamerL));
+                case 2:
+                    return Ok(RandomPlayers(gamerL));
             }
             return BadRequest();
         }
@@ -94,8 +123,6 @@ namespace HalfPugg.Controllers
             foreach (Match m in logadoMatches)
             {
                 Player found = m.IdPlayer1 == logado.ID ? m.Player2 : m.Player1;//await db.Gamers.FindAsync(idToFind);
-                PlayerRecomendation recomendation = new PlayerRecomendation()
-                { PlayerRecName = found.Nickname, aproximity = 0 };
                 if (found != null)
                 {
                     List<Match> matchesAdj = db.Matches
@@ -104,8 +131,10 @@ namespace HalfPugg.Controllers
                                                .AsEnumerable().ToList();
                     foreach(Match m2 in matchesAdj)
                     {
-                        Player adj = m2.IdPlayer1 == logado.ID ? m2.Player2 : m2.Player1;
-                        if (adj != null)
+                        PlayerRecomendation recomendation = new PlayerRecomendation()
+                        { PlayerRecName = found.Nickname, aproximity = 0 };
+                        Player adj = m2.IdPlayer1 == found.ID ? m2.Player2 : m2.Player1;
+                        if (adj != null && logadoMatches.FirstOrDefault(x => x.IdPlayer1 == adj.ID || x.IdPlayer2 == adj.ID) == null && players.FirstOrDefault(p => p.playerFound.ID == adj.ID) == null)
                         {
                             recomendation.playerFound = adj;
                             players.Add(recomendation);
@@ -117,24 +146,8 @@ namespace HalfPugg.Controllers
             return players;
         }
 
-        [Route("api/GamersMatch")]
-        [HttpGet]
-        public IHttpActionResult GetGamerMatch()
+        public List<PlayerRecomendation> RandomPlayers(Player gamerL)
         {
-            Player gamerL = null;
-
-            var headers = Request.Headers;
-
-            if (headers.Contains("token-jwt"))
-            {
-                string token = headers.GetValues("token-jwt").First();
-                gamerL = GetPlayerFromToken(token);
-            }
-
-            if (gamerL == null)
-            {
-                return NotFound();
-            }
             List<PlayerRecomendation> gamers = new List<PlayerRecomendation>();
             List<Match> matches = db.Matches
                                     .Where(ma => ma.IdPlayer1 == gamerL.ID || ma.IdPlayer2 == gamerL.ID)
@@ -176,7 +189,7 @@ namespace HalfPugg.Controllers
                 }
             }
 
-            return Json(gamers);
+            return gamers;
         }
 
         // PUT: api/Gamers/5
@@ -236,6 +249,22 @@ namespace HalfPugg.Controllers
             return CreatedAtRoute("DefaultApi", new { id = gamer.ID }, gamer);
         }
 
+        [ResponseType(typeof(List<Player>))]
+        [HttpPost]
+        [Route("api/ListaGamers")]
+        public IHttpActionResult PostListGamers(List<Player> gamers)
+        {
+            foreach(Player player in gamers)
+            {
+                if (db.Gamers.Where(g => g.Nickname == player.Nickname).Count() == 0)
+                {
+                    db.Gamers.Add(player);
+                }
+            }
+            db.SaveChanges();
+            return Ok();
+        }
+
         // DELETE: api/Gamers/5
         [ResponseType(typeof(Player))]
         public IHttpActionResult DeleteGamer(int id)
@@ -252,18 +281,18 @@ namespace HalfPugg.Controllers
             return Ok(gamer);
         }
 
-        [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.AcceptVerbs(System.Web.Mvc.HttpVerbs.Post)]
-        public System.Web.Mvc.ActionResult UploadFoto(HttpPostedFileBase file)
-        {
+        //[System.Web.Mvc.HttpPost]
+        //[System.Web.Mvc.AcceptVerbs(System.Web.Mvc.HttpVerbs.Post)]
+        //public System.Web.Mvc.ActionResult UploadFoto(HttpPostedFileBase file)
+        //{
 
-            if (file == null)
-            {
-            //    file = this.Request.Files[0];
-            }
+        //    if (file == null)
+        //    {
+        //    //    file = this.Request.Files[0];
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         [ResponseType(typeof(ICollection<Player>))]
         [Route("api/GetGamersNear")]

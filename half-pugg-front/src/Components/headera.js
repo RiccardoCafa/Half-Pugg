@@ -73,9 +73,6 @@ class Header extends Component {
                             onClick={() => this.loadPage('/MyGroups')}
                             />
                         <Menu.Menu position='right'>
-                            <Menu.Item >
-                                <Input icon='search' placeholder='Search in Half-Pugg'></Input>
-                            </Menu.Item>
                             <Menu.Item>
                                 <Button color='red' size='mini' onClick={this.handleLogoff}>Sair</Button>
                             </Menu.Item>

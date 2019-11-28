@@ -141,7 +141,7 @@ public class Graph<VERTICE, EDGE_DATA, VERT_ID> where VERT_ID : IComparable
         Dictionary<VERT_ID, bool> visited = new Dictionary<VERT_ID, bool>(vtCount);
         Dictionary<VERT_ID, double> distances = new Dictionary<VERT_ID, double>(vtCount);
         int finded = 1;
-
+        
         foreach (var item in vertices.Keys)
         {
             visited.Add(item, false);

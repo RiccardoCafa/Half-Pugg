@@ -7,7 +7,7 @@ import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
 import Classification from '../Components/classification';
-import { Card, Image, Button, Segment, Statistic, Loader } from 'semantic-ui-react';
+import { Card, Image, Button, Segment, Statistic, Loader, Header, Icon, Divider } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
 import UserContentCard from '../Components/UserContentCard';
@@ -88,6 +88,14 @@ export default class MyConnections extends Component {
                     <Headera gamer = {this.state.GamerLogado}/>
                 </div>  
                 <Segment>
+                    <Header size='small' as='h2' style={{'margin-left': '3%'}}>
+                        <Icon name='users'></Icon>
+                        <Header.Content>
+                            Suas conexões!
+                            <Header.Subheader>Você pode avaliar os usuários que você está conectado!</Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                    <Divider></Divider>
                     {this.state.Matches.length === 0 ?
                     <div>
                         <Statistic.Group>
