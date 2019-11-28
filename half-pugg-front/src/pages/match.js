@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
+import { Header } from 'semantic-ui-react';
+
+import ow from '../images/overwatch.jpg'
 
 import './match.css'
 import api from '../services/api'
@@ -10,6 +13,7 @@ import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox,
 
 
 import gostosao from '../images/chris.jpg';
+import { request } from 'http';
 
 export default class Match extends Component {
 
@@ -21,10 +25,9 @@ export default class Match extends Component {
         },
         GamerLogado: {},
         RequestedMatches: [],
-        RequestedGroups: [],
-        RequestedGroups :[],
-        Groups :[] ,
+        RequestedGroup: [],
         NumberOfRequests: 0,
+        NumberOfGroups: 0,
         NewConnections: false,
         toLogin: false,
         cadastroIncompleto: false,
@@ -115,12 +118,19 @@ export default class Match extends Component {
                 this.setState({GamerMatch: MatchData.data});
             }
     
-            //const requestedMatch = await api.get('api/RequestedGroup',
-            //    { headers: { "token-jwt": jwt }});
-            //if(requestedMatch.data !== null) {
-            //    this.setState({RequestedGroups: requestedGroup.data});
-            //    this.setState({NumberOfRequests: requestedGroup.data.length});
-            //}
+            const requestedGroup = await api.get('api/RequestedGroup',
+               { headers: { "token-jwt": jwt }});
+            if(requestedGroup.data !== null) {
+               this.setState({RequestedGroups: requestedGroup.data});
+               this.setState({NumberOfRequests: requestedGroup.data.length});
+            }
+            else{
+                const requestedGroup = await api.get('api/Groups');
+                if(requestedGroup.data !== null) {
+                    this.setState({RequestedGroups: requestedGroup.data});
+                    this.setState({NumberOfRequests: requestedGroup.data.length});
+                }
+            }
 
             
         }
@@ -222,7 +232,7 @@ export default class Match extends Component {
     FazMatch = async (deuMatch, gamerMatch) => {
         this.setState({isMatching: true});
         try {
-            await api.put('api/RequestedMatches/1', {
+            const response =  api.put('api/RequestedMatches/1', {
                 "ID": 1,
                 "IdPlayer1": gamerMatch.ID,
                 "IdPlayer2": this.state.GamerLogado.ID,
@@ -313,6 +323,26 @@ export default class Match extends Component {
     }
     //#endregion
 
+    requestGroup = (group) => {
+        try {
+            const response = api.post('api/PlayerRequestedGroup/1', {
+                "IdPlayerRequest": this.state.GamerLogado.ID,
+                "IdGroup": group.ID,
+                "Status": "R",
+            });
+            console.log(response)
+            var array = [...this.state.RequestedMatches];
+            var index = array.indexOf(group);
+            if(index !== -1) {
+                array.splice(index, 1);
+                this.setState({RequestedGroup: array});                
+            }
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+
     render() {
         if(this.state.toLogin === true) {
             return <Redirect to="/"></Redirect>
@@ -336,6 +366,10 @@ export default class Match extends Component {
                 </div>
                 <div className='connections'>
                     <Segment>
+                        <Header as='h2'>
+                        <Icon name='user' />
+                        <Header.Content>Players</Header.Content>
+                        </Header>
                         <Grid columns={2} celled='internally' stackable>
                             <Grid.Column width={12}>
                             {this.state.NewConnections === false ?
@@ -551,51 +585,49 @@ export default class Match extends Component {
                         
                     </Segment>
                     <Segment>
+                        <Header as='h2'>
+                        <Icon name='users' />
+                        <Header.Content>Groups</Header.Content>
+                        </Header>
                          <Grid columns={2} celled='internally' stackable>
-                            <Grid.Column width={12}>
-                            {this.state.NewConnections === false ?
+                            
+                            {this.state.NumberOfGroups != null ?
                             <Card.Group>
-                                {this.state.GamerMatch.map((matcher) => 
-                                    <Card key={matcher.playerFound.ID} >
+                                {this.state.Groups.map((group) => 
+                                    <Card key={group.ID} >
                                         <Card.Content>
                                             <Image
                                                 floated='right'
                                                 size='mini'
-                                                src={(matcher.playerFound.ImagePath === "" || matcher.playerFound.ImagePath === null) 
-                                                    ? gostosao : matcher.playerFound.ImagePath}
+                                                src={ow}
                                                 />
-                                            <Card.Header>{matcher.playerFound.Nickname}</Card.Header>
-                                            <Card.Meta>Sugestão de {matcher.PlayerRecName}</Card.Meta>
-                                            <Card.Description><b>Moto de vida</b> <br></br>
-                                                                {matcher.playerFound.Slogan === null ?
-                                                                "Esse cara não possui..." : 
-                                                                matcher.playerFound.Slogan}</Card.Description>
+                                            <Card.Header>{group.name}</Card.Header>
+                                            
+                                            
                                         </Card.Content>
                                         <Card.Content extra>
                                             <div className='ui two buttons'>
                                                 <Button 
                                                     id='btn-acpden' 
                                                     basic color='green' 
-                                                    onClick={() => this.connectMatch(matcher)}
+                                                    onClick={() => this.connectMatch(null)}
                                                     content='Connect!'
                                                     />
                                                 <Button 
                                                     id='btn-acpden' 
                                                     basic color='red' 
-                                                    onClick={() => this.desconnectMatch(matcher)}
+                                                    onClick={() => this.desconnectMatch(null)}
                                                     content='Not Interested!'
                                                     />
                                             </div>
                                         </Card.Content>
-                                        <Card.Content extra>
-                                            <OpenCurriculum {...matcher.playerFound}></OpenCurriculum>
-                                        </Card.Content>
+                                        
                                     </Card>
                                 )}
                             </Card.Group>
                             :
                             <Card.Group>
-                                {this.state.RequestedMatches.length === 0 ? 
+                                {this.state.RequestedGroup.length === 0 ? 
                                     <Statistic.Group>
                                         <Statistic
                                         value = "Oh :( você não possui convites para grupos..."
@@ -604,19 +636,9 @@ export default class Match extends Component {
                                     </Statistic.Group>
                                 :
                                 <div>
-                                {this.state.RequestedMatches.map((requests) => 
+                                {this.state.RequestedGroup.map((requests) => 
                                     <Card key = {requests.ID} >
-                                        <Card.Content>
-                                            <Image
-                                                floated='right'
-                                                size='mini'
-                                                circular
-                                                src={(requests.ImagePath === "" || requests.ImagePath === null) ? gostosao : requests.ImagePath}
-                                                />
-                                            <Card.Header>{requests.Nickname}</Card.Header>
-                                            <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
-                                            <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
-                                        </Card.Content>
+                                        
                                         <Card.Content extra>
                                             <div className='ui two buttons'>
                                                 <Button id='btn-acpden' basic color='green' onClick={() => this.FazMatch(true, requests)}>
@@ -627,18 +649,13 @@ export default class Match extends Component {
                                                 </Button>
                                             </div>
                                         </Card.Content> 
-                                        <Card.Content extra>
-                                            <OpenCurriculum matcher={requests}></OpenCurriculum>
-                                            
-                                        </Card.Content>
+                                        
                                     </Card>
                                 )}
                                 </div>
                                 }
                                 </Card.Group>
-                            }
-
-                            </Grid.Column>
+                            }                         
                             
                             
                         </Grid>           
