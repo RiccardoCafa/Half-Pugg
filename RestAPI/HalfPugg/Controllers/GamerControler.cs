@@ -6,12 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+//using System.Web.Mvc;
 using HalfPugg.Models;
 using HalfPugg.TokenJWT;
 using Newtonsoft.Json;
-using System.Security.Cryptography;
+
 
 namespace HalfPugg.Controllers
 {
@@ -250,6 +252,44 @@ namespace HalfPugg.Controllers
             return Ok(gamer);
         }
 
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.AcceptVerbs(System.Web.Mvc.HttpVerbs.Post)]
+        public System.Web.Mvc.ActionResult UploadFoto(HttpPostedFileBase file)
+        {
+
+            if (file == null)
+            {
+            //    file = this.Request.Files[0];
+            }
+
+            return null;
+        }
+
+        [ResponseType(typeof(ICollection<Player>))]
+        [Route("api/GetGamersNear")]
+        [HttpGet]
+        public IHttpActionResult GetGamersDeep(int id,int qnt)
+        {
+            Graph<Player, Match, int> graph = new Graph<Player, Match, int>((Match e) => { return e.Weight != 0 ? 1 / e.Weight : float.MaxValue; });
+
+            foreach (var m in db.Matches.ToArray())
+            {
+
+                graph.AddVertice(m.Player1, m.IdPlayer1);
+                graph.AddVertice(m.Player2, m.IdPlayer2);
+                graph.AddAresta(m.IdPlayer1, m.IdPlayer2, m);
+            }
+
+            var sorted = graph.ShortPath(id).OrderBy(x => x.Value).Skip(1).Take(qnt);
+            List<Player> players = new List<Player>(sorted.Count());
+            foreach(var v in sorted)
+            {
+                players.Add(db.Gamers.Find(v.Key));
+               
+            }
+            return Ok(players);
+
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

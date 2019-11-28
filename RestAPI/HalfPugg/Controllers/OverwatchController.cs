@@ -24,7 +24,7 @@ namespace HalfPugg.Controllers
 
         #region GET
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
-        [Route("api/GetPlayersOwerwatch")]
+        [Route("api/Owerwatch/GetPlayers")]
         [HttpGet]
         public IHttpActionResult GetPlayerOw(int PlayerID, region Region)
         {
@@ -35,8 +35,10 @@ namespace HalfPugg.Controllers
             return Ok(a);
         }
 
+        
+
         [ResponseType(typeof(OwPlayer))]
-        [Route("api/GetPlayerOwerwatch")]
+        [Route("api/Owerwatch/GetPlayer")]
         [HttpGet]
         public IHttpActionResult GetPlayerOw(int PlayerID)
         {
@@ -57,7 +59,7 @@ namespace HalfPugg.Controllers
         }
 
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
-        [Route("api/GetPlayersOwerwatch")]
+        [Route("api/Owerwatch/GetPlayers")]
         [HttpGet]
         public IHttpActionResult GetPlayerOw()
         {
@@ -77,7 +79,7 @@ namespace HalfPugg.Controllers
         }
 
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
-        [Route("api/FilterPlayerOverwatch")]
+        [Route("api/Overwatch/GetFilterPlayer")]
         [HttpGet]
         public IHttpActionResult GetOwMatchFilter(int PlayerID, [FromUri]owFilter filter)
         {
@@ -119,22 +121,28 @@ namespace HalfPugg.Controllers
             return a;//201
         }
 
+
+        #endregion
+
+        #region POST
+
         [ResponseType(typeof(IEnumerable<PlayerRecomendation>))]
-        [Route("api/FilterPlayerRecOverwatch")]
+        [Route("api/Overwatch/PostFilterPlayerRec")]
         [HttpPost]
-        public IHttpActionResult GetOwPlayerRecFilter(int PlayerID, owFilter filter)
+        public IHttpActionResult PostOwPlayerRecFilter(int PlayerID, owFilter filter)
         {
             var Ows = OwMatchFilter(PlayerID, filter);
             List<PlayerRecomendation> recom = new List<PlayerRecomendation>();
             List<Match> playerMatches = db.Matches.Where(x => x.IdPlayer1 == PlayerID || x.IdPlayer2 == PlayerID).AsEnumerable().ToList();
-            if(Ows == null)
+            if (Ows == null)
             {
                 return BadRequest("Jogador que requisitou o match não consta no banco");
-            } else
+            }
+            else
             {
-                foreach(OwPlayer ow in Ows)
+                foreach (OwPlayer ow in Ows)
                 {
-                    if(playerMatches.Find(pm => pm.IdPlayer1 == ow.idHalf || pm.IdPlayer2 == ow.idHalf) != null)
+                    if (playerMatches.Find(pm => pm.IdPlayer1 == ow.idHalf || pm.IdPlayer2 == ow.idHalf) != null)
                     {
                         continue;
                     }
@@ -151,11 +159,9 @@ namespace HalfPugg.Controllers
             return Ok(recom);
         }
 
-        #endregion
 
-        #region POST
         [ResponseType(typeof(PlayerGame))]
-        [Route("api/PostPlayerInOw", Name = "PostPlayerInOw")]
+        [Route("api/Overwatch/PostPlayerInOw", Name = "PostPlayerInOw")]
         [HttpPost]
         public async Task<IHttpActionResult> PostPlayerInOw([FromBody]PlayerGame playerGame,[FromUri]region Region)
         {
