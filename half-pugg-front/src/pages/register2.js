@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Image, TextArea, Form, Segment, Modal } from 'semantic-ui-react';
+import { Button, Image, TextArea, Form, Segment, Modal, Input } from 'semantic-ui-react';
 import gostosao from '../images/chris.jpg';
 import api from '../services/api';
 
@@ -15,6 +15,7 @@ export default class Register2 extends Component {
         Gamer: {},
         toLogin: false,
         showMessage: false,
+        imageToUpload: '',
     }
 
     componentDidMount() {
@@ -42,12 +43,21 @@ export default class Register2 extends Component {
         }
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault();
 
         console.log(this.state.Gamer);
-
         var newGamer = {...this.state.Gamer};
+
+        let config = { headers: {'Content-Type': 'multipart/form-data'}};
+        let formData = new FormData();
+        formData.append('image', this.state.imageToUpload);
+        const response = await api.post('api/ImageUpload', formData, config);
+        console.log(response.data);
+        if(response){
+            newGamer.ImagePath = response.data;
+        }
+
         newGamer.Bio = this.state.descricao;
         newGamer.Slogan = this.state.slogan;
 
@@ -58,6 +68,12 @@ export default class Register2 extends Component {
 
     confirmBox = () => {
         this.props.history.push('/curriculo');
+    }
+
+    uploadImage = async (e) => {
+        let imageP = URL.createObjectURL(e.target.files[0]);
+        await this.setState({imageToUpload: imageP, MyImage: imageP});
+        console.log(imageP);
     }
 
     render() {
@@ -96,9 +112,9 @@ export default class Register2 extends Component {
                         </TextArea>
                     </Form>
                     <h4>CARREGUE UMA FOTO DE PERFIL</h4>
-                    <Button fluid icon='upload'></Button>
+                    <Input fluid icon='upload' type='file' accept='.png, .jpg, .jpeg' onChange={this.uploadImage}></Input>
                     <br/>
-                    <Button.Group>
+                    <Button.Group fluid>
                         <Button color='green' onClick={e => this.handleSubmit(e)}>
                             Confirmar
                         </Button>

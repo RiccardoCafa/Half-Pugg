@@ -43,7 +43,7 @@ export default class Curriculo extends Component {
         {
             Gamer: myData
         })
-        this.setState({Nickname: myData.Nickname})
+        this.setState({Nickname: myData.Nickname});
         
         let CurriculoData = await api.get('api/Curriculo?GamerID=' + myData.ID);
         if(CurriculoData !== null) {

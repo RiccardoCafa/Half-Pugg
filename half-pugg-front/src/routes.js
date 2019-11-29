@@ -11,6 +11,7 @@ import MyConnections from './pages/MyConnections';
 import interesses from './pages/interesses';
 import editcurriculo from './pages/editcurriculo';
 import MyGroups from './pages/MyGroups';
+import Analytics from './pages/Analytics';
 
 export default function () {
     return (
@@ -25,6 +26,7 @@ export default function () {
             <Route path="/Interesse" component={interesses}/>
             <Route path="/MyGroups" component={MyGroups}/>
             <Route path="/curriculo/editar" exact component={editcurriculo}/>
+            <Route path="/Analytics" component={Analytics}/>
         </BrowserRouter>
     );
 }

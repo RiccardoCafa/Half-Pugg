@@ -54,23 +54,34 @@ class Header extends Component {
             <div>
                 <div id='myHeader'>
                     <Menu secondary id='botoes-header'>
-                        <Menu.Item id='user-name-item' onClick={() => this.loadPage('/curriculo')}>
-                            Olá, {this.props.gamer.Nickname}
+                        <Menu.Item 
+                            name={'Olá, ' + this.props.gamer.Nickname} 
+                            icon='user circle' 
+                            onClick={() => this.loadPage('/curriculo')}>
                         </Menu.Item>
                         <Menu.Item 
                             name='Home'
+                            icon='home'
                             active={activeItem === 'Home'}
                             onClick={() => this.loadPage('/match')}
                             />
                         <Menu.Item
                             name='My Connections'
+                            icon='connectdevelop'
                             active={activeItem === "Connect"}
                             onClick={() => this.loadPage('/MyConnections')}
                             />
                         <Menu.Item
                             name='My Groups'
+                            icon='group'
                             active={activeItem === "Connect"}
                             onClick={() => this.loadPage('/MyGroups')}
+                            />
+                        <Menu.Item
+                            name='Analytics'
+                            active={activeItem === "Connect"}
+                            icon='chart line'
+                            onClick={() => this.loadPage('/Analytics')}
                             />
                         <Menu.Menu position='right'>
                             <Menu.Item>

@@ -8,7 +8,6 @@ import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
 import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown, Divider } from 'semantic-ui-react';
 
-
 import gostosao from '../images/chris.jpg';
 
 export default class Match extends Component {
@@ -436,7 +435,7 @@ export default class Match extends Component {
                                         <Card.Content>
                                             <Image
                                                 floated='right'
-                                                size='mini'
+                                                avatar
                                                 src={(matcher.playerFound.ImagePath === "" || matcher.playerFound.ImagePath === null) 
                                                     ? gostosao : matcher.playerFound.ImagePath}
                                                 />
