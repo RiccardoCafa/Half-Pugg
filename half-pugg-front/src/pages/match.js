@@ -105,6 +105,7 @@ export default class Match extends Component {
         searchDelegate: Function,
         typeSearch: 2,
         NicknameToFind: '',
+        Groups : []
     }
 
     async componentDidMount() {

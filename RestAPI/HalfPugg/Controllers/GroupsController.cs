@@ -26,7 +26,7 @@ namespace HalfPugg.Controllers
         // GET: api/Groups/5
         [ResponseType(typeof(Group))]
         public async Task<IHttpActionResult> GetGroup(int id)
-        {
+        {   
             Group group = await db.Groups.FindAsync(id);
             if (group == null)
             {
