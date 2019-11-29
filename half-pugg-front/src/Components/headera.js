@@ -31,18 +31,6 @@ class Header extends Component {
 
     hideWindow = () => this.setState({hideCom: true});
 
-    checkForBio = (gamer) => {
-        if(gamer.Bio !== null && gamer.Slogan !== null) {
-            if(!this.state.hideCom) {
-                this.setState({hideCom: true})
-            }
-        }
-    }
-
-    componentDidMount = () => {
-        this.checkForBio(this.props.gamer);
-    }
-
     loadPage = (route) => {
         this.props.history.push(route);
     }
@@ -90,7 +78,7 @@ class Header extends Component {
                         </Menu.Menu>
                     </Menu>
                 </div>
-                {this.state.hideCom === false ?
+                {(this.props.gamer.Bio === null || this.props.gamer.Slogan === null) ?
                     <Segment id="incomplete-cadastro">
                         <p>Parece que tem informações faltando no seu perfil, atualize para que outros jogadores consigam saber mais de você!</p>
                         <Button primary onClick={() => this.loadPage('/bio')}>Atualizar!</Button>

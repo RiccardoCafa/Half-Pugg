@@ -87,8 +87,9 @@ export default class MyConnections extends Component {
                 <div>
                     <Headera gamer = {this.state.GamerLogado}/>
                 </div>  
-                <Segment>
-                    <Header size='small' as='h2' style={{'margin-left': '3%'}}>
+                <div >
+                <Segment > 
+                    <Header size='small' as='h2' style={{'marginLeft': '3%'}}>
                         <Icon name='users'></Icon>
                         <Header.Content>
                             Suas conexões!
@@ -97,7 +98,7 @@ export default class MyConnections extends Component {
                     </Header>
                     <Divider></Divider>
                     {this.state.Matches.length === 0 ?
-                    <div>
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <Statistic.Group>
                             <Statistic
                             value = "Ops! Parece que você não possui conexões..."
@@ -126,8 +127,9 @@ export default class MyConnections extends Component {
                                 </Card.Content>
                             </Card>
                         )}
-                        </Card.Group>
+                    </Card.Group>
                     </Segment>
+                </div>
             </div>  
         )
     }

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Checkbox, Form, Segment, Grid, Input, Header, TextArea } from 'semantic-ui-react';
+import { Button, Checkbox, Form, Segment, Grid, Input, Header, TextArea, Modal, Confirm } from 'semantic-ui-react';
 
 import './register.css';
 import api from '../services/api';
+import { string } from 'postcss-selector-parser';
 
 export default class register extends Component {
 
@@ -16,17 +17,60 @@ export default class register extends Component {
         Birthday: '',
         confirmSenha: '',
         Sex: '',
+        ShowLoginMessage: false,
         toLogin: false,
         toRegister2: false,
     }
     
+    temMaisTreze = (dt) => {
+        let dataNasc = new Date(dt);
+        let nowadays = new Date();
+        let anhos = nowadays.getFullYear() - dataNasc.getFullYear();
+        console.log(dataNasc);
+        console.log(nowadays);
+        if(anhos < 13) {
+            return false;
+        } else if(anhos === 13) {
+            console.log('13 anos')
+            if(dataNasc.getMonth() <= nowadays.getMonth()) {
+                console.log('msm mes ou menor');
+                if(dataNasc.getMonth() === nowadays.getMonth()){
+                    console.log('msm mes ' +  nowadays.getDate() + ' ' + dataNasc.getDate());
+                    if(dataNasc.getDate() <= nowadays.getDate()) {
+                        console.log('msm dia ou menor');
+                        if(dataNasc.getDate() == nowadays.getDate()){
+                            console.log('aniversario do cara ou');
+                            alert('Parabeeens!');
+                            return true;
+                        }
+                    } else {return false;}
+                }
+                return true;
+            }
+        }
+        return true;
+    }
+
     handleSubmit = async e => {
         e.preventDefault();
         console.log("cadastro");
         const dts = this.state.Birthday.split("-");
         const dt = dts[1] + "/" + dts[2] + "/" + dts[0];
-
-        await api.post('api/Gamers', {
+        const tem13 = this.temMaisTreze(dt);
+        if(!tem13) {
+            alert('Voce precisa ter mais de 13 anos meu caro');
+            return;
+        }
+        const regex = /\W/;
+        if(regex.test(this.state.Nickname) || this.state.Nickname === ''){
+            alert('Seu nickname está inválido! Apenas letras, números e underline (_)');
+            return;
+        }
+        if(!this.state.Email.includes('@')) {
+            alert('email inválido');
+            return;
+        }
+        const response = await api.post('api/CadastroPlayer', {
             "Name": this.state.Name,
             "LastName": this.state.LastName,
             "Nickname": this.state.Nickname,
@@ -36,13 +80,14 @@ export default class register extends Component {
             "Type": "F",
             "Sex": this.state.Sex,
             "ID_Branch": -1,
-        }).then(
-            this.setState({toLogin: true})
-        ).catch(function (error) {
+        }).catch(function (error) {
             console.log(error.response);
             console.log("Error: " + error.message);
+            alert('algo deu errado');
         });
-        console.log(dt);
+        if(response){
+            this.setState({ShowLoginMessage: true});
+        }
     }
 
     handleCheckBox(e, value) {
@@ -51,6 +96,10 @@ export default class register extends Component {
 
     handleDesistoBtn = () => {
         this.props.history.push('/');
+    }
+
+    handleNameBox = (e) => {
+        this.setState({Name: e.target.value})
     }
 
     render(){
@@ -65,6 +114,13 @@ export default class register extends Component {
                 </Link>
             </div>
             <div>
+            <Modal open={this.state.ShowLoginMessage} size='small'>
+                <Header icon='checkmark' content='A operação foi um sucesso!'></Header>
+                <Modal.Content>Clique no botão para ser redirecionado à página de Login.</Modal.Content>
+                <Modal.Actions>
+                    <Button color='green' content='Ok' onClick={this.handleDesistoBtn}></Button>
+                </Modal.Actions>
+            </Modal>
             <Segment style={{'marginLeft': '17%', 'marginRight': '17%'}}>
                 <Header icon='edit' content='Faça seu cadastro!'></Header>
                 <Grid centered columns={8}>
@@ -74,7 +130,7 @@ export default class register extends Component {
                             <Input fluid
                                 placeholder = ""
                                 value = {this.state.Name}
-                                onChange = { e => this.setState({Name: e.target.value})} 
+                                onChange = { e => this.handleNameBox(e)} 
                                 maxLength = {30}
                                 />
                         </Grid.Column>

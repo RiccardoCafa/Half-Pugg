@@ -54,7 +54,7 @@ export default class MyConnections extends Component {
                 </div>  
                 <Segment>
                     {this.state.Group.length === 0 ?
-                    <div>
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <Statistic.Group>
                             <Statistic
                             value = "Ops! Parece que você não participa de nenhum grupo..."

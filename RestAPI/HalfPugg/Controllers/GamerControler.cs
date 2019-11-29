@@ -242,6 +242,8 @@ namespace HalfPugg.Controllers
 
         // POST: api/Gamers
         [ResponseType(typeof(Player))]
+        [HttpPost]
+        [Route("api/CadastroPlayer")]
         public IHttpActionResult PostGamer(Player gamer)
         {
             if (!ModelState.IsValid)
@@ -254,12 +256,12 @@ namespace HalfPugg.Controllers
                 
                 db.Gamers.Add(gamer);
                 db.SaveChanges();
-            } catch(Exception)
+            } catch(Exception e)
             {
                 return BadRequest();
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = gamer.ID }, gamer);
+            return Ok(gamer);
         }
 
         [ResponseType(typeof(List<Player>))]
