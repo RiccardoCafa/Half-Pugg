@@ -85,8 +85,27 @@ namespace HalfPugg.Controllers
             return response;
         }
 
+        [System.Web.Http.Route("api/Graph/GetTagsGame")]
+        [System.Web.Http.HttpGet]
+        public HttpResponseMessage GetTagsGame()
+        {
+            Graph<string,object,string> graph = new Graph<string, object, string>();
+            
+            foreach (var item in db.HashTags.ToArray())
+            {
+                graph.AddVertice(item.Hashtag, "h_" + item.ID_Matter);
+                foreach (var con in item.Games)
+                {
+                    graph.AddVertice(con.Name, "g_" + con.ID_Game);
+                    graph.AddAresta("h_" + item.ID_Matter, "g_" + con.ID_Game);
+                }
+            }
 
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, "value");
+            response.Content = new StringContent(graph.ToNet(), Encoding.Unicode);
 
-
+            return response;
         }
+
+    }
 }
