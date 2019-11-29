@@ -35,12 +35,12 @@
 
 .register-inputs form input {
     margin-top: 4px;
-    border: 2px solid #0dbb6b;
+    border: 2px solid #cacaca;
     border-radius: 4px;
     height: 30px;
     font-size: 16px;
     color: black;
-    background: #0dbb6b;
+    background: #cacaca;
     margin-left: 10px;
     width: 300px;
     padding-left: 10px;
@@ -83,7 +83,7 @@
 #botao-registro {
     align-items: center;
     align-content: center;
-    margin-left: 45%;
+    margin-left: 0%;
     margin-top: 8%;
 }
 
@@ -97,9 +97,4 @@
 
 .ui.checkbox input:focus~label {
     color: black;
-}
-
-.ui.radio.checkbox {
-    margin-left: 20%;
-    margin-top: 9%;
 }
