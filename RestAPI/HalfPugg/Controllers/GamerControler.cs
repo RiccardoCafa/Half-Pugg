@@ -63,6 +63,19 @@ namespace HalfPugg.Controllers
         }
 
         [HttpGet]
+        [Route("api/GetGamerByNickname")]
+        public IHttpActionResult GetGamerByNickname(string nickname)
+        {
+            Player player = db.Gamers.FirstOrDefault(x => x.Nickname == nickname);
+            if(player == null)
+            {
+                return NotFound();
+            }
+            player.HashPassword = null;
+            return Ok(player);
+        }
+
+        [HttpGet]
         [ResponseType(typeof(List<PlayerRecomendation>))]
         public IHttpActionResult GetGamer(string nickname)
         {

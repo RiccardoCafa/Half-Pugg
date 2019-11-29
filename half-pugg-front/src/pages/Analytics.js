@@ -43,6 +43,12 @@ export default class Analytics extends Component {
         }
     }
 
+    handleClickCurriculo = (playername) => {
+        this.props.history.push({
+            pathname: `/curriculo/${playername}`,
+        });
+    }
+
     render() {
         const options = {
             axisX:{
@@ -79,7 +85,7 @@ export default class Analytics extends Component {
                                                 />
                                             <List.Content>
                                                 <List.Header>{playerFound.Nickname}</List.Header>
-                                                <List.Description>Top 10 Players <a><b>acesse o currículo.</b></a></List.Description>
+                                                <List.Description>Top 10 Players <a onClick={() => this.handleClickCurriculo(playerFound.Nickname)}><b>acesse o currículo.</b></a></List.Description>
                                             </List.Content>
                                         </List.Item>
                                     )}

@@ -55,7 +55,7 @@ class Header extends Component {
                 <div id='myHeader'>
                     <Menu secondary id='botoes-header'>
                         <Menu.Item 
-                            name={'Olá, ' + this.props.gamer.Nickname} 
+                            name={`Olá, ${this.props.gamer.Nickname}`} 
                             icon='user circle' 
                             onClick={() => this.loadPage('/curriculo')}>
                         </Menu.Item>
