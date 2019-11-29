@@ -89,31 +89,64 @@ namespace HalfPugg
             await db.SaveChangesAsync();
             return true;
         }
-        public async Task SendMessageHall(string Message, int UserID, int HallID)
+        public async Task<bool> SendMessageHall(string Message, int UserID, int HallID)
         {
             PlayerHall ph = db.PlayerHalls.Where(x => x.IdPlayer == UserID && x.IdHall == HallID).FirstOrDefault();
 
             if (ph == null)
             {
                 Clients.Caller.receiveAlert($"User: {UserID} or Hall: {HallID} not finded");
-                return;
+               
+                return false;
             }
 
-            MessageHall mh = new MessageHall()
-            {
-                Content = Message,
-            
-                Status = MessageStatus.None,
-                Send_Time = DateTime.Now,
-                ID_Relation = ph.ID,
-                PlayerHall = ph
-
+            MessageHall mh = new MessageHall { 
+            Content = Message,
+            PlayerHall = ph,
+            ID_Relation = ph.ID,
+            Send_Time = DateTime.Now,
+            Status = MessageStatus.None
             };
 
-            db.MessageHalls.Add(mh);
             await Clients.Group("hall_" + HallID).receiveMessageHall(mh);
             await Clients.Caller.receiveAlert($"Message sent from {ph.Player.Name} to {ph.Hall.Name}");
             await db.SaveChangesAsync();
+
+            return true;
+        }
+        public async Task<bool> SendMessagePlayer(string Message, int UserID, int ReceiverID)
+        {
+            Player sender = await db.Gamers.FindAsync(UserID);
+            Player receiver = await db.Gamers.FindAsync(ReceiverID);
+
+            if (sender == null || receiver == null)
+            {
+                Clients.Caller.receiveAlert($"Sender: {UserID} or Receiver: {ReceiverID} not finded");
+                return false;
+            }
+
+            bool receiverOnlide = await api.UserOnline(ReceiverID);
+
+            MessagePlayer mp = new MessagePlayer
+            {
+                Content = Message,
+                Destination = receiver,
+                ID_Destination = ReceiverID,
+                ID_Sender = UserID,
+                Sender = sender,
+                Send_Time = DateTime.Now,
+                Status = MessageStatus.NoReceived
+            };
+
+            db.MessageGamers.Add(mp);
+            foreach (var item in db.ChatConnections./*Where(x=>x.Player_ID == Receiver_ID && x.Connected).*/ToArray())
+            {
+                await Clients.Client(item.ConnectionID).receiveMessageHall(mp);
+            }
+
+            await Clients.Caller.receiveAlert($"Message sent from {sender.Name} to {receiver.Name}");
+            await db.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> JoinInGroup(int UserID, int GroupID)
