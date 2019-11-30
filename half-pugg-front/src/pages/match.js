@@ -196,7 +196,7 @@ export default class Match extends Component {
     openGamersByFilter = () => {
         console.log(this.state.OWF);
         this.setState({loadingFilter: true});
-        api.post('api/FilterPlayerRecOverwatch?PlayerID=' + this.state.GamerLogado.ID, {
+        api.post('api/Overwatch/PostFilterPlayerRec?PlayerID=' + this.state.GamerLogado.ID, {
             "role": this.state.OWF.role,
             "level": [this.state.OWF.level[0], this.state.OWF.level[1]],
             "rating": [this.state.OWF.rating[0], this.state.OWF.rating[1]],

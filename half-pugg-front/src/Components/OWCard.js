@@ -18,7 +18,7 @@ class OWCard extends Component {
     }
 
     componentDidMount = async () => {
-        await api.get('api/GetPlayerOwerwatch?PlayerID=' + this.state.Gamer.ID).then(res =>
+        await api.get('api/Owerwatch/GetPlayer?PlayerID=' + this.state.Gamer.ID).then(res =>
             this.setState({OWGamer: res.data})
         ).catch(err => console.log('jogador não possui conta overwatch cadastrada!'));
     }
