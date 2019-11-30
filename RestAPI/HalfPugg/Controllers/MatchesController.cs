@@ -88,6 +88,8 @@ namespace HalfPugg.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutMatch(int id, Match match)
         {
+            return NotFound();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

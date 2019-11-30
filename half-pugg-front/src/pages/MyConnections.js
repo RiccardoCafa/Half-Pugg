@@ -88,7 +88,7 @@ export default class MyConnections extends Component {
                     <Headera gamer = {this.state.GamerLogado}/>
                 </div>  
                 <div >
-                <Segment > 
+                <Segment style={{'marginLeft': '2%', 'marginRight': '2%', 'marginTop': '2%'}}> 
                     <Header size='small' as='h2' style={{'marginLeft': '3%'}}>
                         <Icon name='users'></Icon>
                         <Header.Content>

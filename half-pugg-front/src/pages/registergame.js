@@ -90,7 +90,7 @@ export default class registergame extends Component {
             default: return;
         }
 
-        api.post('api/Overwatch/PostPlayer?Region=0', {
+        api.post('api/Overwatch/PostPlayerInOw?Region=0', {
             'ID': 0,
             'Description': 'Jogando',
             'IDGame': idGame,
