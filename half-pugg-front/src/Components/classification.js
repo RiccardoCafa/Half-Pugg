@@ -52,7 +52,6 @@ export default class classification extends Component {
             .catch(err => console.log('.'));
         if(classif !== undefined){
             const cls = classif.data;
-            console.log(classif.data);
             this.setState({
                 jug: true, 
                 stars: cls.Points, 

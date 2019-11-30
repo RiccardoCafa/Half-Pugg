@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Segment, Card, Image, Button, Statistic, Grid } from 'semantic-ui-react';
+import { Segment, Card, Image, Button, Statistic } from 'semantic-ui-react';
 import OpenCurriculum from './openCurriculum';
 import gostosao from '../images/chris.jpg';
 import api from '../services/api';
-import { throws } from 'assert';
 
 export default class ConnectionList extends Component {
 

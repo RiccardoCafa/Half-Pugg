@@ -4,11 +4,9 @@ import Headera from '../Components/headera';
 import getPlayer from '../Components/getPlayer';
 
 import CanvasJSReact from '../services/canvasjs.react'
-import { Segment, Grid, Header, Card, Button, Image, List } from 'semantic-ui-react';
-import OpenCurriculum from '../Components/openCurriculum';
+import { Segment, Grid, Header, Image, List } from 'semantic-ui-react';
 import gostosao from '../images/chris.jpg';
 import api from '../services/api';
-const CanvasJS = CanvasJSReact.CanvasJS;
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 

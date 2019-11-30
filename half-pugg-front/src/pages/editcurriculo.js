@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import './editcurriculo.css';
-import { Image, Segment, Grid, Loader, Statistic, Button} from 'semantic-ui-react'
+import { Image, Segment, Grid } from 'semantic-ui-react'
 import Header from '../Components/headera';
 import api from '../services/api';
 import gostosao from '../images/chris.jpg';
-import OWCard from '../Components/OWCard';
 
 export default class Curriculo extends Component {
 

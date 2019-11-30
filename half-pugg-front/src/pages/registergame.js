@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Input, Image, Card, Container, Loader, Modal } from 'semantic-ui-react';
+import { Button, Input, Image, Card, Loader, Modal } from 'semantic-ui-react';
 
 import api from '../services/api'
 

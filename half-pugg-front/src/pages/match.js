@@ -5,10 +5,8 @@ import './match.css'
 import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
-import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown, Divider } from 'semantic-ui-react';
+import { Menu, Icon, Label, Loader } from 'semantic-ui-react';
 
-import gostosao from '../images/chris.jpg';
 import MatchList from '../Components/MatchList';
 import getPlayer from '../Components/getPlayer';
 import ConnectionList from '../Components/ConnectionList';

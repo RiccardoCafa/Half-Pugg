@@ -175,7 +175,7 @@ export default class MatchList extends Component {
     changeFilter = (e, {value}) => {
         this.removeSelection();
         let key = this.state.tiposProcura.filter(function(item){
-            return item.value == value
+            return item.value === value
         });
         this.setState({tipoSelecionado: key[0].key});
         this.handleSelection(key[0].key)
@@ -187,6 +187,9 @@ export default class MatchList extends Component {
                 // jogo
                 this.setState({gameSelected: -1});
             break;
+            default:
+                this.setState({gameSelected: -1});
+            return;
         }
         this.setState({searchDelegate: this.defaultFunction});
     }
@@ -211,6 +214,8 @@ export default class MatchList extends Component {
             case 5:
                 this.setState({searchDelegate: this.getPlayerByNickname});
             break;
+            default:
+                this.setState({searchDelegate: this.defaultFunction});
         }
     }
 
@@ -462,7 +467,7 @@ export default class MatchList extends Component {
                         : <Button onClick={this.state.searchDelegate}>Pesquisar!</Button>
                         }
                         </Grid.Column>
-                        :<div/>
+                        <div/>
                     </Grid>
                 </Segment>
             </div>
