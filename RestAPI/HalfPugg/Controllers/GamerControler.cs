@@ -264,6 +264,26 @@ namespace HalfPugg.Controllers
 
         //    return null;
         //}
+        [ResponseType(typeof(ICollection<Group>))]
+        [Route("api/Gamers/GetGroups")]
+        [HttpGet]
+        public IHttpActionResult GetPlayerGroups(int id)
+        {
+            Player p = db.Gamers.Find(id);
+            if (p == null) return BadRequest($"Player {id} not founded");
+            return Ok(p.Groups);
+        }
+
+        [ResponseType(typeof(ICollection<Hall>))]
+        [Route("api/Gamers/GetHalls")]
+        [HttpGet]
+        public IHttpActionResult GetPlayerHalls(int id)
+        {
+            Player p = db.Gamers.Find(id);
+            if (p == null) return BadRequest($"Player {id} not founded");
+            return Ok(p.Halls);
+        }
+
 
         [ResponseType(typeof(ICollection<Player>))]
         [Route("api/GetGamersNear")]

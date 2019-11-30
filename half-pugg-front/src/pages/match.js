@@ -573,7 +573,10 @@ export default class Match extends Component {
                             
                             {this.state.NumberOfGroups != null ?
                             <Card.Group>
-                                {this.state.Groups.map((group) => 
+                                
+                                {
+                                
+                                this.state.Groups.map((group) => 
                                     <Card key={group.ID} >
                                         <Card.Content>
                                             <Image
