@@ -1,19 +1,14 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
-import { Header } from 'semantic-ui-react';
-
-import ow from '../images/overwatch.jpg'
 
 import './match.css'
 import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown } from 'semantic-ui-react';
-
+import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown, Divider } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
-import { request } from 'http';
 
 export default class Match extends Component {
 
@@ -25,9 +20,9 @@ export default class Match extends Component {
         },
         GamerLogado: {},
         RequestedMatches: [],
-        RequestedGroup: [],
+        RequestedGroups: [],
+        Groups :[] ,
         NumberOfRequests: 0,
-        NumberOfGroups: 0,
         NewConnections: false,
         toLogin: false,
         cadastroIncompleto: false,
@@ -86,8 +81,25 @@ export default class Match extends Component {
                 key: 4,
                 text: 'Interesse',
                 value: 'Interesse'
+            },
+            {
+                key: 5,
+                text: 'Por Nickname',
+                value: 'Por Nickname'
             }
         ],
+        tipoSelecionado: Number,
+        gameSelected: -1,
+        gamesToSelect: [
+            {
+                key: 1,
+                text: 'Overwatch',
+                value: 'Overwatch'
+            }
+        ],
+        searchDelegate: Function,
+        typeSearch: 2,
+        NicknameToFind: '',
     }
 
     async componentDidMount() {
@@ -113,29 +125,15 @@ export default class Match extends Component {
         
         // Pega os dados de match do jogador
         if(myData !== undefined && myData.data !== null) {
-            const MatchData = await api.get('api/GamersMatch', { headers: { "token-jwt": jwt }});
-            if(MatchData.data != null){
-                this.setState({GamerMatch: MatchData.data});
-            }
-    
-            const requestedGroup = await api.get('api/RequestedGroup',
-               { headers: { "token-jwt": jwt }});
-            if(requestedGroup.data !== null) {
-               this.setState({RequestedGroups: requestedGroup.data});
-               this.setState({NumberOfRequests: requestedGroup.data.length});
-            }
-            else{
-                const requestedGroup = await api.get('api/Groups');
-                if(requestedGroup.data !== null) {
-                    this.setState({RequestedGroups: requestedGroup.data});
-                    this.setState({NumberOfRequests: requestedGroup.data.length});
-                }
-            }
-
-            
+            this.getPlayersToRec();
+            this.getRequestedMatches(jwt);
         }
+        
+        this.setState({searchDelegate: this.defaultFunction});
+    }
 
-                
+    defaultFunction = () => {
+        console.log('selecione uma opção do filtro')
     }
 
     setNickname(myData) {
@@ -187,8 +185,6 @@ export default class Match extends Component {
         }
     }
 
-    
-
     // Remove um gamer da lista de sugestões de match
     desconnectMatch = (matcher) => {
         console.log(matcher);
@@ -199,6 +195,24 @@ export default class Match extends Component {
             console.log('removendo');
             array.splice(index, 1);
             this.setState({GamerMatch: array});
+        }
+    }
+
+    getPlayersToRec = async() => {
+        this.setState({loadingFilter: true});
+        const jwt = localStorage.getItem("jwt");
+        const MatchData = await api.get('api/GamersMatch?RecType=' + this.state.typeSearch, { headers: { "token-jwt": jwt }});
+        if(MatchData.data != null){
+            this.setState({GamerMatch: MatchData.data, loadingFilter: false});
+        }
+    }
+
+    getRequestedMatches = async(jwt) => {
+        const requestedMatch = await api.get('api/RequestedMatchesLoggedGamer',
+        { headers: { "token-jwt": jwt }});
+        if(requestedMatch.data !== null) {
+            this.setState({RequestedMatches: requestedMatch.data});
+            this.setState({NumberOfRequests: requestedMatch.data.length});
         }
     }
 
@@ -253,6 +267,13 @@ export default class Match extends Component {
         }
     }
 
+    //busca players por nickname e nome completo parecidos
+    searchForPlayer = async (nickname) => {
+        await api.get('api/Gamers?nickname='+nickname).then(res =>{
+            this.setState({GamerMatch: res.data})
+        }).catch(err => console.log(err.message));
+    }
+
     // Filtros do Overwatch
     openOWFiltro = () => this.setState({OWFilter: !this.state.OWFilter});
 
@@ -262,6 +283,65 @@ export default class Match extends Component {
 
     setFilterType = (e, {value}) => {
         console.log(value);
+    }
+
+    changeFilter = (e, {value}) => {
+        this.removeSelection();
+        let key = this.state.tiposProcura.filter(function(item){
+            return item.value == value
+        });
+        this.setState({tipoSelecionado: key[0].key});
+        this.handleSelection(key[0].key)
+    }
+
+    removeSelection = () => {
+        switch(this.state.tipoSelecionado){
+            case 2:
+                // jogo
+                this.setState({gameSelected: -1});
+            break;
+        }
+        this.setState({searchDelegate: this.defaultFunction});
+    }
+
+    handleSelection = (key) => {
+        switch(key){
+            case 1:
+                // pessoas aleatorias
+                this.setState({searchDelegate: this.getPlayersToRec, typeSearch: 2});
+            break;
+            case 2:
+                // jogo
+                this.setState({gameSelected: 0, searchDelegate: this.openGamersByFilter});
+            break;
+            case 3:
+                // conhecidos
+                this.setState({searchDelegate: this.getPlayersToRec, typeSearch: 1});
+            break;
+            case 4: 
+                // interesses
+            break;
+            case 5:
+                this.setState({searchDelegate: this.getPlayerByNickname});
+            break;
+        }
+    }
+
+    getPlayerByNickname = async () => {
+        if(this.state.NicknameToFind === '') {
+            return; // todo tratar
+        }
+        this.setState({loadingFilter: true});
+        const response = await api.get('api/Gamers?nickname=' + this.state.NicknameToFind);
+        if(response){
+            this.setState({GamerMatch: response.data, loadingFilter: false});
+        }
+    }
+
+    setNicknameToFind = (e) => this.setState({NicknameToFind: e.target.value});
+
+    setGameFilter = () => {
+        this.setState({gameSelected: 1});
     }
     
     //#region filtro ow
@@ -346,10 +426,6 @@ export default class Match extends Component {
                 </div>
                 <div className='connections'>
                     <Segment>
-                        <Header as='h2'>
-                        <Icon name='user' />
-                        <Header.Content>Players</Header.Content>
-                        </Header>
                         <Grid columns={2} celled='internally' stackable>
                             <Grid.Column width={12}>
                             {this.state.NewConnections === false ?
@@ -359,7 +435,7 @@ export default class Match extends Component {
                                         <Card.Content>
                                             <Image
                                                 floated='right'
-                                                size='mini'
+                                                avatar
                                                 src={(matcher.playerFound.ImagePath === "" || matcher.playerFound.ImagePath === null) 
                                                     ? gostosao : matcher.playerFound.ImagePath}
                                                 />
@@ -428,7 +504,7 @@ export default class Match extends Component {
                                             </div>
                                         </Card.Content> 
                                         <Card.Content extra>
-                                            <OpenCurriculum matcher={requests}></OpenCurriculum>
+                                            <OpenCurriculum {...requests}></OpenCurriculum>
                                         </Card.Content>
                                     </Card>
                                 )}
@@ -447,16 +523,17 @@ export default class Match extends Component {
                                             placeholder='Tipo de Procura'
                                             floating labeled
                                             options={this.state.tiposProcura}
-                                            onChange={this.applyFiltroSearch}
+                                            onChange={this.changeFilter}
                                         ></Dropdown>
-                                    </Grid.Column>
-                                    <Grid.Column width={8}>
-                                        <Button>Pesquisar!</Button>
                                     </Grid.Column>
                                 </Grid>
                                 <br></br>
-                                <Checkbox label='Filtrar por Overwatch' onChange={this.openOWFiltro}/>
-                                {this.state.OWFilter === true ?
+                                {this.state.gameSelected === -1 ?
+                                null
+                                :
+                                <div>
+                                <Dropdown options={this.state.gamesToSelect} placeholder='Jogo para pesquisa' floating labeled onChange={this.setGameFilter}></Dropdown>
+                                {this.state.gameSelected === 1 ?
                                 <div>
                                     <Table celled>
                                         <Table.Header>
@@ -551,66 +628,69 @@ export default class Match extends Component {
                                             </Table.Row>
                                         </Table.Body>
                                     </Table>
-                                    {this.state.loadingFilter ?
-                                    <Loader active inline></Loader>
-                                    : <Button onClick={this.openGamersByFilter}>Filtrar</Button>
-                                    }
                                 </div>
-                                :
-                                <div/>}
+                                : null}
+                                </div>
+                                }
+                                {this.state.tipoSelecionado === 5 ?
+                                <Input placeholder='Nickname' onChange={this.setNicknameToFind} label='Nickname'></Input>    
+                                :null}
+                            <Divider/>
+                            {this.state.loadingFilter ?
+                            <Loader active inline></Loader>
+                            : <Button onClick={this.state.searchDelegate}>Pesquisar!</Button>
+                            }
                             </Grid.Column>
-                            
                             :<div/>}
                         </Grid>
                         
                     </Segment>
                     <Segment>
-                        <Header as='h2'>
-                        <Icon name='users' />
-                        <Header.Content>Groups</Header.Content>
-                        </Header>
                          <Grid columns={2} celled='internally' stackable>
-                            
-                            {this.state.NumberOfGroups != null ?
+                            <Grid.Column width={12}>
+                            {this.state.NewConnections === false ?
                             <Card.Group>
-                                
-                                {
-                                
-                                this.state.Groups.map((group) => 
-                                    <Card key={group.ID} >
+                                {this.state.GamerMatch.map((matcher) => 
+                                    <Card key={matcher.playerFound.ID} >
                                         <Card.Content>
                                             <Image
                                                 floated='right'
                                                 size='mini'
-                                                src={ow}
+                                                src={(matcher.playerFound.ImagePath === "" || matcher.playerFound.ImagePath === null) 
+                                                    ? gostosao : matcher.playerFound.ImagePath}
                                                 />
-                                            <Card.Header>{group.name}</Card.Header>
-                                            
-                                            
+                                            <Card.Header>{matcher.playerFound.Nickname}</Card.Header>
+                                            <Card.Meta>Sugestão de {matcher.PlayerRecName}</Card.Meta>
+                                            <Card.Description><b>Moto de vida</b> <br></br>
+                                                                {matcher.playerFound.Slogan === null ?
+                                                                "Esse cara não possui..." : 
+                                                                matcher.playerFound.Slogan}</Card.Description>
                                         </Card.Content>
                                         <Card.Content extra>
                                             <div className='ui two buttons'>
                                                 <Button 
                                                     id='btn-acpden' 
                                                     basic color='green' 
-                                                    onClick={() => this.connectMatch(null)}
+                                                    onClick={() => this.connectMatch(matcher)}
                                                     content='Connect!'
                                                     />
                                                 <Button 
                                                     id='btn-acpden' 
                                                     basic color='red' 
-                                                    onClick={() => this.desconnectMatch(null)}
+                                                    onClick={() => this.desconnectMatch(matcher)}
                                                     content='Not Interested!'
                                                     />
                                             </div>
                                         </Card.Content>
-                                        
+                                        <Card.Content extra>
+                                            <OpenCurriculum {...matcher.playerFound}></OpenCurriculum>
+                                        </Card.Content>
                                     </Card>
                                 )}
                             </Card.Group>
                             :
                             <Card.Group>
-                                {this.state.RequestedGroup.length === 0 ? 
+                                {this.state.RequestedMatches.length === 0 ? 
                                     <Statistic.Group>
                                         <Statistic
                                         value = "Oh :( você não possui convites para grupos..."
@@ -619,16 +699,18 @@ export default class Match extends Component {
                                     </Statistic.Group>
                                 :
                                 <div>
-                                {this.state.RequestedGroup.map((requests) => 
+                                {this.state.RequestedMatches.map((requests) => 
                                     <Card key = {requests.ID} >
                                         <Card.Content>
                                             <Image
-                                                floated='right' 
+                                                floated='right'
                                                 size='mini'
                                                 circular
                                                 src={(requests.ImagePath === "" || requests.ImagePath === null) ? gostosao : requests.ImagePath}
                                                 />
-                                            
+                                            <Card.Header>{requests.Nickname}</Card.Header>
+                                            <Card.Meta>Sugestão de xXNoobMaster69Xx</Card.Meta>
+                                            <Card.Description>Principais Jogos: LOL, Overwatch e WoW. Recomendação de 80%</Card.Description>
                                         </Card.Content>
                                         <Card.Content extra>
                                             <div className='ui two buttons'>
@@ -640,7 +722,10 @@ export default class Match extends Component {
                                                 </Button>
                                             </div>
                                         </Card.Content> 
-                                        
+                                        <Card.Content extra>
+                                            <OpenCurriculum matcher={requests}></OpenCurriculum>
+                                            
+                                        </Card.Content>
                                     </Card>
                                 )}
                                 </div>
@@ -648,7 +733,7 @@ export default class Match extends Component {
                                 </Card.Group>
                             }
 
-                            
+                            </Grid.Column>
                             
                             
                         </Grid>           

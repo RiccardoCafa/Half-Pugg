@@ -44,20 +44,15 @@ export default class Login extends Component {
         }).catch(error => {
             console.log(error);
             this.setState({loading: false});
-            if(error.response == undefined){
-                console.log('erro response is undef');
-            }else{
-                switch(error.response.status) {
-                    case 404:
-                        this.setState({showPopUp: true});
-                        console.log("404");
-                    break;
-                    default:
-                        console.log('algo deu errado');
-                    break;
-                }
+            switch(error.response.status) {
+                case 404:
+                    this.setState({showPopUp: true});
+                    console.log("404");
+                break;
+                default:
+                    console.log('algo deu errado');
+                break;
             }
-           
         });
     }
 
