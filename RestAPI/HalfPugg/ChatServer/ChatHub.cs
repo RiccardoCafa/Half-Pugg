@@ -139,7 +139,7 @@ namespace HalfPugg
             };
 
             db.MessageGamers.Add(mp);
-            foreach (var item in db.ChatConnections./*Where(x=>x.Player_ID == Receiver_ID && x.Connected).*/ToArray())
+            foreach (var item in db.ChatConnections.Where(x=>x.IdPlayer == ReceiverID && x.Connected).ToArray())
             {
                 await Clients.Client(item.ConnectionID).receiveMessageHall(mp);
             }

@@ -253,6 +253,10 @@
     <Compile Include="Migrations\201911230118390_Message.Designer.cs">
       <DependentUpon>201911230118390_Message.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911302036420_ChatConnection.cs" />
+    <Compile Include="Migrations\201911302036420_ChatConnection.Designer.cs">
+      <DependentUpon>201911302036420_ChatConnection.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ClassificationInMatch.cs" />
     <Compile Include="Models\Classification_Game.cs" />
@@ -542,6 +546,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911230118390_Message.resx">
       <DependentUpon>201911230118390_Message.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911302036420_ChatConnection.resx">
+      <DependentUpon>201911302036420_ChatConnection.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
