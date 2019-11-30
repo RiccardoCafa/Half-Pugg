@@ -12,8 +12,9 @@ namespace HalfPugg.Models
         [Required] [StringLength(70)] public string Name { get; set; }
         [Required] public int Capacity { get; set; }
 
-        public DateTime CreateAt { get; set; }
-
+        public DateTime CreateAt { get; set; }  
+        public string SouceImg { get; set; }
+        public string TotalComponentes { get; set; }
         [ForeignKey("Game")] public int IdGame { get; set; }
         [Required] [ForeignKey("Admin")] public int IdAdmin { get; set; }
 
