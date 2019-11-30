@@ -31,18 +31,6 @@ class Header extends Component {
 
     hideWindow = () => this.setState({hideCom: true});
 
-    checkForBio = (gamer) => {
-        if(gamer.Bio !== null && gamer.Slogan !== null) {
-            if(!this.state.hideCom) {
-                this.setState({hideCom: true})
-            }
-        }
-    }
-
-    componentDidMount = () => {
-        this.checkForBio(this.props.gamer);
-    }
-
     loadPage = (route) => {
         this.props.history.push(route);
     }
@@ -54,35 +42,43 @@ class Header extends Component {
             <div>
                 <div id='myHeader'>
                     <Menu secondary id='botoes-header'>
-                        <Menu.Item id='user-name-item' onClick={() => this.loadPage('/curriculo')}>
-                            Olá, {this.props.gamer.Nickname}
+                        <Menu.Item 
+                            name={`Olá, ${this.props.gamer.Nickname}`} 
+                            icon='user circle' 
+                            onClick={() => this.loadPage('/curriculo')}>
                         </Menu.Item>
                         <Menu.Item 
                             name='Home'
+                            icon='home'
                             active={activeItem === 'Home'}
                             onClick={() => this.loadPage('/match')}
                             />
                         <Menu.Item
                             name='My Connections'
+                            icon='connectdevelop'
                             active={activeItem === "Connect"}
                             onClick={() => this.loadPage('/MyConnections')}
                             />
                         <Menu.Item
                             name='My Groups'
+                            icon='group'
                             active={activeItem === "Connect"}
                             onClick={() => this.loadPage('/MyGroups')}
                             />
+                        <Menu.Item
+                            name='Analytics'
+                            active={activeItem === "Connect"}
+                            icon='chart line'
+                            onClick={() => this.loadPage('/Analytics')}
+                            />
                         <Menu.Menu position='right'>
-                            <Menu.Item >
-                                <Input icon='search' placeholder='Search in Half-Pugg'></Input>
-                            </Menu.Item>
                             <Menu.Item>
                                 <Button color='red' size='mini' onClick={this.handleLogoff}>Sair</Button>
                             </Menu.Item>
                         </Menu.Menu>
                     </Menu>
                 </div>
-                {this.state.hideCom === false ?
+                {(this.props.gamer.Bio === null || this.props.gamer.Slogan === null) ?
                     <Segment id="incomplete-cadastro">
                         <p>Parece que tem informações faltando no seu perfil, atualize para que outros jogadores consigam saber mais de você!</p>
                         <Button primary onClick={() => this.loadPage('/bio')}>Atualizar!</Button>

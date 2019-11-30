@@ -7,7 +7,7 @@ import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
 import Classification from '../Components/classification';
-import { Card, Image, Button, Segment, Statistic, Loader } from 'semantic-ui-react';
+import { Card, Image, Button, Segment, Statistic, Loader, Header, Icon, Divider } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
 import UserContentCard from '../Components/UserContentCard';
@@ -87,9 +87,18 @@ export default class MyConnections extends Component {
                 <div>
                     <Headera gamer = {this.state.GamerLogado}/>
                 </div>  
-                <Segment>
+                <div >
+                <Segment > 
+                    <Header size='small' as='h2' style={{'marginLeft': '3%'}}>
+                        <Icon name='users'></Icon>
+                        <Header.Content>
+                            Suas conexões!
+                            <Header.Subheader>Você pode avaliar os usuários que você está conectado!</Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                    <Divider></Divider>
                     {this.state.Matches.length === 0 ?
-                    <div>
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <Statistic.Group>
                             <Statistic
                             value = "Ops! Parece que você não possui conexões..."
@@ -118,8 +127,9 @@ export default class MyConnections extends Component {
                                 </Card.Content>
                             </Card>
                         )}
-                        </Card.Group>
+                    </Card.Group>
                     </Segment>
+                </div>
             </div>  
         )
     }

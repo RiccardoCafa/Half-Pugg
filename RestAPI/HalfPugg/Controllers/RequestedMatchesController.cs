@@ -115,7 +115,9 @@ namespace HalfPugg.Controllers
                     IdPlayer1 = requestedMatch.IdPlayer1,
                     IdPlayer2 = requestedMatch.IdPlayer2,
                     Status = deuMatch,
-                    Weight = 0
+                    Weight = 0,
+                    CreateAt = DateTime.UtcNow,
+                    AlteredAt = DateTime.UtcNow
                 };
                 db.Matches.Add(match);
             }
@@ -139,7 +141,7 @@ namespace HalfPugg.Controllers
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
         // POST: api/RequestedMatches
@@ -152,6 +154,14 @@ namespace HalfPugg.Controllers
             }
             try
             {
+                Match hasMatch = db.Matches.FirstOrDefault(ma =>
+                ((ma.Player1.ID == requestedMatch.Player1.ID && ma.Player2.ID == requestedMatch.Player2.ID) ||
+                (ma.Player2.ID == requestedMatch.Player1.ID && ma.Player1.ID == requestedMatch.Player2.ID)) && ma.Status == true);
+
+                if (hasMatch != null)
+                {
+                    return BadRequest();
+                }
                 db.RequestedMatchs.Add(requestedMatch);
                 await db.SaveChangesAsync();
             }catch(Exception e)

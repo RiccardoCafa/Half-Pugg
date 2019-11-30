@@ -40,7 +40,7 @@ export default class UserContentCard extends Component {
             <Card.Content>
                 <Image
                     floated='right'
-                    size='mini'
+                    avatar
                     src={(this.props.gamerMatch.matchPlayer.ImagePath === "" || this.props.gamerMatch.matchPlayer.ImagePath === null) 
                         ? gostosao : this.props.gamerMatch.matchPlayer.ImagePath}
                     />

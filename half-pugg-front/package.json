@@ -5,6 +5,7 @@
   "dependencies": {
     "@aspnet/signalr": "^1.1.4",
     "axios": "^0.19.0",
+    "canvasjs": "^1.8.1",
     "dependencies": "^0.0.1",
     "react": "^16.10.2",
     "react-dom": "^16.11.0",

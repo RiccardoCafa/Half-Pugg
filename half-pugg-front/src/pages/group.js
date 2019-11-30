@@ -155,6 +155,7 @@ export default class Match extends Component {
                             :
                             <Card.Group>
                                 {this.state.RequestedMatches.length === 0 ? 
+                                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                                     <Statistic.Group>
                                         <Statistic
                                         value = "Oh :( você não possui convites de conexão..."
@@ -162,6 +163,7 @@ export default class Match extends Component {
                                         text size='mini'
                                         id="sem-conexao-texto"></Statistic>
                                     </Statistic.Group>
+                                </div>
                                 :
                                 <div>
                                 {this.state.RequestedMatches.map((requests) => 

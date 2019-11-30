@@ -104,9 +104,15 @@ namespace HalfPugg.Controllers
             }
 
             db.Classification_Players.Add(classificationPlayer);
-            await db.SaveChangesAsync();
+            try
+            {
+                await db.SaveChangesAsync();
+            } catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-            return CreatedAtRoute("DefaultApi", new { id = classificationPlayer.ID }, classificationPlayer);
+            return Ok(classificationPlayer);
         }
 
         // DELETE: api/ClassificationPlayers/5

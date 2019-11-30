@@ -43,7 +43,7 @@ export default class Curriculo extends Component {
         {
             Gamer: myData
         })
-        this.setState({Nickname: myData.Nickname})
+        this.setState({Nickname: myData.Nickname});
         
         let CurriculoData = await api.get('api/Curriculo?GamerID=' + myData.ID);
         if(CurriculoData !== null) {
@@ -71,9 +71,7 @@ export default class Curriculo extends Component {
         return (
             <div>
                 <div>
-                    {this.state.loaded ?
                     <Header gamer = {Gamer}/>
-                    : null}
                 </div>
                 <div className="menu-container">
                     <Segment>

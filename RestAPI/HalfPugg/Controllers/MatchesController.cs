@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HalfPugg.Models;
+using JWT;
 
 namespace HalfPugg.Controllers
 {
@@ -126,20 +128,22 @@ namespace HalfPugg.Controllers
                 return BadRequest();
             }
 
-            //Match hasMatch = db.Matches.FirstOrDefault(ma => 
-            //((ma.Player1.ID == match.Player1.ID && ma.Player2.ID == match.Player2.ID) ||
-            //(ma.Player2.ID == match.Player1.ID && ma.Player1.ID == match.Player2.ID)) && ma.Status == false);
+            Match hasMatch = db.Matches.FirstOrDefault(ma => 
+            ((ma.Player1.ID == match.Player1.ID && ma.Player2.ID == match.Player2.ID) ||
+            (ma.Player2.ID == match.Player1.ID && ma.Player1.ID == match.Player2.ID)) && ma.Status == true);
 
-            //if (hasMatch != null)
-            //{
-            //    return BadRequest();
-            //}
-
+            if (hasMatch != null)
+            {
+                return BadRequest();
+            }
+            DateTime now = DateTime.UtcNow;
+            match.CreateAt = now;
+            match.AlteredAt = now;
             match.Status = false;
             db.Matches.Add(match);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = match.ID }, match);
+            return Ok(match);
         }
 
         // DELETE: api/Matches/5
