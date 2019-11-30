@@ -35,16 +35,32 @@ export default class Match extends Component {
     }
 
     async componentDidMount() {
-        let gamer = getPlayer();
+        let gamer = await getPlayer();
         if(!gamer){
             this.setState({toLogin: true});
             return;
         }
+        this.getRequestedMatches(localStorage.getItem('jwt'));
         this.setState({
             GamerLogado: gamer,
             Nickname: gamer.Nickname,
             loaded: true,
         })
+    }
+
+    getRequestedMatches = async(jwt) => {
+        const requestedMatch = await api.get('api/RequestedMatchesLoggedGamer',
+        { headers: { "token-jwt": jwt }});
+        if(requestedMatch.data !== null) {
+            this.setState({
+                RequestedMatches: requestedMatch.data,
+                NumberOfRequests: requestedMatch.data.length,
+            });
+        }
+    }
+
+    updateRequestes = (numberOf) => {
+        this.setState({NumberOfRequests: numberOf});
     }
 
     // Abre as requisições de match
@@ -83,9 +99,9 @@ export default class Match extends Component {
                 </div>
                 <div className='connections'>
                     {!this.state.NewConnections ?
-                        <MatchList></MatchList>
+                        <MatchList GamerLogado={this.state.GamerLogado}></MatchList>
                     :
-                        <ConnectionList></ConnectionList>
+                        <ConnectionList GamerLogado={this.state.GamerLogado} requestedMatch={this.state.RequestedMatches}></ConnectionList>
                     }
                 </div>
             </div>  
