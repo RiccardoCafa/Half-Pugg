@@ -88,6 +88,19 @@ export default class Match extends Component {
                 value: 'Interesse'
             }
         ],
+        tipoSelecionado: Number,
+        gameSelected: -1,
+        gamesToSelect: [
+            {
+                key: 1,
+                text: 'Overwatch',
+                value: 'Overwatch'
+            }
+        ],
+        searchDelegate: Function,
+        typeSearch: 2,
+        NicknameToFind: '',
+        
     }
 
     async componentDidMount() {
@@ -133,6 +146,9 @@ export default class Match extends Component {
             }
 
             
+            this.getPlayersToRec();
+            this.getRequestedMatches(jwt);
+            this.getRequestedGroup();
         }
 
                 
@@ -165,6 +181,25 @@ export default class Match extends Component {
         }
     }
 
+    getRequestedGroup = async() =>{
+        const requestedGroup = await api.get('api/Groups');
+        //if(requestedGroup !==undefined && requestedGroup !== null) {
+        //console.log(requestedGroup.data);
+        this.setState({RequestedGroups: requestedGroup.data});
+        this.setState({NumberOfRequests: requestedGroup.data.length});
+        console.log('entrou');
+        //}
+        console.log('entrou');
+        // else{
+        //     const requestedGroup = await api.get('api/Groups');
+        //     if(requestedGroup.data !== null) {
+        //         this.setState({RequestedGroups: requestedGroup.data});
+        //         this.setState({NumberOfRequests: requestedGroup.data.length});
+        //     }
+        // }
+    }
+
+    
     connectGroup = (matcher) => {
         console.log(matcher);
         const response = api.post('api/RequestedMatches', {
@@ -571,9 +606,9 @@ export default class Match extends Component {
                         </Header>
                          <Grid columns={2} celled='internally' stackable>
                             
-                            {this.state.NumberOfGroups != null ?
+                            {this.state.NumberOfGroups != 0 ?
                             <Card.Group>
-                                {this.state.Groups.map((group) => 
+                                {this.state.RequestedGroups.map((group) => 
                                     <Card key={group.ID} >
                                         <Card.Content>
                                             <Image
