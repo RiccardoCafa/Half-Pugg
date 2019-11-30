@@ -315,7 +315,31 @@ namespace HalfPugg.Controllers
         {
             Player p = db.Gamers.Find(id);
             if (p == null) return BadRequest($"Player {id} not founded");
-            return Ok(p.Groups);
+
+            List<dynamic> ret = new List<dynamic>();
+
+            var g = db.PlayerGroups.Where(x => x.IdPlayer == id).Select(x => x.Group).ToArray();
+            
+            foreach(var x in g)
+            {
+                x.Admin = db.Gamers.Find(x.IdAdmin);
+                x.CreateAt = db.Groups.Find(x.ID).CreateAt;
+                x.Game = db.Games.Find(x.IdGame);
+
+                ret.Add(new { 
+                    ID = x.ID,
+                    Name = x.Name,
+                    Desc = "Sem descricao",
+                    Admin = x.Admin.Name,
+                    Capacity = x.Capacity,
+                    PlayerCount = 1,
+                    CreateAt = x.CreateAt,
+                    Game = x.Game.Name
+                });
+               
+            }
+
+            return Ok(ret);
         }
 
         [ResponseType(typeof(ICollection<Hall>))]
@@ -325,7 +349,8 @@ namespace HalfPugg.Controllers
         {
             Player p = db.Gamers.Find(id);
             if (p == null) return BadRequest($"Player {id} not founded");
-            return Ok(p.Halls);
+            var h = db.PlayerHalls.Where(x => x.IdPlayer == id).Select(x => x.Hall);
+            return Ok(h);
         }
 
 

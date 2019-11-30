@@ -42,9 +42,18 @@ namespace HalfPugg.Controllers
         [Route("api/classificationPlayers/Match")]
         public IHttpActionResult GetClassificationMatch(int idJudge, int idJudger)
         {
-            ClassificationPlayer classfPlayer = db.Classification_Players
-                                                  .Where(clfp => clfp.IdJudgePlayer == idJudge && clfp.IdPlayer == idJudger)
-                                                  .FirstOrDefault();
+            ClassificationPlayer classfPlayer = null;
+            try
+            {
+                 classfPlayer = db.Classification_Players
+                                                 .Where(clfp => clfp.IdJudgePlayer == idJudge && clfp.IdPlayer == idJudger)
+                                                 .FirstOrDefault();
+            }
+            catch
+            {
+
+            }
+           
             if(classfPlayer != null)
             {
                 return Ok(classfPlayer);
