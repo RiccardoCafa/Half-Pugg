@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
-
+import { withRouter } from 'react-router-dom';
 import './MyGroups.css'
 import api from '../services/api'
 import Auth from '../Components/auth';
@@ -25,6 +25,7 @@ export default class MyConnections extends Component {
         const jwt = localStorage.getItem("jwt");
         let stop = false;
         let myData;
+        let groups;
         if(jwt){
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
                 myData = res.data
@@ -41,9 +42,11 @@ export default class MyConnections extends Component {
         this.setState({GamerLogado: myData})
         //this.setNickname(myData);
         
-        
+        await api.get('api/Gamers/GetGroups?id='+myData.ID).then(res=> groups = res.data).catch(error => stop = true)
+        this.setState({Group: groups})
     }
-    
+
+  
     render() {
         
         return (
@@ -54,7 +57,7 @@ export default class MyConnections extends Component {
                 </div>  
                 <Segment>
                     {this.state.Group.length === 0 ?
-                    <div>
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <Statistic.Group>
                             <Statistic
                             value = "Ops! Parece que você não participa de nenhum grupo..."
@@ -63,7 +66,37 @@ export default class MyConnections extends Component {
                             id="sem-conexao-texto"></Statistic>
                         </Statistic.Group>
                         <Button id="sem-conexao-button" label="Quero me conectar!" basic icon='users' onClick={this.goToBio}></Button>
-                    </div>:<div/>}
+                    </div>
+                    :
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                       
+                        {this.state.Group.map((group) => 
+                            <Card onClick={()=> this.props.history.push('/group/'+group.ID)}>
+                                    <Image src='https://cdn.vox-cdn.com/thumbor/eR7rCBpX7leHKZ6JAJBPqkP6ljs=/0x0:3840x2160/1200x800/filters:focal(2125x562:2739x1176)/cdn.vox-cdn.com/uploads/chorus_image/image/64744274/OVR_SummerGames19_015.0.png' wrapped ui={false} />
+                                    <Card.Content>
+                                    <Card.Header>{group.Name}</Card.Header>
+                                    <Card.Description>
+                                       {group.Desc}
+                                    </Card.Description>
+                                    <Card.Meta>
+                                        <span className='date'>{'Owner: '+group.Admin}</span>
+                                    </Card.Meta>
+                                    </Card.Content>
+                                    <Card.Content extra>
+                                    <a>
+                                        
+                                        <Icon name='user' />
+                                        {group.PlayerCount +'/'+ group.Capacity}
+
+                                        <Icon name='game' />
+                                        {group.Game}
+                                    </a>
+                                   
+                                    </Card.Content>
+                                </Card>
+                    )}
+                    </div>
+                   }
                 </Segment>
             </div>    
         );

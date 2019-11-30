@@ -42,9 +42,18 @@ namespace HalfPugg.Controllers
         [Route("api/classificationPlayers/Match")]
         public IHttpActionResult GetClassificationMatch(int idJudge, int idJudger)
         {
-            ClassificationPlayer classfPlayer = db.Classification_Players
-                                                  .Where(clfp => clfp.IdJudgePlayer == idJudge && clfp.IdPlayer == idJudger)
-                                                  .AsEnumerable().FirstOrDefault();
+            ClassificationPlayer classfPlayer = null;
+            try
+            {
+                 classfPlayer = db.Classification_Players
+                                                 .Where(clfp => clfp.IdJudgePlayer == idJudge && clfp.IdPlayer == idJudger)
+                                                 .FirstOrDefault();
+            }
+            catch
+            {
+
+            }
+           
             if(classfPlayer != null)
             {
                 return Ok(classfPlayer);
@@ -104,9 +113,15 @@ namespace HalfPugg.Controllers
             }
 
             db.Classification_Players.Add(classificationPlayer);
-            await db.SaveChangesAsync();
+            try
+            {
+                await db.SaveChangesAsync();
+            } catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-            return CreatedAtRoute("DefaultApi", new { id = classificationPlayer.ID }, classificationPlayer);
+            return Ok(classificationPlayer);
         }
 
         // DELETE: api/ClassificationPlayers/5

@@ -24,7 +24,7 @@ namespace HalfPugg.Controllers
 
         #region GET
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
-        [Route("api/Owerwatch/GetPlayers")]
+        [Route("api/Overwatch/GetPlayers")]
         [HttpGet]
         public IHttpActionResult GetPlayerOw(int PlayerID, region Region)
         {
@@ -38,7 +38,7 @@ namespace HalfPugg.Controllers
         
 
         [ResponseType(typeof(OwPlayer))]
-        [Route("api/Owerwatch/GetPlayer")]
+        [Route("api/Overwatch/GetPlayer")]
         [HttpGet]
         public IHttpActionResult GetPlayerOw(int PlayerID)
         {
@@ -59,7 +59,7 @@ namespace HalfPugg.Controllers
         }
 
         [ResponseType(typeof(IEnumerable<OwPlayer>))]
-        [Route("api/Owerwatch/GetPlayers")]
+        [Route("api/Overwatch/GetPlayers")]
         [HttpGet]
         public IHttpActionResult GetPlayerOw()
         {

@@ -7,6 +7,8 @@ public enum Check
 {
     white, gray, black
 }
+
+
 public class Graph<VERTICE, EDGE_DATA, VERT_ID> where VERT_ID : IComparable
 {
     #region structure
@@ -94,6 +96,36 @@ public class Graph<VERTICE, EDGE_DATA, VERT_ID> where VERT_ID : IComparable
 
     }
 
+    public void AddAresta(VERT_ID from, VERT_ID to,double Weight = 1,  conectCondition condition = null)
+    {
+        if (condition == null) condition = ConectConditionDefault;
+        if (condition?.Invoke(vertices[from], vertices[to]) == false) return;
+
+        double w = Weight;
+
+        Edge e = new Edge
+        {
+            connectedTo = vertices[to],
+            data = default,
+            weight = w
+        };
+
+        vertices[from].connections.Add(e);
+
+        if (!digraph)
+        {
+
+            Edge e2 = new Edge
+            {
+                connectedTo = vertices[from],
+                data = default,
+                weight = w
+            };
+            vertices[to].connections.Add(e2);
+        }
+
+    }
+
     public IEnumerable<Vertice> Bfs(VERT_ID from, edgeFilter filter = null)
     {
         if (!vertices.ContainsKey(from)) yield return null;
@@ -141,7 +173,7 @@ public class Graph<VERTICE, EDGE_DATA, VERT_ID> where VERT_ID : IComparable
         Dictionary<VERT_ID, bool> visited = new Dictionary<VERT_ID, bool>(vtCount);
         Dictionary<VERT_ID, double> distances = new Dictionary<VERT_ID, double>(vtCount);
         int finded = 1;
-
+        
         foreach (var item in vertices.Keys)
         {
             visited.Add(item, false);
@@ -370,3 +402,21 @@ public class Graph<VERTICE, EDGE_DATA> : Graph<VERTICE, EDGE_DATA, uint>
 
     }
 }
+
+public class Graph<VERTICE> : Graph<VERTICE, object, uint>
+{
+    public Graph( bool digraph = false) : base(null, digraph)
+    {
+
+    }
+}
+
+public class Graph : Graph<string, object, uint>
+{
+    public Graph(bool digraph = false) : base(null, digraph)
+    {
+
+    }
+}
+
+
