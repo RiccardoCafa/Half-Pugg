@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import NotFound from '../Components/404';
-import { Loader, Segment, Grid, Image, Statistic, Button, Icon, Container, Rating, Menu } from 'semantic-ui-react';
+import { Loader, Segment, Grid, Image, Container, Rating, Statistic} from 'semantic-ui-react';
 import api from '../services/api';
 import OWCard from '../Components/OWCard';
 import gostosao from '../images/chris.jpg'
@@ -27,7 +27,6 @@ export default class curriculoSpecific extends Component {
         let g = await getPlayer();
         if(g) {
             this.setState({GamerLogado: g});
-            console.log(g);
         } else {
             this.setState({notLogged: true});
         }
@@ -53,7 +52,6 @@ export default class curriculoSpecific extends Component {
     }
 
     render() {
-        console.log(this.props.match.params.player);
         if(this.state.notfound === true) {
             return (
                 <NotFound></NotFound>

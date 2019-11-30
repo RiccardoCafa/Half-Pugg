@@ -104,8 +104,9 @@ export default class MatchList extends Component {
     // Faz uma requisição de match para outro gamer
     connectMatch = (matcher) => {
         console.log(matcher);
+        console.log(this.props.GamerLogado);
         const response = api.post('api/RequestedMatches', {
-            "IdPlayer1": this.state.GamerLogado.ID,
+            "IdPlayer1": this.props.GamerLogado.ID,
             "IdPlayer2": matcher.playerFound.ID,
             "Status": "A",
             "IdFilters": 1
@@ -141,7 +142,7 @@ export default class MatchList extends Component {
     openGamersByFilter = () => {
         console.log(this.state.OWF);
         this.setState({loadingFilter: true});
-        api.post('api/Overwatch/PostFilterPlayerRec?PlayerID=' + this.state.GamerLogado.ID, {
+        api.post('api/Overwatch/PostFilterPlayerRec?PlayerID=' + this.props.GamerLogado.ID, {
             "role": this.state.OWF.role,
             "level": [this.state.OWF.level[0], this.state.OWF.level[1]],
             "rating": [this.state.OWF.rating[0], this.state.OWF.rating[1]],
@@ -174,7 +175,7 @@ export default class MatchList extends Component {
     changeFilter = (e, {value}) => {
         this.removeSelection();
         let key = this.state.tiposProcura.filter(function(item){
-            return item.value == value
+            return item.value === value
         });
         this.setState({tipoSelecionado: key[0].key});
         this.handleSelection(key[0].key)
@@ -186,6 +187,9 @@ export default class MatchList extends Component {
                 // jogo
                 this.setState({gameSelected: -1});
             break;
+            default:
+                this.setState({gameSelected: -1});
+            return;
         }
         this.setState({searchDelegate: this.defaultFunction});
     }
@@ -210,6 +214,8 @@ export default class MatchList extends Component {
             case 5:
                 this.setState({searchDelegate: this.getPlayerByNickname});
             break;
+            default:
+                this.setState({searchDelegate: this.defaultFunction});
         }
     }
 
@@ -461,7 +467,7 @@ export default class MatchList extends Component {
                         : <Button onClick={this.state.searchDelegate}>Pesquisar!</Button>
                         }
                         </Grid.Column>
-                        :<div/>
+                        <div/>
                     </Grid>
                 </Segment>
             </div>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Header, Segment, Icon } from 'semantic-ui-react';
+import { Header, Icon } from 'semantic-ui-react';
 
 export default class NotFound extends Component{
 

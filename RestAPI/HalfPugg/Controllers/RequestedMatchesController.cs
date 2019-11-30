@@ -155,8 +155,8 @@ namespace HalfPugg.Controllers
             try
             {
                 Match hasMatch = db.Matches.FirstOrDefault(ma =>
-                ((ma.Player1.ID == requestedMatch.Player1.ID && ma.Player2.ID == requestedMatch.Player2.ID) ||
-                (ma.Player2.ID == requestedMatch.Player1.ID && ma.Player1.ID == requestedMatch.Player2.ID)) && ma.Status == true);
+                ((ma.Player1.ID == requestedMatch.IdPlayer1 && ma.IdPlayer2 == requestedMatch.IdPlayer2) ||
+                (ma.Player2.ID == requestedMatch.IdPlayer1 && ma.IdPlayer1 == requestedMatch.IdPlayer2)) && ma.Status == true);
 
                 if (hasMatch != null)
                 {
@@ -169,7 +169,7 @@ namespace HalfPugg.Controllers
                 Console.WriteLine(e.Message);
                 return BadRequest();
             }
-            return CreatedAtRoute("DefaultApi", new { id = requestedMatch.ID }, requestedMatch);
+            return Ok(requestedMatch);
         }
 
         // DELETE: api/RequestedMatches/5

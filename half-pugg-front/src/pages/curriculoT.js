@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import './curriculo.css';
-import { Image, Segment, Grid, Loader, Statistic, Button, Icon, Menu, Sidebar, Container, Rating } from 'semantic-ui-react'
-import Header from '../Components/headera';
+import { Image, Segment, Grid, Loader, Statistic, Icon, Menu, Container, Rating, Header } from 'semantic-ui-react'
+import Headera from '../Components/headera';
 import api from '../services/api';
 import gostosao from '../images/chris.jpg';
 import OWCard from '../Components/OWCard';
+import getPlayer from '../Components/getPlayer';
 
 export default class Curriculo extends Component {
 
@@ -15,7 +16,6 @@ export default class Curriculo extends Component {
         Gamer: {},
         OverwatchInfo: {},
         toLogin: false,
-        loadedOW: false,
         ConnectionsLength: 0,
         loaded: false,
         stars: 0,
@@ -23,36 +23,20 @@ export default class Curriculo extends Component {
 
     async componentDidMount() {
         
-        const jwt = localStorage.getItem("jwt");
-        let stop = false;
-        //console.log(jwt);
-        let myData;
-        if(jwt){
-            await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
-                myData = res.data
-            ).catch(error => stop = true)
-        } else {
-            stop = true;
-        }
+        let Player = await getPlayer();
 
-        if(stop) {
+        if(!Player) {
             this.setState({toLogin: true});
             return;
         }
         this.setState(
         {
-            Gamer: myData
-        })
-        this.setState({Nickname: myData.Nickname});
+            Gamer: Player,
+            Nickname: Player.Nickname
+        });
         
-        let CurriculoData = await api.get('api/Curriculo?GamerID=' + myData.ID);
+        let CurriculoData = await api.get('api/Curriculo?GamerID=' + Player.ID);
         if(CurriculoData !== null) {
-            if(CurriculoData.data.OverwatchInfo !== undefined) {
-                this.setState({
-                    OverwatchInfo: CurriculoData.data.OverwatchInfo
-                    , loadedOW: true
-                });
-            }
             this.setState({ConnectionsLength: CurriculoData.data.ConnectionsLenght, stars: CurriculoData.data.Stars});
         }
 
@@ -67,17 +51,20 @@ export default class Curriculo extends Component {
         if(this.state.toLogin === true){
             return <Redirect to="/"></Redirect>
         }
+        if(!this.state.loaded) {
+            return <Loader active/>
+        }
         const { Gamer } = this.state;
         return (
             <div>
                 <div>
-                    <Header gamer = {Gamer}/>
+                    <Headera gamer = {Gamer}/>
                 </div>
-                <div className="menu-container">
-                    <Segment>
-                        <Grid columns={2} relaxed='very' stackable>
+                <div>
+                    <Segment style={{'marginLeft': '2%', 'marginRight': '2%', 'marginTop': '2%'}}>
+                        <Grid columns={2} style={{'marginBottom': '5%'}}>
                             <Grid.Column width={2}>
-                                <div className="left-content">
+                                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '3%'}}>
                                     <Menu vertical icon="labeled">
                                         <Menu.Item style={{cursor:'pointer'}} onClick={() => {this.props.history.push('/match')}}>
                                             <Icon aria-hidden="true" name="plug" >
@@ -97,11 +84,6 @@ export default class Curriculo extends Component {
                                         </Menu.Item>
                                     </Menu>
                                 </div>
-                                <Button.Group id="botoes">
-                                    <Button color='green' >
-                                        Voltar
-                                    </Button>
-                                </Button.Group>
                             </Grid.Column>
                             <Grid.Column width={10}>
                                 <div className="main-content">
@@ -131,30 +113,17 @@ export default class Curriculo extends Component {
                                         </div>
                                         </div>
                                 </div>
-                                <div>
-                                    {this.state.OverwatchInfo !== null && this.state.OverwatchInfo.profile !== undefined ?
                                     <OWCard {...this.state.Gamer}></OWCard>
-                                    : <Loader/>}
-                                    <div className="ui segment dimmable">
-                                        <h3 className="ui header">League of legends</h3>
-                                        <div className="ui small ui small images images">
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                        </div>
-                                        <Image
-                                            src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png"
-                                            className="ui medium image"
-                                        />
-                                    </div>
-                                    </div>
                                 </div>
                             </Grid.Column>
-                            <Grid.Column width={1} id='coluna-3'>
-                                <Statistic value={this.state.ConnectionsLength} label='conexoes'></Statistic>
+                            <Grid.Column width={4} id='coluna-3' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', alignContent: 'center'}}>
+                                <Header content='Sua participação em Half-pugg'></Header>
+                                <Statistic.Group horizontal>
+                                    <Statistic value={this.state.ConnectionsLength} label='conexões'></Statistic>
+                                    <Statistic value={this.state.stars} label='média da nota'></Statistic>
+                                </Statistic.Group>
                             </Grid.Column>
                         </Grid>
-                        
                     </Segment>
                 </div>
             </div>

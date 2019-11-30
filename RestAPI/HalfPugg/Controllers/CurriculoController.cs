@@ -12,7 +12,6 @@ namespace HalfPugg.Controllers
     public class CurriculoInformation
     {
         public Player gamer;
-        public OwPlayer OverwatchInfo;
         public int ConnectionsLenght;
         public int Stars;
     }
@@ -33,9 +32,6 @@ namespace HalfPugg.Controllers
             curriculoInfo.gamer = db.Gamers.Find(GamerID);
             int conexoes = db.Matches.Where(ma => ma.IdPlayer1 == GamerID || ma.IdPlayer2 == GamerID).Count();
             curriculoInfo.ConnectionsLenght = conexoes;
-            OverwatchController owController = new OverwatchController();
-            OwPlayer owp = owController.GetPlayerOwObject(p1.ID, region.us);
-            curriculoInfo.OverwatchInfo = owp;
             List<ClassificationPlayer> clfsPlayers = db.Classification_Players.Where(cl => cl.IdJudgePlayer == GamerID).AsEnumerable().ToList();
             int CountingStars = 0;
             foreach (ClassificationPlayer clp in clfsPlayers)

@@ -7,9 +7,8 @@ import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
 import Classification from '../Components/classification';
-import { Card, Image, Button, Segment, Statistic, Loader, Header, Icon, Divider } from 'semantic-ui-react';
+import { Card, Button, Segment, Statistic, Loader, Header, Icon, Divider } from 'semantic-ui-react';
 
-import gostosao from '../images/chris.jpg';
 import UserContentCard from '../Components/UserContentCard';
 
 export default class MyConnections extends Component {

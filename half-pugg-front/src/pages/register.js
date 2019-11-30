@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Checkbox, Form, Segment, Grid, Input, Header, TextArea, Modal, Confirm } from 'semantic-ui-react';
+import { Button, Checkbox, Form, Segment, Grid, Input, Header, Modal } from 'semantic-ui-react';
 
 import './register.css';
 import api from '../services/api';
-import { string } from 'postcss-selector-parser';
 
 export default class register extends Component {
 
@@ -26,19 +25,13 @@ export default class register extends Component {
         let dataNasc = new Date(dt);
         let nowadays = new Date();
         let anhos = nowadays.getFullYear() - dataNasc.getFullYear();
-        console.log(dataNasc);
-        console.log(nowadays);
         if(anhos < 13) {
             return false;
         } else if(anhos === 13) {
-            console.log('13 anos')
             if(dataNasc.getMonth() <= nowadays.getMonth()) {
-                console.log('msm mes ou menor');
                 if(dataNasc.getMonth() === nowadays.getMonth()){
-                    console.log('msm mes ' +  nowadays.getDate() + ' ' + dataNasc.getDate());
                     if(dataNasc.getDate() <= nowadays.getDate()) {
-                        console.log('msm dia ou menor');
-                        if(dataNasc.getDate() == nowadays.getDate()){
+                        if(dataNasc.getDate() === nowadays.getDate()){
                             console.log('aniversario do cara ou');
                             alert('Parabeeens!');
                             return true;
@@ -53,7 +46,6 @@ export default class register extends Component {
 
     handleSubmit = async e => {
         e.preventDefault();
-        console.log("cadastro");
         const dts = this.state.Birthday.split("-");
         const dt = dts[1] + "/" + dts[2] + "/" + dts[0];
         const tem13 = this.temMaisTreze(dt);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
-import { Menu, Input, Button, Segment } from 'semantic-ui-react';
+import { Menu, Button, Segment, Icon } from 'semantic-ui-react';
 
 import './header.css';
 
@@ -43,9 +43,8 @@ class Header extends Component {
                 <div id='myHeader'>
                     <Menu secondary id='botoes-header'>
                         <Menu.Item 
-                            name={`Olá, ${this.props.gamer.Nickname}`} 
-                            icon='user circle' 
                             onClick={() => this.loadPage('/curriculo')}>
+                            Olá, {this.props.gamer.Nickname}
                         </Menu.Item>
                         <Menu.Item 
                             name='Home'

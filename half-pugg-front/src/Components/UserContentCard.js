@@ -3,7 +3,6 @@ import { Card, Image, Rating, Loader } from 'semantic-ui-react';
 
 import gostosao from '../images/chris.jpg';
 import api from '../services/api';
-import { promised } from 'q';
 
 export default class UserContentCard extends Component {
     
