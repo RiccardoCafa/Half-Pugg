@@ -102,6 +102,21 @@ namespace HalfPugg.Controllers
             return Ok(hall);
         }
 
+        [Route("api/HallIntegrants")]
+        [ResponseType(typeof(ICollection<Player>))]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetHallIntegrants(int IdHall)
+        {
+            Hall hall = await db.Halls.FindAsync(IdHall);
+            if (hall == null)
+            {
+                return NotFound();
+            }
+           
+            var p = db.PlayerHalls.Where(x => x.IdHall == IdHall).Select(x => x.Player);
+            return Ok(p);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

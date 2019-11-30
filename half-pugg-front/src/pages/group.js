@@ -83,21 +83,14 @@ export default class Match extends Component {
         );        
     }
 
-    // Remove um gamer   da lista de sugestões de match
-    
-    // Seta o filtro para a busca
-    
-
-   
-
-    // Filtros do Overwatch
-    
-    //#endregion
-
     render() {
         if(this.state.toLogin === true) {
             return <Redirect to="/"></Redirect>
         }
+        if(this.state.goToMatch) {
+            return <Redirect to='/match'></Redirect>
+        }
+        
         return (
             <div>
                 <Auth></Auth>

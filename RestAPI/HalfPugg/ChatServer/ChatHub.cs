@@ -158,6 +158,7 @@ namespace HalfPugg
                 Group g = await db.Groups.FindAsync(GroupID);
                 Player p = await db.Gamers.FindAsync(UserID);
 
+
                 if (p == null || g == null) {
                     await Clients.Caller.receiveAlert($"User: {UserID} or Group: {GroupID} not finded");
                     return false;

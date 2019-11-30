@@ -44,7 +44,7 @@ namespace HalfPugg.Controllers
         {
             ClassificationPlayer classfPlayer = db.Classification_Players
                                                   .Where(clfp => clfp.IdJudgePlayer == idJudge && clfp.IdPlayer == idJudger)
-                                                  .AsEnumerable().FirstOrDefault();
+                                                  .FirstOrDefault();
             if(classfPlayer != null)
             {
                 return Ok(classfPlayer);
