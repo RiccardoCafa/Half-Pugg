@@ -8,6 +8,7 @@ import gostosao from '../images/chris.jpg'
 import getPlayer from '../Components/getPlayer';
 import NLHeader from '../Components/NLHeader';
 import Headera from '../Components/headera';
+import CurriculoRightSide from '../Components/curriculoRightSide';
 
 export default class curriculoSpecific extends Component {
 
@@ -100,14 +101,12 @@ export default class curriculoSpecific extends Component {
                                     </div>
                             </div>
                             <div>
-                                {this.state.OverwatchInfo !== null && this.state.OverwatchInfo.profile !== undefined ?
                                 <OWCard {...this.state.GamerCurriculo}></OWCard>
-                                : <Loader/>}
                                 </div>
                             </div>
                         </Grid.Column>
-                        <Grid.Column width={1} id='coluna-3'>
-                            <Statistic value={this.state.ConnectionsLength} label='conexoes'></Statistic>
+                        <Grid.Column width={4} id='coluna-3'>
+                            <CurriculoRightSide nickname={this.state.GamerCurriculo.Nickname} stars={this.state.stars} ConnectionsLength={this.state.ConnectionsLength}></CurriculoRightSide>
                         </Grid.Column>
                     </Grid>
                 </Segment>
