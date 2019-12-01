@@ -121,6 +121,54 @@ namespace HalfPugg.Controllers
             return a;//201
         }
 
+        [ResponseType(typeof(IEnumerable<OwPlayer>))]
+        [Route("api/Overwatch/GetNearPlayer")]
+        [HttpGet]
+        public IHttpActionResult GetNearPlayer(int PlayerID,bool Competitive,float percent)
+        {
+            Graph<Player, Match, string> graph = new Graph<Player, Match, string>((Match e) => { return e.Weight != 0 ? 1 / e.Weight : float.MaxValue; });
+            
+            PlayerGame currentPlayer = db.PlayerGames.Where(x => x.IDGamer == PlayerID).FirstOrDefault();
+
+            foreach (var m in db.Matches.ToArray())
+            {
+                var p1 = db.PlayerGames.Where(x => x.IDGamer == m.IdPlayer1 && x.IDGame == (int)Games.Overwatch).FirstOrDefault();
+                var p2 = db.PlayerGames.Where(x => x.IDGamer == m.IdPlayer2 && x.IDGame == (int)Games.Overwatch).FirstOrDefault();
+                
+                if (p1!=null && p2 !=null)
+                {
+                    graph.AddVertice(m.Player1, p1.IdAPI);
+                    graph.AddVertice(m.Player2, p2.IdAPI);
+                    graph.AddAresta(p1.IdAPI, p2.IdAPI, m);
+                }
+               
+            }
+
+            OwPlayer owPlayer = OwAPI.GetPlayer(currentPlayer.IdAPI, region.us, PlayerID);
+            careerStats career = Competitive ? owPlayer.compCareer : owPlayer.quickCareer;
+            float perc = percent/100.0f;
+          
+            owFilter filter = new owFilter 
+            {
+                competitive = Competitive,
+                damage = new float[] { career.allDamageDone * (1.0f - perc), career.allDamageDone * (1.0f + perc) },
+                rating = new int[] { (int)(owPlayer.profile.rating * (1.0f - perc)),(int)(owPlayer.profile.rating * (1.0f + perc)) },
+                elimination = new int[] { (int)(career.eliminations * (1.0f - perc)), (int)(career.eliminations * (1.0f + perc)) },               
+            };
+
+            var sorted = graph.ShortPath(currentPlayer.IdAPI).OrderBy(x => x.Value).Skip(1).Take(graph.vertCount);
+            List<OwPlayer> players = new List<OwPlayer>(sorted.Count());
+            foreach (var v in sorted)
+            {
+                OwPlayer pp = OwAPI.GetPlayer(v.Key, region.us, 0);
+                if(filterPlayer(pp,filter))
+                players.Add(pp); 
+
+            }
+
+            return Ok(players);
+          
+        }
 
         #endregion
 
