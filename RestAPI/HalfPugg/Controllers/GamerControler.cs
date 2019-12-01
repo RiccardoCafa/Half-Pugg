@@ -63,6 +63,20 @@ namespace HalfPugg.Controllers
         }
 
         [HttpGet]
+        [Route("api/Player/GetGames")]
+        public IHttpActionResult GetGames(int PlayerID)
+        {
+            Player gamer = db.Gamers.Find(PlayerID);
+            if (gamer == null)
+            {
+                return NotFound();
+            }
+            var res = db.PlayerGames.Where(x => x.IDGamer == PlayerID).Select(x => x.Game);
+
+            return Ok(res);
+        }
+
+        [HttpGet]
         [Route("api/GetGamerByNickname")]
         public IHttpActionResult GetGamerByNickname(string nickname)
         {
@@ -296,18 +310,7 @@ namespace HalfPugg.Controllers
             return Ok(gamer);
         }
 
-        //[System.Web.Mvc.HttpPost]
-        //[System.Web.Mvc.AcceptVerbs(System.Web.Mvc.HttpVerbs.Post)]
-        //public System.Web.Mvc.ActionResult UploadFoto(HttpPostedFileBase file)
-        //{
-
-        //    if (file == null)
-        //    {
-        //    //    file = this.Request.Files[0];
-        //    }
-
-        //    return null;
-        //}
+       
         [ResponseType(typeof(ICollection<Group>))]
         [Route("api/Gamers/GetGroups")]
         [HttpGet]
@@ -326,7 +329,7 @@ namespace HalfPugg.Controllers
                 x.CreateAt = db.Groups.Find(x.ID).CreateAt;
                 x.Game = db.Games.Find(x.IdGame);
 
-                ret.Add(new { 
+                ret.Add(new {
                     ID = x.ID,
                     Name = x.Name,
                     Desc = "Sem descricao",
@@ -334,8 +337,9 @@ namespace HalfPugg.Controllers
                     Capacity = x.Capacity,
                     PlayerCount = 1,
                     CreateAt = x.CreateAt,
-                    Game = x.Game.Name
-                });
+                    Game = x.Game.Name,
+                    ImagePath = x.SouceImg
+                }) ;
                
             }
 

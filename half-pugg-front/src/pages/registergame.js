@@ -27,6 +27,11 @@ export default class registergame extends Component {
         loaded: false,
         openMessageBox: false,
         textMessageBox: '',
+
+
+        GamesCadastrados:[{}],
+        GamesUsuario:[{}],
+        GamesSemConta:[{}],
     }
     
     componentDidMount = async () => {
@@ -50,6 +55,36 @@ export default class registergame extends Component {
         }
 
         this.setState({GamerLogado: myData});
+
+        await api.get('api/Games').then(res=>{
+            this.setState({GamesCadastrados: res.data});
+        }).catch(erro=>{
+            console.log(erro);
+            this.setState({toLogin: true});
+            return;
+        }).then(
+            ()=>{
+                 api.get('api/Player/GetGames?PlayerID='+this.state.GamerLogado.ID).then(res=>{
+                    this.setState({GamesUsuario:res.data});
+        
+                    this.state.GamesCadastrados.map((game)=>{
+                        if(this.state.GamesUsuario.includes(game) == false){
+                            this.state.GamesSemConta.push(game);
+                        }
+                    })
+
+                    console.log('Cadastrados: '+this.state.GamesCadastrados);
+                    console.log('Usuario: '+ this.state.GamesUsuario);
+                    console.log('Sem conta: '+this.state.GamesSemConta);
+                }).catch(erro=>{
+                    console.log(erro);
+                    this.setState({toLogin: true});
+                    return;
+                });
+            }
+        );
+
+       
 
         await api.get('api/GetGamesInPlayer?PlayerID=' + myData.ID).catch(err => console.log(err)).then(
             resposta => {
@@ -144,67 +179,34 @@ export default class registergame extends Component {
                             {this.state.OverwatchInfo.profile !== undefined ?
                                 <OWCard {...this.state.GamerLogado}> </OWCard>
                                 : null }
+
+
                             <h2>Choose a new game</h2>
                             <Card.Group>
-                                {this.state.OverwatchInfo.profile === undefined ?
-                                <Card >
-                                    <Image src={overwatchImage} fluid style={{height:'150px'}} />
+                            {this.state.GamesSemConta.map((game) =>
+                         
+                                <Card key={game.Game_ID}>
+                                    <Image src={game.EndPoint} fluid style={{height:'150px'}} />
                                     <Card.Content>
-                                        <Card.Header>Overwatch</Card.Header>
+                                        <Card.Header>{game.Name}</Card.Header>
                                         <Card.Meta>
                                             FPS
                                         </Card.Meta>
-                                        <Card.Description>Insira seu id da blizzard, nesse formato -> <br/> Exemplo-1234
+                                        <Card.Description>
+                                            {game.Description}
                                         </Card.Description>
                                     </Card.Content>
                                     <Card.Content extra>
-                                        <Input value={this.state.overwatchIDAPI} 
-                                            onChange={e => this.handleOWAPIInput(e)} placeholder='Battle.net ID'></Input>
+                                        <Input value={this.state.overwatchIDAPI} onChange={e => this.handleOWAPIInput(e)} placeholder='Game ID'/>
                                         <Button.Group >
                                             <Button color='green' onClick={e => this.handleAdicionarButton(e, 1)}>
                                                 Add
                                             </Button>
                                         </Button.Group>
                                     </Card.Content>
-                                </Card> : null }
-
-                                <Card >
-                                    <Image src={lolImage} fluid style={{height:'150px'}} />
-                                    <Card.Content>
-                                        <Card.Header>League of Legends</Card.Header>
-                                        <Card.Meta>
-                                            MOBA
-                                        </Card.Meta>
-                                        <Card.Description>Insira seu id do riot</Card.Description>
-                                    </Card.Content>
-                                    <Card.Content extra>
-                                        <Input value={this.state.lolIDAPI} onChange={e => this.handleLOLAPIInput(e)} placeholder='Game ID'></Input>
-                                        <Button.Group >
-                                            <Button color='green' onClick={e => this.handleAdicionarButton(e, 2)}>
-                                                Add
-                                            </Button>
-                                        </Button.Group>
-                                    </Card.Content>
-                                </Card>
-
-                                <Card >
-                                    <Image src={csImage} fluid style={{height:'150px'}} />
-                                    <Card.Content>
-                                        <Card.Header>Counter Strike</Card.Header>
-                                        <Card.Meta>
-                                            FPS
-                                        </Card.Meta>
-                                        <Card.Description>Insira seu id da steam</Card.Description>
-                                    </Card.Content>
-                                    <Card.Content extra>
-                                        <Input value={this.state.csIDAPI} onChange={e => this.handleCSAPIInput(e)} placeholder='Game ID'></Input>
-                                        <Button.Group >
-                                            <Button color='green' onClick={e => this.handleAdicionarButton(e, 2)}>
-                                                Add
-                                            </Button>
-                                        </Button.Group>
-                                    </Card.Content>
-                                </Card>
+                                </Card> 
+                            )}
+                               
                             </Card.Group>
                             <br></br>
                             <Button.Group >
