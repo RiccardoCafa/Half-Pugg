@@ -1,13 +1,11 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
 import { Header } from 'semantic-ui-react';
-import $ from 'jquery';
-import 'signalr';   
 import ow from '../images/overwatch.jpg'
 
 import api from '../services/api'
 import Auth from '../Components/auth';
-import {HubConnection} from '@aspnet/signalr'
+import {HubConnectionBuilder, LogLevel} from '@aspnet/signalr'
 import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown , List} from 'semantic-ui-react';
 
 
@@ -44,14 +42,15 @@ export default class Chat extends Component {
         
         this.setState({GamerLogado: myData})
         this.setNickname(myData);
-        var connection = $.hubConnection('http://localhost:44338/');
-        var proxy = connection.createHubProxy('[chatHub]');
-        this.state.hubConnection = new HubConnection('http://localhost:44338/signalr');
-
-        this.state.hubConnection.connectToAPI(this.state.GamerLogado.ID);
+        ///var connection = hubConnection('http://localhost:44338/');
+        //var proxy = connection.createHubProxy('[chatHub]');
+        const connection = new HubConnectionBuilder();
+        const conx = connection.withUrl('https://localhost:44338/signalr').configureLogging(LogLevel.Information).build();
         
-        
-
+        conx.start().then(() =>{
+            console.log("conected!");
+        }).catch(err => console.log(err));
+        //this.state.hubConnection.connectToAPI(this.state.GamerLogado.ID);
     }
 
     setNickname(myData) {
@@ -64,7 +63,7 @@ export default class Chat extends Component {
                
         return (
             <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}}>
-                {this.state.message.map((message) => 
+                {this.state.messages.map((message) => 
                     <List.Item >
                         <List.Content>
                             <List.Header>{message.Nickname}</List.Header>
