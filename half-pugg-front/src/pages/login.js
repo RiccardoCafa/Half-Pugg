@@ -44,7 +44,7 @@ export default class Login extends Component {
         }).catch(error => {
             console.log(error);
             this.setState({loading: false});
-            switch(error.response.status) {
+            /*switch(error.response.status) {
                 case 404:
                     this.setState({showPopUp: true});
                     console.log("404");
@@ -52,7 +52,7 @@ export default class Login extends Component {
                 default:
                     console.log('algo deu errado');
                 break;
-            }
+            }*/
         });
     }
 

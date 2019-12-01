@@ -13,6 +13,7 @@ import editcurriculo from './pages/editcurriculo';
 import MyGroups from './pages/MyGroups';
 import Analytics from './pages/Analytics';
 import CurriculoSpecific from './pages/curriculoSpecific';
+import Group from './pages/group';
 
 export default function () {
     return (
@@ -29,6 +30,7 @@ export default function () {
             <Route path="/curriculo/editar" exact component={editcurriculo}/>
             <Route path="/Analytics" component={Analytics}/>
             <Route exact path="/curriculo/:player" render={(props) => <CurriculoSpecific {...props}/>}/>
+            <Route exact path="/group/:id" render={(props) => <Group {...props}/>}/>
         </BrowserRouter>
     );
 }

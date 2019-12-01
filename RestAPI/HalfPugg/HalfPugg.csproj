@@ -244,6 +244,7 @@
     <Compile Include="Controllers\GamerControler.cs" />
     <Compile Include="ChatServer\ConnectionManager.cs" />
     <Compile Include="ChatServer\Startup.cs" />
+    <Compile Include="Controllers\PlayerGroupsController.cs" />
     <Compile Include="Controllers\PlayerRequestedGroupsController.cs" />
     <Compile Include="Migrations\201911230107169_Init.cs" />
     <Compile Include="Migrations\201911230107169_Init.Designer.cs">
