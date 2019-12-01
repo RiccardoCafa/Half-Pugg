@@ -77,7 +77,6 @@ namespace HalfPugg.Controllers
         }
 
 
-
         [Route("api/Analytics/GetPlayersMatch")]
         [HttpGet]
         public HttpResponseMessage GetPlayerMatchs()

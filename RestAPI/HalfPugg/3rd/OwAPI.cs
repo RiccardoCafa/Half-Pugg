@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Web.Http.Results;
+using Newtonsoft.Json;
 
 namespace OverwatchAPI
 {
@@ -65,7 +66,7 @@ namespace OverwatchAPI
 
         public const string ENDPOINT_API = "https://ow-api.com/v1/stats/pc/";
 
-        
+        static JsonSerializerSettings setings = new JsonSerializerSettings();
 
         private static string regStr(region reg)
         {
@@ -129,45 +130,21 @@ namespace OverwatchAPI
 
         private static careerStats getCareer(JToken token)
         {
-           
-            return (token != null) ?
-             new careerStats
-             {
-                 allDamageDone =
-                    token["allDamageDoneAvgPer10Min"]!=null ? token["allDamageDoneAvgPer10Min"].Value<float>() : 0f,
-                 barrierDamageDone =
-                    token["barrierDamageDoneAvgPer10Min"] != null ? token["barrierDamageDoneAvgPer10Min"].Value<float>() : 0f,
-                 deaths =
-                    token["deathsAvgPer10Min"] != null ? token["deathsAvgPer10Min"].Value<float>() : 0f,
-                 eliminations =
-                    token["eliminationsAvgPer10Min"] != null ? token["eliminationsAvgPer10Min"].Value<float>() : 0f,
-                 finalBlows =
-                    token["finalBlowsAvgPer10Min"] != null ? token["finalBlowsAvgPer10Min"].Value<float>() : 0f,
-                 healingDone =
-                    token["healingDoneAvgPer10Min"] != null ? token["healingDoneAvgPer10Min"].Value<float>() : 0f,
-                 heroDamageDone =
-                    token["heroDamageDoneAvgPer10Min"] != null ? token["heroDamageDoneAvgPer10Min"].Value<float>() : 0f,
-                 objectiveKills =
-                    token["objectiveKillsAvgPer10Min"] != null ? token["objectiveKillsAvgPer10Min"].Value<float>() : 0f,
-                 soloKills =
-                    token["soloKillsAvgPer10Min"] != null ? token["soloKillsAvgPer10Min"].Value<float>() : 0f,
+            careerStats ret = null;
+            if (token != null)
+            {
+               ret = JsonConvert.DeserializeObject<careerStats>(token.ToString().Replace("AvgPer10Min",""), setings);
+            }
 
-                 objectiveTime =
-                    token["objectiveTimeAvgPer10Min"] != null ?
-                    TimeSpan.ParseExact(token["objectiveTimeAvgPer10Min"].ToString(), @"mm\:ss", new CultureInfo("en-US")) :
-                    TimeSpan.Zero,
-                 
-                 timeSpentOnFire =
-                    token["timeSpentOnFireAvgPer10Min"] != null ?
-                    TimeSpan.ParseExact(token["timeSpentOnFireAvgPer10Min"].ToString(), @"mm\:ss", new CultureInfo("en-US")) :
-                    TimeSpan.Zero
-            }:null;
+
+            return ret;
         }
 
         
         static OwAPI()
         {
-            client = new HttpClient();
+            client = Client.httpClient;
+            setings.NullValueHandling = NullValueHandling.Ignore;
         }
 
 
@@ -175,7 +152,7 @@ namespace OverwatchAPI
         public static OwPlayer GetPlayerProfile(string name, region reg, int id)
         {
             JObject obj = JObject.Parse(client.GetAsync(ENDPOINT_API + regStr(reg) + $"/{name}/profile").Result.Content.ReadAsStringAsync().Result);
-            if (obj.ContainsKey("error")) return null;// throw new Exception($"[{name}] " + obj["error"].Value<string>());
+            if (obj.ContainsKey("error")) return null;
 
             return new OwPlayer
             {
@@ -188,7 +165,7 @@ namespace OverwatchAPI
         {
            
             JObject obj = JObject.Parse(client.GetAsync(ENDPOINT_API + regStr(reg) + $"/{name}/complete").Result.Content.ReadAsStringAsync().Result);
-            if (obj.ContainsKey("error")) return null;// throw new Exception($"[{name}] " + obj["error"].Value<string>());
+            if (obj.ContainsKey("error")) return null;
             
             JToken quickCr = obj.SelectToken("quickPlayStats.careerStats.allHeroes.average");
             JToken compCr = obj.SelectToken("competitiveStats.careerStats.allHeroes.average");
