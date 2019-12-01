@@ -194,6 +194,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="3rd\Client.cs" />
+    <Compile Include="3rd\DotaAPI.cs" />
     <Compile Include="3rd\Graph.cs" />
     <Compile Include="3rd\OwAPI.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -232,6 +234,7 @@
     <Compile Include="ChatServer\ChatHub.cs" />
     <Compile Include="Controllers\AnalyticsController.cs" />
     <Compile Include="Controllers\CurriculoController.cs" />
+    <Compile Include="Controllers\DotaController.cs" />
     <Compile Include="Controllers\OverwatchController.cs" />
     <Compile Include="Controllers\ClassificationPlayersController.cs" />
     <Compile Include="Controllers\Classification_GameController.cs" />

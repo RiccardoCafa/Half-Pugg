@@ -171,13 +171,7 @@ namespace HalfPugg.Controllers
             {
                 return NotFound();
             }
-            //var query = db.Groups   
-            //            .Join(db.PlayerGroups, 
-            //            group => group.ID,        
-            //            pg => pg.IdGroup,   
-            //            (group, pg) => new { Group = group, Pg = pg }) 
-            //            .Where(dbs =>dbs.Group.ID == IdGroup).Select(dbs => dbs.Pg.Player).ToList<Player>(); 
-            //if (query == null) return BadRequest();
+          
             var p = db.PlayerGroups.Where(x => x.IdGroup == IdGroup).Select(x => x.Player);
             return Ok(p);
         }

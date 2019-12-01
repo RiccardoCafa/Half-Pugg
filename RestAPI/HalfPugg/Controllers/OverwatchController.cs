@@ -38,7 +38,7 @@ namespace HalfPugg.Controllers
         
 
         [ResponseType(typeof(OwPlayer))]
-        [Route("api/Overwatch/GetPlayer")]
+        [Route("api/Overwatch/GetPlayers")]
         [HttpGet]
         public IHttpActionResult GetPlayerOw(int PlayerID)
         {
