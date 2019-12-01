@@ -76,7 +76,7 @@ namespace HalfPugg.Controllers
         // POST: api/Login
         public IHttpActionResult Post(Player gamer)
         {
-            var gamerLogged = db.Gamers.FirstOrDefault(g => g.Email == gamer.Email && g.HashPassword == gamer.HashPassword);
+                var gamerLogged = db.Gamers.FirstOrDefault(g => g.Email == gamer.Email && g.HashPassword == gamer.HashPassword);
 
             if (gamerLogged != null)
             {
