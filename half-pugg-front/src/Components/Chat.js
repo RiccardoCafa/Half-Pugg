@@ -15,7 +15,7 @@ import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox,
 import gostosao from '../images/chris.jpg';
 import { request } from 'http';
 
-export default class Group extends Component {
+export default class Chat extends Component {
 
     state = {
         Nickname: '',
