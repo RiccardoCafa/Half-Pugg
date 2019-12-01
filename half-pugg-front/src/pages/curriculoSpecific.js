@@ -103,18 +103,6 @@ export default class curriculoSpecific extends Component {
                                 {this.state.OverwatchInfo !== null && this.state.OverwatchInfo.profile !== undefined ?
                                 <OWCard {...this.state.GamerCurriculo}></OWCard>
                                 : <Loader/>}
-                                <div className="ui segment dimmable">
-                                    <h3 className="ui header">League of legends</h3>
-                                    <div className="ui small ui small images images">
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                    </div>
-                                    <Image
-                                        src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png"
-                                        className="ui medium image"
-                                    />
-                                </div>
                                 </div>
                             </div>
                         </Grid.Column>

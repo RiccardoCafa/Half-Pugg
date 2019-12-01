@@ -8,6 +8,7 @@
     "canvasjs": "^1.8.1",
     "dependencies": "^0.0.1",
     "react": "^16.10.2",
+    "react-cytoscape": "^1.0.6",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.2.0",
