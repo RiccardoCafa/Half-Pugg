@@ -101,9 +101,12 @@ export default class Group extends Component {
                 
                 <Grid columns={2} divided style={{'marginTop': '1%', 'marginLeft': '1%'}}   >
                 
-                            <Grid.Column width={4} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
-                                <Segment textAlign='center'><Header as='h3' textAlign='center' icon='users' content='Integrants'/></Segment>
-                                    <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%',overflow: 'auto', maxHeight: 250}}>
+               
+                    <Grid.Column width={4} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
+                        
+                           
+                            <Segment textAlign='center'><Header as='h3' textAlign='center' icon='users' content='Integrants'/></Segment>
+                                    <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%',overflow: 'auto',marginBottom: '10%', maxHeight: 400}}>
                                             {this.state.Integrants.map((playerFound) => 
                                                 <List.Item size='tiny' key={playerFound.ID} >
                                                     <Image avatar
@@ -118,29 +121,20 @@ export default class Group extends Component {
                                                 </List.Item>
                                             )}
                                     </List>
-                                    <Segment textAlign='center'><Header as='h3' textAlign='center' icon='users' content='Invite' /></Segment>
-                                    <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%',overflow: 'auto', maxHeight: 250}}>
-                                        
-                                            {this.state.Friends.map((matcher) => 
-                                                <Card key={matcher.matchPlayer.ID}>
-                                                    
-                                                    <Card.Content extra>
-                                                        <div className='ui two buttons'>
-                                                            <Button 
-                                                                id='btn-acpden' 
-                                                                basic color='green' 
-                                                                content='Invite to Group!'
-                                                                />
-                                                        </div>
-                                                    </Card.Content>
-                                                    <Card.Content extra>
-                                                        <OpenCurriculum {...matcher.matchPlayer}></OpenCurriculum>
-                                                        
-                                                    </Card.Content>
-                                                </Card>
-                                            )}
-                                        
-                                    </List>
+                            
+
+                         
+                               
+                                    <Button color = 'green'>
+                                        Invite
+                                    </Button>
+                                    <Button color = 'red'>
+                                        Leave
+                                    </Button>
+                                
+                           
+                                   
+                           
                             </Grid.Column>
                        
                             <Grid.Column width={11}>

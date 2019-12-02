@@ -13,7 +13,8 @@ export default class Chat extends Component {
         hubConnection: null,
         inpt_message: '',
         pog_ricc: false,
-        groupID: 0
+        groupID: 0,
+        lastMessRend: 0
     }
 
     async componentDidMount() {
@@ -167,11 +168,15 @@ export default class Chat extends Component {
         return (
             <div>
                 <Segment textAlign='center' style={{overflow: 'auto', maxHeight: 400 }}>
-                <List relaxed divided verticalAlign='middle' >
+                <List >
                     {this.state.messages.map((message) => 
                         <List.Item style={message.id === this.state.GamerLogado.ID ?{'marginLeft': `${this.calcMessSize(message.content)}%`}:{'marginRight':`${this.calcMessSize(message.content)}%`}}>      
-                            <List.Header >{message.sender}</List.Header>
-                            <Message  size='tiny' color={message.id === this.state.GamerLogado.ID ?'green': 'blue'}>{message.content }</Message>                                     
+                         
+                            <List.Header as='a'>{message.sender}</List.Header>
+                                <Message  size='mini' color={message.id === this.state.GamerLogado.ID ?'green': 'blue'}>
+                                    <p>{message.content }</p> 
+                                </Message>                 
+                                        
                         </List.Item>
                     )} 
                 </List>

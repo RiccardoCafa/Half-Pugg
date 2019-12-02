@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Input, Image, Card, Loader, Modal } from 'semantic-ui-react';
-
+import { Header,Grid,Button, Input, Image, Card, Loader, Modal, Segment } from 'semantic-ui-react';
+import Auth from '../Components/auth';
 import api from '../services/api'
 
 import './registergame.css';
 import OWCard from '../Components/OWCard';
 import DOTACard from '../Components/DOTACard';
-
+import Headera from '../Components/headera';
 import overwatchImage from '../images/overwatch.jpg';
 import Dota2 from '../images/dota-2.jpg';
 
@@ -194,13 +194,22 @@ export default class registergame extends Component {
             return <Redirect to ='/'></Redirect>
         }
         return (
+             <div>
+                <Auth></Auth>
+                <div>
+                    <Headera gamer = {this.state.GamerLogado }/>
+                </div>  
+         
+          
             <div className = "register-container">
+
+               
                 <form> 
-                    <h1 id='title'>Half Pugg</h1>
+                 
                     <div>
                         {this.state.loaded === true ?
                         <div>
-                            <h2>Your games</h2>
+                           
                             <Modal open={this.state.openMessageBox} onClose={this.closeBox} size='large'>
                                 <Modal.Header>
                                     Adição de Jogo ao seu perfil
@@ -214,11 +223,21 @@ export default class registergame extends Component {
                                     />
                                 </Modal.Actions>
                             </Modal>
-                            {this.state.OverwatchInfo.profile !== undefined ?
-                                <OWCard {...this.state.GamerLogado}> </OWCard>
-                                : null }
-                                {this.state.DotaInfo.stats !== undefined ?
-                                <DOTACard {...this.state.GamerLogado}></DOTACard>:null}
+
+                        
+                            <Segment> <Header as='h3' textAlign='center' icon='users' content='Your games'/></Segment>
+                            <Segment style={{overflow: 'auto',marginBottom: '10%', maxWidht: 150, vertical: false}}>
+                             <Grid columns = {2} style={{'marginTop': '1%', 'marginLeft': '1%'}}>
+                                    <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
+                                            {this.state.OverwatchInfo.profile !== undefined ?<OWCard {...this.state.GamerLogado}/> : null }
+                                    </Grid.Column>
+                                    <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
+                                            {this.state.DotaInfo.stats !== undefined ? <DOTACard {...this.state.GamerLogado}/>:null}
+                                    </Grid.Column>
+                                </Grid>
+                           </Segment>
+                           
+
                             <h2>Choose a new game</h2>
                             <Card.Group>
                                 {this.state.OverwatchInfo.profile === undefined ?
@@ -275,6 +294,7 @@ export default class registergame extends Component {
                         : <Loader active></Loader> }
                     </div>
                 </form>
+            </div>
             </div>
         );
     }
