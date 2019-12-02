@@ -130,7 +130,9 @@ namespace HalfPugg.Controllers
             if (query == null) return BadRequest();
             //var p = db.PlayerGroups.Where(x => x.IdGroup == IdGroup).Select(x => x.Player);
             return Ok(query);
-        }   
+        }
+
+        
     }
 
 }

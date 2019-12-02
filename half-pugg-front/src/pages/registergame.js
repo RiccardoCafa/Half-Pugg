@@ -6,8 +6,10 @@ import api from '../services/api'
 
 import './registergame.css';
 import OWCard from '../Components/OWCard';
+import DOTACard from '../Components/DOTACard';
 
 import overwatchImage from '../images/overwatch.jpg';
+import Dota2 from '../images/dota-2.jpg';
 import lolImage from '../images/lol.jpg';
 import csImage from '../images/cs.jpg';
 
@@ -19,11 +21,13 @@ export default class registergame extends Component {
         MyImage: '',
         toLogin: false,
         overwatchIDAPI: '',
+        dotaAPI: '',
         lolIDAPI: '',
         csIDAPI: '',
         renderize: true,
         GamerLogado: {},
         OverwatchInfo: {},
+        DotaInfo: {},
         loaded: false,
         openMessageBox: false,
         textMessageBox: '',
@@ -95,13 +99,22 @@ export default class registergame extends Component {
                         const ow = await api.get('api/Overwatch/GetPlayers?PlayerID='+jogo.IDGamer + '&Region=0').catch(err => console.log(err));
                         this.setState({OverwatchInfo: ow.data});
                     }
+                    if(jogo.IDGame === 2){
+                        // Dota
+                        const dota = await api.get('api/Dota/GetPlayers?PlayerID='+jogo.IDGamer).catch(err => console.log(err));
+                        this.setState({DotaInfo: dota.data});
+                    }
                 })
-                this.setState({loaded: true})
             }
         )
+        this.setState({loaded: true})
     }
 
     componentWillUnmount = () => {}
+
+    handleDotaAPIInput = (e) => {
+        this.setState({dotaAPI: e.target.value});
+    }
 
     handleOWAPIInput = (e) => {
         this.setState({overwatchIDAPI: e.target.value});
@@ -121,7 +134,7 @@ export default class registergame extends Component {
         let apid;
         switch(idGame){
             case 1: apid = this.state.overwatchIDAPI; break;
-            case 2: apid = this.state.lolIDAPI; break;
+            case 2: apid = this.state.dotaAPI; break;
             default: return;
         }
 
@@ -152,6 +165,9 @@ export default class registergame extends Component {
     closeBox = () => this.setState({openMessageBox: false});
 
     render() {
+        if(!this.state.loaded) {
+            return <Loader active/>
+        }
         if(this.state.toLogin) {
             return <Redirect to ='/'></Redirect>
         }
@@ -163,7 +179,7 @@ export default class registergame extends Component {
                         {this.state.loaded === true ?
                         <div>
                             <h2>Your games</h2>
-                            <Modal open={this.state.openMessageBox} onClose={this.closeBox} size='mini'>
+                            <Modal open={this.state.openMessageBox} onClose={this.closeBox} size='large'>
                                 <Modal.Header>
                                     Adição de Jogo ao seu perfil
                                 </Modal.Header>
@@ -179,34 +195,53 @@ export default class registergame extends Component {
                             {this.state.OverwatchInfo.profile !== undefined ?
                                 <OWCard {...this.state.GamerLogado}> </OWCard>
                                 : null }
-
-
+                                {this.state.DotaInfo.stats !== undefined ?
+                                <DOTACard {...this.state.GamerLogado}></DOTACard>:null}
                             <h2>Choose a new game</h2>
                             <Card.Group>
-                            {this.state.GamesSemConta.map((game) =>
-                         
-                                <Card key={game.Game_ID}>
-                                    <Image src={game.EndPoint} fluid style={{height:'150px'}} />
+                                {this.state.OverwatchInfo.profile === undefined ?
+                                <Card >
+                                    <Image src={overwatchImage} fluid style={{height:'150px'}} />
                                     <Card.Content>
-                                        <Card.Header>{game.Name}</Card.Header>
+                                        <Card.Header>Overwatch</Card.Header>
                                         <Card.Meta>
                                             FPS
                                         </Card.Meta>
-                                        <Card.Description>
-                                            {game.Description}
+                                        <Card.Description>Insira seu id da blizzard, nesse formato -> <br/> Exemplo-1234
                                         </Card.Description>
                                     </Card.Content>
                                     <Card.Content extra>
-                                        <Input value={this.state.overwatchIDAPI} onChange={e => this.handleOWAPIInput(e)} placeholder='Game ID'/>
+                                        <Input value={this.state.overwatchIDAPI} 
+                                            onChange={e => this.handleOWAPIInput(e)} placeholder='Battle.net ID'></Input>
                                         <Button.Group >
                                             <Button color='green' onClick={e => this.handleAdicionarButton(e, 1)}>
                                                 Add
                                             </Button>
                                         </Button.Group>
                                     </Card.Content>
-                                </Card> 
-                            )}
-                               
+                                </Card> : null }
+
+                                {this.state.DotaInfo.stats === undefined ?
+                                <Card >
+                                    <Image src={Dota2} fluid style={{height:'150px'}} />
+                                    <Card.Content>
+                                        <Card.Header>Dota 2</Card.Header>
+                                        <Card.Meta>
+                                            MOBA
+                                        </Card.Meta>
+                                        <Card.Description>Insira seu id da steam, nesse formato
+                                        </Card.Description>
+                                    </Card.Content>
+                                    <Card.Content extra>
+                                        <Input value={this.state.dotaAPI} 
+                                            onChange={e => this.handleDotaAPIInput(e)} placeholder='Steam ID'></Input>
+                                        <Button.Group >
+                                            <Button color='green' onClick={e => this.handleAdicionarButton(e, 2)}>
+                                                Add
+                                            </Button>
+                                        </Button.Group>
+                                    </Card.Content>
+                                </Card> : null }
                             </Card.Group>
                             <br></br>
                             <Button.Group >

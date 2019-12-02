@@ -567,6 +567,7 @@
     <Content Include="Views\Shared\Chat.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Images\" />
     <Folder Include="Views\Business\" />
   </ItemGroup>
   <ItemGroup>

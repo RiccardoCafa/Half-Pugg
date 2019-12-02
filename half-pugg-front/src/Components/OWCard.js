@@ -20,9 +20,11 @@ class OWCard extends Component {
 
     componentDidMount = async () => {
         console.log(this.state.Gamer.ID);
-        await api.get('api/Overwatch/GetPlayers?PlayerID=' + this.state.Gamer.ID).then(res =>
-            this.setState({OWGamer: res.data})
-        ).catch(err => console.log('jogador não possui conta overwatch cadastrada!'));
+        const response = await api.get('api/Overwatch/GetPlayers?PlayerID=' + this.state.Gamer.ID).catch(err => console.log('jogador não possui conta overwatch cadastrada!'));
+        if(response){
+            this.setState({OWGamer: response.data});
+            console.log(response.data);
+        }
     }
     
     componentWillUnmount = () => {}
@@ -42,7 +44,7 @@ class OWCard extends Component {
         return (
             <div>
                 {this.state.OWGamer.profile !== undefined ?
-                <Segment>
+                <Segment style={{width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
                     <Card fluid style={{width: '40%'}}>
                         <Image src={overwatchImage} fluid style={{height:'150px'}} />
                         <Card.Content>
@@ -57,7 +59,7 @@ class OWCard extends Component {
                                     <List.Item>
                                         <List.Content>
                                             <Label
-                                            icon='chart bar outline' basic 
+                                            icon='trophy' basic 
                                             content={`Rating ${this.state.OWGamer.profile.rating === 0 ? 'não possui' : this.state.OWGamer.profile.rating}`} >
                                             </Label>
                                         </List.Content>
@@ -90,7 +92,7 @@ class OWCard extends Component {
                             </Card.Description>
                         </Card.Content>
                         <Card.Content extra>
-                            {this.state.OWGamer.quickCareer !== undefined ?
+                            {this.state.OWGamer.quickCareer !== undefined && this.state.OWGamer.quickCareer !== null ?
                                 <div>
                                 <a onClick={() => this.handleQuickCareerCollapse(!quickCareerCollapse)}>
                                     <Icon name='bolt'></Icon>
@@ -158,7 +160,7 @@ class OWCard extends Component {
                             : <div />}
                         </Card.Content>
                         <Card.Content extra>
-                            {this.state.OWGamer.compCareer !== undefined ?
+                            {this.state.OWGamer.compCareer !== undefined && this.state.OWGamer.compCareer !== null ?
                                     <div>
                                     <a onClick={() => this.handleCareerCollapse(!compCareerCollapse)}>
                                         <Icon name='chess rook'></Icon>

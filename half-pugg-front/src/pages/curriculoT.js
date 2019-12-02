@@ -9,6 +9,7 @@ import gostosao from '../images/chris.jpg';
 import OWCard from '../Components/OWCard';
 import getPlayer from '../Components/getPlayer';
 import CurriculoRightSide from '../Components/curriculoRightSide';
+import DOTACard from '../Components/DOTACard';
 
 export default class Curriculo extends Component {
 
@@ -71,10 +72,7 @@ export default class Curriculo extends Component {
                                             <Icon aria-hidden="true" name="plug" >
                                             </Icon> Conectar
                                         </Menu.Item>
-                                        <Menu.Item style={{cursor:'pointer'}}>
-                                            <Icon name="space shuttle"/> Criar Salas
-                                        </Menu.Item>
-                                        <Menu.Item style={{cursor:'pointer'}}>
+                                        <Menu.Item style={{cursor:'pointer'}} onClick={() => {this.props.history.push('/MyGroups')}}>
                                             <Icon name="users"/> Meus Grupos
                                         </Menu.Item>
                                         <Menu.Item style={{cursor:'pointer'}} onClick={() => {this.props.history.push('/registergame')}}>
@@ -115,6 +113,7 @@ export default class Curriculo extends Component {
                                         </div>
                                 </div>
                                     <OWCard {...this.state.Gamer}></OWCard>
+                                    <DOTACard {...this.state.Gamer}></DOTACard>
                                 </div>
                             </Grid.Column>
                             <Grid.Column width={4} id='coluna-3' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', alignContent: 'center'}}>

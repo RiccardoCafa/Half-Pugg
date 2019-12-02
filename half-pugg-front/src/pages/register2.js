@@ -15,7 +15,7 @@ export default class Register2 extends Component {
         Gamer: {},
         toLogin: false,
         showMessage: false,
-        imageToUpload: '',
+        imageToUpload: {},
     }
 
     componentDidMount() {
@@ -48,14 +48,15 @@ export default class Register2 extends Component {
 
         console.log(this.state.Gamer);
         var newGamer = {...this.state.Gamer};
-
-        let config = { headers: {'Content-Type': 'multipart/form-data'}};
-        let formData = new FormData();
-        formData.append('image', this.state.imageToUpload);
-        const response = await api.post('api/ImageUpload', formData, config);
-        console.log(response.data);
-        if(response){
-            newGamer.ImagePath = response.data;
+        if(this.state.imageToUpload !== ''){
+            let config = { headers: {'Content-Type': 'multipart/form-data'}};
+            let formData = new FormData();
+            formData.append('image', this.state.imageToUpload);
+            const response = await api.post('api/ImageUpload', formData, config);
+            console.log(response.data);
+            if(response){
+                newGamer.ImagePath = response.data;
+            }
         }
 
         newGamer.Bio = this.state.descricao;
@@ -71,9 +72,8 @@ export default class Register2 extends Component {
     }
 
     uploadImage = async (e) => {
-        let imageP = URL.createObjectURL(e.target.files[0]);
-        await this.setState({imageToUpload: imageP, MyImage: imageP});
-        console.log(imageP);
+        this.setState({imageToUpload: e.target.files[0], MyImage: URL.createObjectURL(e.target.files[0])});
+        console.log(e.target.files[0]);
     }
 
     render() {

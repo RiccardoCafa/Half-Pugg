@@ -1,16 +1,13 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
-import { Header } from 'semantic-ui-react';
+import { Message, Button, Input, List } from 'semantic-ui-react';
 import ow from '../images/overwatch.jpg'
 
 import api from '../services/api'
 import Auth from '../Components/auth';
 
 
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown , List} from 'semantic-ui-react';
 
-
-import gostosao from '../images/chris.jpg';
 import { request } from 'http';
 
 export default class Chat extends Component {
@@ -43,11 +40,15 @@ export default class Chat extends Component {
         
         this.setState({GamerLogado: myData})
         this.setNickname(myData);
-     
-       
-       
+            
     }
-
+    setNicknamePlayer = async(gamer) => {
+        const p = await api.get('api/Player/', gamer.ID);
+        if (p!= null && p.data != null){
+            return p.Nickname;
+        }
+        else return "Anonimo";
+    }
     setNickname(myData) {
         this.setState({Nickname: myData.Nickname})
     }
@@ -59,18 +60,23 @@ export default class Chat extends Component {
     render() {
                
         return (
-            <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}}>
+            <div>
+            <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}} withd = {1000}>
                 {this.state.messages.map((message) => 
-                    <List.Item >
-                        <List.Content>
-                            <List.Header>{message.Nickname}</List.Header>
-                            <List.Description>{message.Content }</List.Description>
-                        </List.Content>
+                    <List.Item >      
+                        <List.Header>{this.setNicknamePlayer(message.IdPlayer)}</List.Header>
+                        <Message floating size='tiny' color='green'>{message.Content }</Message>                                     
+                        
                     </List.Item>
                 )}
                 
             </List>
+            <div>
+                <Input icon='message' iconPosition='left' />
+                <Button attached='left' >Send</Button>
+            </div>
+            </div>
             
-        )
+        );
     }
 }

@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-import './MyGroups.css'
 import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
