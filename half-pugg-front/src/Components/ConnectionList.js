@@ -31,9 +31,11 @@ export default class ConnectionList extends Component {
             var index = array.indexOf(gamerMatch);
             if(index !== -1) {
                 array.splice(index, 1);
-                this.setState({RequestedMatches: array});
-                this.setState({NumberOfRequests: this.state.RequestedMatches.length});
-                this.setState({isMatching: true});
+                this.setState({
+                    RequestedMatches: array,
+                    isMatching: true
+                });
+                this.props.updateRequestes(this.state.RequestedMatches);
             }
         } catch(error) {
             console.log(error);

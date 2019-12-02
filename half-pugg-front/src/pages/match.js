@@ -60,8 +60,8 @@ export default class Match extends Component {
         }
     }
 
-    updateRequestes = (numberOf) => {
-        this.setState({NumberOfRequests: numberOf});
+    updateRequestes = (requests) => {
+        this.setState({NumberOfRequests: requests.length, RequestedMatches: requests});
     }
 
     // Abre as requisições de match
@@ -102,7 +102,7 @@ export default class Match extends Component {
                     {!this.state.NewConnections ?
                         <MatchList GamerLogado={this.state.GamerLogado}></MatchList>
                     :
-                        <ConnectionList GamerLogado={this.state.GamerLogado} requestedMatch={this.state.RequestedMatches}></ConnectionList>
+                        <ConnectionList GamerLogado={this.state.GamerLogado} requestedMatch={this.state.RequestedMatches} updateRequestes={this.updateRequestes}></ConnectionList>
                     }
                 </div>
             </div>  
