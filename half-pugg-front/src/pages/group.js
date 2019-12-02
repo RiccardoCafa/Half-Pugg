@@ -73,8 +73,13 @@ export default class Group extends Component {
                 this.setState({Friends: MatchData.data});
             }         
             
-        }                
+        }  
+        
+       
+
     }
+
+  
 
     setNickname(myData) {
         this.setState({Nickname: myData.Nickname})
