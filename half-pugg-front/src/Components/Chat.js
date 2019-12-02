@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
 import { Header } from 'semantic-ui-react';
-import $ from 'jquery';
-import 'signalr';   
 import ow from '../images/overwatch.jpg'
 
 import api from '../services/api'
@@ -42,18 +40,24 @@ export default class Chat extends Component {
             return;
         }
         
-        this.setState({GamerLogado: myData})
-        this.setNickname(myData);
-        var connection = $.hubConnection('http://localhost:44338/');
-        var proxy = connection.createHubProxy('[chatHub]');
-        this.state.hubConnection = new HubConnection('http://localhost:44338/signalr');
+        // this.setState({GamerLogado: myData})
+        // this.setNickname(myData);
+        // //  var connection = $.hubConnection('http://localhost:44338/');
+        // var proxy = connection.createHubProxy('[chatHub]');
+        // this.state.hubConnection = new HubConnection('http://localhost:44338/signalr');
 
-        this.state.hubConnection.connectToAPI(this.state.GamerLogado.ID);
+        // this.state.hubConnection.connectToAPI(this.state.GamerLogado.ID);
         
         
 
     }
-
+    setNicknamePlayer = async(gamer) => {
+        const p = await api.get('api/Player/', gamer.ID);
+        if (p!= null && p.data != null){
+            return p.Nickname;
+        }
+        else return "Anonimo";
+    }
     setNickname(myData) {
         this.setState({Nickname: myData.Nickname})
     }
@@ -67,7 +71,7 @@ export default class Chat extends Component {
                 {this.state.message.map((message) => 
                     <List.Item >
                         <List.Content>
-                            <List.Header>{message.Nickname}</List.Header>
+                            <List.Header>{this.setNicknamePlayer(message.IdPlayer)}</List.Header>
                             <List.Description>{message.Content }</List.Description>
                         </List.Content>
                     </List.Item>
