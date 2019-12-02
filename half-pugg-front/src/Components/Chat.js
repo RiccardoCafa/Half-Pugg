@@ -5,7 +5,8 @@ import ow from '../images/overwatch.jpg'
 
 import api from '../services/api'
 import Auth from '../Components/auth';
-import {HubConnectionBuilder, LogLevel} from '@aspnet/signalr'
+import {HttpTransportType,HubConnectionBuilder, LogLevel,} from '@aspnet/signalr'
+
 import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown , List} from 'semantic-ui-react';
 
 
@@ -42,15 +43,17 @@ export default class Chat extends Component {
         
         this.setState({GamerLogado: myData})
         this.setNickname(myData);
-        ///var connection = hubConnection('http://localhost:44338/');
-        //var proxy = connection.createHubProxy('[chatHub]');
+     
         const connection = new HubConnectionBuilder();
-        const conx = connection.withUrl('https://localhost:44338/signalr').configureLogging(LogLevel.Information).build();
-        
-        conx.start().then(() =>{
+        const hubConnection = connection.withUrl('https://localhost:44392/chat',{
+            skipNegotiation: true,
+            transport: HttpTransportType.WebSockets
+          }).configureLogging(LogLevel.Information).build();
+     //  const hubConnection = new HubConnection('https://localhost:44392/chat').configureLogging(LogLevel.Information).build();
+       hubConnection.start().then(() =>{
             console.log("conected!");
         }).catch(err => console.log(err));
-        //this.state.hubConnection.connectToAPI(this.state.GamerLogado.ID);
+       
     }
 
     setNickname(myData) {
@@ -72,8 +75,6 @@ export default class Chat extends Component {
                     </List.Item>
                 )}
             </List>
-                
-                
             
         )
     }
