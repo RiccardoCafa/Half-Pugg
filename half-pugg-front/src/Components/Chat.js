@@ -44,14 +44,24 @@ export default class Chat extends Component {
         this.setState({GamerLogado: myData})
         this.setNickname(myData);
      
-        const connection = new HubConnectionBuilder();
-        const hubConnection = connection.withUrl('https://localhost:44392/chat',{
+       this.state.hubConnection = new HubConnectionBuilder().withUrl('https://localhost:44392/chat',{
             skipNegotiation: true,
             transport: HttpTransportType.WebSockets
           }).configureLogging(LogLevel.Information).build();
-     //  const hubConnection = new HubConnection('https://localhost:44392/chat').configureLogging(LogLevel.Information).build();
-       hubConnection.start().then(() =>{
+    
+          this.state.hubConnection.start().then(() =>{
             console.log("conected!");
+
+            this.state.hubConnection.on('receiveMessage',(message, userID) =>{
+                //funcao chamada qnd uma mensagem é recebida
+            });
+            this.state.hubConnection.on('leavedGroup',(userID) =>{
+                //funcao chamada qnd alguém sai do grupo
+            });
+            this.state.hubConnection.on('joinedGroup',(userID) =>{
+                //funcao chamada qnd alguém entra no grupo
+            });
+
         }).catch(err => console.log(err));
        
     }
@@ -60,6 +70,23 @@ export default class Chat extends Component {
         this.setState({Nickname: myData.Nickname})
     }
 
+    connectPlayer(playerID){
+        this.state.hubConnection.invoke('connect',playerID);
+    }
+
+    joinGroup(groupID,playerID){
+        this.state.hubConnection.invoke('joinGroup',groupID,playerID);
+    }
+
+    leaveGroup(groupID,playerID){
+        this.state.hubConnection.invoke('leaveGroup',groupID,playerID);
+    }
+
+    sendMessage(message,groupID,playerID){
+        this.state.hubConnection.invoke('sendMessage',message,groupID,playerID);
+    }
+
+    
     // Faz uma requisição de match para outro gamer
     
     render() {
