@@ -112,8 +112,18 @@ export default class Curriculo extends Component {
                                         </div>
                                         </div>
                                 </div>
-                                    <OWCard {...this.state.Gamer}></OWCard>
-                                    <DOTACard {...this.state.Gamer}></DOTACard>
+                              
+                                <Grid columns = {2} style={{'marginTop': '1%', 'marginLeft': '1%'}}>
+                                    <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
+                                           <OWCard {...this.state.Gamer}/> 
+                                    </Grid.Column>
+                                    <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
+                                            <DOTACard {...this.state.Gamer}/>
+                                    </Grid.Column>
+                                </Grid>
+
+                                    {/* <OWCard {...this.state.Gamer}></OWCard>
+                                    <DOTACard {...this.state.Gamer}></DOTACard> */}
                                 </div>
                             </Grid.Column>
                             <Grid.Column width={4} id='coluna-3' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', alignContent: 'center'}}>

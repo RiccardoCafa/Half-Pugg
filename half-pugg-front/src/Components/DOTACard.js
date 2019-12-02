@@ -43,8 +43,8 @@ class OWCard extends Component {
         return (
             <div>
                 {this.state.OWGamer.profile !== undefined ?
-                <Segment style={{width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-                    <Card fluid style={{width: '40%'}}>
+               
+                    <Card fluid style={{width: '100%'}}>
                         <Image src={dotaImage} fluid style={{height:'150px'}} />
                         <Card.Content>
                             <Card.Header as='h3' content='Dota 2'></Card.Header>
@@ -142,7 +142,7 @@ class OWCard extends Component {
                             : <div />}
                         </Card.Content>
                     </Card>
-                </Segment>
+              
                 : <div></div>}
             </div>
         )
