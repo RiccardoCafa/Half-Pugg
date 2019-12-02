@@ -22,14 +22,16 @@ namespace ChatHubServer.chatHub
             }
             else
             {
-                userConnections[userID] = new HashSet<string>() { Context.ConnectionId};
+                userConnections.Add(userID, new HashSet<string>() { Context.ConnectionId});
             }
         }
 
         public async Task JoinGroup(string groupID,int userID)
         {
+            if (!userConnections.ContainsKey(userID)) Connect(userID);
             foreach(var v in userConnections[userID])
             {
+                Console.WriteLine(v);
                 await Groups.AddToGroupAsync(v, groupID);
             }
             

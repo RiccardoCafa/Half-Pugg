@@ -3,7 +3,7 @@ import {Redirect} from 'react-router-dom';
 import { Header } from 'semantic-ui-react';
 
 import ow from '../images/overwatch.jpg'
-
+import {HttpTransportType,HubConnectionBuilder, LogLevel,} from '@aspnet/signalr'
 import './match.css'
 import api from '../services/api'
 import Auth from '../Components/auth';
@@ -30,7 +30,8 @@ export default class Group extends Component {
         },
         Integrants : [], 
         MenssageList : [    ],
-        Friends :[]
+        Friends :[],
+        hubConnection: null
     }
 
     async componentDidMount() {
@@ -73,7 +74,53 @@ export default class Group extends Component {
                 this.setState({Friends: MatchData.data});
             }         
             
-        }                
+        }  
+        
+        this.state.hubConnection = new HubConnectionBuilder().withUrl('https://localhost:44392/chat',{
+            skipNegotiation: true,
+            transport: HttpTransportType.WebSockets
+          }).configureLogging(LogLevel.Information).build();
+    
+          this.state.hubConnection.start().then(() =>{
+            console.log("conected!");
+
+            this.state.hubConnection.on('receiveMessage',(message, userID) =>{
+                //funcao chamada qnd uma mensagem é recebida
+                console.log(message);
+            });
+            this.state.hubConnection.on('leavedGroup',(userID) =>{
+                //funcao chamada qnd alguém sai do grupo
+                console.log('Saiu do grupo: '+userID)
+            });
+            this.state.hubConnection.on('joinedGroup',(userID) =>{
+                //funcao chamada qnd alguém entra no grupo
+                console.log('Entrou do grupo: '+userID)
+            });
+            this.state.hubConnection.on('error',(erro) =>{
+                //funcao chamada qnd alguém entra no grupo
+                console.log(erro)
+            });
+           
+            this.joinGroup('ranked',1)
+          
+        }).catch(err => console.log(err));
+
+    }
+
+    connectPlayer(playerID){
+        this.state.hubConnection.invoke('connect',playerID);
+    }
+
+    joinGroup(groupID,playerID){
+        this.state.hubConnection.invoke('joinGroup',groupID,playerID);
+    }
+
+    leaveGroup(groupID,playerID){
+        this.state.hubConnection.invoke('leaveGroup',groupID,playerID);
+    }
+
+    sendMessage(message,groupID,playerID){
+        this.state.hubConnection.invoke('sendMessage',message,groupID,playerID);
     }
 
     setNickname(myData) {

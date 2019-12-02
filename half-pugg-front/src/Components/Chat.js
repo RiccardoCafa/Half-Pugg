@@ -5,7 +5,7 @@ import ow from '../images/overwatch.jpg'
 
 import api from '../services/api'
 import Auth from '../Components/auth';
-import {HttpTransportType,HubConnectionBuilder, LogLevel,} from '@aspnet/signalr'
+
 
 import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown , List} from 'semantic-ui-react';
 
@@ -19,8 +19,8 @@ export default class Chat extends Component {
         Nickname: '',
         GamerLogado: {},
         message: '',
-        messages: [],
-        hubConnection: null
+        messages: []
+       
     }
 
     async componentDidMount() {
@@ -44,25 +44,7 @@ export default class Chat extends Component {
         this.setState({GamerLogado: myData})
         this.setNickname(myData);
      
-       this.state.hubConnection = new HubConnectionBuilder().withUrl('https://localhost:44392/chat',{
-            skipNegotiation: true,
-            transport: HttpTransportType.WebSockets
-          }).configureLogging(LogLevel.Information).build();
-    
-          this.state.hubConnection.start().then(() =>{
-            console.log("conected!");
-
-            this.state.hubConnection.on('receiveMessage',(message, userID) =>{
-                //funcao chamada qnd uma mensagem é recebida
-            });
-            this.state.hubConnection.on('leavedGroup',(userID) =>{
-                //funcao chamada qnd alguém sai do grupo
-            });
-            this.state.hubConnection.on('joinedGroup',(userID) =>{
-                //funcao chamada qnd alguém entra no grupo
-            });
-
-        }).catch(err => console.log(err));
+       
        
     }
 
@@ -70,21 +52,6 @@ export default class Chat extends Component {
         this.setState({Nickname: myData.Nickname})
     }
 
-    connectPlayer(playerID){
-        this.state.hubConnection.invoke('connect',playerID);
-    }
-
-    joinGroup(groupID,playerID){
-        this.state.hubConnection.invoke('joinGroup',groupID,playerID);
-    }
-
-    leaveGroup(groupID,playerID){
-        this.state.hubConnection.invoke('leaveGroup',groupID,playerID);
-    }
-
-    sendMessage(message,groupID,playerID){
-        this.state.hubConnection.invoke('sendMessage',message,groupID,playerID);
-    }
 
     
     // Faz uma requisição de match para outro gamer
@@ -101,6 +68,7 @@ export default class Chat extends Component {
                         </List.Content>
                     </List.Item>
                 )}
+                
             </List>
             
         )
