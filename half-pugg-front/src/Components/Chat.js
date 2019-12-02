@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
-import { Message, Button, Input, List } from 'semantic-ui-react';
+import { Message, Button, Input, List, Loader } from 'semantic-ui-react';
 import ow from '../images/overwatch.jpg'
 
 import api from '../services/api'
@@ -14,7 +14,9 @@ export default class Chat extends Component {
 
     state = {
         messages: [],
-        hubConnection: null
+        hubConnection: null,
+        GamerLogado: {},
+        loaded: false,
     }
 
     async componentDidMount() {
@@ -60,16 +62,17 @@ export default class Chat extends Component {
 
         const message = await api.get('api/GroupMenssages?IdGroup='+this.props.Group.ID);
         
-        if (message!== null){
+        if (message){
             
             this.setState({messages : message.data});
-            
+            console.log(message);
         }
-        
+        this.setState({loaded: true});
        
     }
     setNicknamePlayer = async(gamer) => {
-        const p = await api.get('api/Player/', gamer.ID);
+        if(gamer === undefined) { console.log('ID undefined!!'); return; }
+        const p = await api.get('api/Player/', gamer);
         if (p!= null && p.data != null){
             return p.Nickname;
         }
@@ -99,24 +102,28 @@ export default class Chat extends Component {
     // Faz uma requisição de match para outro gamer
     
     render() {
-               
+        if(!this.state.loaded) {
+            return <Loader active></Loader>
+        }
         return (
             <div>
-            <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}} withd = {1000}>
-                {this.state.messages.map((message) => 
-                    <List.Item >      
-                        <List.Header>{this.setNicknamePlayer(message.IdPlayer)}</List.Header>
-                        <Message floating size='tiny' color='green'>{message.Content }</Message>                                     
-                        
-                    </List.Item>
-                )}
-            </List>
-            <div>
-                <Input icon='message' iconPosition='left' />
-                <Button attached='left' >Send</Button>
+                <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}} width={10}>
+                    {this.state.messages.map((message) => 
+                    <div key={message.ID}>
+                        <List.Item >      
+                            <List.Content>{message.Content}</List.Content>
+                        </List.Item>
+                        <List.Item>
+                            <List.Content size='tiny' color='green'></List.Content>                                   
+                        </List.Item>
+                    </div>
+                    )}
+                </List>
+                <div>
+                    <Input icon='comment alternate outline' iconPosition='left' />
+                    <Button attached='left' >Send</Button>
+                </div>
             </div>
-            </div>
-            
         );
     }
 }

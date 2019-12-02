@@ -70,7 +70,7 @@ export default class MyConnections extends Component {
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                        
                         {this.state.Group.map((group) => 
-                            <Card onClick={()=> this.props.history.push('/group/'+group.ID)}>
+                            <Card key={group.ID} onClick={()=> this.props.history.push('/group/'+group.ID)}>
                                     <Image src= {group.ImagePath} wrapped ui={false} />
                                     <Card.Content>
                                     <Card.Header>{group.Name}</Card.Header>
@@ -81,15 +81,13 @@ export default class MyConnections extends Component {
                                         <span className='date'>{'Owner: '+group.Admin}</span>
                                     </Card.Meta>
                                     </Card.Content>
-                                    <Card.Content extra>
-                                    <a>
-                                        
+                                    <Card.Content extra >
+                                        <a>
                                         <Icon name='user' />
                                         {group.PlayerCount +'/'+ group.Capacity}
-
                                         <Icon name='game' />
                                         {group.Game}
-                                    </a>
+                                        </a>
                                    
                                     </Card.Content>
                                 </Card>

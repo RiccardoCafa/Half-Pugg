@@ -107,6 +107,7 @@ export default class classification extends Component {
             ImOpen: false,
         }))
         .catch(err => this.setState({avaliacao: 'Algo de inesperado ocorreu, tente recarragar a página, se isso ocorrer novamente contate o suporte!'}));
+        window.location.reload();
     }
 
     fechaIsso = () => this.setState({ImOpen: false});
