@@ -56,6 +56,7 @@ namespace HalfPugg._3rd
 
     public class DotaPlayer
     {
+        public int idHalf { get; set; }
         public string tracked_until { get; set; }
         public int solo_competitive_rank { get; set; }
         public int competitive_rank { get; set; }
@@ -80,7 +81,7 @@ namespace HalfPugg._3rd
             setings.NullValueHandling = NullValueHandling.Ignore;
         }
 
-        public static async Task<DotaPlayer> GetPlayer(string PlayerID)
+        public static async Task<DotaPlayer> GetPlayer(string PlayerID, int id)
         {
             string res = await client.GetAsync(ENDPOINT_API + $"/players/{PlayerID}").Result.Content.ReadAsStringAsync();
             DotaPlayer player = JsonConvert.DeserializeObject<DotaPlayer>(res, setings);
@@ -116,15 +117,18 @@ namespace HalfPugg._3rd
             }
 
             player.stats = pStats;
+            player.idHalf = id;
 
             return player;
         }
 
-        public static IEnumerable<DotaPlayer> GetPlayers(ICollection<string>PlayerID)
+        public static IEnumerable<DotaPlayer> GetPlayers(ICollection<string> PlayerID, ICollection<int> ids)
         {
+            int count = 0;
             foreach(string id in PlayerID)
             {
-                yield return  GetPlayer(id).Result;
+                yield return GetPlayer(id, ids.ToArray()[count]).Result;
+                count++;
             }
         }
 

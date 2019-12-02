@@ -19,6 +19,20 @@ export default class MatchList extends Component {
             "elimination": [-2,-2],
             "competitve": false,
         },
+        DOTA: {
+            "kills": [-2, -2],
+            "deaths": [-2, -2],
+            "assists": [-2, -2],
+            "xp_per_min": [-2, -2],
+            "gold_per_min": [-2, -2],
+            "hero_damage": [-2, -2],
+            "tower_damage": [-2, -2],
+            "hero_healing": [-2, -2],
+            "last_hits": [-2, -2],
+            "mmr_estimate": [-2, -2],
+            "competitive_rank": [-2, -2],
+            "rank_tier": [-2, -2]
+        },
         owfType: [
             {
                 key: 1,
@@ -59,11 +73,6 @@ export default class MatchList extends Component {
                 value: 'Conhecidos',
             },
             {
-                key: 4,
-                text: 'Interesse',
-                value: 'Interesse'
-            },
-            {
                 key: 5,
                 text: 'Por Nickname',
                 value: 'Por Nickname'
@@ -76,6 +85,11 @@ export default class MatchList extends Component {
                 key: 1,
                 text: 'Overwatch',
                 value: 'Overwatch'
+            },
+            {
+                key: 2,
+                text: 'Dota 2',
+                value: 'Dota 2'
             }
         ],
         searchDelegate: Function,
@@ -139,19 +153,38 @@ export default class MatchList extends Component {
     }
     
     // Seta o filtro para a busca
-    openGamersByFilter = () => {
+    openGamersByFilter = async () => {
         console.log(this.state.OWF);
         this.setState({loadingFilter: true});
-        api.post('api/Overwatch/PostFilterPlayerRec?PlayerID=' + this.props.GamerLogado.ID, {
-            "role": this.state.OWF.role,
-            "level": [this.state.OWF.level[0], this.state.OWF.level[1]],
-            "rating": [this.state.OWF.rating[0], this.state.OWF.rating[1]],
-            "damage":[this.state.OWF.damage[0], this.state.OWF.damage[1]],
-            "elimination": [this.state.OWF.elimination[0], this.state.OWF.elimination[1]],
-            "competitve": false
+        if(this.state.gameSelected === 1){
+            await api.post('api/Overwatch/PostFilterPlayerRec?PlayerID=' + this.props.GamerLogado.ID, 
+            {
+                "role": this.state.OWF.role,
+                "level": [this.state.OWF.level[0], this.state.OWF.level[1]],
+                "rating": [this.state.OWF.rating[0], this.state.OWF.rating[1]],
+                "damage":[this.state.OWF.damage[0], this.state.OWF.damage[1]],
+                "elimination": [this.state.OWF.elimination[0], this.state.OWF.elimination[1]],
+                "competitve": false
+            })
+            .then( res => this.setState({GamerMatch: res.data})).catch(err => alert('voce não possui esse jogo cadastrado'));
+        } else if(this.state.gameSelected === 2){
+            await api.get('api/Dota/GetFilterPlayer?PlayerID='+ this.props.GamerLogado.ID, {
+                "kills": [this.state.DOTA.kills[0], this.state.DOTA.kills[1]],
+                "deaths": [this.state.DOTA.deaths[0], this.state.DOTA.deaths[1]],
+                "assists": [this.state.DOTA.assists[0], this.state.DOTA.assists[1]],
+                "xp_per_min": [this.state.DOTA.xp_per_min[0], this.state.DOTA.xp_per_min[1]],
+                "gold_per_min": [this.state.DOTA.gold_per_min[0], this.state.DOTA.gold_per_min[1]],
+                "hero_damage": [this.state.DOTA.hero_damage[0], this.state.DOTA.hero_damage[1]],
+                "tower_damage": [this.state.DOTA.tower_damage[0], this.state.DOTA.tower_damage[1]],
+                "hero_healing": [this.state.DOTA.hero_healing[0], this.state.DOTA.hero_healing[1]],
+                "last_hits": [this.state.DOTA.last_hits[0], this.state.DOTA.last_hits[1]],
+                "mmr_estimate": [this.state.DOTA.mmr_estimate[0], this.state.DOTA.mmr_estimate[1]],
+                "competitive_rank": [this.state.DOTA.competitive_rank[0], this.state.DOTA.competitive_rank[1]],
+                "rank_tier": [this.state.DOTA.rank_tier[0], this.state.DOTA.rank_tier[1]]
+            }).then(res => this.setState({GamerMatch: res.data})).catch(err => alert('voce não possui esse jogo cadastrado'));
+        }
 
-        })
-        .then( res => this.setState({GamerMatch: res.data, loadingFilter: false})).catch(err => console.log(err.message));
+        this.setState({loadingFilter: false});
     }
 
     //busca players por nickname e nome completo parecidos
@@ -208,9 +241,6 @@ export default class MatchList extends Component {
                 // conhecidos
                 this.setState({searchDelegate: this.getPlayersToRec, typeSearch: 1});
             break;
-            case 4: 
-                // interesses
-            break;
             case 5:
                 this.setState({searchDelegate: this.getPlayerByNickname});
             break;
@@ -234,10 +264,115 @@ export default class MatchList extends Component {
 
     setNicknameToFind = (e) => this.setState({NicknameToFind: e.target.value});
 
-    setGameFilter = () => {
-        this.setState({gameSelected: 1});
+    setGameFilter = (e, {value}) => {
+        let key = this.state.gamesToSelect.filter(function(item){
+            return item.value === value
+        });
+        this.setState({gameSelected: key[0].key});
     }
       
+    //#region filtro dota
+    setDeaths = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.deaths[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+    setAssists = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.assists[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+
+    setKills = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.kills[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+
+    setXpPerMin = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.xp_per_min[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+
+    setGoldPerMin = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.gold_per_min[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+    setHeroDamage = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.hero_damage[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+    setTowerDamage = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.tower_damage[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+    setHeroHealing = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.hero_healing[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+    setLastHits = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.last_hits[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+    setMMR = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.mmr_estimate[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+    setCompetitiveRank = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.competitive_rank[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+    setRankTier = (level, ind) => {
+        if(level === ''){ level = -2; }
+        let owf = {...this.state.DOTA}
+        owf.rank_tier[ind] = level;
+        this.setState({
+            DOTA: owf,
+        })
+    }
+    //#endregion
+
     //#region filtro ow
     setRole = (role) => {
         if(role === '') {
@@ -387,8 +522,6 @@ export default class MatchList extends Component {
                                                     Level
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <Dropdown options={this.state.owfType} placeholder='Tipo de filtro' 
-                                                    onChange={this.setFilterType} />
                                                     <Input placeholder='menor que' 
                                                         value={this.state.OWF.level[0] >= 0 ? this.state.OWF.level[0].toString(2) : ''} 
                                                         onChange={e => this.setLevel(e.target.value, 0)} size='mini'></Input>
@@ -451,6 +584,175 @@ export default class MatchList extends Component {
                                                     <Input placeholder='maior que' 
                                                         value={this.state.OWF.elimination[1] >= 0 ? this.state.OWF.elimination[1].toString(2):''} 
                                                         onChange={e => this.setElimination(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                        </Table.Body>
+                                    </Table>
+                                </div> : null}
+                                {this.state.gameSelected === 2 ?
+                                <div>
+                                    <Table celled>
+                                        <Table.Header>
+                                            <Table.Row>
+                                            <Table.HeaderCell>Filtro</Table.HeaderCell>
+                                            <Table.HeaderCell>Valores</Table.HeaderCell>
+                                            </Table.Row>
+                                        </Table.Header>
+                                        <Table.Body>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    Kills
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.kills[0] >= 0 ? this.state.DOTA.kills[0].toString(2) : ''} 
+                                                        onChange={e => this.setKills(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.kills[1] >= 0 ? this.state.DOTA.kills[1].toString(2) : ''} 
+                                                        onChange={e => this.setKills(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    Deaths
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.deaths[0] >= 0 ? this.state.DOTA.deaths[0].toString(2) : ''} 
+                                                        onChange={e => this.setDeaths(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.deaths[1] >= 0 ? this.state.DOTA.deaths[1].toString(2) : ''} 
+                                                        onChange={e => this.setDeaths(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    Assists
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.assists[0] >= 0 ? this.state.DOTA.assists[0].toString(2) : ''} 
+                                                        onChange={e => this.setAssists(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.assists[1] >= 0 ? this.state.DOTA.assists[1].toString(2) : ''} 
+                                                        onChange={e => this.setAssists(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    XP/min
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.xp_per_min[0] >= 0 ? this.state.DOTA.xp_per_min[0].toString(2) : ''} 
+                                                        onChange={e => this.setXpPerMin(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.xp_per_min[1] >= 0 ? this.state.DOTA.xp_per_min[1].toString(2) : ''} 
+                                                        onChange={e => this.setXpPerMin(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    Gold/Min
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.gold_per_min[0] >= 0 ? this.state.DOTA.gold_per_min[0].toString(2) : ''} 
+                                                        onChange={e => this.setGoldPerMin(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.gold_per_min[1] >= 0 ? this.state.DOTA.gold_per_min[1].toString(2) : ''} 
+                                                        onChange={e => this.setGoldPerMin(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    Hero Damage
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.hero_damage[0] >= 0 ? this.state.DOTA.hero_damage[0].toString(2) : ''} 
+                                                        onChange={e => this.setHeroDamage(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.hero_damage[1] >= 0 ? this.state.DOTA.hero_damage[1].toString(2) : ''} 
+                                                        onChange={e => this.setHeroDamage(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    Tower Damage
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.tower_damage[0] >= 0 ? this.state.DOTA.tower_damage[0].toString(2) : ''} 
+                                                        onChange={e => this.setTowerDamage(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.tower_damage[1] >= 0 ? this.state.DOTA.tower_damage[1].toString(2) : ''} 
+                                                        onChange={e => this.setTowerDamage(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    Hero Healing
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.hero_healing[0] >= 0 ? this.state.DOTA.hero_healing[0].toString(2) : ''} 
+                                                        onChange={e => this.setHeroHealing(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.hero_healing[1] >= 0 ? this.state.DOTA.hero_healing[1].toString(2) : ''} 
+                                                        onChange={e => this.setHeroHealing(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    Last Hits
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.last_hits[0] >= 0 ? this.state.DOTA.last_hits[0].toString(2) : ''} 
+                                                        onChange={e => this.setLastHits(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.last_hits[1] >= 0 ? this.state.DOTA.last_hits[1].toString(2) : ''} 
+                                                        onChange={e => this.setLastHits(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    MMR
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.mmr_estimate[0] >= 0 ? this.state.DOTA.mmr_estimate[0].toString(2) : ''} 
+                                                        onChange={e => this.setMMR(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.mmr_estimate[1] >= 0 ? this.state.DOTA.mmr_estimate[1].toString(2) : ''} 
+                                                        onChange={e => this.setMMR(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    Competitive Rank
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.competitive_rank[0] >= 0 ? this.state.DOTA.competitive_rank[0].toString(2) : ''} 
+                                                        onChange={e => this.setCompetitiveRank(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.competitive_rank[1] >= 0 ? this.state.DOTA.competitive_rank[1].toString(2) : ''} 
+                                                        onChange={e => this.setCompetitiveRank(e.target.value, 1)} size='mini' ></Input>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>
+                                                    Rank Tier
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Input placeholder='menor que' 
+                                                        value={this.state.DOTA.rank_tier[0] >= 0 ? this.state.DOTA.rank_tier[0].toString(2) : ''} 
+                                                        onChange={e => this.setRankTier(e.target.value, 0)} size='mini'></Input>
+                                                    <Input placeholder='maior que' 
+                                                        value={this.state.DOTA.rank_tier[1] >= 0 ? this.state.DOTA.rank_tier[1].toString(2) : ''} 
+                                                        onChange={e => this.setRankTier(e.target.value, 1)} size='mini' ></Input>
                                                 </Table.Cell>
                                             </Table.Row>
                                         </Table.Body>

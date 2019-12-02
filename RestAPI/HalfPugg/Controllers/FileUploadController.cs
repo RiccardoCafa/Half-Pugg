@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -20,35 +21,28 @@ namespace HalfPugg.Controllers
         [Route("api/ImageUpload")]
         public async Task<IHttpActionResult> UploadImage()
         {
-
-            if(!Request.Content.IsMimeMultipartContent())
+            if (!Request.Content.IsMimeMultipartContent())
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
-
-            var ctx = HttpContext.Current;
-            var root = ctx.Server.MapPath(ImageDir);
-            var multiPartProvider = new MultipartFileStreamProvider(root);
-
+            string fileSaveLocation = HttpContext.Current.Server.MapPath("~/Images");
+            CustomMultipartFormDataStreamProvider provider = new CustomMultipartFormDataStreamProvider(fileSaveLocation);
+            List<string> files = new List<string>();
             try
             {
-                await Request.Content.ReadAsMultipartAsync(multiPartProvider);
+                await Request.Content.ReadAsMultipartAsync(provider);
 
-                foreach(var file in multiPartProvider.FileData)
+                foreach (var file in provider.FileData)
                 {
-                    var localFileName = file.LocalFileName;
-                    var filePath = Path.Combine(root, localFileName);
-
-                    File.Move(localFileName, filePath);
-                    string imageName = filePath.Split('\\').Last();
-                    return Ok(imageName);
+                    files.Add(Path.GetFileName(file.LocalFileName));
                 }
-            } catch(Exception e)
-            {
-                return BadRequest("Erro: " + e.Message);
+                var URL = Url.Content(Path.Combine("~/Images", files[0]));
+                return Ok(URL);
             }
-
-            return NotFound();
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet]
@@ -69,5 +63,25 @@ namespace HalfPugg.Controllers
             return result;
         }
 
+    }
+
+    public class CustomMultipartFormDataStreamProvider : MultipartFormDataStreamProvider
+    {
+        public CustomMultipartFormDataStreamProvider(string path) : base(path) { }
+
+        public override string GetLocalFileName(HttpContentHeaders headers)
+        {
+            return alfanumericoAleatorio(40) + "_" + headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+        }
+        public static string alfanumericoAleatorio(int tamanho)
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            var result = new string(
+                Enumerable.Repeat(chars, tamanho)
+                          .Select(s => s[random.Next(s.Length)])
+                          .ToArray());
+            return result;
+        }
     }
 }

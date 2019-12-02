@@ -15,7 +15,7 @@ export default class Register2 extends Component {
         Gamer: {},
         toLogin: false,
         showMessage: false,
-        imageToUpload: '',
+        imageToUpload: {},
     }
 
     componentDidMount() {
@@ -72,9 +72,8 @@ export default class Register2 extends Component {
     }
 
     uploadImage = async (e) => {
-        let imageP = URL.createObjectURL(e.target.files[0]);
-        await this.setState({imageToUpload: imageP, MyImage: imageP});
-        console.log(imageP);
+        this.setState({imageToUpload: e.target.files[0], MyImage: URL.createObjectURL(e.target.files[0])});
+        console.log(e.target.files[0]);
     }
 
     render() {

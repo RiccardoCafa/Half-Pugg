@@ -72,10 +72,7 @@ export default class Curriculo extends Component {
                                             <Icon aria-hidden="true" name="plug" >
                                             </Icon> Conectar
                                         </Menu.Item>
-                                        <Menu.Item style={{cursor:'pointer'}}>
-                                            <Icon name="space shuttle"/> Criar Salas
-                                        </Menu.Item>
-                                        <Menu.Item style={{cursor:'pointer'}}>
+                                        <Menu.Item style={{cursor:'pointer'}} onClick={() => {this.props.history.push('/MyGroups')}}>
                                             <Icon name="users"/> Meus Grupos
                                         </Menu.Item>
                                         <Menu.Item style={{cursor:'pointer'}} onClick={() => {this.props.history.push('/registergame')}}>

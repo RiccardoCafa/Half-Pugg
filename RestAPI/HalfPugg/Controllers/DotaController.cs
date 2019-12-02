@@ -21,7 +21,7 @@ namespace HalfPugg.Controllers
         {
             PlayerGame pg = db.PlayerGames.Where(x => x.IDGamer == PlayerID && x.IDGame == (int)Games.Dota).FirstOrDefault();
             if (pg == null) return NotFound();
-            DotaPlayer a = DotaAPI.GetPlayer(pg.IdAPI).Result;
+            DotaPlayer a = DotaAPI.GetPlayer(pg.IdAPI, pg.IDGamer).Result;
             return Ok(a);
         }
 
@@ -42,7 +42,7 @@ namespace HalfPugg.Controllers
         {
             var pg = db.PlayerGames.Where(x=>x.IDGame == (int)Games.Dota);
             if (pg == null) return NotFound();
-            var a = DotaAPI.GetPlayers(pg.Select(x=>x.IdAPI).ToList());
+            var a = DotaAPI.GetPlayers(pg.Select(x=>x.IdAPI).ToList(), pg.Select(x=>x.IDGamer).ToList());
             return Ok(a);
         }
 
@@ -51,7 +51,7 @@ namespace HalfPugg.Controllers
         public async Task<IHttpActionResult> PostPlayerInDota([FromBody]PlayerGame playerGame)
         {
 
-            if (DotaAPI.GetPlayer(playerGame.IdAPI) == null)
+            if (DotaAPI.GetPlayer(playerGame.IdAPI, playerGame.IDGamer) == null)
             {
                 return BadRequest($"{playerGame.IdAPI} não possui conta associada a overwatch ou conta não é publica");
             }
@@ -68,8 +68,67 @@ namespace HalfPugg.Controllers
             return Ok(playerGame);
         }
 
+        [Route("api/Dota/FilterPlayerRec")]
+        [HttpPost]
+        public IHttpActionResult GetPlayerFilterRec(int PlayerID, [FromUri]DotaFilter filter)
+        {
+            var Ows = GetDotaMatchFilter(PlayerID, filter);
+            List<PlayerRecomendation> recom = new List<PlayerRecomendation>();
+            List<Match> playerMatches = db.Matches.Where(x => x.IdPlayer1 == PlayerID || x.IdPlayer2 == PlayerID).AsEnumerable().ToList();
+            if (Ows == null)
+            {
+                return BadRequest("Jogador que requisitou o match não consta no banco");
+            }
+            else
+            {
+                foreach (DotaPlayer ow in Ows)
+                {
+                    if (playerMatches.Find(pm => pm.IdPlayer1 == ow.idHalf || pm.IdPlayer2 == ow.idHalf) != null)
+                    {
+                        continue;
+                    }
+                    PlayerRecomendation reco = new PlayerRecomendation()
+                    {
+                        playerFound = db.Gamers.Find(ow.idHalf),
+                        PlayerRecName = "filtro Overwatch",
+                        aproximity = 0f
+                    };
+                    recom.Add(reco);
+                }
+            }
+
+            return Ok(recom);
+        }
+
+        public IEnumerable<DotaPlayer> GetDotaMatchFilter(int PlayerID, [FromUri]DotaFilter filter)
+        {
+            Player p = db.Gamers.Find(PlayerID);
+
+            if (p == null)
+            {
+                return null;//BadRequest("Jogador que requisitou o match não consta no banco");
+            }
+
+            List<string> dotaIDs = new List<string>();
+            List<int> halfIDS = new List<int>();
+            List<DotaPlayer> ret = new List<DotaPlayer>();
+
+            foreach (var pg in db.PlayerGames.Where(x => x.IDGamer != PlayerID && x.IDGame == (int)Games.Dota))
+            {
+                halfIDS.Add(pg.IDGamer);
+                dotaIDs.Add(pg.IdAPI);
+            }
+
+            var dp = DotaAPI.GetPlayers(dotaIDs, halfIDS).Where(x => x != null && filterDota(x, filter));
+
+            if (dp == null) NotFound();
+
+            return dp;
+
+        }
+
         [ResponseType(typeof(IEnumerable<DotaPlayer>))]
-        [Route("api/Overwatch/GetFilterPlayer")]
+        [Route("api/Dota/GetFilterPlayer")]
         [HttpGet]
 
         public IHttpActionResult GetOwMatchFilter(int PlayerID, [FromUri]DotaFilter filter)
@@ -82,14 +141,16 @@ namespace HalfPugg.Controllers
             }
 
             List<string> dotaIDs = new List<string>();
+            List<int> halfIDS = new List<int>();
             List<DotaPlayer> ret = new List<DotaPlayer>();
 
             foreach(var pg in db.PlayerGames.Where(x=>x.IDGamer!=PlayerID && x.IDGame == (int)Games.Dota))
             {
+                halfIDS.Add(pg.IDGamer);
                 dotaIDs.Add(pg.IdAPI);
             }
 
-            var dp = DotaAPI.GetPlayers(dotaIDs).Where(x => x != null && filterDota(x,filter));
+            var dp = DotaAPI.GetPlayers(dotaIDs, halfIDS).Where(x => x != null && filterDota(x,filter));
 
             if (dp == null) NotFound();
             
