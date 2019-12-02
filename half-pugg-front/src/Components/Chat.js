@@ -149,6 +149,7 @@ export default class Chat extends Component {
     clicouEnv =()=>{
         if(this.state.inpt_message){
             this.sendMessage(this.state.inpt_message,this.state.groupID,this.state.GamerLogado.ID)
+            this.setState({inpt_message:''})
         }
         
     }
@@ -158,14 +159,14 @@ export default class Chat extends Component {
     }
     
     render() {
-      console.log(this.state.gamerID )
+        
         return (
             <div>
-            <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '15%'}} withd = {10}>
+            <List relaxed animated divided verticalAlign='middle'  withd = {10}>
                 {this.state.messages.map((message) => 
-                    <List.Item >      
-                        <List.Header>{message.sender}</List.Header>
-                        <Message floating size='tiny' color={message.id === this.state.gamerID ?'green': 'blue'}>{message.content }</Message>                                     
+                    <List.Item style={message.id === this.state.GamerLogado.ID ?{'marginLeft': '15%'}:{'marginRight':'15%'}}>      
+                        <List.Header >{message.sender}</List.Header>
+                        <Message floating size='tiny' color={message.id === this.state.GamerLogado.ID ?'green': 'blue'}>{message.content }</Message>                                     
                     </List.Item>
                 )} 
             </List>
