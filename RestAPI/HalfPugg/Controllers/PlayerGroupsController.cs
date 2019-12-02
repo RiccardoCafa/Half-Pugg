@@ -36,6 +36,36 @@ namespace HalfPugg.Controllers
             return Ok(playerGroup);
         }
 
+        
+        [ResponseType(typeof(PlayerGroup))]
+        [Route("api/PlayerGroups")]
+        [HttpGet]
+        public IHttpActionResult GetPlayerGroup(int playerID, int groupID)
+        {
+            PlayerGroup playerGroup =  db.PlayerGroups.Where(x => x.IdPlayer == playerID && x.IdGroup == groupID).FirstOrDefault();
+            if (playerGroup == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(playerGroup);
+        }
+
+        [ResponseType(typeof(ICollection<int>))]
+        [Route("api/PlayerGroups/GetGroups")]
+        [HttpGet]
+        public IHttpActionResult GetPlayerGroups(int playerID)
+        {
+            var groups = db.PlayerGroups.Where(x => x.IdPlayer == playerID).Select(x=>x.IdGroup);
+            
+            if (groups.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(groups);
+        }
+
         // PUT: api/PlayerGroups/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutPlayerGroup(int id, PlayerGroup playerGroup)

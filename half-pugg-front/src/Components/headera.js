@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
-import { Menu, Button, Segment, Icon } from 'semantic-ui-react';
+import { Menu, Button, Segment } from 'semantic-ui-react';
 
 import './header.css';
 

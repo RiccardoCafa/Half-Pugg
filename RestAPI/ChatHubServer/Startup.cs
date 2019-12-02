@@ -41,15 +41,20 @@ namespace ChatHubServer
             app.UseRouting();
             app.UseCors("CorsPolicy");
 
-            app.UseSignalR(routes => {
-                routes.MapHub<ChatHub>("/chat");
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<ChatHub>("/chat");
             });
+            //app.UseSignalR(routes => {
+            //    routes
+            //});
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("Runing ChatHub server...");
                 });
             });
         }

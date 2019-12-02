@@ -36,7 +36,16 @@ namespace HalfPugg.Controllers
             if (userValidated != null)
             {
                 TokenData data = JsonConvert.DeserializeObject<TokenData>(userValidated);
-                gamerL = db.Gamers.FirstOrDefault(g => g.ID == data.ID);
+                try
+                {
+                    gamerL = db.Gamers.FirstOrDefault(g => g.ID == data.ID);
+                }
+                catch(Exception e)
+                {
+
+                }
+
+               
             }
             return gamerL;
         }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {List, Checkbox, Image, Segment, Card, Grid, Header, Label, Icon, Statistic, Divider, Table} from 'semantic-ui-react';
+import {List, Image, Segment, Card, Label, Icon, Table} from 'semantic-ui-react';
 
 import api from '../services/api';
 import dotaImage from '../images/dota-2.jpg';
@@ -32,10 +32,10 @@ class OWCard extends Component {
     handleCareerCollapse = (ligado) => this.setState({compCareerCollapse: ligado});
 
     render() {
-        const { compCareerCollapse } = this.state;
+     
         const { quickCareerCollapse } = this.state;
 
-        let owLevel = 1;
+      let owLevel;
         if(this.state.OWGamer.profile !== undefined){
             owLevel = this.state.OWGamer.profile.prestige * 100 + this.state.OWGamer.profile.level;
         }

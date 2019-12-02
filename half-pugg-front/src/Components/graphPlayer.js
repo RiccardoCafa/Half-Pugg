@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ReactCytoscape, cytoscape } from 'react-cytoscape';
+import { ReactCytoscape } from 'react-cytoscape';
 import './graphStyle.css'
 import api from '../services/api';
 import {withRouter} from 'react-router-dom';
@@ -77,7 +77,7 @@ class GraphPlayer extends Component {
 	}
 
 	handleEval() {
-		const cy = this.cy;
+	
         const str = this.text.value;
 		eval(str);
 	}

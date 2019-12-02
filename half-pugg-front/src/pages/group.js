@@ -1,19 +1,15 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
 import { Header } from 'semantic-ui-react';
-
-import ow from '../images/overwatch.jpg'
-
 import './match.css'
 import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown , List} from 'semantic-ui-react';
+import { Card, Image, Button, Segment, Grid,List} from 'semantic-ui-react';
 
 
 import gostosao from '../images/chris.jpg';
-import { request } from 'http';
 import Chat from '../Components/Chat';
 
 export default class Group extends Component {
@@ -51,7 +47,7 @@ export default class Group extends Component {
             this.setState({toLogin: true});
             return;
         }
-        //console.log(this.props)
+       
         this.setState({GamerLogado: myData})
         this.setNickname(myData);
         
@@ -101,15 +97,13 @@ export default class Group extends Component {
                 <div>
                     <Headera gamer = {this.state.GamerLogado }/>
                 </div>  
-                <Segment style={{'marginLeft': '1%', 'marginRight': '0%', 'marginBottom': '1%'}}><Header as='h2' icon='users' content={this.state.Group.Name} textAlign='center' /></Segment>
+                <Segment style={{'marginLeft': '1%', 'marginRight': '0%', 'marginBottom': '1%'}}><Header as='h3' icon='users' content={this.state.Group.Name} textAlign='center' /></Segment>
                 
-                <Grid columns={3} divided style={{'marginTop': '1%', 'marginLeft': '1%'}}   >
+                <Grid columns={2} divided style={{'marginTop': '1%', 'marginLeft': '1%'}}   >
                 
-                    <Grid.Row >
-                        <Segment >
                             <Grid.Column width={4} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
-                                <Segment textAlign='center'><Header as='h2' textAlign='center' icon='users' content='Integrants'/></Segment>
-                                    <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}}>
+                                <Segment textAlign='center'><Header as='h3' textAlign='center' icon='users' content='Integrants'/></Segment>
+                                    <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%',overflow: 'auto', maxHeight: 250}}>
                                             {this.state.Integrants.map((playerFound) => 
                                                 <List.Item size='tiny' key={playerFound.ID} >
                                                     <Image avatar
@@ -124,18 +118,8 @@ export default class Group extends Component {
                                                 </List.Item>
                                             )}
                                     </List>
-                            </Grid.Column>
-                        </Segment>
-                        <Segment style={{'marginLeft': '1%'}} >
-                                <Grid.Column width={10} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}}>
-                                    <Segment textAlign='center'><Header as='h2' textAlign='center' icon='users' content='Menssagem'/></Segment>
-                                    <Chat GamerLogado = {this.state.GamerLogado} Group = {this.state.Group}></Chat>
-                                </Grid.Column>
-                            </Segment>
-                            <Segment style={{'marginLeft': '1%', 'marginRight': '0%', 'marginBottom': '1%'}}>
-                                <Grid.Column width={4} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '3%'}}>
-                                    <Segment textAlign='center'><Header as='h2' textAlign='center' icon='users' content='Invite' /></Segment>
-                                    <List >
+                                    <Segment textAlign='center'><Header as='h3' textAlign='center' icon='users' content='Invite' /></Segment>
+                                    <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%',overflow: 'auto', maxHeight: 250}}>
                                         
                                             {this.state.Friends.map((matcher) => 
                                                 <Card key={matcher.matchPlayer.ID}>
@@ -157,9 +141,20 @@ export default class Group extends Component {
                                             )}
                                         
                                     </List>
-                                </Grid.Column>
-                            </Segment>
-                    </Grid.Row>
+                            </Grid.Column>
+                       
+                            <Grid.Column width={11}>
+                                <Segment style={{marginLeft: '1%',marginRight : '1%'}}>
+                                    <Segment>
+                                        <Header as='h3' textAlign='center' icon='users' content='Menssagem' />
+                                    </Segment>    
+                                
+                                    <Chat GamerLogado = {this.state.GamerLogado} Group = {this.state.Group}></Chat>
+                                
+                                </Segment>
+                            </Grid.Column>
+                    
+                   
                    
                 </Grid>
                 

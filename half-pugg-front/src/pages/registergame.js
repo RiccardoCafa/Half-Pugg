@@ -10,8 +10,7 @@ import DOTACard from '../Components/DOTACard';
 
 import overwatchImage from '../images/overwatch.jpg';
 import Dota2 from '../images/dota-2.jpg';
-import lolImage from '../images/lol.jpg';
-import csImage from '../images/cs.jpg';
+
 
 export default class registergame extends Component {
 
@@ -72,7 +71,7 @@ export default class registergame extends Component {
                     this.setState({GamesUsuario:res.data});
         
                     this.state.GamesCadastrados.map((game)=>{
-                        if(this.state.GamesUsuario.includes(game) == false){
+                        if(this.state.GamesUsuario.includes(game) === false){
                             this.state.GamesSemConta.push(game);
                         }
                     })
@@ -133,29 +132,52 @@ export default class registergame extends Component {
         // 1 do Overwatch
         let apid;
         switch(idGame){
-            case 1: apid = this.state.overwatchIDAPI; break;
-            case 2: apid = this.state.dotaAPI; break;
+            case 1:
+                 apid = this.state.overwatchIDAPI;
+                 api.post('api/Overwatch/PostPlayerInOw?Region=0', {
+                    'ID': 0,
+                    'Description': 'Jogando',
+                    'IDGame': idGame,
+                    'IDGamer': this.state.GamerLogado.ID,
+                    'IdAPI': apid,
+                    'Weight': 0
+                }).then(res => 
+                    this.setState({
+                        openMessageBox: true,
+                        textMessageBox: 'Conta adicionada com sucesso!'
+                    })
+                ).catch(err =>
+                    this.setState({
+                        openMessageBox: true,
+                        textMessageBox: 'Conta não encontrada ou não está pública!'
+                    })
+                );
+                 break;
+            case 2:
+                 apid = this.state.dotaAPI;
+                 api.post('api/Dota/PostPlayerInDota', {
+                    'ID': 0,
+                    'Description': 'Jogando',
+                    'IDGame': idGame,
+                    'IDGamer': this.state.GamerLogado.ID,
+                    'IdAPI': apid,
+                    'Weight': 0
+                }).then(res => 
+                    this.setState({
+                        openMessageBox: true,
+                        textMessageBox: 'Conta adicionada com sucesso!'
+                    })
+                ).catch(err =>
+                    this.setState({
+                        openMessageBox: true,
+                        textMessageBox: 'Conta não encontrada ou não está pública!'
+                    })
+                );
+                 break;
             default: return;
         }
 
-        api.post('api/Overwatch/PostPlayerInOw?Region=0', {
-            'ID': 0,
-            'Description': 'Jogando',
-            'IDGame': idGame,
-            'IDGamer': this.state.GamerLogado.ID,
-            'IdAPI': apid,
-            'Weight': 0
-        }).then(res => 
-            this.setState({
-                openMessageBox: true,
-                textMessageBox: 'Conta adicionada com sucesso!'
-            })
-        ).catch(err =>
-            this.setState({
-                openMessageBox: true,
-                textMessageBox: 'Conta não encontrada ou não está pública!'
-            })
-        );
+       
     }
 
     goBack = () => {

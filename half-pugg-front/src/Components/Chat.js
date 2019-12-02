@@ -1,13 +1,7 @@
 import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
-import { Message, Button, Input, List, Loader } from 'semantic-ui-react';
-import ow from '../images/overwatch.jpg'
+import { Message, Button, Input, List,Segment } from 'semantic-ui-react';
 import api from '../services/api'
-import Auth from '../Components/auth';
 import {HttpTransportType,HubConnectionBuilder, LogLevel,} from '@aspnet/signalr'
-
-
-import { request } from 'http';
 
 export default class Chat extends Component {
 
@@ -18,9 +12,8 @@ export default class Chat extends Component {
         messages: [],
         hubConnection: null,
         inpt_message: '',
-        pog_ricc: false
-
-       
+        pog_ricc: false,
+        groupID: 0
     }
 
     async componentDidMount() {
@@ -28,10 +21,10 @@ export default class Chat extends Component {
         
         const jwt = localStorage.getItem("jwt");
         let stop = false;
-        let myData;
+        let gamer;
         if(jwt){
             await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
-                myData = res.data
+                gamer = res.data
             ).catch(error => stop = true)
         } else {
             stop = true;
@@ -42,56 +35,103 @@ export default class Chat extends Component {
             return;
         }
         
-        this.setState({GamerLogado: myData})
-        this.setNickname(myData);
+        this.setState({GamerLogado: gamer})
+        this.setState({groupID:this.props.Group.ID})
+        this.setNickname(gamer);
+        this.startConnection(gamer.ID)       
+        this.setState({pog_ricc:true})
+    }
 
-        this.state.hubConnection = new HubConnectionBuilder().withUrl('https://localhost:44392/chat',{
+    startConnection = (gamerID)=>{
+        const hub = new HubConnectionBuilder().withUrl('https://localhost:44392/chat',{
             skipNegotiation: true,
             transport: HttpTransportType.WebSockets
           }).configureLogging(LogLevel.Information).build();
     
-          this.state.hubConnection.start().then(() =>{
+          this.setState({hubConnection:hub})
+
+         hub.start().then(() =>{
             console.log("conected!");
 
-            this.state.hubConnection.on('receiveMessage',(message, userID) =>{
-                //funcao chamada qnd uma mensagem é recebida
-                console.log(message);
-            });
-            this.state.hubConnection.on('leavedGroup',(userID) =>{
-                //funcao chamada qnd alguém sai do grupo
-                console.log('Saiu do grupo: '+userID)
-            });
-            this.state.hubConnection.on('joinedGroup',(userID) =>{
-                //funcao chamada qnd alguém entra no grupo
-                console.log('Entrou do grupo: '+userID)
-            });
-            this.state.hubConnection.on('error',(erro) =>{
-                //funcao chamada qnd alguém entra no grupo
-                console.log(erro)
-            });
-           
-            this.joinGroup(this.props.Group,myData.ID)
+           hub.on('receiveMessage', this.receiveMessageClient);
+           hub.on('leavedGroup',this.leaveGroupClient);
+           hub.on('joinedGroup',this.joinGroupClient);
+            
+            api.get(`api/PlayerGroups/GetGroups?playerID=${gamerID}`).then(res=>{
+                res.data.map((id)=>{
+                    this.joinGroup(id,gamerID)
+                    console.log('logged: '+id)
+                })
+            })
+
           
         }).catch(err => console.log(err));
-        this.setState({pog_ricc:true})
     }
 
+    loadChat = ()=>{
+        api.get()
+    }
 
+    addMessageToChat = (send,message,senderId)=>{
+        var oldMessages = [...this.state.messages]
+        oldMessages.push({sender: send,content: message,id : senderId})
+        this.setState({messages:oldMessages})
+        console.log(this.state.messages)
+    }
+
+    joinGroupClient = (userID) =>{  
+        console.log('Entrou do grupo: '+userID)
+    }
+
+    leaveGroupClient = (userID) =>{
+    
+        console.log('Saiu do grupo: '+userID)
+    }
+
+    receiveMessageClient = (message, userID,userName) =>{
+        console.log(userName+': '+message);
+        this.addMessageToChat(userName,message,userID)
+    }
+
+    
+    
     connectPlayer(playerID){
         this.state.hubConnection.invoke('connect',playerID);
     }
 
     joinGroup(groupID,playerID){
-        this.state.hubConnection.invoke('joinGroup',groupID,playerID);
+        this.state.hubConnection.invoke('joinGroup',groupID.toString(),playerID);
     }
 
     leaveGroup(groupID,playerID){
-        this.state.hubConnection.invoke('leaveGroup',groupID,playerID);
+        this.state.hubConnection.invoke('leaveGroup',groupID.toString(),playerID);
     }
 
     sendMessage(message,groupID,playerID){
-        this.state.hubConnection.invoke('sendMessage',message,groupID,playerID);
+        
+        this.state.hubConnection.invoke('sendMessage',message,groupID.toString(),playerID,this.state.Nickname);
+        var pg;
+
+        api.get(`api/PlayerGroups?playerID=${playerID}&groupID=${groupID}`).then(res=>{
+            pg = res.data
+            api.post(`api/MessageGroups`,{
+                'Content' : message,
+                'Status' : 1,
+                'Send_Time' : new Date().toISOString(),
+                'ID_Relation' : pg.ID,
+                'PlayerGroup' : pg,
+            }).then(()=>{
+                console.log('saved')
+            }).catch(()=>{
+                console.log('failed to save')
+            })
+        }).catch(erro=>{
+            console.log('player or group not finded')
+        })
+
+        
     }
+
 
 
     setNicknamePlayer = async(gamer) => {
@@ -101,36 +141,44 @@ export default class Chat extends Component {
         }
         else return "Anonimo";
     }
+
     setNickname(myData) {
         this.setState({Nickname: myData.Nickname})
     }
 
     clicouEnv =()=>{
-        if(this.state.pog_ricc) this.sendMessage(this.state.inpt_message,this.props.Group,this.state.GamerLogado.ID)
+        if(this.state.inpt_message){
+            this.sendMessage(this.state.inpt_message,this.state.groupID,this.state.GamerLogado.ID)
+            this.setState({inpt_message:''})
+        }
+        
     }
 
     hanldeInput = (e) => {
         this.setState({inpt_message: e.target.value});
     }
-    // Faz uma requisição de match para outro gamer
     
+    calcMessSize = (mess)=>{
+        return mess.length<40? (80-mess.length):15;
+    }
+
     render() {
-        if(!this.state.pog_ricc) { return <Loader active /> }
+        
         return (
             <div>
-            <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}} withd = {1000}>
-                {this.state.messages.map((message) => 
-                    <List.Item >      
-                        <List.Header>{this.setNicknamePlayer(message.IdPlayer)}</List.Header>
-                        <Message floating size='tiny' color='green'>{message.Content }</Message>                                     
-                        
-                    </List.Item>
-                )}
-                
-            </List>
-            <div>
-                <Input icon='message' iconPosition='left' onChange={this.hanldeInput} value={this.state.inpt_message}/>
-                <Button attached='left' onClick={this.clicouEnv}>Send</Button>
+                <Segment textAlign='center' style={{overflow: 'auto', maxHeight: 400 }}>
+                <List relaxed divided verticalAlign='middle' >
+                    {this.state.messages.map((message) => 
+                        <List.Item style={message.id === this.state.GamerLogado.ID ?{'marginLeft': `${this.calcMessSize(message.content)}%`}:{'marginRight':`${this.calcMessSize(message.content)}%`}}>      
+                            <List.Header >{message.sender}</List.Header>
+                            <Message  size='tiny' color={message.id === this.state.GamerLogado.ID ?'green': 'blue'}>{message.content }</Message>                                     
+                        </List.Item>
+                    )} 
+                </List>
+            </Segment> 
+            <div >
+                <Input  icon='paper plane outline' iconPosition='left' onChange={this.hanldeInput} value={this.state.inpt_message}/>
+                <Button attached='right' onClick={this.clicouEnv }>Send</Button>
             </div>
             </div>
         );

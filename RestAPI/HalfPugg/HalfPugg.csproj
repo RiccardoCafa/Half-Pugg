@@ -266,8 +266,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="ChatServer\ChatConnection.cs" />
-    <Compile Include="ChatServer\ChatHub.cs" />
+    <Compile Include="ChatServer\Startup.cs" />
+    <Compile Include="Models\ChatConnection.cs" />
     <Compile Include="Controllers\AnalyticsController.cs" />
     <Compile Include="Controllers\CurriculoController.cs" />
     <Compile Include="Controllers\DotaController.cs" />
@@ -281,8 +281,6 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\GameInGamesController.cs" />
     <Compile Include="Controllers\GamerControler.cs" />
-    <Compile Include="ChatServer\ConnectionManager.cs" />
-    <Compile Include="ChatServer\Startup.cs" />
     <Compile Include="Controllers\PlayerGroupsController.cs" />
     <Compile Include="Controllers\PlayerRequestedGroupsController.cs" />
     <Compile Include="Migrations\201911230107169_Init.cs" />
@@ -564,7 +562,6 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Shared\Chat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
