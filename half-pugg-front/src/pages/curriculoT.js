@@ -9,6 +9,7 @@ import gostosao from '../images/chris.jpg';
 import OWCard from '../Components/OWCard';
 import getPlayer from '../Components/getPlayer';
 import CurriculoRightSide from '../Components/curriculoRightSide';
+import DOTACard from '../Components/DOTACard';
 
 export default class Curriculo extends Component {
 
@@ -115,6 +116,7 @@ export default class Curriculo extends Component {
                                         </div>
                                 </div>
                                     <OWCard {...this.state.Gamer}></OWCard>
+                                    <DOTACard {...this.state.Gamer}></DOTACard>
                                 </div>
                             </Grid.Column>
                             <Grid.Column width={4} id='coluna-3' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', alignContent: 'center'}}>

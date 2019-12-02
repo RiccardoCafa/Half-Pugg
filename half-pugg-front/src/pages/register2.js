@@ -48,14 +48,15 @@ export default class Register2 extends Component {
 
         console.log(this.state.Gamer);
         var newGamer = {...this.state.Gamer};
-
-        let config = { headers: {'Content-Type': 'multipart/form-data'}};
-        let formData = new FormData();
-        formData.append('image', this.state.imageToUpload);
-        const response = await api.post('api/ImageUpload', formData, config);
-        console.log(response.data);
-        if(response){
-            newGamer.ImagePath = response.data;
+        if(this.state.imageToUpload !== ''){
+            let config = { headers: {'Content-Type': 'multipart/form-data'}};
+            let formData = new FormData();
+            formData.append('image', this.state.imageToUpload);
+            const response = await api.post('api/ImageUpload', formData, config);
+            console.log(response.data);
+            if(response){
+                newGamer.ImagePath = response.data;
+            }
         }
 
         newGamer.Bio = this.state.descricao;

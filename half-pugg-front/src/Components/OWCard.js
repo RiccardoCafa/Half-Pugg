@@ -42,7 +42,7 @@ class OWCard extends Component {
         return (
             <div>
                 {this.state.OWGamer.profile !== undefined ?
-                <Segment>
+                <Segment style={{width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
                     <Card fluid style={{width: '40%'}}>
                         <Image src={overwatchImage} fluid style={{height:'150px'}} />
                         <Card.Content>
@@ -57,7 +57,7 @@ class OWCard extends Component {
                                     <List.Item>
                                         <List.Content>
                                             <Label
-                                            icon='chart bar outline' basic 
+                                            icon='trophy' basic 
                                             content={`Rating ${this.state.OWGamer.profile.rating === 0 ? 'não possui' : this.state.OWGamer.profile.rating}`} >
                                             </Label>
                                         </List.Content>

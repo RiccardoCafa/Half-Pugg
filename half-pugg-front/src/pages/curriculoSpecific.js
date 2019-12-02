@@ -9,6 +9,7 @@ import getPlayer from '../Components/getPlayer';
 import NLHeader from '../Components/NLHeader';
 import Headera from '../Components/headera';
 import CurriculoRightSide from '../Components/curriculoRightSide';
+import DOTACard from '../Components/DOTACard';
 
 export default class curriculoSpecific extends Component {
 
@@ -102,6 +103,7 @@ export default class curriculoSpecific extends Component {
                             </div>
                             <div>
                                 <OWCard {...this.state.GamerCurriculo}></OWCard>
+                                <DOTACard {...this.state.GamerCurriculo}></DOTACard>
                                 </div>
                             </div>
                         </Grid.Column>

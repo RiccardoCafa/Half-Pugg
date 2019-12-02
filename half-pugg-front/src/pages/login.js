@@ -113,22 +113,16 @@ export default class Login extends Component {
                                     type = {"password"}
                                     />
                                 <Button.Group>
-                                    <Button
+                                    <Button fluid
                                         color='green' 
                                         content='Login' 
                                         onClick={e => this.handleSubmit(e)} primary>
-                                    </Button>
-                                    <Button.Or />
-                                    <Button 
-                                        color='red' 
-                                        content='Branch Connect!' 
-                                        onClick={e => this.handleBranchConnect(e)} secondary>
                                     </Button>
                                 </Button.Group>
                             </Form>
                         </Grid.Column>
                         <Grid.Column verticalAlign='middle'>
-                                <Button content='Cadastrar-se' onClick={e => this.handleCadastro()} icon='signup' size='big'></Button>
+                                <Button fluid content='Cadastrar-se' onClick={e => this.handleCadastro()} icon='signup' size='big'></Button>
                         </Grid.Column>
                     </Grid>
                     <Divider vertical>Or</Divider>
