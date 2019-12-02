@@ -18,8 +18,8 @@ export default class Chat extends Component {
         messages: [],
         hubConnection: null,
         inpt_message: '',
-        pog_ricc: false
-
+        pog_ricc: false,
+        groupID: 0
        
     }
 
@@ -53,44 +53,61 @@ export default class Chat extends Component {
           this.state.hubConnection.start().then(() =>{
             console.log("conected!");
 
-            this.state.hubConnection.on('receiveMessage',(message, userID) =>{
-                //funcao chamada qnd uma mensagem é recebida
-                console.log(message);
-            });
-            this.state.hubConnection.on('leavedGroup',(userID) =>{
-                //funcao chamada qnd alguém sai do grupo
-                console.log('Saiu do grupo: '+userID)
-            });
-            this.state.hubConnection.on('joinedGroup',(userID) =>{
-                //funcao chamada qnd alguém entra no grupo
-                console.log('Entrou do grupo: '+userID)
-            });
+            this.state.hubConnection.on('receiveMessage', this.receiveMessage);
+            this.state.hubConnection.on('leavedGroup',this.leaveGroup);
+            this.state.hubConnection.on('joinedGroup',this.joinGroup);
             this.state.hubConnection.on('error',(erro) =>{
                 //funcao chamada qnd alguém entra no grupo
                 console.log(erro)
             });
            
-            this.joinGroup(this.props.Group,myData.ID)
+            this.setState({groupID:this.props.Group.ID})
+           
+            
+            this.joinGroup(this.props.Group.ID,myData.ID)
           
         }).catch(err => console.log(err));
         this.setState({pog_ricc:true})
     }
 
+    newMessage = (message)=>{
+        var oldmessages = [...this.state.messages]
+        oldmessages.push(message)
+        var newmessages = []
+        oldmessages.map((message) => newmessages.push(message.toString()))
+        this.setState({messages:newmessages});
+    }
+
+    joinGroup = (userID) =>{
+      //  this.newMessage('Entrou do grupo: '+userID)
+        console.log('Entrou do grupo: '+userID)
+    }
+
+    leaveGroup = (userID) =>{
+     //   this.newMessage('Saiu do grupo: '+userID)
+        console.log('Saiu do grupo: '+userID)
+    }
+     receiveMessage = async (message, userID) =>{
+      
+      
+        console.log(userID+': '+message);
+    }
 
     connectPlayer(playerID){
         this.state.hubConnection.invoke('connect',playerID);
     }
 
     joinGroup(groupID,playerID){
-        this.state.hubConnection.invoke('joinGroup',groupID,playerID);
+        this.state.hubConnection.invoke('joinGroup',groupID.toString(),playerID);
     }
 
     leaveGroup(groupID,playerID){
-        this.state.hubConnection.invoke('leaveGroup',groupID,playerID);
+        this.state.hubConnection.invoke('leaveGroup',groupID.toString(),playerID);
     }
 
     sendMessage(message,groupID,playerID){
-        this.state.hubConnection.invoke('sendMessage',message,groupID,playerID);
+        
+        this.state.hubConnection.invoke('sendMessage',message.toString(),groupID.toString(),playerID);
     }
 
 
@@ -106,7 +123,7 @@ export default class Chat extends Component {
     }
 
     clicouEnv =()=>{
-        if(this.state.pog_ricc) this.sendMessage(this.state.inpt_message,this.props.Group,this.state.GamerLogado.ID)
+         this.sendMessage(this.state.inpt_message,this.state.groupID,this.state.GamerLogado.ID)
     }
 
     hanldeInput = (e) => {
@@ -130,7 +147,7 @@ export default class Chat extends Component {
             </List>
             <div>
                 <Input icon='message' iconPosition='left' onChange={this.hanldeInput} value={this.state.inpt_message}/>
-                <Button attached='left' onClick={this.clicouEnv() }>Send</Button>
+                <Button attached='left' onClick={this.clicouEnv }>Send</Button>
             </div>
             </div>
             
