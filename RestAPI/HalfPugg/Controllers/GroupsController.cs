@@ -26,7 +26,7 @@ namespace HalfPugg.Controllers
         // GET: api/Groups/5
         [ResponseType(typeof(Group))]
         public async Task<IHttpActionResult> GetGroup(int id)
-        {
+        {   
             Group group = await db.Groups.FindAsync(id);
             if (group == null)
             {
@@ -123,7 +123,7 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
 
-            
+
 
             db.Groups.Add(group);
             await db.SaveChangesAsync();
@@ -161,21 +161,7 @@ namespace HalfPugg.Controllers
             return db.Groups.Count(e => e.ID == id) > 0;
         }
 
-        [Route("api/GroupIntegrants")]
-        [ResponseType(typeof(ICollection<Player>))]
-        [HttpGet]
-        public async Task<IHttpActionResult> GetGroupIntegrants(int IdGroup)
-        {
-            Group group = await db.Groups.FindAsync(IdGroup);
-            if (group == null)
-            {
-                return NotFound();
-            }
-          
-            var p = db.PlayerGroups.Where(x => x.IdGroup == IdGroup).Select(x => x.Player);
-            return Ok(p);
-        }
-    }
 
+    }
 
 }

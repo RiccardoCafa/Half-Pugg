@@ -23,7 +23,7 @@ class OpenCurriculum extends Component {
         return (
             <div>
                 <Modal
-                size='small'
+                    size='small'
                     trigger={
                         <Button fluid basic color='blue'>
                             Open Curriculum

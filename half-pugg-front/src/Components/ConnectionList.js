@@ -45,7 +45,7 @@ export default class ConnectionList extends Component {
             <div>
                 <Segment>
                         {this.state.RequestedMatches.length === 0 ?
-                            <div style={{display: 'flex', alignItems: 'center', 'marginBottom': '2%'}}>
+                            <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column', 'marginBottom': '2%'}}>
                                 <Statistic.Group>
                                     <Statistic
                                     value = "Oh :( você não possui convites de conexão..."

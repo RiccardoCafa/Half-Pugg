@@ -67,6 +67,14 @@ namespace HalfPugg.Controllers
             return NotFound();
         }
 
+        [Route("api/Matches/HasMatch")]
+        [HttpGet]
+        public IHttpActionResult HasMatch(int playerId1, int playerId2)
+        {
+            Match m = db.Matches.Where(x => (x.IdPlayer1 == playerId1 && x.IdPlayer2 == playerId2) || (x.IdPlayer1 == playerId2 && x.IdPlayer2 == playerId1)).FirstOrDefault();
+            return Ok(m != null);
+        }
+
         [Route("api/Matches/ByGamer")]
         [HttpGet]
         public async Task<IHttpActionResult> GetMatchByGamer(int gamerid)

@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalfPugg", "HalfPugg\HalfPugg.csproj", "{CFD2D12E-C02A-46F7-8F13-396A4D4316AB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{238760B8-E94A-4EC0-B736-2490D2DADEAD} = {238760B8-E94A-4EC0-B736-2490D2DADEAD}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatHubServer", "ChatHubServer\ChatHubServer.csproj", "{238760B8-E94A-4EC0-B736-2490D2DADEAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{CFD2D12E-C02A-46F7-8F13-396A4D4316AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFD2D12E-C02A-46F7-8F13-396A4D4316AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFD2D12E-C02A-46F7-8F13-396A4D4316AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{238760B8-E94A-4EC0-B736-2490D2DADEAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{238760B8-E94A-4EC0-B736-2490D2DADEAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{238760B8-E94A-4EC0-B736-2490D2DADEAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{238760B8-E94A-4EC0-B736-2490D2DADEAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

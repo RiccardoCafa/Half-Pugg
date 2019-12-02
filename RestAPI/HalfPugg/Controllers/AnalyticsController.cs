@@ -76,6 +76,30 @@ namespace HalfPugg.Controllers
             return Ok(analytics);
         }
 
+        [HttpGet]
+        [Route("api/Analytics/GetPlayersConnections")]
+        public IHttpActionResult GetNetworkPlayer(string nickname)
+        {
+            Player player = db.Gamers.FirstOrDefault(w => w.Nickname == nickname);
+            if (player == null) return NotFound();
+            Graph<dynamic, float, int> graph = new Graph<dynamic, float, int>();
+            var matches = db.Matches.Where(x=>x.IdPlayer1 == player.ID || x.IdPlayer2 == player.ID).AsEnumerable().ToArray();
+            foreach(var m in matches)
+            {
+                graph.AddVertice(new { m.Player1.Nickname }, m.IdPlayer1);
+                graph.AddVertice(new { m.Player2.Nickname }, m.IdPlayer2);
+                graph.AddAresta(m.IdPlayer1, m.IdPlayer2, m.Weight);
+                if(m.IdPlayer1 != player.ID)
+                {
+                    var matches2 = db.Matches.Where(x => x.IdPlayer1 == m.IdPlayer1 || x.IdPlayer2 == m.IdPlayer2).AsEnumerable().ToArray();
+                    foreach(var m2 in matches2)
+                    {
+
+                    }
+                }
+            }
+            return Ok(graph.ToNet());
+        }
 
         [Route("api/Analytics/GetPlayersMatch")]
         [HttpGet]
@@ -95,10 +119,43 @@ namespace HalfPugg.Controllers
                 graph.AddAresta(m.IdPlayer1, m.IdPlayer2, m);
             }
 
-            string res = graph.ToNet((Graph<Player, Match, int>.Vertice v) => v.info.Name);
+            string res = graph.ToNet((Graph<Player, Match, int>.Vertice v) => v.info.Nickname);
+            int count = 0;
+            bool readingVertices = true;
+            List<dynamic> playerPair = new List<dynamic>();
+            List<dynamic> edgesPair = new List<dynamic>();
+            foreach (var line in res.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                count++;
+                if(count == 1)
+                {
+                    int vertices = int.Parse(line.Split(' ')[1]);
+                    continue;
+                }
+                if (line.Contains("*edges"))
+                {
+                    readingVertices = false;
+                    continue;
+                }
+                if (readingVertices)
+                {
+                    string[] vertice = line.Split(' ');
+                    int ID = int.Parse(vertice[0]);
+                    string Nickname = vertice[1].Trim('\"');
+                    playerPair.Add(new { ID, Nickname });
+                }
+                else
+                {
+                    string[] edge = line.Split(' ');
+                    string PlayerDe = playerPair.Where(x => x.ID == int.Parse(edge[0])).First().Nickname;
+                    string PlayerPara = playerPair.Where(x => x.ID == int.Parse(edge[1])).First().Nickname;
+                    int Weight = int.Parse(edge[2]);
+                    edgesPair.Add(new { PlayerDe, PlayerPara, Weight });
+                }
+            } 
 
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, "value");
-            response.Content = new StringContent(res, Encoding.Unicode);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { edgesPair, playerPair });
+            //response.Content = new ObjectContent//new StringContent(res, Encoding.Unicode);
 
             return response;
         }
