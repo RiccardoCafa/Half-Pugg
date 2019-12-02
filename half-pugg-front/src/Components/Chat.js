@@ -1,24 +1,18 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
-import { Header } from 'semantic-ui-react';
+import { Message, Button, Input, List } from 'semantic-ui-react';
 import ow from '../images/overwatch.jpg'
 
 import api from '../services/api'
 import Auth from '../Components/auth';
 import {HttpTransportType,HubConnectionBuilder, LogLevel,} from '@aspnet/signalr'
 
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown , List} from 'semantic-ui-react';
 
-
-import gostosao from '../images/chris.jpg';
 import { request } from 'http';
 
 export default class Chat extends Component {
 
     state = {
-        Nickname: '',
-        GamerLogado: {},
-        message: '',
         messages: [],
         hubConnection: null
     }
@@ -62,7 +56,16 @@ export default class Chat extends Component {
                 //funcao chamada qnd alguém entra no grupo
             });
 
-        }).catch(err => console.log(err));
+        }).catch(err => console.log(err + "m"));
+
+        const message = await api.get('api/GroupMenssages?IdGroup='+this.props.Group.ID);
+        
+        if (message!== null){
+            
+            this.setState({messages : message.data});
+            
+        }
+        
        
     }
     setNicknamePlayer = async(gamer) => {
@@ -98,17 +101,22 @@ export default class Chat extends Component {
     render() {
                
         return (
-            <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}}>
+            <div>
+            <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}} withd = {1000}>
                 {this.state.messages.map((message) => 
-                    <List.Item >
-                        <List.Content>
-                            <List.Header>{this.setNicknamePlayer(message.IdPlayer)}</List.Header>
-                            <List.Description>{message.Content }</List.Description>
-                        </List.Content>
+                    <List.Item >      
+                        <List.Header>{this.setNicknamePlayer(message.IdPlayer)}</List.Header>
+                        <Message floating size='tiny' color='green'>{message.Content }</Message>                                     
+                        
                     </List.Item>
                 )}
             </List>
+            <div>
+                <Input icon='message' iconPosition='left' />
+                <Button attached='left' >Send</Button>
+            </div>
+            </div>
             
-        )
+        );
     }
 }
