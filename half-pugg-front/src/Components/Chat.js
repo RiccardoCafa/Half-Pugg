@@ -72,9 +72,9 @@ export default class Chat extends Component {
         api.get()
     }
 
-    addMessageToChat = (send,message)=>{
+    addMessageToChat = (send,message,senderId)=>{
         var oldMessages = [...this.state.messages]
-        oldMessages.push({sender: send,content: message})
+        oldMessages.push({sender: send,content: message,id : senderId})
         this.setState({messages:oldMessages})
         console.log(this.state.messages)
     }
@@ -90,7 +90,7 @@ export default class Chat extends Component {
 
     receiveMessageClient = (message, userID,userName) =>{
         console.log(userName+': '+message);
-        this.addMessageToChat(userName,message)
+        this.addMessageToChat(userName,message,userID)
     }
 
     
@@ -158,14 +158,14 @@ export default class Chat extends Component {
     }
     
     render() {
-      
+      console.log(this.state.gamerID )
         return (
             <div>
             <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '15%'}} withd = {10}>
                 {this.state.messages.map((message) => 
                     <List.Item >      
                         <List.Header>{message.sender}</List.Header>
-                        <Message floating size='tiny' color='green'>{message.content }</Message>                                     
+                        <Message floating size='tiny' color={message.id === this.state.gamerID ?'green': 'blue'}>{message.content }</Message>                                     
                     </List.Item>
                 )} 
             </List>
