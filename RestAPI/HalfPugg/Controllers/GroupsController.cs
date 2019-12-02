@@ -144,7 +144,7 @@ namespace HalfPugg.Controllers
             db.Groups.Remove(group);
             await db.SaveChangesAsync();
 
-            return Ok(group);
+            return Ok(group);   
         }
 
         protected override void Dispose(bool disposing)
@@ -160,6 +160,7 @@ namespace HalfPugg.Controllers
         {
             return db.Groups.Count(e => e.ID == id) > 0;
         }
+
 
 
     }

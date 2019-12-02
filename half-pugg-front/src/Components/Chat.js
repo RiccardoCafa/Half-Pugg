@@ -1,23 +1,18 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
-import { Header } from 'semantic-ui-react';
+import { Message, Button, Input, List } from 'semantic-ui-react';
 import ow from '../images/overwatch.jpg'
 
 import api from '../services/api'
 import Auth from '../Components/auth';
-import {HubConnectionBuilder, LogLevel} from '@aspnet/signalr'
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown , List} from 'semantic-ui-react';
+import {HttpTransportType,HubConnectionBuilder, LogLevel,} from '@aspnet/signalr'
 
 
-import gostosao from '../images/chris.jpg';
 import { request } from 'http';
 
 export default class Chat extends Component {
 
     state = {
-        Nickname: '',
-        GamerLogado: {},
-        message: '',
         messages: [],
         hubConnection: null
     }
@@ -42,39 +37,86 @@ export default class Chat extends Component {
         
         this.setState({GamerLogado: myData})
         this.setNickname(myData);
-        ///var connection = hubConnection('http://localhost:44338/');
-        //var proxy = connection.createHubProxy('[chatHub]');
-        const connection = new HubConnectionBuilder();
-        const conx = connection.withUrl('https://localhost:44338/signalr').configureLogging(LogLevel.Information).build();
-        
-        conx.start().then(() =>{
+     
+       this.state.hubConnection = new HubConnectionBuilder().withUrl('https://localhost:44392/chat',{
+            skipNegotiation: true,
+            transport: HttpTransportType.WebSockets
+          }).configureLogging(LogLevel.Information).build();
+    
+          this.state.hubConnection.start().then(() =>{
             console.log("conected!");
-        }).catch(err => console.log(err));
-        //this.state.hubConnection.connectToAPI(this.state.GamerLogado.ID);
-    }
 
+            this.state.hubConnection.on('receiveMessage',(message, userID) =>{
+                //funcao chamada qnd uma mensagem é recebida
+            });
+            this.state.hubConnection.on('leavedGroup',(userID) =>{
+                //funcao chamada qnd alguém sai do grupo
+            });
+            this.state.hubConnection.on('joinedGroup',(userID) =>{
+                //funcao chamada qnd alguém entra no grupo
+            });
+
+        }).catch(err => console.log(err + "m"));
+
+        const message = await api.get('api/GroupMenssages?IdGroup='+this.props.Group.ID);
+        
+        if (message!== null){
+            
+            this.setState({messages : message.data});
+            
+        }
+        
+       
+    }
+    setNicknamePlayer = async(gamer) => {
+        const p = await api.get('api/Player/', gamer.ID);
+        if (p!= null && p.data != null){
+            return p.Nickname;
+        }
+        else return "Anonimo";
+    }
     setNickname(myData) {
         this.setState({Nickname: myData.Nickname})
     }
 
+    connectPlayer(playerID){
+        this.state.hubConnection.invoke('connect',playerID);
+    }
+
+    joinGroup(groupID,playerID){
+        this.state.hubConnection.invoke('joinGroup',groupID,playerID);
+    }
+
+    leaveGroup(groupID,playerID){
+        this.state.hubConnection.invoke('leaveGroup',groupID,playerID);
+    }
+
+    sendMessage(message,groupID,playerID){
+        this.state.hubConnection.invoke('sendMessage',message,groupID,playerID);
+    }
+
+    
     // Faz uma requisição de match para outro gamer
     
     render() {
                
         return (
-            <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}}>
+            <div>
+            <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}} withd = {1000}>
                 {this.state.messages.map((message) => 
-                    <List.Item >
-                        <List.Content>
-                            <List.Header>{message.Nickname}</List.Header>
-                            <List.Description>{message.Content }</List.Description>
-                        </List.Content>
+                    <List.Item >      
+                        <List.Header>{this.setNicknamePlayer(message.IdPlayer)}</List.Header>
+                        <Message floating size='tiny' color='green'>{message.Content }</Message>                                     
+                        
                     </List.Item>
                 )}
             </List>
-                
-                
+            <div>
+                <Input icon='message' iconPosition='left' />
+                <Button attached='left' >Send</Button>
+            </div>
+            </div>
             
-        )
+        );
     }
 }

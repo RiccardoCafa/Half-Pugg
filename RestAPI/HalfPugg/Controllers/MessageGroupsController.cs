@@ -115,5 +115,22 @@ namespace HalfPugg.Controllers
         {
             return db.MessageGroups.Count(e => e.ID == id) > 0;
         }
+
+        [Route("api/GroupMenssages")]
+        [ResponseType(typeof(ICollection<MessageGroup>))]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetGroupMessages(int IdGroup)
+        {
+            Group group = await db.Groups.FindAsync(IdGroup);
+            if (group == null)
+            {
+                return NotFound();
+            }
+            var query = db.PlayerGroups.Where(x => x.IdGroup == IdGroup).FirstOrDefault();
+            if (query == null) return BadRequest();
+            var query2 = db.MessageGroups.Where(x => x.ID_Relation == query.ID).ToList();
+            
+            return Ok(query2);
+        }
     }
 }

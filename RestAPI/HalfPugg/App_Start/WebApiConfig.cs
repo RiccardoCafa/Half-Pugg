@@ -11,8 +11,10 @@ namespace HalfPugg
         public static void Register(HttpConfiguration config)
         {
             // Serviços e configuração da API da Web
-            var cors = new EnableCorsAttribute("*", "*", "*");
+            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
+          
+        
             // Rotas da API da Web
             config.MapHttpAttributeRoutes();
 
