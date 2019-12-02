@@ -5,7 +5,8 @@ import ow from '../images/overwatch.jpg'
 
 import api from '../services/api'
 import Auth from '../Components/auth';
-import {HubConnection} from '@aspnet/signalr'
+import {HttpTransportType,HubConnectionBuilder, LogLevel,} from '@aspnet/signalr'
+
 import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown , List} from 'semantic-ui-react';
 
 
@@ -40,16 +41,29 @@ export default class Chat extends Component {
             return;
         }
         
-        // this.setState({GamerLogado: myData})
-        // this.setNickname(myData);
-        // //  var connection = $.hubConnection('http://localhost:44338/');
-        // var proxy = connection.createHubProxy('[chatHub]');
-        // this.state.hubConnection = new HubConnection('http://localhost:44338/signalr');
+        this.setState({GamerLogado: myData})
+        this.setNickname(myData);
+     
+       this.state.hubConnection = new HubConnectionBuilder().withUrl('https://localhost:44392/chat',{
+            skipNegotiation: true,
+            transport: HttpTransportType.WebSockets
+          }).configureLogging(LogLevel.Information).build();
+    
+          this.state.hubConnection.start().then(() =>{
+            console.log("conected!");
 
-        // this.state.hubConnection.connectToAPI(this.state.GamerLogado.ID);
-        
-        
+            this.state.hubConnection.on('receiveMessage',(message, userID) =>{
+                //funcao chamada qnd uma mensagem é recebida
+            });
+            this.state.hubConnection.on('leavedGroup',(userID) =>{
+                //funcao chamada qnd alguém sai do grupo
+            });
+            this.state.hubConnection.on('joinedGroup',(userID) =>{
+                //funcao chamada qnd alguém entra no grupo
+            });
 
+        }).catch(err => console.log(err));
+       
     }
     setNicknamePlayer = async(gamer) => {
         const p = await api.get('api/Player/', gamer.ID);
@@ -62,13 +76,30 @@ export default class Chat extends Component {
         this.setState({Nickname: myData.Nickname})
     }
 
+    connectPlayer(playerID){
+        this.state.hubConnection.invoke('connect',playerID);
+    }
+
+    joinGroup(groupID,playerID){
+        this.state.hubConnection.invoke('joinGroup',groupID,playerID);
+    }
+
+    leaveGroup(groupID,playerID){
+        this.state.hubConnection.invoke('leaveGroup',groupID,playerID);
+    }
+
+    sendMessage(message,groupID,playerID){
+        this.state.hubConnection.invoke('sendMessage',message,groupID,playerID);
+    }
+
+    
     // Faz uma requisição de match para outro gamer
     
     render() {
                
         return (
             <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}}>
-                {this.state.message.map((message) => 
+                {this.state.messages.map((message) => 
                     <List.Item >
                         <List.Content>
                             <List.Header>{this.setNicknamePlayer(message.IdPlayer)}</List.Header>
@@ -77,8 +108,6 @@ export default class Chat extends Component {
                     </List.Item>
                 )}
             </List>
-                
-                
             
         )
     }

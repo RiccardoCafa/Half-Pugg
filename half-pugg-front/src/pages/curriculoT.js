@@ -8,6 +8,7 @@ import api from '../services/api';
 import gostosao from '../images/chris.jpg';
 import OWCard from '../Components/OWCard';
 import getPlayer from '../Components/getPlayer';
+import CurriculoRightSide from '../Components/curriculoRightSide';
 
 export default class Curriculo extends Component {
 
@@ -117,11 +118,7 @@ export default class Curriculo extends Component {
                                 </div>
                             </Grid.Column>
                             <Grid.Column width={4} id='coluna-3' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', alignContent: 'center'}}>
-                                <Header content='Sua participação em Half-pugg'></Header>
-                                <Statistic.Group horizontal>
-                                    <Statistic value={this.state.ConnectionsLength} label='conexões'></Statistic>
-                                    <Statistic value={this.state.stars} label='média da nota'></Statistic>
-                                </Statistic.Group>
+                                <CurriculoRightSide nickname={this.state.Nickname} stars={this.state.stars} ConnectionsLength={this.state.ConnectionsLength}></CurriculoRightSide>
                             </Grid.Column>
                         </Grid>
                     </Segment>

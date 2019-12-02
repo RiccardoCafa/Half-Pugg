@@ -122,7 +122,7 @@ export default class Group extends Component {
                             </Grid.Column>
                         </Segment>
                         <Segment style={{'marginLeft': '1%'}} >
-                                <Grid.Column width={100} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}}>
+                                <Grid.Column width={10} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}}>
                                     <Segment textAlign='center'><Header as='h2' textAlign='center' icon='users' content='Menssagem'/></Segment>
                                     <Chat></Chat>
                                 </Grid.Column>

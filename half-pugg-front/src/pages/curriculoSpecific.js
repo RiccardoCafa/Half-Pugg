@@ -8,6 +8,7 @@ import gostosao from '../images/chris.jpg'
 import getPlayer from '../Components/getPlayer';
 import NLHeader from '../Components/NLHeader';
 import Headera from '../Components/headera';
+import CurriculoRightSide from '../Components/curriculoRightSide';
 
 export default class curriculoSpecific extends Component {
 
@@ -100,26 +101,12 @@ export default class curriculoSpecific extends Component {
                                     </div>
                             </div>
                             <div>
-                                {this.state.OverwatchInfo !== null && this.state.OverwatchInfo.profile !== undefined ?
                                 <OWCard {...this.state.GamerCurriculo}></OWCard>
-                                : <Loader/>}
-                                <div className="ui segment dimmable">
-                                    <h3 className="ui header">League of legends</h3>
-                                    <div className="ui small ui small images images">
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image> 
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                        <Image src="https://react.semantic-ui.com/images/wireframe/image.png" className="ui image"> </Image>
-                                    </div>
-                                    <Image
-                                        src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png"
-                                        className="ui medium image"
-                                    />
-                                </div>
                                 </div>
                             </div>
                         </Grid.Column>
-                        <Grid.Column width={1} id='coluna-3'>
-                            <Statistic value={this.state.ConnectionsLength} label='conexoes'></Statistic>
+                        <Grid.Column width={4} id='coluna-3'>
+                            <CurriculoRightSide nickname={this.state.GamerCurriculo.Nickname} stars={this.state.stars} ConnectionsLength={this.state.ConnectionsLength}></CurriculoRightSide>
                         </Grid.Column>
                     </Grid>
                 </Segment>

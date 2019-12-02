@@ -71,7 +71,7 @@ export default class MyConnections extends Component {
                        
                         {this.state.Group.map((group) => 
                             <Card onClick={()=> this.props.history.push('/group/'+group.ID)}>
-                                    <Image src='https://cdn.vox-cdn.com/thumbor/eR7rCBpX7leHKZ6JAJBPqkP6ljs=/0x0:3840x2160/1200x800/filters:focal(2125x562:2739x1176)/cdn.vox-cdn.com/uploads/chorus_image/image/64744274/OVR_SummerGames19_015.0.png' wrapped ui={false} />
+                                    <Image src= {group.ImagePath} wrapped ui={false} />
                                     <Card.Content>
                                     <Card.Header>{group.Name}</Card.Header>
                                     <Card.Description>
