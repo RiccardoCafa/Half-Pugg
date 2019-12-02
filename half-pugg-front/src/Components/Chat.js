@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Message, Button, Input, List,Loader } from 'semantic-ui-react';
+import { Message, Button, Input, List,Segment } from 'semantic-ui-react';
 import api from '../services/api'
 import {HttpTransportType,HubConnectionBuilder, LogLevel,} from '@aspnet/signalr'
 
@@ -158,23 +158,27 @@ export default class Chat extends Component {
         this.setState({inpt_message: e.target.value});
     }
     
+    calcMessSize = (mess)=>{
+        return mess.length<40? (80-mess.length):15;
+    }
+
     render() {
         
         return (
             <div>
-            <List relaxed animated divided verticalAlign='middle'  withd = {10}>
-                {this.state.messages.map((message) => 
-                    <List.Item style={message.id === this.state.GamerLogado.ID ?{'marginLeft': '15%'}:{'marginRight':'15%'}}>      
-                        <List.Header >{message.sender}</List.Header>
-                        <Message floating size='tiny' color={message.id === this.state.GamerLogado.ID ?'green': 'blue'}>{message.content }</Message>                                     
-                    </List.Item>
-                )} 
-            </List>
-            <div>
-               
-                <Input icon='message' iconPosition='left' onChange={this.hanldeInput} value={this.state.inpt_message}/>
+                <Segment textAlign='center' style={{overflow: 'auto', maxHeight: 400 }}>
+                <List relaxed divided verticalAlign='middle' >
+                    {this.state.messages.map((message) => 
+                        <List.Item style={message.id === this.state.GamerLogado.ID ?{'marginLeft': `${this.calcMessSize(message.content)}%`}:{'marginRight':`${this.calcMessSize(message.content)}%`}}>      
+                            <List.Header >{message.sender}</List.Header>
+                            <Message  size='tiny' color={message.id === this.state.GamerLogado.ID ?'green': 'blue'}>{message.content }</Message>                                     
+                        </List.Item>
+                    )} 
+                </List>
+            </Segment> 
+            <div >
+                <Input  icon='paper plane outline' iconPosition='left' onChange={this.hanldeInput} value={this.state.inpt_message}/>
                 <Button attached='right' onClick={this.clicouEnv }>Send</Button>
-               
             </div>
             </div>
             
