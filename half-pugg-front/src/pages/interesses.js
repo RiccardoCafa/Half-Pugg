@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Image, TextArea, Form, Segment, Icon, Header, active, Dimmer } from 'semantic-ui-react';
+import { Button, Image,  Segment, Icon, Header, Dimmer } from 'semantic-ui-react';
 
 import './interesses.css';
 

@@ -48,9 +48,9 @@ namespace ChatHubServer.chatHub
             await Clients.Groups(groupID).SendAsync("leavedGroup", groupID);
         }
 
-        public async Task SendMessage(string message, string groupID,int userID)
+        public async Task SendMessage(string message, string groupID,int userID,string userName)
         {
-            await Clients.Group(groupID).SendAsync("receiveMessage",message, userID);
+            await Clients.Group(groupID).SendAsync("receiveMessage", message, userID, userName);
         }
 
     }

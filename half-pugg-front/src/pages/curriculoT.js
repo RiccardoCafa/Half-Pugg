@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import './curriculo.css';
-import { Image, Segment, Grid, Loader, Statistic, Icon, Menu, Container, Rating, Header } from 'semantic-ui-react'
+import { Image, Segment, Grid, Loader, Icon, Menu, Container, Rating } from 'semantic-ui-react'
 import Headera from '../Components/headera';
 import api from '../services/api';
 import gostosao from '../images/chris.jpg';

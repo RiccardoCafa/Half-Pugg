@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import NotFound from '../Components/404';
-import { Loader, Segment, Grid, Image, Container, Rating, Statistic} from 'semantic-ui-react';
+import { Loader, Segment, Grid, Image, Container, Rating} from 'semantic-ui-react';
 import api from '../services/api';
 import OWCard from '../Components/OWCard';
 import gostosao from '../images/chris.jpg'

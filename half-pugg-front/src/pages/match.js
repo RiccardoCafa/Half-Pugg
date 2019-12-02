@@ -1,9 +1,5 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
-import { Header } from 'semantic-ui-react';
-
-import ow from '../images/overwatch.jpg'
-
 import './match.css'
 import api from '../services/api'
 import Auth from '../Components/auth';

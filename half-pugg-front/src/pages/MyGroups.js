@@ -1,10 +1,8 @@
 import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
 import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
-import { Card, Image, Button, Menu, Icon, Label, Segment, Grid, Input, Checkbox, Statistic, Table, Loader, Dropdown } from 'semantic-ui-react';
+import { Card, Image, Button, Icon, Segment,  Statistic, } from 'semantic-ui-react';
 
 export default class MyConnections extends Component {
 
@@ -56,7 +54,7 @@ export default class MyConnections extends Component {
                 </div>  
                 <Segment>
                     {this.state.Group.length === 0 ?
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <div style={{display: 'flex', flexDirection: 'line', alignItems: 'left'}}>
                         <Statistic.Group>
                             <Statistic
                             value = "Ops! Parece que você não participa de nenhum grupo..."

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {List, Checkbox, Image, Segment, Card, Grid, Header, Label, Icon, Statistic, Divider, Table} from 'semantic-ui-react';
+import {List, Image, Segment, Card,  Label, Icon, Table} from 'semantic-ui-react';
 
 import api from '../services/api';
 import overwatchImage from '../images/overwatch.jpg';
