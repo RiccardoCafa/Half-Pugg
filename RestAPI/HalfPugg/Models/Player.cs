@@ -21,14 +21,13 @@ namespace HalfPugg.Models
         [Required] [StringLength(1)] public string Type { get; set; }
         public string? ID_Branch { get; set; }
         public string Slogan { get; set; }
+        public float MPoints { get; set; }
         [Required] [StringLength(1)] public string Sex { get; set; }
         [StringLength(100)] public string Genre { get; set; }
         //Chat
         [JsonIgnore] public ICollection<ChatConnection> ChatConnections { get; set; }
 
         public ICollection<PlayerGroup> Groups { get; set; }
-        public ICollection<PlayerHall> Halls { get; set; }
-
         public DateTime? CreateAt { get; set; }
         public DateTime? AlteredAt { get; set; }
     }

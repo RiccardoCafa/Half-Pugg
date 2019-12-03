@@ -14,10 +14,8 @@ namespace HalfPugg.Models
         public DateTime RequestedTime { get; set; }
         public DateTime ComfirmedTime { get; set; }
         [Required] [StringLength(1)] public string Status { get; set; }
-        [ForeignKey("Filters")] public int IdFilters { get; set; }
         [JsonIgnore] public virtual Player Player { get; set; }
         [JsonIgnore] public virtual Group Group { get; set; }
-        [JsonIgnore] public virtual Filter Filters { get; set; }
-
+        
     }
 }
