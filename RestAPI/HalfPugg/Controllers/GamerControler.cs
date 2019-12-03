@@ -66,8 +66,7 @@ namespace HalfPugg.Controllers
                 return NotFound();
             }
             gamer.Groups = db.PlayerGroups.Where(x => x.IdPlayer == id).ToList();
-            gamer.Halls = db.PlayerHalls.Where(x => x.IdPlayer == id).ToList();
-          
+                      
             return Ok(gamer);
         }
 
@@ -355,18 +354,7 @@ namespace HalfPugg.Controllers
             return Ok(ret);
         }
 
-        [ResponseType(typeof(ICollection<Hall>))]
-        [Route("api/Gamers/GetHalls")]
-        [HttpGet]
-        public IHttpActionResult GetPlayerHalls(int id)
-        {
-            Player p = db.Gamers.Find(id);
-            if (p == null) return BadRequest($"Player {id} not founded");
-            var h = db.PlayerHalls.Where(x => x.IdPlayer == id).Select(x => x.Hall);
-            return Ok(h);
-        }
-
-
+        
         [ResponseType(typeof(ICollection<Player>))]
         [Route("api/GetGamersNear")]
         [HttpGet]

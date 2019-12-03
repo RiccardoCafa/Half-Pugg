@@ -33,7 +33,7 @@ namespace HalfPugg
             }
 
             player.Groups = db.PlayerGroups.Where(x => x.IdPlayer == UserID).ToList();
-            player.Halls = db.PlayerHalls.Where(x => x.IdPlayer == UserID).ToList();
+            
 
             await Clients.Caller.receiveAlert($"{player.Name} connected a API");
             //Adciona esta ConnectionID aos grupos do usuario correspondente
@@ -45,14 +45,7 @@ namespace HalfPugg
             }
 
             //Adciona esta ConnectionID aos halls do usuario correspondente
-            foreach (var h in player.Halls.Where(x => x.Hall.Active))
-            {
-                string hid = "hall_" + h.IdHall;
-                await Groups.Add(Context.ConnectionId, hid);
-                await Clients.Caller.receiveAlert($"{player.Name} connected to {h.Hall.Name}");
-            }
-
-          
+                      
         }
 
         /// <summary>
@@ -89,31 +82,7 @@ namespace HalfPugg
             await db.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> SendMessageHall(string Message, int UserID, int HallID)
-        {
-            PlayerHall ph = db.PlayerHalls.Where(x => x.IdPlayer == UserID && x.IdHall == HallID).FirstOrDefault();
-
-            if (ph == null)
-            {
-                Clients.Caller.receiveAlert($"User: {UserID} or Hall: {HallID} not finded");
-               
-                return false;
-            }
-
-            MessageHall mh = new MessageHall { 
-            Content = Message,
-            PlayerHall = ph,
-            ID_Relation = ph.ID,
-            Send_Time = DateTime.Now,
-            Status = MessageStatus.None
-            };
-
-            await Clients.Group("hall_" + HallID).receiveMessageHall(mh);
-            await Clients.Caller.receiveAlert($"Message sent from {ph.Player.Name} to {ph.Hall.Name}");
-            await db.SaveChangesAsync();
-
-            return true;
-        }
+        
         public async Task<bool> SendMessagePlayer(string Message, int UserID, int ReceiverID)
         {
             Player sender = await db.Gamers.FindAsync(UserID);
@@ -182,41 +151,7 @@ namespace HalfPugg
            
             return true;
         }
-        public async Task<bool> JoinInHall(int UserID, int HallID)
-        {
-
-            PlayerHall ph = db.PlayerHalls.Where(x => x.IdPlayer == UserID && x.IdHall == HallID).FirstOrDefault();
-
-            if(ph == null)
-            {
-                Hall h = await db.Halls.FindAsync(HallID);
-                Player p = await db.Gamers.FindAsync(UserID);
-
-                if (p == null || h == null || !h.Active)
-                {
-                    await Clients.Caller.receiveAlert($"User: {UserID} or Hall: {HallID} not finded");
-                    return false;
-                }
-                var nph = new PlayerHall { Hall = h, IdHall = h.ID, Player = p, IdPlayer = p.ID };
-                db.PlayerHalls.Add(nph);
-                await db.SaveChangesAsync();
-
-                foreach (var c in p.ChatConnections)
-                {
-                    await Groups.Add(c.ConnectionID, "hall_" + HallID);
-                }
-             
-                await Clients.Group("hall_" + HallID).receiveHallAlert($"{p.Name} joined");
-                await Clients.Caller.receiveAlert($"{ph.Player.Name} joined into {ph.Hall.Name}");
-            }
-            else
-            {
-                await Clients.Caller.receiveAlert($"{ph.Player.Name} already joined into {ph.Hall.Name}");
-            }
-
-            return true;
-        }
-
+        
         public async Task<bool> ExitFromGroup(int UserID, int GroupID)
         {
             Player p = await db.Gamers.FindAsync(UserID);
@@ -243,37 +178,7 @@ namespace HalfPugg
         
             return true;
         }
-        public async Task<bool> ExitFromHall(int UserID, int HallID)
-        {
-            Player p = await db.Gamers.FindAsync(UserID);
-            Hall h = await db.Halls.FindAsync(HallID);
-            PlayerHall ph = db.PlayerHalls.Where(x => x.IdHall == HallID && x.IdPlayer == UserID).FirstOrDefault();
-
-            if (ph == null) return false;
-
-            await Clients.Caller.receiveAlert($"{ph.Player.Name} leaved {ph.Hall.Name}");          
-            await Clients.Group("hall_" + HallID).ReceiveHallAlert($"{p.Name} exited");
-          
-            foreach (var c in p.ChatConnections)
-            {
-                await Groups.Remove(c.ConnectionID, "hall_" + HallID);
-            }
-          
-
-            db.PlayerHalls.Remove(ph);
-            await db.SaveChangesAsync();
-
-            return true;
-        }
-
-        public async Task<Group> GetGroup(int GroupID)
-        {
-            return await db.Groups.FindAsync(GroupID);
-        }
-        public async Task<Hall> GetHall(int HallID)
-        {
-            return await db.Halls.FindAsync(HallID);
-        }
+        
 
         public override Task OnReconnected()
         {
