@@ -17,6 +17,7 @@ namespace HalfPugg.Controllers
     {
         private HalfPuggContext db = new HalfPuggContext();
 
+       
         // GET: api/MessageGroups
         public IQueryable<MessageGroup> GetMessageGroups()
         {
@@ -79,7 +80,7 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
             db.MessageGroups.Add(messageGroup);
             await db.SaveChangesAsync();
 
@@ -117,20 +118,29 @@ namespace HalfPugg.Controllers
         }
 
         [Route("api/GroupMenssages")]
-        [ResponseType(typeof(ICollection<MessageGroup>))]
         [HttpGet]
         public async Task<IHttpActionResult> GetGroupMessages(int IdGroup)
         {
             Group group = await db.Groups.FindAsync(IdGroup);
             if (group == null)
             {
-                return NotFound();
+                return NotFound();  
             }
-            var query = db.PlayerGroups.Where(x => x.IdGroup == IdGroup).FirstOrDefault();
-            if (query == null) return BadRequest();
-            var query2 = db.MessageGroups.Where(x => x.ID_Relation == query.ID).ToList();
-            
-            return Ok(query2);
+            List<dynamic> messages = new List<dynamic>();
+            var mes = db.MessageGroups.Where(x => x.IdGroup == IdGroup).ToArray();
+            foreach (var v in mes)
+            {
+                PlayerGroup pg = await db.PlayerGroups.FindAsync(v.ID_Relation);
+                Player p = await db.Gamers.FindAsync(pg.IdPlayer);
+
+                messages.Add(new
+                {
+                   content = v.Content,
+                   senderID = p.ID,
+                   senderName = p.Nickname
+                });
+            }
+            return Ok(messages);
         }
     }
 }
