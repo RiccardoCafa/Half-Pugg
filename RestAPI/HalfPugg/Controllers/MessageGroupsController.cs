@@ -17,6 +17,7 @@ namespace HalfPugg.Controllers
     {
         private HalfPuggContext db = new HalfPuggContext();
 
+       
         // GET: api/MessageGroups
         public IQueryable<MessageGroup> GetMessageGroups()
         {
@@ -79,7 +80,7 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
             db.MessageGroups.Add(messageGroup);
             await db.SaveChangesAsync();
 
@@ -126,15 +127,17 @@ namespace HalfPugg.Controllers
                 return NotFound();  
             }
             List<dynamic> messages = new List<dynamic>();
-            
-            foreach(var v in db.MessageGroups.Where(x => x.IdGroup == IdGroup))
+            var mes = db.MessageGroups.Where(x => x.IdGroup == IdGroup).ToArray();
+            foreach (var v in mes)
             {
-                Player p = await db.Gamers.FindAsync(v.PlayerGroup.IdPlayer);
+                PlayerGroup pg = await db.PlayerGroups.FindAsync(v.ID_Relation);
+                Player p = await db.Gamers.FindAsync(pg.IdPlayer);
+
                 messages.Add(new
                 {
-                    Content = v.Content,
-                    Sender = p.Name,
-                    SenderID = p.ID
+                   content = v.Content,
+                   senderID = p.ID,
+                   senderName = p.Nickname
                 });
             }
             return Ok(messages);

@@ -65,9 +65,13 @@ export default class Chat extends Component {
                 })
             })
             api.get(`api/GroupMenssages?IdGroup=${this.props.Group.ID}`).then( res=>{
+                console.log('tentando pegar mensagens de: '+this.props.Group.ID)
+                console.log(res.data)
                 res.data.map((mess)=>{
-                    this.addMessageToChat(mess.Sender,mess.Content,mess.SenderID)
+                    this.addMessageToChat(mess.senderName,mess.content,mess.senderID)
                 })
+            }).catch(erro=>{
+                console.log('Fail to load messages')
             })
           
         }).catch(err => console.log(err));
@@ -125,6 +129,7 @@ export default class Chat extends Component {
                 'Send_Time' : new Date().toISOString(),
                 'ID_Relation' : pg.ID,
                 'PlayerGroup' : pg,
+                'IdGroup' : groupID
             }).then(()=>{
                 console.log('saved')
             }).catch(()=>{
