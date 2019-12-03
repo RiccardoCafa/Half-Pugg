@@ -56,8 +56,8 @@ export default class Chat extends Component {
             this.state.hubConnection.on('receiveMessage', this.receiveMessage);
             this.state.hubConnection.on('leavedGroup',this.leaveGroup);
             this.state.hubConnection.on('joinedGroup',this.joinGroup);
-            this.state.hubConnection.on('error',(erro) =>{
-                //funcao chamada qnd alguém entra no grupo
+            
+            this.state.hubConnection.on('error',(erro) =>{   
                 console.log(erro)
             });
            
@@ -79,12 +79,12 @@ export default class Chat extends Component {
     }
 
     joinGroup = (userID) =>{
-      //  this.newMessage('Entrou do grupo: '+userID)
+     
         console.log('Entrou do grupo: '+userID)
     }
 
     leaveGroup = (userID) =>{
-     //   this.newMessage('Saiu do grupo: '+userID)
+    
         console.log('Saiu do grupo: '+userID)
     }
      receiveMessage = async (message, userID) =>{
