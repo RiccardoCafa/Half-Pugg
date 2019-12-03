@@ -10,6 +10,7 @@ import DOTACard from '../Components/DOTACard';
 import Headera from '../Components/headera';
 import overwatchImage from '../images/overwatch.jpg';
 import Dota2 from '../images/dota-2.jpg';
+import getPlayer from '../Components/getPlayer';
 
 
 export default class registergame extends Component {
@@ -39,20 +40,9 @@ export default class registergame extends Component {
     
     componentDidMount = async () => {
         
-        const jwt = localStorage.getItem("jwt");
-        let stop = false;
-        //console.log(jwt);
-        let myData;
-        if(jwt){
-            await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
-                myData = res.data
-                //console.log(res.data)
-            ).catch(error => stop = true)
-        } else {
-            stop = true;
-        }
+        let myData = await getPlayer();
 
-        if(stop) {
+        if(!myData) {
             this.setState({toLogin: true});
             return;
         }
@@ -89,24 +79,23 @@ export default class registergame extends Component {
 
        
 
-        await api.get('api/GetGamesInPlayer?PlayerID=' + myData.ID).catch(err => console.log(err)).then(
-            resposta => {
-                resposta.data.map(async (playergame) => {
-                    let jogo = playergame;
-                    if(jogo.IDGame === 1){
-                        // Overwatch
-                        const ow = await api.get('api/Overwatch/GetPlayers?PlayerID='+jogo.IDGamer + '&Region=0').catch(err => console.log(err));
-                        this.setState({OverwatchInfo: ow.data});
-                    }
-                    if(jogo.IDGame === 2){
-                        // Dota
-                        const dota = await api.get('api/Dota/GetPlayers?PlayerID='+jogo.IDGamer).catch(err => console.log(err));
-                        this.setState({DotaInfo: dota.data});
-                    }
-                })
-            }
-        )
-        this.setState({loaded: true})
+        const resposta = await api.get('api/GetGamesInPlayer?PlayerID=' + myData.ID).catch(err => console.log(err));
+        if(resposta) {
+            resposta.data.map(async (playergame) => {
+                let jogo = playergame;
+                if(jogo.IDGame === 1){
+                    // Overwatch
+                    const ow = await api.get('api/Overwatch/GetPlayers?PlayerID='+jogo.IDGamer + '&Region=0').catch(err => console.log(err));
+                    this.setState({OverwatchInfo: ow.data});
+                }
+                if(jogo.IDGame === 2){
+                    // Dota
+                    const dota = await api.get('api/Dota/GetPlayers?PlayerID='+jogo.IDGamer).catch(err => console.log(err));
+                    this.setState({DotaInfo: dota.data});
+                }
+                this.setState({loaded: true})
+            });
+        }
     }
 
     componentWillUnmount = () => {}
@@ -199,15 +188,9 @@ export default class registergame extends Component {
                 <div>
                     <Headera gamer = {this.state.GamerLogado }/>
                 </div>  
-         
-          
             <div className = "register-container">
-
-               
                 <form> 
-                 
                     <div>
-                        {this.state.loaded === true ?
                         <div>
                            
                             <Modal open={this.state.openMessageBox} onClose={this.closeBox} size='large'>
@@ -225,7 +208,7 @@ export default class registergame extends Component {
                             </Modal>
 
                         
-                            <Segment> <Header as='h3' textAlign='center' icon='users' content='Your games'/></Segment>
+                            <Segment style={{marginTop: '2%'}}> <Header as='h3' textAlign='center' icon='users' content='Your games' /></Segment>
                             <Segment style={{overflow: 'auto',marginBottom: '10%', maxWidht: 150, vertical: false}}>
                              <Grid columns = {2} style={{'marginTop': '1%', 'marginLeft': '1%'}}>
                                     <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
@@ -237,8 +220,9 @@ export default class registergame extends Component {
                                 </Grid>
                            </Segment>
                            
-
-                            <h2>Choose a new game</h2>
+                            <Segment>
+                                <Header as='h3' textAlign='center' icon='gamepad' content='Choose a new Game'></Header>
+                            </Segment>
                             <Card.Group>
                                 {this.state.OverwatchInfo.profile === undefined ?
                                 <Card >
@@ -291,7 +275,6 @@ export default class registergame extends Component {
                                 </Button>
                             </Button.Group>
                         </div>
-                        : <Loader active></Loader> }
                     </div>
                 </form>
             </div>

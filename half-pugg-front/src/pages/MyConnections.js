@@ -11,6 +11,7 @@ import Classification from '../Components/classification';
 import { Card, Button, Segment, Statistic, Loader, Header, Icon, Divider } from 'semantic-ui-react';
 
 import UserContentCard from '../Components/UserContentCard';
+import GroupsInvite from '../Components/GroupsInvite';
 
 export default class MyConnections extends Component {
 
@@ -94,6 +95,9 @@ export default class MyConnections extends Component {
     }
 
     render() {
+        if(this.state.toLogin) {
+            return <Redirect to='/'></Redirect>
+        }
         if(this.state.toMatch === true) {
             return <Redirect to='/match'></Redirect>
         }
@@ -133,15 +137,7 @@ export default class MyConnections extends Component {
                             <Card key={matcher.matchPlayer.ID}>
                                 <UserContentCard gamer={this.state.GamerLogado} matchPlayer={matcher.matchPlayer} isAvaliable={false}></UserContentCard>
                                 <Card.Content extra>
-                                    <div className='ui two buttons'>
-                                        <Button 
-                                            id='btn-acpden' 
-                                            basic color='green' 
-                                            content='Convidar para um grupo!'
-                                            />
-                                    </div>
-                                </Card.Content>
-                                <Card.Content extra>
+                                    <GroupsInvite gamer={this.state.GamerLogado} playerToInvite={matcher.matchPlayer}></GroupsInvite>
                                     <OpenCurriculum {...matcher.matchPlayer}></OpenCurriculum>
                                     <Classification gamer={this.state.GamerLogado} gamerclassf={matcher.matchPlayer}></Classification>
                                 </Card.Content>

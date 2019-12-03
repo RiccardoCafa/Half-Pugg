@@ -50,7 +50,8 @@ export default class classification extends Component {
         this.setState({loadedClassif: false});
         const classif = await api.get(`api/classificationPlayers/Match?idJudge=${this.props.gamerclassf.ID}&idJudger=${this.props.gamer.ID}`)
             .catch(err => console.log('.'));
-        if(classif !== undefined){
+            console.log(classif);
+        if(classif !== undefined && classif.data !== null){
             const cls = classif.data;
             this.setState({
                 jug: true, 

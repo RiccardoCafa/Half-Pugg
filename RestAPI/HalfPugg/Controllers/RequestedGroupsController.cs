@@ -80,10 +80,39 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Checar se já há uma requisição para esse grupo -> player
+            RequestedGroup reqG = db.RequestedGroups.Where(x => x.IdPlayer == requestedGroup.IdPlayer && x.Status == "A").AsEnumerable().FirstOrDefault();
+
+            if(reqG != null)
+            {
+                return BadRequest(message: "O jogador já possui uma solicitação para esse grupo em aberto");
+            }
+            
+            Group group = db.Groups.Find(requestedGroup.IdGroup);
+            if(group == null)
+            {
+                return NotFound();
+            }
+
+            var integrantes = db.PlayerGroups.Where(x => x.IdGroup == requestedGroup.IdGroup).Select(x => x.Player).AsEnumerable().ToArray();
+
+            // Checar se o grupo está em sua capacidade máxima
+            if(integrantes.Length >= group.Capacity)
+            {
+                return BadRequest(message: "O grupo está em sua capacidade máxima");
+            }
+
+            // Checar se o player já está naquele grupo
+            Player p1 = integrantes.FirstOrDefault(x => x.ID == requestedGroup.IdPlayer);
+            if(p1 != null)
+            {
+                return BadRequest(message: "O jogador já se encontra nesse grupo.");
+            }
+
             db.RequestedGroups.Add(requestedGroup);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = requestedGroup.ID }, requestedGroup);
+            return Ok(requestedGroup);
         }
 
         // DELETE: api/RequestedGroups/5

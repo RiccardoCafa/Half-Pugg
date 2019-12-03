@@ -53,12 +53,9 @@ namespace HalfPugg.Controllers
             {
 
             }
-           
-            if(classfPlayer != null)
-            {
-                return Ok(classfPlayer);
-            }
-            return NotFound();
+                       
+            return Ok(classfPlayer);
+            
         }
 
         // PUT: api/ClassificationPlayers/5

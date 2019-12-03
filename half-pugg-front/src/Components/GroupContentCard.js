@@ -3,7 +3,6 @@ import { Card, Image,  Loader } from 'semantic-ui-react';
 
 import ow from '../images/overwatch.jpg'
 import api from '../services/api';
-import { promised } from 'q';
 
 export default class UserContentCard extends Component {
     
