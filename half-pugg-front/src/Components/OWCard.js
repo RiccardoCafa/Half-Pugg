@@ -19,11 +19,14 @@ class OWCard extends Component {
     }
 
     componentDidMount = async () => {
-        console.log(this.state.Gamer.ID);
-        const response = await api.get('api/Overwatch/GetPlayers?PlayerID=' + this.state.Gamer.ID).catch(err => console.log('jogador não possui conta overwatch cadastrada!'));
-        if(response){
-            this.setState({OWGamer: response.data});
-            console.log(response.data);
+        try {
+            const response = await api.get('api/Overwatch/GetPlayers?PlayerID=' + this.state.Gamer.ID);
+            if(response){
+                this.setState({OWGamer: response.data});
+                console.log(response.data);
+            }
+        } catch(error){
+            console.log('jogador não possui overwatch');
         }
     }
     
@@ -46,7 +49,7 @@ class OWCard extends Component {
                 {this.state.OWGamer.profile !== undefined ?
                
                     <Card fluid style={{width: '100%'}}>
-                        <Image src={overwatchImage} fluid style={{height:'150px'}} />
+                        <Image src={overwatchImage} fluid style={{height:'250px'}} />
                         <Card.Content>
                             <Card.Header as='h3' content='Overwatch'></Card.Header>
                             <Card.Meta>{this.state.OWGamer.profile.name}</Card.Meta>

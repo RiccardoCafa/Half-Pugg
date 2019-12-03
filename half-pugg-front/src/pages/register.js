@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Checkbox, Form, Segment, Grid, Input, Header, Modal } from 'semantic-ui-react';
-
+import { Button, Checkbox, Form, Segment, Grid, Input, Header, Modal, Loader } from 'semantic-ui-react';
+import MessageBox from '../Components/MessageBox';
 import './register.css';
 import api from '../services/api';
 
@@ -16,9 +16,13 @@ export default class register extends Component {
         Birthday: '',
         confirmSenha: '',
         Sex: '',
+        MessageTitle: '',
+        MessageText: '',
+        ErrorText: false,
         ShowLoginMessage: false,
         toLogin: false,
         toRegister2: false,
+        loadingRegister: false,
     }
     
     temMaisTreze = (dt) => {
@@ -44,22 +48,40 @@ export default class register extends Component {
         return true;
     }
 
+    closeErrorMessage = () => this.setState({ErrorText: false});
+
     handleSubmit = async e => {
         e.preventDefault();
+        this.setState({loadingRegister: true});
         const dts = this.state.Birthday.split("-");
         const dt = dts[1] + "/" + dts[2] + "/" + dts[0];
         const tem13 = this.temMaisTreze(dt);
         if(!tem13) {
-            alert('Voce precisa ter mais de 13 anos meu caro');
+            this.setState({
+                loadingRegister: false,
+                ErrorText: true,
+                MessageTitle: 'Algo deu errado!',
+                MessageText: 'Voce precisa ter mais de 13 anos meu caro!'
+            });
             return;
         }
         const regex = /\W/;
         if(regex.test(this.state.Nickname) || this.state.Nickname === ''){
-            alert('Seu nickname está inválido! Apenas letras, números e underline (_)');
+            this.setState({
+                loadingRegister: false,
+                ErrorText: true,
+                MessageTitle: 'Algo deu errado!',
+                MessageText: 'Seu nickname está inválido! Apenas letras, números e underline (_)!'
+            });
             return;
         }
         if(!this.state.Email.includes('@')) {
-            alert('email inválido');
+            this.setState({
+                loadingRegister: false,
+                ErrorText: true,
+                MessageTitle: 'Algo deu errado',
+                MessageText: 'Seu email está no formato errado'
+            });
             return;
         }
         const response = await api.post('api/CadastroPlayer', {
@@ -75,10 +97,16 @@ export default class register extends Component {
         }).catch(function (error) {
             console.log(error.response);
             console.log("Error: " + error.message);
-            alert('algo deu errado');
+            //alert('algo deu errado');
+            this.setState({
+                loadingRegister: false,
+                ErrorText: true,
+                MessageText: 'Algo deu errado com a requisição',
+                MessageTitle: 'Ops!'
+            });
         });
         if(response){
-            this.setState({ShowLoginMessage: true});
+            this.setState({ShowLoginMessage: true, loadingRegister: false});
         }
     }
 
@@ -98,6 +126,9 @@ export default class register extends Component {
         if(this.state.toLogin === true) {
             return <Redirect to='/'></Redirect>
         }
+        if(this.state.loadingRegister){
+            return <Loader active></Loader>
+        }
         return (
             <div>    
             <div className= "register-title">
@@ -105,6 +136,7 @@ export default class register extends Component {
                     <Header textAlign='center' as='h1' style={{'marginTop': '2%', 'MarginBottom': '2%'}}>Half Pugg</Header>
                 </Link>
             </div>
+            <MessageBox open={this.state.ErrorText} Message={this.state.MessageText} title={this.state.MessageTitle} close={this.closeErrorMessage}></MessageBox>
             <div>
             <Modal open={this.state.ShowLoginMessage} size='small'>
                 <Header icon='checkmark' content='A operação foi um sucesso!'></Header>

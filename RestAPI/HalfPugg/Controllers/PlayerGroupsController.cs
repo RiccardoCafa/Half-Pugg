@@ -71,12 +71,7 @@ namespace HalfPugg.Controllers
         [HttpGet]
         public IHttpActionResult GetPlayerGroupsComplete(int playerID)
         {
-            var groups = db.PlayerGroups.Where(x => x.IdPlayer == playerID).Select(x => x.Group).AsEnumerable().ToArray();
-
-            if (groups.Count() == 0)
-            {
-                return NotFound();
-            }
+            Group[] groups = db.PlayerGroups.Where(x => x.IdPlayer == playerID).Select(x => x.Group).Where(y => y.IdAdmin == playerID).AsEnumerable().ToArray();
 
             return Ok(groups);
         }

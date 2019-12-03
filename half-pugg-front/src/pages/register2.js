@@ -81,7 +81,7 @@ export default class Register2 extends Component {
             return <Redirect to ='/'></Redirect>
         }
         return (
-            <div className = "login-container">
+            <div className = "login-container" style={{display: 'flex', flexDirection: 'column', alignContent: 'center', alignItems: 'center'}}>
                 <h1>Half Pugg</h1>
                 <div id="biography">
                     <Modal open={this.state.showMessage}>

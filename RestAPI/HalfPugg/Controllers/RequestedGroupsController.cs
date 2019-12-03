@@ -36,6 +36,24 @@ namespace HalfPugg.Controllers
             return Ok(requestedGroup);
         }
 
+        [Route("api/RequestedGroupsTo")]
+        [HttpGet]
+        public IHttpActionResult GetRequestedGroupByPlayer(int idPlayer)
+        {
+            //Select(x => x.Group, req => req.ID)
+            List<dynamic> response = new List<dynamic>();
+            var requestedGroups = db.RequestedGroups.Where(x => x.IdPlayer == idPlayer && x.Status == "A").AsEnumerable().ToArray();
+            foreach(RequestedGroup request in requestedGroups)
+            {
+                response.Add(new
+                {
+                    request.ID,
+                    request.Group
+                });
+            }
+            return Ok(response);
+        }
+
         // PUT: api/RequestedGroups/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutRequestedGroup(int id, RequestedGroup requestedGroup)
@@ -45,10 +63,56 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != requestedGroup.ID)
+            Group group = db.Groups.Find(requestedGroup.IdGroup);
+            if (group == null)
             {
-                return BadRequest();
+                return NotFound();
             }
+
+            var integrantes = db.PlayerGroups.Where(x => x.IdGroup == requestedGroup.IdGroup).Select(x => x.Player).AsEnumerable().ToArray();
+
+            // Checar se o grupo está em sua capacidade máxima
+            if (integrantes.Length >= group.Capacity)
+            {
+                return BadRequest(message: "O grupo está em sua capacidade máxima");
+            }
+
+            // Checar se o player já está naquele grupo
+            Player p1 = integrantes.FirstOrDefault(x => x.ID == requestedGroup.IdPlayer);
+            if (p1 != null)
+            {
+                requestedGroup.Status = "F";
+                db.Entry(requestedGroup).State = EntityState.Modified;
+                try
+                {
+                    await db.SaveChangesAsync();
+                } catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return BadRequest(message: "O jogador já se encontra nesse grupo. Removendo solicitação...");
+            }
+
+            PlayerGroup pg = null;
+            if (requestedGroup.Status == "T")
+            {
+                pg = new PlayerGroup()
+                {
+                    CreateAt = DateTime.UtcNow,
+                    AlteredAt = DateTime.UtcNow,
+                    IdGroup = group.ID,
+                    IdPlayer = requestedGroup.IdPlayer
+                };
+            }
+
+            requestedGroup.Status = "F";
+
+            db.PlayerGroups.Add(pg);
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (Exception e) { Console.Write(e.Message); }
 
             db.Entry(requestedGroup).State = EntityState.Modified;
 
@@ -66,9 +130,12 @@ namespace HalfPugg.Controllers
                 {
                     throw;
                 }
+            } catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(requestedGroup);
         }
 
         // POST: api/RequestedGroups

@@ -135,8 +135,16 @@ namespace HalfPugg.Controllers
                 return BadRequest(message: "Seu grupo não pode ter mais de 15 pessoas!");
             }
 
+            group.CreateAt = DateTime.UtcNow;
             db.Groups.Add(group);
-            await db.SaveChangesAsync();
+            try
+            {
+                await db.SaveChangesAsync();
+            } catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest(message: "Algo inesperado ocorreu, tente recarregar a página, se voltar o erro contate o suporte!");
+            }
 
             return Ok(group);
         }

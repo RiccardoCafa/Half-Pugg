@@ -20,9 +20,13 @@ class OWCard extends Component {
 
     componentDidMount = async () => {
         console.log(this.state.Gamer.ID);
-        await api.get('api/Dota/GetPlayers?PlayerID=' + this.state.Gamer.ID).then(res =>
-            this.setState({OWGamer: res.data})
-        ).catch(err => console.log('jogador não possui conta dota 2 cadastrada!'));
+        try {
+            await api.get('api/Dota/GetPlayers?PlayerID=' + this.state.Gamer.ID).then(res =>
+                this.setState({OWGamer: res.data})
+            );
+        } catch (error){
+            console.log('sem dota cadastrado');
+        }
         
     }
     
@@ -45,7 +49,7 @@ class OWCard extends Component {
                 {this.state.OWGamer.profile !== undefined ?
                
                     <Card fluid style={{width: '100%'}}>
-                        <Image src={dotaImage} fluid style={{height:'150px'}} />
+                        <Image src={dotaImage} fluid style={{height:'250px'}} />
                         <Card.Content>
                             <Card.Header as='h3' content='Dota 2'></Card.Header>
                             <Card.Meta><Image avatar src={this.state.OWGamer.profile.avatar}></Image> {this.state.OWGamer.profile.personaname} </Card.Meta>
