@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
-import { Card, Image, Button, Icon, Segment,  Statistic, } from 'semantic-ui-react';
+import { Card, Image, Button, Icon, Segment,  Statistic, Header, Menu, Modal, Loader, } from 'semantic-ui-react';
+import CriarGrupo from '../Components/CriarGrupo';
 
 export default class MyConnections extends Component {
 
@@ -15,6 +16,7 @@ export default class MyConnections extends Component {
         GamerLogado: {},
         Group: [],
         loaded: false,
+        openCreation: false,
     }
 
     async componentDidMount() {
@@ -41,18 +43,36 @@ export default class MyConnections extends Component {
         
         await api.get('api/Gamers/GetGroups?id='+myData.ID).then(res=> groups = res.data).catch(error => stop = true)
         this.setState({Group: groups})
+        this.setState({loaded: true});
     }
 
-  
+    setOpenCreation = () => this.setState({openCreation: true});
+    setCloseCreation = () => this.setState({openCreation: false});
+
     render() {
-        
+        if(!this.state.loaded){
+            return <Loader active/>
+        }
+
         return (
             <div>
                 <Auth></Auth>
                 <div>
                     <Headera gamer = {this.state.GamerLogado}/>
-                </div>  
+                </div>
+                <div className='submenu'>
+                    <Menu compact>
+                        <Menu.Item onClick={this.setOpenCreation}>
+                            <Icon name='edit'/> Criar um grupo
+                        </Menu.Item>
+                        <Menu.Item >
+                            <Icon name='search'/> Procurar um grupo
+                        </Menu.Item>
+                    </Menu>
+                </div>
+                <CriarGrupo gamer={this.state.GamerLogado} open={this.state.openCreation} close={this.setCloseCreation}></CriarGrupo>
                 <Segment>
+                    <Segment><Header content='Seus Grupos' as='h3' icon='group'></Header></Segment>
                     {this.state.Group.length === 0 ?
                     <div style={{display: 'flex', flexDirection: 'line', alignItems: 'left'}}>
                         <Statistic.Group>
@@ -80,13 +100,10 @@ export default class MyConnections extends Component {
                                     </Card.Meta>
                                     </Card.Content>
                                     <Card.Content extra >
-                                        <a>
                                         <Icon name='user' />
                                         {group.PlayerCount +'/'+ group.Capacity}
                                         <Icon name='game' />
                                         {group.Game}
-                                        </a>
-                                   
                                     </Card.Content>
                                 </Card>
                     )}

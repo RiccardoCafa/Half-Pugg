@@ -123,12 +123,22 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
 
+            Group groups = db.Groups.FirstOrDefault(x => x.Name == group.Name);
+            
+            if(groups != null)
+            {
+                return BadRequest(message: "Um grupo com o mesmo nome já existe!");
+            }
 
+            if(group.Capacity >= 16)
+            {
+                return BadRequest(message: "Seu grupo não pode ter mais de 15 pessoas!");
+            }
 
             db.Groups.Add(group);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = group.ID }, group);
+            return Ok(group);
         }
 
         // DELETE: api/Groups/5
