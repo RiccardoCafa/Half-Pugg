@@ -44,7 +44,7 @@ export default class CriarGrupo extends Component {
                 "Capacity": this.state.Capacidade,
                 "IdGame": 1,
                 "IdAdmin": this.state.gamerCreating.ID,
-                "SourceImg": imagePath,
+                "SouceImg": imagePath,
             });
             if(resp) {
                 this.setState({

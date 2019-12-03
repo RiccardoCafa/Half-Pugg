@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import api from '../services/api'
 import Auth from '../Components/auth';
 import Headera from '../Components/headera';
-import { Card, Image, Button, Icon, Segment,  Statistic, Header, Menu, Modal, Loader, Label, } from 'semantic-ui-react';
+import { Card, Image, Button, Icon, Segment,  Statistic, Header, Menu, Modal, Loader, Label, Grid, } from 'semantic-ui-react';
 import CriarGrupo from '../Components/CriarGrupo';
 import getPlayer from '../Components/getPlayer';
 import MessageBox from '../Components/MessageBox';
@@ -145,11 +145,11 @@ export default class MyConnections extends Component {
                         </Statistic.Group>
                     </div>
                     :
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                       
+                    <Grid >
                         {this.state.Group.map((group) => 
-                            <Card key={group.ID} onClick={()=> this.props.history.push('/group/'+group.ID)}>
-                                    <Image src= {group.ImagePath} wrapped ui={false} />
+                            <Grid.Column width={4}>
+                                <Card key={group.ID} onClick={()=> this.props.history.push('/group/'+group.ID)}>
+                                    <Image src={group.ImagePath} style={{height:'150px'}} />
                                     <Card.Content>
                                     <Card.Header>{group.Name}</Card.Header>
                                     <Card.Description>
@@ -166,8 +166,9 @@ export default class MyConnections extends Component {
                                         {group.Game}
                                     </Card.Content>
                                 </Card>
-                    )}
-                    </div>
+                            </Grid.Column>
+                        )}
+                    </Grid>
                    }
                 </Segment>
                 <Modal open={this.state.openSolicitacoes} onClose={this.closeSolicitacoes}>
@@ -192,6 +193,11 @@ export default class MyConnections extends Component {
                             </Card.Content>
                         </Card>
                         )}
+                        {this.state.RequestedGroups.length === 0 ?
+                        <Statistic.Group>
+                            <Statistic>Você está sem requisições para grupo</Statistic>
+                        </Statistic.Group>
+                        : null}
                    </Modal.Content>
                 </Modal>
             </div>    
