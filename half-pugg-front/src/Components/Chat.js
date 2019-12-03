@@ -64,6 +64,7 @@ export default class Chat extends Component {
                  
                 })
             })
+           
             api.get(`api/GroupMenssages?IdGroup=${this.props.Group.ID}`).then( res=>{
                 res.data.map((mess)=>{
                     this.addMessageToChat(mess.senderName,mess.content,mess.senderID)

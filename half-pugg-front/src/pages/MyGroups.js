@@ -4,6 +4,7 @@ import Auth from '../Components/auth';
 import Headera from '../Components/headera';
 import { Card, Image, Button, Icon, Segment,  Statistic, Header, Menu, Modal, Loader, } from 'semantic-ui-react';
 import CriarGrupo from '../Components/CriarGrupo';
+import GoupList from '../Components/GroupUI';
 
 export default class MyConnections extends Component {
 
@@ -85,28 +86,11 @@ export default class MyConnections extends Component {
                         <Button id="sem-conexao-button" label="Quero me conectar!" basic icon='users' onClick={this.goToBio}></Button>
                     </div>
                     :
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <div>
                        
-                        {this.state.Group.map((group) => 
-                            <Card key={group.ID} onClick={()=> this.props.history.push('/group/'+group.ID)}>
-                                    <Image src= {group.ImagePath} wrapped ui={false} />
-                                    <Card.Content>
-                                    <Card.Header>{group.Name}</Card.Header>
-                                    <Card.Description>
-                                       {group.Desc}
-                                    </Card.Description>
-                                    <Card.Meta>
-                                        <span className='date'>{'Owner: '+group.Admin}</span>
-                                    </Card.Meta>
-                                    </Card.Content>
-                                    <Card.Content extra >
-                                        <Icon name='user' />
-                                        {group.PlayerCount +'/'+ group.Capacity}
-                                        <Icon name='game' />
-                                        {group.Game}
-                                    </Card.Content>
-                                </Card>
-                    )}
+                        <GoupList groups = {this.state.Group} history = {this.props.history}/>
+
+                      
                     </div>
                    }
                 </Segment>

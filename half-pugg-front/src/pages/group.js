@@ -28,9 +28,9 @@ export default class Group extends Component {
         MenssageList : [    ],
         Friends :[]
     }
-
+   
     async componentDidMount() {
-        
+        this.state.Group.ID = this.props.match.params.id
         // Pega o usuário a partir do token
         const jwt = localStorage.getItem("jwt");
         let stop = false;
@@ -84,6 +84,7 @@ export default class Group extends Component {
     // Faz uma requisição de match para outro gamer
     
     render() {
+       
         if(this.state.toLogin === true) {
             return <Redirect to="/"></Redirect>
         }
@@ -121,20 +122,14 @@ export default class Group extends Component {
                                                 </List.Item>
                                             )}
                                     </List>
-                            
-
-                         
-                               
-                                    <Button color = 'green'>
+                                                       
+                                  <Button color = 'green'>
                                         Invite
                                     </Button>
                                     <Button color = 'red'>
                                         Leave
                                     </Button>
                                 
-                           
-                                   
-                           
                             </Grid.Column>
                        
                             <Grid.Column width={11}>
@@ -142,7 +137,7 @@ export default class Group extends Component {
                                     <Segment>
                                         <Header as='h3' textAlign='center' icon='users' content='Menssagem' />
                                     </Segment>    
-                                
+                                    
                                     <Chat GamerLogado = {this.state.GamerLogado} Group = {this.state.Group}></Chat>
                                 
                                 </Segment>

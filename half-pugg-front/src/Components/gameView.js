@@ -12,16 +12,14 @@ class GameView extends Component{
   
     render() {
         return(
-            <div>
+            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'left'}}>
                 
-                <Segment.Group horizontal>
-                    <Segment>
+                
                         {this.props.ShowOw === true ?<OWCard {...this.props.gamer}/> : null }
-                    </Segment>
-                    <Segment>
+                    
                         {this.props.ShowDota === true ? <DOTACard {...this.props.gamer}/>:null}
-                    </Segment>
-            </Segment.Group>
+              
+            
             </div>
            
         )
