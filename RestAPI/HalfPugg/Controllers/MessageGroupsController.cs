@@ -117,20 +117,27 @@ namespace HalfPugg.Controllers
         }
 
         [Route("api/GroupMenssages")]
-        [ResponseType(typeof(ICollection<MessageGroup>))]
         [HttpGet]
         public async Task<IHttpActionResult> GetGroupMessages(int IdGroup)
         {
             Group group = await db.Groups.FindAsync(IdGroup);
             if (group == null)
             {
-                return NotFound();
+                return NotFound();  
             }
-            var query = db.PlayerGroups.Where(x => x.IdGroup == IdGroup).FirstOrDefault();
-            if (query == null) return BadRequest();
-            var query2 = db.MessageGroups.Where(x => x.ID_Relation == query.ID).ToList();
+            List<dynamic> messages = new List<dynamic>();
             
-            return Ok(query2);
+            foreach(var v in db.MessageGroups.Where(x => x.IdGroup == IdGroup))
+            {
+                Player p = await db.Gamers.FindAsync(v.PlayerGroup.IdPlayer);
+                messages.Add(new
+                {
+                    Content = v.Content,
+                    Sender = p.Name,
+                    SenderID = p.ID
+                });
+            }
+            return Ok(messages);
         }
     }
 }
