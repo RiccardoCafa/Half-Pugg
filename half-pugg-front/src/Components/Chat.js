@@ -70,6 +70,7 @@ export default class Chat extends Component {
                 })
             }).catch(erro=>{
                 console.error('Fail to load messages')
+                console.error(erro)
             })
           
         }).catch(err => console.error(err));
@@ -83,7 +84,7 @@ export default class Chat extends Component {
         var oldMessages = [...this.state.messages]
         oldMessages.push({sender: send,content: message,id : senderId})
         this.setState({messages:oldMessages})
-        console.log(this.state.messages)
+       
     }
 
     joinGroupClient = (userID) =>{  

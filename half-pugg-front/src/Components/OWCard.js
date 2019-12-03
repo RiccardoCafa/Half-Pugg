@@ -45,7 +45,7 @@ class OWCard extends Component {
             <div>
                 {this.state.OWGamer.profile !== undefined ?
                
-                    <Card fluid style={{width: '100%'}}>
+                    <Card fluid style={{width: '300px'}}>
                         <Image src={overwatchImage} fluid style={{height:'150px'}} />
                         <Card.Content>
                             <Card.Header as='h3' content='Overwatch'></Card.Header>
