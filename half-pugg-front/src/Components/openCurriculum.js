@@ -26,7 +26,7 @@ class OpenCurriculum extends Component {
                     size='small'
                     trigger={
                         <Button fluid basic color='blue'>
-                            Open Curriculum
+                            Abrir Currículo
                         </Button>
                     }>
                     <Modal.Header>

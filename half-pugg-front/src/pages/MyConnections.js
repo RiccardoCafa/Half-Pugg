@@ -4,6 +4,7 @@ import {Redirect} from 'react-router-dom';
 import './match.css'
 import api from '../services/api'
 import Auth from '../Components/auth';
+import getPlayer from '../Components/getPlayer';
 import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
 import Classification from '../Components/classification';
@@ -21,42 +22,62 @@ export default class MyConnections extends Component {
         },
         GamerLogado: {},
         Matches: [],
+        DeniedMatches: [],
         toMatch: false,
         loaded: false,
     }
 
     componentDidMount = async () => {
 
-        const jwt = localStorage.getItem("jwt");
-        let stop = false;
-        let myData;
-        if(jwt){
-            await api.get('api/Login', { headers: { "token-jwt": jwt }}).then(res => 
-                myData = res.data
-            ).catch(error => stop = true)
-        } else {
-            stop = true;
-        }
+        let gamer = await getPlayer();
 
-        if(stop) {
+        if(!gamer) {
             this.setState({toLogin: true});
             return;
         }
 
         this.setState(
         {
-            GamerLogado: myData
+            GamerLogado: gamer,
+            Nickname: gamer.Nickname
+
         })
-        this.setNickname(myData);
         
-        if(myData !== undefined && myData.data !== null) {
-            const MatchData = await api.get('api/Matches/' + myData.ID);
+        if(gamer !== undefined) {
+            const MatchData = await api.get('api/Matches/' + gamer.ID);
             //{ headers: { "token-jwt": jwt }}
-            if(MatchData.data != null){
+            if(MatchData.data){
                 this.setState({Matches: MatchData.data});
+            }
+
+            const RejectedData = await api.get('api/Matches/Rejected?playerID='+gamer.ID);
+            if(RejectedData) {
+                this.setState({DeniedMatches: RejectedData.data});
             }
         }
         this.setState({loaded: true});
+    }
+
+    atualizaMatch = async (match) => {
+        const response = await api.put(`api/Matches/${match.ID}`, {
+            "ID": match.ID,
+            "IdPlayer1": match.IdPlayer1,
+            "IdPlayer2": match.IdPlayer2,
+            "Status": true,
+            "Weight": match.Weight,
+            "CreateAt": match.CreateAt,
+            "AlteredAt": match.AlteredAt
+        });
+        if(response.status === 200) {
+            alert('atualizado com sucesso');
+            window.location.reload();
+            // let antes = [...this.state.DeniedMatches];
+            // var index = antes.indexOf(match);
+            // if(index !== -1){
+            //     antes.splice(index, 1);
+            //     this.setState({DeniedMatches: antes});
+            // }
+        }
     }
 
     componentWillMount() {
@@ -110,19 +131,54 @@ export default class MyConnections extends Component {
                     <Card.Group>
                         {this.state.Matches.map((matcher) => 
                             <Card key={matcher.matchPlayer.ID}>
-                                <UserContentCard gamer={this.state.GamerLogado} gamerMatch={matcher}></UserContentCard>
+                                <UserContentCard gamer={this.state.GamerLogado} matchPlayer={matcher.matchPlayer} isAvaliable={false}></UserContentCard>
                                 <Card.Content extra>
                                     <div className='ui two buttons'>
                                         <Button 
                                             id='btn-acpden' 
                                             basic color='green' 
-                                            content='Invite to Group!'
+                                            content='Convidar para um grupo!'
                                             />
                                     </div>
                                 </Card.Content>
                                 <Card.Content extra>
                                     <OpenCurriculum {...matcher.matchPlayer}></OpenCurriculum>
                                     <Classification gamer={this.state.GamerLogado} gamerclassf={matcher.matchPlayer}></Classification>
+                                </Card.Content>
+                            </Card>
+                        )}
+                    </Card.Group>
+                    </Segment>
+                </div>
+                <div >
+                <Segment style={{'marginLeft': '2%', 'marginRight': '2%', 'marginTop': '2%'}}> 
+                    <Header size='small' as='h2' style={{'marginLeft': '3%'}}>
+                        <Icon name='users'></Icon>
+                        <Header.Content>
+                            Conexões que você humildemente recusou!
+                            <Header.Subheader>Você pode dar outra chance para esses coitados <s>ou não</s>!</Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                    <Divider></Divider>
+                    {this.state.DeniedMatches.length === 0 ?
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '5%'}}>
+                        <Statistic.Group>
+                            <Statistic
+                            value = "Você é um cara bem social!"
+                            label = "Você não rejeitou ninguém, uau!"
+                            text
+                            id="sem-conexao-texto"></Statistic>
+                        </Statistic.Group>
+                    </div>:<div/>}
+                    <Card.Group>
+                        {this.state.DeniedMatches.map((matcher) => 
+                            <Card key={matcher.match.ID}>
+                                <UserContentCard gamer={this.state.GamerLogado} matchPlayer={matcher.rejected} isAvaliable={true}></UserContentCard>
+                                <Card.Content extra>
+                                    <Button basic fluid onClick={() => this.atualizaMatch(matcher.match)}>Aceitar Humildemente</Button>
+                                </Card.Content>
+                                <Card.Content extra>
+                                    <OpenCurriculum {...matcher.rejected}></OpenCurriculum>
                                 </Card.Content>
                             </Card>
                         )}

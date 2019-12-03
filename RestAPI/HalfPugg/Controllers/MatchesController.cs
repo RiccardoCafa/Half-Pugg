@@ -38,7 +38,7 @@ namespace HalfPugg.Controllers
             Player procurando = await db.Gamers.FindAsync(id);
 
             List<Match> match = db.Matches
-                                    .Where(x => x.IdPlayer1 == id || x.IdPlayer2 == id)
+                                    .Where(x => x.Status && (x.IdPlayer1 == id || x.IdPlayer2 == id))
                                     .AsEnumerable().ToList();
             //List<Player> myConnections = new List<Player>();
 
@@ -65,6 +65,24 @@ namespace HalfPugg.Controllers
             }
 
             return NotFound();
+        }
+
+        [Route("api/Matches/Rejected")]
+        [HttpGet]
+        public IHttpActionResult GetRejectedMatch(int playerID)
+        {
+            var matches = db.Matches.Where(x => !x.Status && (x.IdPlayer1 == playerID || x.IdPlayer2 == playerID)).AsEnumerable().ToArray();
+            List<dynamic> players = new List<dynamic>();
+            foreach(Match match in matches)
+            {
+                Player rejected = match.IdPlayer1 == playerID ? match.Player2 : match.Player1;
+                players.Add(new
+                {
+                    match,
+                    rejected
+                });
+            }
+            return Ok(players);
         }
 
         [Route("api/Matches/HasMatch")]
@@ -106,7 +124,7 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest();
             }
-
+            match.CreateAt = DateTime.UtcNow;
             db.Entry(match).State = EntityState.Modified;
                 
             try
@@ -125,7 +143,7 @@ namespace HalfPugg.Controllers
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
         // POST: api/Matches
