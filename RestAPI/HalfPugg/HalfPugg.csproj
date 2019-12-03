@@ -299,6 +299,14 @@
     <Compile Include="Migrations\201912031517570_Refatoracao.Designer.cs">
       <DependentUpon>201912031517570_Refatoracao.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912031604522_Refatoracao2.cs" />
+    <Compile Include="Migrations\201912031604522_Refatoracao2.Designer.cs">
+      <DependentUpon>201912031604522_Refatoracao2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912031606386_Refatoracao3.cs" />
+    <Compile Include="Migrations\201912031606386_Refatoracao3.Designer.cs">
+      <DependentUpon>201912031606386_Refatoracao3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Classification_Game.cs" />
     <Compile Include="Models\Classification_Gamer.cs" />
@@ -578,6 +586,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912031517570_Refatoracao.resx">
       <DependentUpon>201912031517570_Refatoracao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912031604522_Refatoracao2.resx">
+      <DependentUpon>201912031604522_Refatoracao2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912031606386_Refatoracao3.resx">
+      <DependentUpon>201912031606386_Refatoracao3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
