@@ -208,7 +208,7 @@ export default class Chat extends Component {
                                         <Message.Header>{message.id !== this.state.GamerLogado.ID ?message.sender:''} </Message.Header>
                                     </div>
                                     <div 
-                                    style={{ display: 'flex', flexDirection: 'row',flexWrap:'wrap' , alignItems: 'left',maxWidth: '95%'}}>
+                                    style={{ display: 'flex', flexDirection: 'row',flexWrap:'wrap' , alignItems: 'left',maxWidth: '95%',wordWrap:'break-word'}}>
                                         <p style={{textAlign:'left'}}>{message.content }</p>
                                     </div> 
                              </Message>         
