@@ -27,7 +27,7 @@ class CardGroup extends Component{
     render(){
         return(
             <div>
-                <Card key={this.props.group.ID} onClick={()=> this.props.history.push('/group/'+this.props.group.ID)}>
+                <Card fluid style={{width: '250px'}} key={this.props.group.ID} onClick={()=> this.props.history.push('/group/'+this.props.group.ID)}>
                     <Image src= {this.props.group.ImagePath} wrapped ui={false} />
                     
                     <Card.Content>
