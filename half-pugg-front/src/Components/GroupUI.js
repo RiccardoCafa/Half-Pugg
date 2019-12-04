@@ -41,10 +41,16 @@ class CardGroup extends Component{
                     </Card.Content>
 
                     <Card.Content extra >
+                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
+                        <div>
                         <Icon name='user' />
                             {this.props.group.PlayerCount +'/'+ this.props.group.Capacity}
+                        </div>
+                        <div>
                         <Icon name='game' />
                             {this.props.group.Game}
+                        </div>
+                        </div>
                     </Card.Content>
                 </Card>
             </div>

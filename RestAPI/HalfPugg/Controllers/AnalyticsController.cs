@@ -38,9 +38,15 @@ namespace HalfPugg.Controllers
         public DateTime dataMatch;
     }
 
+    public class PlayerMatch
+    {
+        public Player player;
+        public float weight;
+    }
+
     public class Analytics
     {
-        public List<Player> TopTenPlayers = new List<Player>(10);
+        public List<PlayerMatch> TopTenPlayers = new List<PlayerMatch>(10);
         public List<MatchDate> MatchesDate = new List<MatchDate>();
     }
 
@@ -67,7 +73,7 @@ namespace HalfPugg.Controllers
                     PlayerName = userId == m.IdPlayer1 ? m.Player2.Nickname : m.Player1.Nickname,
                 });
 
-                analytics.TopTenPlayers.Add(userId == m.IdPlayer1 ? m.Player2 : m.Player1);
+                analytics.TopTenPlayers.Add(new PlayerMatch { player = userId == m.IdPlayer1 ? m.Player2 : m.Player1, weight = m.Weight });
             }
 
             analytics.MatchesDate.Sort((a, b) => a.dataMatch.CompareTo(b.dataMatch));

@@ -1,7 +1,27 @@
 import React, {Component} from 'react'
-import { Message, Button, Input, List,Segment } from 'semantic-ui-react';
+import {Card, Message, Button, Input, List,Segment } from 'semantic-ui-react';
 import api from '../services/api'
 import {HttpTransportType,HubConnectionBuilder, LogLevel,} from '@aspnet/signalr'
+
+
+class MessageCard extends Component{
+    
+    render(){
+        return(
+            <div style={{display: 'flex', flexDirection: 'row', alignItems: this.props.side}}>
+                
+                <Message>
+                    <Message.Header> {this.props.showHeader == true? <p>{this.props.header}</p>:null}</Message.Header>
+                        <p>
+                        {this.props.content}
+                        </p>
+                </Message>
+    
+            </div>
+        )
+    }
+}
+
 
 export default class Chat extends Component {
 
@@ -44,7 +64,7 @@ export default class Chat extends Component {
     }
 
     startConnection = (gamerID)=>{
-        const hub = new HubConnectionBuilder().withUrl('https://localhost:44394/chat',{
+        const hub = new HubConnectionBuilder().withUrl('https://localhost:44392/chat',{
             skipNegotiation: true,
             transport: HttpTransportType.WebSockets
           }).configureLogging(LogLevel.Information).build();
@@ -177,18 +197,24 @@ export default class Chat extends Component {
         return (
             <div>
                 <Segment textAlign='center' style={{overflow: 'auto', maxHeight: 400 }}>
-                <List >
+               
                     {this.state.messages.map((message) => 
-                        <List.Item style={message.id === this.state.GamerLogado.ID ?{'marginLeft': `${this.calcMessSize(message.content)}%`}:{'marginRight':`${this.calcMessSize(message.content)}%`}}>      
                          
-                            <List.Header as='a'>{message.sender}</List.Header>
-                                <Message  size='mini' color={message.id === this.state.GamerLogado.ID ?'green': 'blue'}>
-                                    <p>{message.content }</p> 
-                                </Message>                 
-                                        
-                        </List.Item>
+                         <div style={{ flexWrap:'wrap', flexDirection: 'row',marginTop:'1%',marginBottom:'1%', ...message.id === this.state.GamerLogado.ID ?{paddingLeft:'59%'}:{paddingRight:'59%'}}}>
+                             
+                             <Message  size='mini' color={message.id === this.state.GamerLogado.ID ?'green': 'blue'}>
+                                    
+                                    <div style={{ display: 'flex', flexDirection: 'row',flexWrap:'wrap' , alignItems: 'left'}}>
+                                        <Message.Header>{message.id !== this.state.GamerLogado.ID ?message.sender:''} </Message.Header>
+                                    </div>
+                                    <div 
+                                    style={{ display: 'flex', flexDirection: 'row',flexWrap:'wrap' , alignItems: 'left',maxWidth: '95%'}}>
+                                        <p style={{textAlign:'left'}}>{message.content }</p>
+                                    </div> 
+                             </Message>         
+                         </div>
                     )} 
-                </List>
+               
             </Segment> 
             <div >
                 <Input  icon='paper plane outline' iconPosition='left' onChange={this.hanldeInput} value={this.state.inpt_message}/>

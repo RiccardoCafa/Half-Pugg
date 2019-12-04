@@ -216,6 +216,8 @@ export default class registergame extends Component {
                             <Segment>
                                 <Header as='h3' textAlign='center' icon='gamepad' content='Choose a new Game'></Header>
                             </Segment>
+                            
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'left',marginLeft: '2%',marginRight: '2%'}}>
                             <Card.Group>
                                 {this.state.OverwatchInfo.profile === undefined ?
                                 <Card >
@@ -261,6 +263,8 @@ export default class registergame extends Component {
                                     </Card.Content>
                                 </Card> : null }
                             </Card.Group>
+                            </div>
+                           
                             <br></br>
                             <Button.Group >
                                 <Button color='blue' id="botoes" onClick={this.goBack}>
