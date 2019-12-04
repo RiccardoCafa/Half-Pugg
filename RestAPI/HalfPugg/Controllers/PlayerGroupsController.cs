@@ -129,7 +129,7 @@ namespace HalfPugg.Controllers
                 return BadRequest(ModelState);
             }
             Group g = await db.Groups.FindAsync(playerGroup.IdGroup);
-           
+            g.TotalComponentes++;
             db.PlayerGroups.Add(playerGroup);
             await db.SaveChangesAsync();
 
