@@ -93,9 +93,9 @@ export default class registergame extends Component {
                     const dota = await api.get('api/Dota/GetPlayers?PlayerID='+jogo.IDGamer).catch(err => console.log(err));
                     this.setState({DotaInfo: dota.data});
                 }
-                this.setState({loaded: true})
             });
         }
+        this.setState({loaded: true})
     }
 
     componentWillUnmount = () => {}

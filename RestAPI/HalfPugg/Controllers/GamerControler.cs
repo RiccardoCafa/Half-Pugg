@@ -373,7 +373,9 @@ namespace HalfPugg.Controllers
             List<Player> players = new List<Player>(sorted.Count());
             foreach(var v in sorted)
             {
-                players.Add(db.Gamers.Find(v.Key));
+                Player p = db.Gamers.Find(v.Key);
+                p.HashPassword = "";
+                players.Add(p);
                
             }
             return Ok(players);

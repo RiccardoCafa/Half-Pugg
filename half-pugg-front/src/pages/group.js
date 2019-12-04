@@ -136,12 +136,12 @@ export default class Group extends Component {
                                             )}
                                     </List>
                                                        
-                                  <Button color = 'green'>
+                                  {/* <Button color = 'green'>
                                         Invite
                                     </Button>
                                     <Button color = 'red'>
                                         Leave
-                                    </Button>
+                                    </Button> */}
                                 
                             </Grid.Column>
                        
