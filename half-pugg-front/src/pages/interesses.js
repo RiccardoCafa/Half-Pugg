@@ -47,6 +47,25 @@ async componentDidMount() {
         this.setState({Hashtags : hash.data});
         
     }
+
+    const hs = await api.get('api/HashPlayer?IdHash='+ 3+'&IdPlayer='+this.state.GamerLogado.ID
+            ).catch(error => {
+                console.log(error);
+                
+            });
+            if (hs == undefined){
+                await api.post('api/PlayerHashtags', { 
+                    "IdHash": 5,
+                    "idPlayer": this.state.GamerLogado.ID,
+                    "Weight": 1
+                }).catch(error => {
+                    console.log(error);
+                    
+                });
+            }
+
+            
+        console.log(hs);    
 }
         
     handleInt = async(operation, id)=> {
@@ -58,10 +77,10 @@ async componentDidMount() {
             });
         console.log(hs)
         //console.log(this.state.GamerLogado.ID)
-        if (hs == null){
-            await api.post('api/HashPlayer', { 
+        if (hs == undefined){
+            await api.post('api/PlayerHashtags', { 
                 "IdHash": id,
-                "idPlayer": this.state.GamerLogado.ID,
+                "idPlayer": 1,
                 "Weight": 1
             }).catch(error => {
                 console.log(error);
@@ -72,7 +91,7 @@ async componentDidMount() {
             if (operation){
                 x = 1 + hs.Weight
             }
-            await api.put('api/HashPlayer/'+hs.ID, { 
+            await api.put('api/PlayerHashtags/'+hs.ID, { 
                 "IdHash" : id,
                 "idPlayer" : this.state.GamerLogado.ID,
                 "Weight" : 1 + hs.Weight
