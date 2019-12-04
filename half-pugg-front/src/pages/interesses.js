@@ -48,20 +48,10 @@ async componentDidMount() {
         
     }
 }
-    setId = (tag)=>{
-        this.setState({ID: tag.ID_Matter })
-    }
-    setOpAdd = ()=>{
-        this.setState({operation: true})
-    }
-
-    setOpMinus = ()=>{
-        this.setState({operation: false})
-    }
-    
-    handleInt = async()=> {
+        
+    handleInt = async(operation, id)=> {
         console.log(hs);
-        const hs = await api.get('api/HashPlayer?IdHash='+ this.state.ID+'&IdPlayer='+this.state.GamerLogado.ID
+        const hs = await api.get('api/HashPlayer?IdHash='+ id+'&IdPlayer='+this.state.GamerLogado.ID
             ).catch(error => {
                 console.log(error);
                 
@@ -70,7 +60,7 @@ async componentDidMount() {
         //console.log(this.state.GamerLogado.ID)
         if (hs == null){
             await api.post('api/HashPlayer', { 
-                "IdHash": this.state.ID,
+                "IdHash": id,
                 "idPlayer": this.state.GamerLogado.ID,
                 "Weight": 1
             }).catch(error => {
@@ -79,13 +69,13 @@ async componentDidMount() {
             });
         }else{
             var x = 1 - hs.Weight;
-            if (hs){
+            if (operation){
                 x = 1 + hs.Weight
             }
             await api.put('api/HashPlayer/'+hs.ID, { 
-                "IdHash": this.state.ID,
-                "idPlayer": this.state.GamerLogado.ID,
-                "Weight": 1 + hs.Weight
+                "IdHash" : id,
+                "idPlayer" : this.state.GamerLogado.ID,
+                "Weight" : 1 + hs.Weight
             }).catch(error => {
                 console.log(error);
                 
@@ -114,22 +104,20 @@ render() {
                     <div >
                     <Grid columns={3} divided style={{'marginTop': '1%', 'marginLeft': '1%'}}> 
                             <Grid.Row>
-                            <Grid.Column>
-                            {this.state.Hashtags.map((tag) => 
-                                    
-                                    <Dimmer.Dimmable as={Segment} dimmed={active} size='tiny'>
-                                    <Header as='h3'>{tag.Hashtag}</Header>
-                                    <Image size='tiny' src={(tag.PathImg === "" || tag.PathImg === null) 
-                                    ? gostosao : tag.PathImg} />
-                                    <Button.Group>
-                                    <Button icon='plus'  onClick = {this.setId.bind(tag)} onClick = {this.setOpAdd} onClick={this.handleInt}  />
-                                    <Button icon='minus' onClick = {this.setId.bind(tag)} onClick = {this.setOpMinus} onClick={this.handleInt}/>
-                                    </Button.Group>
-                                    </Dimmer.Dimmable>
-
-                        )}
+                                <Grid.Column>
+                                    {this.state.Hashtags.map((tag) =>                                             
+                                        <Dimmer.Dimmable as={Segment} dimmed={active} size='tiny'>
+                                        <Header as='h3'>{tag.Hashtag}</Header>
+                                        <Image size='tiny' src={(tag.PathImg === "" || tag.PathImg === null) 
+                                        ? gostosao : tag.PathImg} />
+                                        <Button.Group>
+                                        <Button icon='plus'  onClick={this.handleInt.bind(true, tag.ID_Matter)}  />
+                                        <Button icon='minus' onClick={this.handleInt.bind(false, tag.ID_Matter)}/>
+                                        </Button.Group>
+                                        </Dimmer.Dimmable>
+                                    )}
                             
-                            </Grid.Column>
+                                </Grid.Column>
                             </Grid.Row>   
                         </Grid>
                         
