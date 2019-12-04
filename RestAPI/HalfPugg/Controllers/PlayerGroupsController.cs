@@ -130,6 +130,7 @@ namespace HalfPugg.Controllers
             }
             Group g = await db.Groups.FindAsync(playerGroup.IdGroup);
             g.TotalComponentes++;
+            db.Entry(g).State = EntityState.Modified;
             db.PlayerGroups.Add(playerGroup);
             await db.SaveChangesAsync();
 

@@ -342,7 +342,7 @@ namespace HalfPugg.Controllers
                     Desc = "Sem descricao",
                     Admin = x.Admin.Name,
                     Capacity = x.Capacity,
-                    PlayerCount = 1,
+                    PlayerCount = x.TotalComponentes,
                     CreateAt = x.CreateAt,
                     Game = x.Game.Name,
                     ImagePath = x.SouceImg

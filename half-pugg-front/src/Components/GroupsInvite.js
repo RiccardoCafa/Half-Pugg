@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Modal, Button, Header, Card, Icon, Image } from 'semantic-ui-react';
+import { Loader, Modal, Button, Header, Card, Icon, Image } from 'semantic-ui-react';
 import {withRouter} from 'react-router-dom';
 import api from '../services/api';
 import MessageBox from './MessageBox';
@@ -68,7 +68,7 @@ class GroupsInvite extends Component {
 
     render() {
         if(!this.state.loaded){
-            return <></>
+            return <Loader active></Loader>
         }
         return <div>
             {this.state.MyGroups.length === 0 ?

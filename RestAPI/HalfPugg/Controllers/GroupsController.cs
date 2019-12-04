@@ -153,6 +153,7 @@ namespace HalfPugg.Controllers
             }
 
             group.CreateAt = DateTime.UtcNow;
+            group.TotalComponentes = 1;
             db.Groups.Add(group);
             try
             {

@@ -64,6 +64,7 @@ namespace HalfPugg.Controllers
             }
 
             Group group = db.Groups.Find(requestedGroup.IdGroup);
+            group.TotalComponentes++;
             if (group == null)
             {
                 return NotFound();
@@ -115,6 +116,7 @@ namespace HalfPugg.Controllers
             catch (Exception e) { Console.Write(e.Message); }
 
             db.Entry(requestedGroup).State = EntityState.Modified;
+            db.Entry(group).State = EntityState.Modified;
 
             try
             {
