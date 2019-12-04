@@ -31,7 +31,7 @@ export default class classification extends Component {
         ],
         classificacao: '',
         loadingClassifc: false,
-        loadedClassif: false,
+        loadedClassif: true,
         avaliacao: '',
         avalKey: 1,
         open: false,
@@ -43,24 +43,14 @@ export default class classification extends Component {
     close = () => this.setState({open: false});
 
     componentDidMount = async () => {
-        this.checkForRating();
-    }
-
-    checkForRating = async () => {
-        this.setState({loadedClassif: false});
-        const classif = await api.get(`api/classificationPlayers/Match?idJudge=${this.props.gamerclassf.ID}&idJudger=${this.props.gamer.ID}`)
-            .catch(err => console.log('.'));
-            console.log(classif);
-        if(classif !== undefined && classif.data !== null){
-            const cls = classif.data;
+        if(this.props.classificacao !== null){
             this.setState({
-                jug: true, 
-                stars: cls.Points, 
-                classificacao: this.state.classificacoes.find(cl => cl.key === cls.IdClassification).value,
-                IDClassif: cls.ID,
+                IDClassif: this.props.classificacao.ID,
+                stars: this.props.classificacao.Points,
+                classificacao: this.state.classificacoes.find(cl => cl.key === this.props.classificacao.IdClassification).value,
+                jug: true,
             });
         }
-        this.setState({loadedClassif: true});
     }
 
     onJudgment = (e, {rating}) => {
@@ -108,7 +98,6 @@ export default class classification extends Component {
             ImOpen: false,
         }))
         .catch(err => this.setState({avaliacao: 'Algo de inesperado ocorreu, tente recarragar a página, se isso ocorrer novamente contate o suporte!'}));
-        window.location.reload();
     }
 
     fechaIsso = () => this.setState({ImOpen: false});

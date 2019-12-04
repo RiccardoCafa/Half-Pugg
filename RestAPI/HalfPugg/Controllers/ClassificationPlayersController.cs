@@ -53,7 +53,16 @@ namespace HalfPugg.Controllers
             {
 
             }
-                       
+            if(classfPlayer == null)
+            {
+                classfPlayer = new ClassificationPlayer()
+                {
+                    IdJudgePlayer = idJudge,
+                    IdPlayer = idJudger,
+                    Points = 0,
+                    IdClassification = 0
+                };
+            }
             return Ok(classfPlayer);
             
         }
