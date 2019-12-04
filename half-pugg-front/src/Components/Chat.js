@@ -44,7 +44,7 @@ export default class Chat extends Component {
     }
 
     startConnection = (gamerID)=>{
-        const hub = new HubConnectionBuilder().withUrl('https://localhost:44392/chat',{
+        const hub = new HubConnectionBuilder().withUrl('https://localhost:44394/chat',{
             skipNegotiation: true,
             transport: HttpTransportType.WebSockets
           }).configureLogging(LogLevel.Information).build();

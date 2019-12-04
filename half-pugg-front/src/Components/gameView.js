@@ -12,7 +12,7 @@ class GameView extends Component{
   
     render() {
         return(
-            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'left'}}>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 
                 <div style={{marginRight: '0.5%',marginLeft:'0.5%'}}>
                     {this.props.ShowOw === true ?<OWCard {...this.props.gamer}/> : null }
