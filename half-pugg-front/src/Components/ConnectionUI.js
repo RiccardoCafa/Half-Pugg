@@ -6,6 +6,8 @@ import OpenCurriculum from '../Components/openCurriculum';
 import Classification from '../Components/classification';
 import api from '../services/api';
 
+import chris from '../images/chris.jpg';
+
 class ConnectionCardList extends Component{
     render(){
         return(
@@ -42,7 +44,7 @@ class ConnectionCard extends Component{
             <div>
                 <Card fluid style={{width: '225px',height: '320px'}}>
 
-                      <Image  circular style={{height:'190px'}} src={this.props.image}/>
+                      <Image  circular style={{height:'190px'}} src={this.props.image === null ? chris : this.props.image}/>
                       <Card.Content style={{height: '75px'}}>
                          <Card.Header>{this.props.nick}</Card.Header>
                          <Rating rating={this.props.classificacao === null ? 0 : this.props.classificacao.Points} maxRating={5} disabled></Rating>
