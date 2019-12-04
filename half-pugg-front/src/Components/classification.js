@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Image, Button, Rating, Segment, Dropdown, Loader } from 'semantic-ui-react';
+import { Modal, Image, Button, Rating, Segment, Dropdown, Loader,Icon } from 'semantic-ui-react';
 import gostosao from '../images/chris.jpg'
 import api from '../services/api';
 
@@ -121,7 +121,7 @@ export default class classification extends Component {
             <div>
                 {this.state.loadedClassif === true ?
                     <div>
-                    <Modal open={this.state.ImOpen} onClose={this.fechaIsso} trigger={<Button onClick={() => this.setState({ImOpen: true})} fluid basic color='yellow'>Avaliar jogador</Button>}>
+                    <Modal open={this.state.ImOpen} onClose={this.fechaIsso} trigger={ <Icon style={{cursor:'pointer'}} onClick={() => this.setState({ImOpen: true})} name = 'edit outline'/>}>
                         <Modal.Header>Avaliando {this.props.gamerclassf.Name}</Modal.Header>
                         <Modal.Content image>
                             <Image size='small' circular src={(this.props.gamerclassf.ImagePath === "" || this.props.gamerclassf.ImagePath === null) 

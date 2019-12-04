@@ -7,7 +7,7 @@ class GoupList extends Component{
 
     render() {
         return(
-            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'left',marginLeft : '2%',marginRight: '2%'}}>
+            <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'left',marginLeft : '2%',marginRight: '2%'}}>
                
                     {this.props.groups.map((g)=>
                         <div style={{marginRight: '0.5%',marginLeft:'0.5%'}}>
@@ -28,7 +28,7 @@ class CardGroup extends Component{
         return(
             <div>
                 <Card fluid style={{width: '250px'}} key={this.props.group.ID} onClick={()=> this.props.history.push('/group/'+this.props.group.ID)}>
-                    <Image src= {this.props.group.ImagePath} wrapped ui={false} />
+                    <Image src= {this.props.group.ImagePath} fluid style={{height:'150px'}} />
                     
                     <Card.Content>
                         <Card.Header>{this.props.group.Name}</Card.Header>
