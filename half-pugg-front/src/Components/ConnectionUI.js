@@ -12,12 +12,12 @@ class ConnectionCardList extends Component{
             <div style={{display: 'flex', flexDirection: 'row', flexWrap : 'wrap', alignItems: 'left',marginLeft : '2%',marginRight: '2%'}}>
                
                 {this.props.Matches.map((matcher) =>
-                     <div style={{marginRight: '0.5%',marginLeft:'0.5%', marginTop: '0.5%', marginBottom: '0.5%'}}>
+                     <div key={matcher.ID} style={{marginRight: '0.5%',marginLeft:'0.5%', marginTop: '0.5%', marginBottom: '0.5%'}}>
                         <ConnectionCard
                              gamer={this.props.gamer}
                              classificacao = {matcher.Classificacao} 
-                             stars = {matcher.Weight}
-                             id ={matcher.matchPlayer.ID} 
+                             stars = {matcher.Classificacao}
+                             id ={matcher.ID} 
                              image={matcher.matchPlayer.ImagePath} 
                              nick={matcher.matchPlayer.Nickname} 
                              match={matcher.matchPlayer} 
@@ -33,15 +33,19 @@ class ConnectionCardList extends Component{
 
 class ConnectionCard extends Component{
 
+    componentDidMount = () => {
+        console.log(this.props);
+    }
+
     render(){
         return(
             <div>
-                <Card key={this.props.id} fluid style={{width: '225px',height: '320px'}}>
+                <Card fluid style={{width: '225px',height: '320px'}}>
 
                       <Image  circular style={{height:'190px'}} src={this.props.image}/>
                       <Card.Content style={{height: '75px'}}>
                          <Card.Header>{this.props.nick}</Card.Header>
-                         <Rating rating={this.props.stars} maxRating={5} disabled></Rating>
+                         <Rating rating={this.props.classificacao === null ? 0 : this.props.classificacao.Points} maxRating={5} disabled></Rating>
                          <Card.Description>{this.props.description}</Card.Description>
                      </Card.Content>
                      <Card.Content extra>

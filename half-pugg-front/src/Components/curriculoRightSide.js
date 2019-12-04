@@ -10,7 +10,7 @@ export default class curriculoRightSide extends Component {
                 <Header content={`Participação de ${this.props.nickname} em Half-Pugg`}></Header>
                 <Statistic.Group horizontal >
                     <Statistic value={this.props.ConnectionsLength} label='conexões'></Statistic>
-                    <Statistic value={this.props.stars} label='média da nota'></Statistic>
+                    <Statistic value={this.props.stars.toFixed(1)} label='média da nota'></Statistic>
                 </Statistic.Group>
             </div>
         )
