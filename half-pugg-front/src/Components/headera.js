@@ -70,12 +70,12 @@ class Header extends Component {
                             icon='chart line'
                             onClick={() => this.loadPage('/Analytics')}
                             />
-                        <Menu.Item
+                        {/* <Menu.Item
                             name='My Interests'
                             active={activeItem === "Connect"}
                             icon='hashtag'
                             onClick={() => this.loadPage('/Interesse')}
-                            />
+                            /> */}
                         <Menu.Menu position='right'>
                             <Menu.Item>
                                 <Button color='red' size='mini' onClick={this.handleLogoff}>Sair</Button>

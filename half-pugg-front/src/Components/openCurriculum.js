@@ -4,7 +4,7 @@ import { Modal, Icon, Image } from 'semantic-ui-react';
 import gostosao from '../images/chris.jpg'
 import OWCard from './OWCard';
 import DOTACard from './DOTACard';
-
+import GameView from '../Components/gameView'
 class OpenCurriculum extends Component {
     state ={
         Gamer: {},
@@ -26,7 +26,7 @@ class OpenCurriculum extends Component {
                 <Modal
                     size='small'
                     trigger={
-                        <Icon  style={{cursor:'pointer'}} name = 'address card outline' onClick={this.openGamerCurriculumPage}/>
+                        <Icon  style={{cursor:'pointer'}} name = 'address card outline' />
                     }>
                     <Modal.Header>
                         {'Gamerlum de ' + this.state.Gamer.Nickname}
@@ -42,8 +42,9 @@ class OpenCurriculum extends Component {
                         </Modal.Description>
                     </Modal.Content>
                     <Modal.Content>
-                        <OWCard {...this.state.Gamer}></OWCard>
-                        <DOTACard {...this.state.Gamer}></DOTACard>
+                        <GameView ShowOw = {true} ShowDota={true} gamer={this.state.Gamer}/>
+                        {/* <OWCard {...this.state.Gamer}></OWCard>
+                        <DOTACard {...this.state.Gamer}></DOTACard> */}
                     </Modal.Content>
                     <Modal.Actions>
                     <Icon style={{cursor:'pointer'}} name = 'address card outline' onClick={this.openGamerCurriculumPage}/>

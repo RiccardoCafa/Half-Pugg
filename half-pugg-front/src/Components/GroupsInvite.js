@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Loader, Modal, Button, Header, Card, Icon, Image } from 'semantic-ui-react';
+import { Loader, Modal, Button, Header, Card, Icon, Image, Grid } from 'semantic-ui-react';
 import {withRouter} from 'react-router-dom';
 import api from '../services/api';
 import MessageBox from './MessageBox';
@@ -89,10 +89,14 @@ class GroupsInvite extends Component {
                 </Modal>
                 :   <Modal trigger={<Icon style={{cursor:'pointer'}} name = 'comments outline'/>} open={this.state.open} onOpen={this.setOpen} onClose={this.setClose}>
                         <Header size='medium' icon='users' content='Convide para os grupos que você deseja'></Header>
-                        {this.props.groups.map((group) => 
-                            <Modal.Content key={group.ID}>
+                        <Grid>
+                        {this.props.groups.map((group) =>
+                        <Grid.Column width={4}> 
+                            <Modal.Content key={group.ID} style={{marginLeft :'5%',marginRight :'5%',marginTop :'5%',marginBottom :'5%'}}>
+
+
                                 <Card>
-                                    <Image src={group.SouceImg} fluid wrapped></Image>
+                                    <Image src={group.SouceImg} style={{height:'150px'}} fluid ></Image>
                                     <Card.Content>
                                         <Card.Header>{group.Name}</Card.Header>
                                         <Card.Meta>número máximo de jogadores é {group.Capacity}</Card.Meta>
@@ -104,8 +108,11 @@ class GroupsInvite extends Component {
                                         </a>
                                     </Card.Content>
                                 </Card>
+
                             </Modal.Content>
+                        </Grid.Column>
                         )}
+                        </Grid>
                         <MessageBox open={this.state.hasError} title={this.state.titleMessage} Message={this.state.ErrorMessage} close={this.closeErrorModal}></MessageBox>
                     </Modal>}
             
