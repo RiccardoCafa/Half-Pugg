@@ -9,6 +9,7 @@ namespace HalfPugg.Models
     {
         [Key] public int ID_Matter { get; set; }
         [Required] [StringLength(70)] public string Hashtag { get; set; }
+        public string PathImg { get; set; }
         [JsonIgnore] public virtual ICollection<Game> Games { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime AlteredAt { get; set; }

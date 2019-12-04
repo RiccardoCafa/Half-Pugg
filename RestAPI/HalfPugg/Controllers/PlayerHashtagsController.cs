@@ -115,5 +115,20 @@ namespace HalfPugg.Controllers
         {
             return db.PlayerHashtags.Count(e => e.ID == id) > 0;
         }
+        [Route("api/HashPlayer")]
+        [ResponseType(typeof(PlayerHashtag))]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetGroupIntegrants(int IdHash, int IdPlayer)
+        {
+            HashTag h = await db.HashTags.FindAsync(IdHash);
+            Player p = await db.Gamers.FindAsync(IdPlayer);
+            if (h== null || p== null)
+            {
+                return NotFound();
+            }
+            var query = db.PlayerHashtags.Where(x => x.IdHash == IdHash && x.IdPlayer == IdPlayer).FirstOrDefault();
+            if (query == null) return NotFound();
+            return Ok(query);
+        }
     }
 }
