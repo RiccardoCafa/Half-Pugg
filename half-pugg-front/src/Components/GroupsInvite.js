@@ -18,17 +18,23 @@ class GroupsInvite extends Component {
     }
 
     componentDidMount = async () => {
-        const response = await api.get(`api/PlayerGroups/GetGroups/complete?playerID=${this.props.gamer.ID}`);
-        if(response) {
-            console.log(response.data);
+        try {
+            const response = await api.get(`api/PlayerGroups/GetGroups/complete?playerID=${this.props.gamer.ID}`);
+            if(response) {
+                console.log(response.data);
+                this.setState({
+                    MyGroups: response.data,
+                    loaded: true,
+                })
+            }
+        } catch(error) {
             this.setState({
-                MyGroups: response.data
+                loaded: true,
             })
         }
         this.setState({
             Gamer: this.props.gamer,
             PlayerToInvite: this.props.playerToInvite,
-            loaded: true,
         });
     }
 
