@@ -6,6 +6,7 @@ import { Card, Image, Button, Icon, Segment,  Statistic, Header, Menu, Modal, Lo
 import CriarGrupo from '../Components/CriarGrupo';
 import getPlayer from '../Components/getPlayer';
 import MessageBox from '../Components/MessageBox';
+import GoupList from '../Components/GroupUI';
 
 export default class MyConnections extends Component {
 
@@ -145,30 +146,9 @@ export default class MyConnections extends Component {
                         </Statistic.Group>
                     </div>
                     :
-                    <Grid >
-                        {this.state.Group.map((group) => 
-                            <Grid.Column width={4}>
-                                <Card key={group.ID} onClick={()=> this.props.history.push('/group/'+group.ID)}>
-                                    <Image src={group.ImagePath} style={{height:'150px'}} />
-                                    <Card.Content>
-                                    <Card.Header>{group.Name}</Card.Header>
-                                    <Card.Description>
-                                       {group.Desc}
-                                    </Card.Description>
-                                    <Card.Meta>
-                                        <span className='date'>{'Owner: '+group.Admin}</span>
-                                    </Card.Meta>
-                                    </Card.Content>
-                                    <Card.Content extra >
-                                        <Icon name='user' />
-                                        {group.PlayerCount +'/'+ group.Capacity}
-                                        <Icon name='game' />
-                                        {group.Game}
-                                    </Card.Content>
-                                </Card>
-                            </Grid.Column>
-                        )}
-                    </Grid>
+                    <div>
+                        <GoupList groups = {this.state.Group} history = {this.props.history}/>
+                    </div>
                    }
                 </Segment>
                 <Modal open={this.state.openSolicitacoes} onClose={this.closeSolicitacoes}>

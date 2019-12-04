@@ -124,7 +124,10 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest();
             }
-            match.CreateAt = DateTime.UtcNow;
+            match.AlteredAt = DateTime.UtcNow;
+            Player p1 = await db.Gamers.FindAsync(match.IdPlayer1);
+            Player p2 = await db.Gamers.FindAsync(match.IdPlayer2);
+            match.Weight = (5.0f - Math.Abs(p1.MPoints - p2.MPoints));
             db.Entry(match).State = EntityState.Modified;
                 
             try
@@ -159,6 +162,9 @@ namespace HalfPugg.Controllers
             ((ma.Player1.ID == match.Player1.ID && ma.Player2.ID == match.Player2.ID) ||
             (ma.Player2.ID == match.Player1.ID && ma.Player1.ID == match.Player2.ID)) && ma.Status == true);
 
+            Player p1 = await db.Gamers.FindAsync(match.IdPlayer1);
+            Player p2 = await db.Gamers.FindAsync(match.IdPlayer2);
+
             if (hasMatch != null)
             {
                 return BadRequest();
@@ -167,6 +173,8 @@ namespace HalfPugg.Controllers
             match.CreateAt = now;
             match.AlteredAt = now;
             match.Status = false;
+            match.Weight = (5.0f - Math.Abs(p1.MPoints - p2.MPoints));
+
             db.Matches.Add(match);
             await db.SaveChangesAsync();
 

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Header,Grid,Button, Input, Image, Card, Loader, Modal, Segment } from 'semantic-ui-react';
+import { Header,Grid,Button, Input, Image, Card, Loader, Modal, Segment, List } from 'semantic-ui-react';
 import Auth from '../Components/auth';
 import api from '../services/api'
 
 import './registergame.css';
-import OWCard from '../Components/OWCard';
+import GameView from '../Components/gameView';
 import DOTACard from '../Components/DOTACard';
 import Headera from '../Components/headera';
 import overwatchImage from '../images/overwatch.jpg';
@@ -207,19 +207,10 @@ export default class registergame extends Component {
                                 </Modal.Actions>
                             </Modal>
 
-                        
                             <Segment style={{marginTop: '2%'}}> <Header as='h3' textAlign='center' icon='users' content='Your games' /></Segment>
-                            <Segment style={{overflow: 'auto',marginBottom: '10%', maxWidht: 150, vertical: false}}>
-                             <Grid columns = {2} style={{'marginTop': '1%', 'marginLeft': '1%'}}>
-                                    <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
-                                            {this.state.OverwatchInfo.profile !== undefined ?<OWCard {...this.state.GamerLogado}/> : null }
-                                    </Grid.Column>
-                                    <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
-                                            {this.state.DotaInfo.stats !== undefined ? <DOTACard {...this.state.GamerLogado}/>:null}
-                                    </Grid.Column>
-                                </Grid>
-                           </Segment>
                            
+                            <GameView gamer = {this.state.GamerLogado} ShowOw = {true} ShowDota = {true}/>
+  
                             <Segment>
                                 <Header as='h3' textAlign='center' icon='gamepad' content='Choose a new Game'></Header>
                             </Segment>

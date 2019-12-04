@@ -61,20 +61,20 @@ export default class Chat extends Component {
             api.get(`api/PlayerGroups/GetGroups?playerID=${gamerID}`).then(res=>{
                 res.data.map((id)=>{
                     this.joinGroup(id,gamerID)
-                    console.log('logged: '+id)
+                 
                 })
             })
+           
             api.get(`api/GroupMenssages?IdGroup=${this.props.Group.ID}`).then( res=>{
-                console.log('tentando pegar mensagens de: '+this.props.Group.ID)
-                console.log(res.data)
                 res.data.map((mess)=>{
                     this.addMessageToChat(mess.senderName,mess.content,mess.senderID)
                 })
             }).catch(erro=>{
-                console.log('Fail to load messages')
+                console.error('Fail to load messages')
+                console.error(erro)
             })
           
-        }).catch(err => console.log(err));
+        }).catch(err => console.error(err));
     }
 
     loadChat = ()=>{
@@ -85,20 +85,20 @@ export default class Chat extends Component {
         var oldMessages = [...this.state.messages]
         oldMessages.push({sender: send,content: message,id : senderId})
         this.setState({messages:oldMessages})
-        console.log(this.state.messages)
+       
     }
 
     joinGroupClient = (userID) =>{  
-        console.log('Entrou do grupo: '+userID)
+       
     }
 
     leaveGroupClient = (userID) =>{
     
-        console.log('Saiu do grupo: '+userID)
+        
     }
 
     receiveMessageClient = (message, userID,userName) =>{
-        console.log(userName+': '+message);
+       
         this.addMessageToChat(userName,message,userID)
     }
 
@@ -131,12 +131,12 @@ export default class Chat extends Component {
                 'PlayerGroup' : pg,
                 'IdGroup' : groupID
             }).then(()=>{
-                console.log('saved')
+               
             }).catch(()=>{
-                console.log('failed to save')
+                console.error('failed to save message on database')
             })
         }).catch(erro=>{
-            console.log('player or group not finded')
+            console.error('player or group not finded')
         })
 
         

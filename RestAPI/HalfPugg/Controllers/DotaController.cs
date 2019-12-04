@@ -100,6 +100,56 @@ namespace HalfPugg.Controllers
             return Ok(recom);
         }
 
+        [ResponseType(typeof(IEnumerable<DotaPlayer>))]
+        [Route("api/Dota/GetNearPlayer")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetNearPlayer(int PlayerID, float percent)
+        {
+            Graph<Player, Match, string> graph = new Graph<Player, Match, string>((Match e) => { return e.Weight != 0 ? 1 / e.Weight : float.MaxValue; });
+
+            PlayerGame currentPlayer = db.PlayerGames.Where(x => x.IDGamer == PlayerID).FirstOrDefault();
+
+            foreach (var m in db.Matches.ToArray())
+            {
+                var p1 = db.PlayerGames.Where(x => x.IDGamer == m.IdPlayer1 && x.IDGame == (int)Games.Overwatch).FirstOrDefault();
+                var p2 = db.PlayerGames.Where(x => x.IDGamer == m.IdPlayer2 && x.IDGame == (int)Games.Overwatch).FirstOrDefault();
+
+                if (p1 != null && p2 != null)
+                {
+                    graph.AddVertice(m.Player1, p1.IdAPI);
+                    graph.AddVertice(m.Player2, p2.IdAPI);
+                    graph.AddAresta(p1.IdAPI, p2.IdAPI, m);
+                }
+
+            }
+
+            DotaPlayer dotaPlayer = await DotaAPI.GetPlayer(currentPlayer.IdAPI,  PlayerID);
+            PlayerStats career = dotaPlayer.stats;
+            float perc = percent / 100.0f;
+
+            DotaFilter filter = new DotaFilter
+            {
+                mmr_estimate = new int[] { (int)(dotaPlayer.mmr_estimate.estimate * (1.0f - perc)), (int)(dotaPlayer.mmr_estimate.estimate * (1.0f + perc)) },
+                kills = new int[] { (int)(career.kills * (1.0f - perc)), (int)(career.kills * (1.0f + perc)) },
+                xp_per_min = new int[] { (int)(career.xp_per_min * (1.0f - perc)), (int)(career.xp_per_min * (1.0f + perc)) },
+                hero_damage = new int[] { (int)(career.hero_damage * (1.0f - perc)), (int)(career.hero_damage * (1.0f + perc)) },
+                gold_per_min = new int[] { (int)(career.gold_per_min * (1.0f - perc)), (int)(career.gold_per_min * (1.0f + perc)) },
+            };
+
+            var sorted = graph.ShortPath(currentPlayer.IdAPI).OrderBy(x => x.Value).Skip(1).Take(graph.vertCount);
+            List<DotaPlayer> players = new List<DotaPlayer>(sorted.Count());
+            foreach (var v in sorted)
+            {
+                DotaPlayer pp =await DotaAPI.GetPlayer(v.Key,0);
+                if (filterDota(pp, filter))
+                    players.Add(pp);
+
+            }
+
+            return Ok(players);
+
+        }
+
         public IEnumerable<DotaPlayer> GetDotaMatchFilter(int PlayerID, [FromUri]DotaFilter filter)
         {
             Player p = db.Gamers.Find(PlayerID);

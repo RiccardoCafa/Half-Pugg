@@ -8,6 +8,10 @@ import gostosao from '../images/chris.jpg';
 
 export default class MatchList extends Component {
 
+    owFilter = {
+        
+    }
+
     state = {
         OWFilter: false,
         OWF: {
@@ -109,7 +113,7 @@ export default class MatchList extends Component {
     getPlayersToRec = async() => {
         this.setState({loadingFilter: true});
         const jwt = localStorage.getItem("jwt");
-        const MatchData = await api.get('api/GamersMatch?RecType=' + this.state.typeSearch, { headers: { "token-jwt": jwt }});
+        const MatchData = await api.get('api/GamersMatch?recType=' + this.state.typeSearch, { headers: { "token-jwt": jwt }});
         if(MatchData.data != null){
             this.setState({GamerMatch: MatchData.data, loadingFilter: false});
         }
