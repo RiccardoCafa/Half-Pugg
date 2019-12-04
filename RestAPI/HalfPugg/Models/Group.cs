@@ -14,7 +14,7 @@ namespace HalfPugg.Models
 
         public DateTime CreateAt { get; set; }  
         public string SouceImg { get; set; }
-        public string TotalComponentes { get; set; }
+        public float TotalComponentes { get; set; }
         [ForeignKey("Game")] public int IdGame { get; set; }
         [Required] [ForeignKey("Admin")] public int IdAdmin { get; set; }
 

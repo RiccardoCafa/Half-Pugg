@@ -115,5 +115,7 @@ namespace HalfPugg.Controllers
         {
             return db.HashTags.Count(e => e.ID_Matter == id) > 0;
         }
+
+        
     }
 }

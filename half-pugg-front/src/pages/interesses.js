@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Image,  Segment, Icon, Header, Dimmer } from 'semantic-ui-react';
-
+import { Button, Image,  Segment, Icon, Header, Dimmer,Grid,  List } from 'semantic-ui-react';
+import Headera from '../Components/headera';
 import './interesses.css';
+import Auth from '../Components/auth';  
+import getPlayer from '../Components/getPlayer';    
+import api from '../services/api';
+import gostosao from '../images/chris.jpg';
 
 export default class interesses extends Component {
 
@@ -15,37 +19,79 @@ export default class interesses extends Component {
         RPGlike: false,
         MOBAlike: false,
         FPSlike: false,
+        Nickname: '',
+        GamerLogado: {},
+        Hashtags :[],
+        ID : 0, 
+        operation : false
+        
     }
-//    handleSubmit(e) {
-       
-//    }
 
-handleShowRPG = (e) => {
-    e.preventDefault();
-    this.setState({ RPGlike: true })
-}
-handleHideRPG = (e) => {
-    e.preventDefault();
-    this.setState({ RPGlike: false })
-}
 
-handleShowMOBA = (y) => {
-    y.preventDefault();
-    this.setState({ MOBAlike: true })
-}
-handleHideMOBA = (y) => {
-    y.preventDefault();
-    this.setState({ MOBAlike: false })
-}
+async componentDidMount() {
+    let gamer = await getPlayer();
+    if(!gamer){
+        this.setState({toLogin: true});
+        return;
+    }
+    
+    this.setState({
+        GamerLogado: gamer,
+        Nickname: gamer.Nickname,
+        loaded: true,
+    });
+    console.log(this.state.GamerLogado);
 
-handleShowFPS = (x) => {
-    x.preventDefault();
-    this.setState({ FPSlike: true })
+    const hash = await api.get('api/Hashtags')
+    if (hash !== null){
+        this.setState({Hashtags : hash.data});
+        
+    }
 }
-handleHideFPS = (x) => {
-    x.preventDefault();
-    this.setState({ FPSlike: false })
-}
+    setId = (tag)=>{
+        this.setState({ID: tag.ID_Matter })
+    }
+    setOpAdd = ()=>{
+        this.setState({operation: true})
+    }
+
+    setOpMinus = ()=>{
+        this.setState({operation: false})
+    }
+    
+    handleInt = async()=> {
+        console.log(hs);
+        const hs = await api.get('api/HashPlayer?IdHash='+ this.state.ID+'&IdPlayer='+this.state.GamerLogado.ID
+            ).catch(error => {
+                console.log(error);
+                
+            });
+        console.log(hs)
+        //console.log(this.state.GamerLogado.ID)
+        if (hs == null){
+            await api.post('api/HashPlayer', { 
+                "IdHash": this.state.ID,
+                "idPlayer": this.state.GamerLogado.ID,
+                "Weight": 1
+            }).catch(error => {
+                console.log(error);
+                
+            });
+        }else{
+            var x = 1 - hs.Weight;
+            if (hs){
+                x = 1 + hs.Weight
+            }
+            await api.put('api/HashPlayer/'+hs.ID, { 
+                "IdHash": this.state.ID,
+                "idPlayer": this.state.GamerLogado.ID,
+                "Weight": 1 + hs.Weight
+            }).catch(error => {
+                console.log(error);
+                
+            });
+        }
+    }
 
  
 render() {
@@ -54,77 +100,44 @@ render() {
     }
     const { active } = this.state
     return (
-        <div className = "interesses-container">
-            <form> 
-                <h1 id='title'>Half Pugg</h1>
-                <div className ='caixa'>
-                    <Dimmer.Dimmable as={Segment} dimmed={active} size='medium'>
-                    <Header as='h3'>RPG</Header>
-                    <Image size='medium' src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
+        
+         <div>       
+            <Auth></Auth>
+            <div>
+                <Headera gamer = {this.state.GamerLogado }/>
+            </div>
+                
+            <Segment style={{'marginLeft': '1%', 'marginRight': '0%', 'marginBottom': '1%'}}>
+                
+                <form> 
+                    
+                    <div >
+                    <Grid columns={3} divided style={{'marginTop': '1%', 'marginLeft': '1%'}}> 
+                            <Grid.Row>
+                            <Grid.Column>
+                            {this.state.Hashtags.map((tag) => 
+                                    
+                                    <Dimmer.Dimmable as={Segment} dimmed={active} size='tiny'>
+                                    <Header as='h3'>{tag.Hashtag}</Header>
+                                    <Image size='tiny' src={(tag.PathImg === "" || tag.PathImg === null) 
+                                    ? gostosao : tag.PathImg} />
+                                    <Button.Group>
+                                    <Button icon='plus'  onClick = {this.setId.bind(tag)} onClick = {this.setOpAdd} onClick={this.handleInt}  />
+                                    <Button icon='minus' onClick = {this.setId.bind(tag)} onClick = {this.setOpMinus} onClick={this.handleInt}/>
+                                    </Button.Group>
+                                    </Dimmer.Dimmable>
 
-                    <Dimmer active={active} onClickOutside={this.handleHide}>
-                        <Header as='h2' icon inverted>
-                        <Icon name='heart' />
-                        Like this!
-                        </Header>
-                    </Dimmer>
-                    </Dimmer.Dimmable>
-
-                    <Button.Group>
-                    <Button icon='plus' onClick={e => this.handleShowRPG(e)} />
-                    <Button icon='minus' onClick={e => this.handleHideRPG(e)} />
-                    </Button.Group>
-                </div>
-
-                <div className ='caixa'>
-                    <Dimmer.Dimmable as={Segment} dimmed={active} size='medium'>
-                    <Header as='h3'>MOBA</Header>
-                    <Image size='medium' src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
-
-                    <Dimmer active={active} onClickOutside={this.handleHide}>
-                        <Header as='h2' icon inverted>
-                        <Icon name='heart' />
-                        Like this!
-                        </Header>
-                    </Dimmer>
-                    </Dimmer.Dimmable>
-
-                    <Button.Group>
-                    <Button icon='plus' onClick={y => this.handleShowMOBA(y)} />
-                    <Button icon='minus' onClick={y => this.handleHideMOBA(y)} />
-                    </Button.Group>
-                </div>
-
-                <div className ='caixa'>
-                    <Dimmer.Dimmable as={Segment} dimmed={active} size='medium'>
-                    <Header as='h3'>FPS</Header>
-                    <Image size='medium' src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
-
-                    <Dimmer active={active} onClickOutside={this.handleHide}>
-                        <Header as='h2' icon inverted>
-                        <Icon name='heart' />
-                        Like this!
-                        </Header>
-                    </Dimmer>
-                    </Dimmer.Dimmable>
-
-                    <Button.Group>
-                    <Button icon='plus' onClick={x => this.handleShowFPS(x)} />
-                    <Button icon='minus' onClick={x => this.handleHideFPS(x)} />
-                    </Button.Group>
-                </div>
-
-                <hr id='divider'></hr>
-                <div id="goback">
-                    <Button.Group id="botoes">
-                        <Button color='blue' onClick={a => this.handleAdicionarButton(a)}>
-                            Go back
-                        </Button>
-                    </Button.Group>
-                </div>
-                <hr id='divider'></hr>
-            </form>
-        </div>
+                        )}
+                            
+                            </Grid.Column>
+                            </Grid.Row>   
+                        </Grid>
+                        
+                    </div>
+                    <hr id='divider'></hr>
+                </form>
+            </Segment>
+        </div> 
     );
 }
 }
