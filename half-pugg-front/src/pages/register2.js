@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Image, TextArea, Form, Segment, Modal, Input } from 'semantic-ui-react';
+import { Button, Image, TextArea, Form, Segment, Modal, Input, Header, Icon } from 'semantic-ui-react';
 import gostosao from '../images/chris.jpg';
 import api from '../services/api';
 
@@ -82,7 +82,14 @@ export default class Register2 extends Component {
         }
         return (
             <div className = "login-container" style={{display: 'flex', flexDirection: 'column', alignContent: 'center', alignItems: 'center'}}>
-                <h1>Half Pugg</h1>
+                <Segment style={{marginTop: '2%', marginBottom: '2%', marginLeft: '5%', marginRight: '5%'}} > 
+                    <Header as='h1'>
+                        <Icon name='gamepad'></Icon>
+                        <Header.Content>
+                        Half Pugg    
+                        </Header.Content>
+                    </Header>
+                </Segment>
                 <div id="biography">
                     <Modal open={this.state.showMessage}>
                         <Modal.Header>

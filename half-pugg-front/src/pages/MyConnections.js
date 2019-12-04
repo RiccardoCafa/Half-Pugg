@@ -139,7 +139,7 @@ export default class MyConnections extends Component {
                                 <Card.Content extra>
                                     <GroupsInvite gamer={this.state.GamerLogado} playerToInvite={matcher.matchPlayer}></GroupsInvite>
                                     <OpenCurriculum {...matcher.matchPlayer}></OpenCurriculum>
-                                    <Classification gamer={this.state.GamerLogado} gamerclassf={matcher.matchPlayer}></Classification>
+                                    <Classification gamer={this.state.GamerLogado} gamerclassf={matcher.matchPlayer} classificacao={matcher.Classificacao}></Classification>
                                 </Card.Content>
                             </Card>
                         )}

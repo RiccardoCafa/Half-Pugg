@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Checkbox, Form, Segment, Grid, Input, Header, Modal, Loader } from 'semantic-ui-react';
+import { Button, Checkbox, Form, Segment, Grid, Input, Header, Modal, Loader, Icon } from 'semantic-ui-react';
 import MessageBox from '../Components/MessageBox';
 import './register.css';
 import api from '../services/api';
@@ -133,7 +133,14 @@ export default class register extends Component {
             <div>    
             <div className= "register-title">
                 <Link to = "/">
-                    <Header textAlign='center' as='h1' style={{'marginTop': '2%', 'MarginBottom': '2%'}}>Half Pugg</Header>
+                    <Segment style={{marginTop: '2%', marginBottom: '2%', marginLeft: '17%', marginRight: '17%'}} > 
+                        <Header textAlign='center' as='h1'>
+                            <Icon name='gamepad'></Icon>
+                            <Header.Content>
+                            Half Pugg    
+                            </Header.Content>
+                        </Header>
+                    </Segment>
                 </Link>
             </div>
             <MessageBox open={this.state.ErrorText} Message={this.state.MessageText} title={this.state.MessageTitle} close={this.closeErrorMessage}></MessageBox>
