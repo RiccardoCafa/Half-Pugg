@@ -189,9 +189,9 @@ export default class registergame extends Component {
                     <Headera gamer = {this.state.GamerLogado }/>
                 </div>  
             <div className = "register-container">
-                <form> 
-                    <div>
-                        <div>
+                
+                   
+                        <div style={{width: '100%'}}>
                            
                             <Modal open={this.state.openMessageBox} onClose={this.closeBox} size='large'>
                                 <Modal.Header>
@@ -207,9 +207,11 @@ export default class registergame extends Component {
                                 </Modal.Actions>
                             </Modal>
 
-                            <Segment style={{marginTop: '2%'}}> <Header as='h3' textAlign='center' icon='users' content='Your games' /></Segment>
-                           
-                            <GameView gamer = {this.state.GamerLogado} ShowOw = {true} ShowDota = {true}/>
+                            <Segment > <Header as='h3' textAlign='center' icon='users' content='Your games' /></Segment>
+                           <div style={{marginLeft: '2%',marginRight: '2%'}}>
+                             <GameView gamer = {this.state.GamerLogado} ShowOw = {true} ShowDota = {true}/>
+                           </div>
+                            
   
                             <Segment>
                                 <Header as='h3' textAlign='center' icon='gamepad' content='Choose a new Game'></Header>
@@ -266,8 +268,8 @@ export default class registergame extends Component {
                                 </Button>
                             </Button.Group>
                         </div>
-                    </div>
-                </form>
+                    
+               
             </div>
             </div>
         );
