@@ -71,10 +71,10 @@ namespace HalfPugg.Controllers
         [HttpGet]
         public IHttpActionResult GetPlayerGroupsComplete(int playerID)
         {
-            Group[] groups = new Group[0];
+            List<Group> groups = new List<Group>();
             try
             {
-                groups = db.PlayerGroups.Where(x => x.IdPlayer == playerID).Select(x => x.Group).Where(y => y.IdAdmin == playerID).AsEnumerable().ToArray();
+                groups = db.PlayerGroups.Where(x => x.IdPlayer == playerID).Select(x => x.Group).Where(y => y.IdAdmin == playerID).AsEnumerable().ToList();
 
             }
             catch

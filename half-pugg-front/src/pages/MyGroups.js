@@ -122,9 +122,6 @@ export default class MyConnections extends Component {
                         <Menu.Item onClick={this.setOpenCreation}>
                             <Icon name='edit'/> Criar um grupo
                         </Menu.Item>
-                        <Menu.Item >
-                            <Icon name='search'/> Procurar um grupo
-                        </Menu.Item>
                         <Menu.Item onClick={this.openSolicitacoes}>
                             <Icon name='sign-in'/> Verificar Solicitações
                             <Label floating color='teal' >{this.state.RequestedGroups.length}</Label>
