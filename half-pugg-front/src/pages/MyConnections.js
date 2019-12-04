@@ -26,6 +26,7 @@ export default class MyConnections extends Component {
         DeniedMatches: [],
         toMatch: false,
         loaded: false,
+        Groups:[]
     }
 
     componentDidMount = async () => {
@@ -37,6 +38,8 @@ export default class MyConnections extends Component {
             return;
         }
 
+
+
         this.setState(
         {
             GamerLogado: gamer,
@@ -44,6 +47,18 @@ export default class MyConnections extends Component {
 
         })
         
+        try {
+            const response = await api.get(`api/PlayerGroups/GetGroups/complete?playerID=${gamer.ID}`);
+            if(response) {
+                console.log(response.data);
+                this.setState({
+                    Groups: response.data,
+                })
+            }
+        } catch(error) {
+            
+        }
+
         if(gamer !== undefined) {
             const MatchData = await api.get('api/Matches/' + gamer.ID);
             //{ headers: { "token-jwt": jwt }}
@@ -128,7 +143,7 @@ export default class MyConnections extends Component {
                         <Button id="sem-conexao-button" label="Quero me conectar!" basic icon='users' onClick={this.goToBio}></Button>
                     </div>:<div/>}
 
-                    <ConnectionCardList gamer={this.state.GamerLogado} Matches ={this.state.Matches}/> 
+                    <ConnectionCardList groups={this.state.Groups} gamer={this.state.GamerLogado} Matches ={this.state.Matches}/> 
                     {/* { <Card.Group>
                         {this.state.Matches.map((matcher) => 
                             <Card key={matcher.matchPlayer.ID}>

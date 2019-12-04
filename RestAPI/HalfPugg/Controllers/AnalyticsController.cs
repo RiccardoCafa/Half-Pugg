@@ -72,7 +72,7 @@ namespace HalfPugg.Controllers
                     dataMatch = m.CreateAt,
                     PlayerName = userId == m.IdPlayer1 ? m.Player2.Nickname : m.Player1.Nickname,
                 });
-
+                if (m.Weight == 0) continue;
                 analytics.TopTenPlayers.Add(new PlayerMatch { player = userId == m.IdPlayer1 ? m.Player2 : m.Player1, weight = m.Weight });
             }
 

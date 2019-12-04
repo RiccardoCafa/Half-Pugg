@@ -17,24 +17,22 @@ class GroupsInvite extends Component {
         loaded: false,
     }
 
-    componentDidMount = async () => {
-        try {
-            const response = await api.get(`api/PlayerGroups/GetGroups/complete?playerID=${this.props.gamer.ID}`);
-            if(response) {
-                console.log(response.data);
-                this.setState({
-                    MyGroups: response.data,
-                    loaded: true,
-                })
-            }
-        } catch(error) {
-            this.setState({
-                loaded: true,
-            })
-        }
+    componentDidMount = /*async*/ () => {
+        // try {
+        //     const response = await api.get(`api/PlayerGroups/GetGroups/complete?playerID=${this.props.gamer.ID}`);
+        //     if(response) {
+        //         console.log(response.data);
+        //         this.setState({
+        //             MyGroups: response.data,
+        //             loaded: true,
+        //         })
+        //     }
+        // } catch(error) {
+            
+        // }
         this.setState({
             Gamer: this.props.gamer,
-            PlayerToInvite: this.props.playerToInvite,
+            PlayerToInvite: this.props.playerToInvite, loaded: true,
         });
     }
 
@@ -77,7 +75,7 @@ class GroupsInvite extends Component {
             return <Loader active></Loader>
         }
         return <div>
-            {this.state.MyGroups.length === 0 ?
+            {this.props.groups.length === 0 ?
                 <Modal trigger={<Icon style={{cursor:'pointer'}} name = 'comments outline'/>} open={this.state.open} onOpen={this.setOpen} onClose={this.setClose}>
                         <Header size='medium' icon='users' style={{'marginLeft': '3%'}} content='Ops! Você não possui grupos'></Header>
                         <Modal.Content>
@@ -91,7 +89,7 @@ class GroupsInvite extends Component {
                 </Modal>
                 :   <Modal trigger={<Icon style={{cursor:'pointer'}} name = 'comments outline'/>} open={this.state.open} onOpen={this.setOpen} onClose={this.setClose}>
                         <Header size='medium' icon='users' content='Convide para os grupos que você deseja'></Header>
-                        {this.state.MyGroups.map((group) => 
+                        {this.props.groups.map((group) => 
                             <Modal.Content key={group.ID}>
                                 <Card>
                                     <Image src={group.SouceImg} fluid wrapped></Image>

@@ -26,7 +26,8 @@ export default class Group extends Component {
         },
         Integrants : [], 
         MenssageList : [    ],
-        Friends :[]
+        Friends :[],
+        toLogin: false,
     }
    
     async componentDidMount() {
@@ -60,6 +61,18 @@ export default class Group extends Component {
             }    
             const compo = await api.get('api/GroupIntegrants?IdGroup='+ this.state.Group.ID );
             if(compo.data !== null) {
+                let grp = compo.data;
+                let n_ta = true;
+                grp.forEach(grpp => {
+                    if(grpp.ID === myData.ID) {
+                        n_ta = false; 
+                    }
+                });
+                if(n_ta) {
+                    this.setState({
+                        toLogin: true,
+                    })
+                }
                this.setState({Integrants: compo.data});               
             }          
             console.log(compo)
@@ -86,7 +99,7 @@ export default class Group extends Component {
     render() {
        
         if(this.state.toLogin === true) {
-            return <Redirect to="/"></Redirect>
+            return <Redirect to="/match"></Redirect>
         }
         if(this.state.goToMatch) {
             return <Redirect to='/match'></Redirect>

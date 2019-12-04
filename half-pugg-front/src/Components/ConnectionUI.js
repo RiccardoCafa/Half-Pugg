@@ -16,6 +16,7 @@ class ConnectionCardList extends Component{
                 {this.props.Matches.map((matcher) =>
                      <div key={matcher.ID} style={{marginRight: '0.5%',marginLeft:'0.5%', marginTop: '0.5%', marginBottom: '0.5%'}}>
                         <ConnectionCard
+                            groups = {this.props.groups}
                              gamer={this.props.gamer}
                              classificacao = {matcher.Classificacao} 
                              stars = {matcher.Classificacao}
@@ -52,7 +53,7 @@ class ConnectionCard extends Component{
                      </Card.Content>
                      <Card.Content extra>
                      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
-                         <GroupsInvite gamer={this.props.gamer} playerToInvite={this.props.match}></GroupsInvite>
+                         <GroupsInvite groups={this.props.groups} gamer={this.props.gamer} playerToInvite={this.props.match}></GroupsInvite>
                          <OpenCurriculum {...this.props.match}></OpenCurriculum>
                          <Classification classificacao={this.props.classificacao} gamer={this.props.gamer} gamerclassf={this.props.match}></Classification>
                      </div>   
