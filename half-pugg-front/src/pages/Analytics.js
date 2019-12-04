@@ -111,15 +111,15 @@ export default class Analytics extends Component {
                                 <Segment textAlign='center'><Header as='h2' textAlign='center' icon='users' content='Top 10 Players nas suas conexões'/></Segment>
                                 <List relaxed animated divided verticalAlign='middle' style={{'marginLeft': '5%'}}>
                                     {this.state.topTenPlayers.map((playerFound) => 
-                                        <List.Item size='tiny' key={playerFound.ID} >
+                                        <List.Item size='tiny' key={playerFound.player.ID} >
                                             <Image avatar
                                                 floated='left'
-                                                src={(playerFound.ImagePath === "" || playerFound.ImagePath === null) 
-                                                ? gostosao : playerFound.ImagePath}
+                                                src={(playerFound.player.ImagePath === "" || playerFound.player.ImagePath === null) 
+                                                ? gostosao : playerFound.player.ImagePath}
                                                 />
                                             <List.Content>
-                                                <List.Header>{playerFound.Nickname}</List.Header>
-                                                <List.Description>Top 10 Players <a onClick={() => this.handleClickCurriculo(playerFound.Nickname)}><b>acesse o currículo.</b></a></List.Description>
+                                                <List.Header>{playerFound.player.Nickname}</List.Header>
+                                                <List.Description>{'nota: '+playerFound.weight} <a onClick={() => this.handleClickCurriculo(playerFound.player.Nickname)}><b>acesse o currículo.</b></a></List.Description>
                                             </List.Content>
                                         </List.Item>
                                     )}

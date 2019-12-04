@@ -9,7 +9,7 @@ import Headera from '../Components/headera';
 import OpenCurriculum from '../Components/openCurriculum';
 import Classification from '../Components/classification';
 import { Card, Button, Segment, Statistic, Loader, Header, Icon, Divider } from 'semantic-ui-react';
-
+import ConnectionCardList from '../Components/ConnectionUI'
 import UserContentCard from '../Components/UserContentCard';
 import GroupsInvite from '../Components/GroupsInvite';
 
@@ -72,12 +72,7 @@ export default class MyConnections extends Component {
         if(response.status === 200) {
             alert('atualizado com sucesso');
             window.location.reload();
-            // let antes = [...this.state.DeniedMatches];
-            // var index = antes.indexOf(match);
-            // if(index !== -1){
-            //     antes.splice(index, 1);
-            //     this.setState({DeniedMatches: antes});
-            // }
+        
         }
     }
 
@@ -132,18 +127,20 @@ export default class MyConnections extends Component {
                         </Statistic.Group>
                         <Button id="sem-conexao-button" label="Quero me conectar!" basic icon='users' onClick={this.goToBio}></Button>
                     </div>:<div/>}
-                    <Card.Group>
+
+                    <ConnectionCardList gamer={this.state.GamerLogado} Matches ={this.state.Matches}/> 
+                    {/* { <Card.Group>
                         {this.state.Matches.map((matcher) => 
                             <Card key={matcher.matchPlayer.ID}>
                                 <UserContentCard gamer={this.state.GamerLogado} matchPlayer={matcher.matchPlayer} isAvaliable={false}></UserContentCard>
                                 <Card.Content extra>
                                     <GroupsInvite gamer={this.state.GamerLogado} playerToInvite={matcher.matchPlayer}></GroupsInvite>
                                     <OpenCurriculum {...matcher.matchPlayer}></OpenCurriculum>
-                                    <Classification gamer={this.state.GamerLogado} gamerclassf={matcher.matchPlayer}></Classification>
+                                    <Classification gamer={this.state.GamerLogado} gamerclassf={matcher.matchPlayer} classificacao={matcher.Classificacao}></Classification>
                                 </Card.Content>
                             </Card>
                         )}
-                    </Card.Group>
+                    </Card.Group> } */}
                     </Segment>
                 </div>
                 <div >

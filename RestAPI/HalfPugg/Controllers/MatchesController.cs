@@ -18,6 +18,7 @@ namespace HalfPugg.Controllers
     public class PlayerMatchInfo
     {
         public Player matchPlayer;
+        public ClassificationPlayer Classificacao;
         public float afinidade;
     }
     public class MatchesController : ApiController
@@ -52,10 +53,14 @@ namespace HalfPugg.Controllers
                 {
                     mp = db.Gamers.Find(m.IdPlayer2);
                 }
+                ClassificationPlayer classfPlayer = db.Classification_Players
+                                                 .Where(clfp => clfp.IdJudgePlayer == mp.ID && clfp.IdPlayer == id)
+                                                 .FirstOrDefault();
                 playersInfo.Add(new PlayerMatchInfo()
                 {
                     matchPlayer = mp,
                     afinidade = m.Weight,
+                    Classificacao = classfPlayer
                 });
             }
             //.Where(x => x.IdPlayer1 == id || x.IdPlayer2 == id)

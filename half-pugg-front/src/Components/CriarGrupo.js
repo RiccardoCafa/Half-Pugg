@@ -44,7 +44,7 @@ export default class CriarGrupo extends Component {
                 "Capacity": this.state.Capacidade,
                 "IdGame": 1,
                 "IdAdmin": this.state.gamerCreating.ID,
-                "SourceImg": imagePath,
+                "SouceImg": imagePath,
             });
             if(resp) {
                 this.setState({
@@ -123,9 +123,10 @@ export default class CriarGrupo extends Component {
                         </Grid.Row>
                     </Grid>
                 </Modal.Content>
-                <Modal.Content style={{marginLeft: '7%'}}>
-                    <Button.Group>
+                <Modal.Content >
+                    <Button.Group style={{marginLeft: '7%', display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '300px'}}>
                         <Button fluid basic positive primary content='Criar!' onClick={this.createPage}></Button>
+                        <Button.Or text='ou'/>
                         <Button fluid basic negative secondary content='Fechar' onClick={this.props.close}/>
                     </Button.Group>
                 </Modal.Content>

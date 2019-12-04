@@ -8,6 +8,10 @@ import gostosao from '../images/chris.jpg';
 
 export default class MatchList extends Component {
 
+    owFilter = {
+        
+    }
+
     state = {
         OWFilter: false,
         OWF: {

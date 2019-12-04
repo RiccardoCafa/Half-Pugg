@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import { Modal, Button, Image } from 'semantic-ui-react';
+import { Modal, Icon, Image } from 'semantic-ui-react';
 import gostosao from '../images/chris.jpg'
 import OWCard from './OWCard';
+import DOTACard from './DOTACard';
 
 class OpenCurriculum extends Component {
     state ={
@@ -25,9 +26,7 @@ class OpenCurriculum extends Component {
                 <Modal
                     size='small'
                     trigger={
-                        <Button fluid basic color='blue'>
-                            Abrir Currículo
-                        </Button>
+                        <Icon  style={{cursor:'pointer'}} name = 'address card outline' onClick={this.openGamerCurriculumPage}/>
                     }>
                     <Modal.Header>
                         {'Gamerlum de ' + this.state.Gamer.Nickname}
@@ -44,9 +43,10 @@ class OpenCurriculum extends Component {
                     </Modal.Content>
                     <Modal.Content>
                         <OWCard {...this.state.Gamer}></OWCard>
+                        <DOTACard {...this.state.Gamer}></DOTACard>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button positive content='Abrir Currículo' label={`${this.state.Gamer.Nickname}`} onClick={this.openGamerCurriculumPage}></Button>
+                    <Icon style={{cursor:'pointer'}} name = 'address card outline' onClick={this.openGamerCurriculumPage}/>
                     </Modal.Actions>
                 </Modal>
             </div>

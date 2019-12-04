@@ -12,7 +12,7 @@ export default class MessageBox extends Component {
                 <Modal.Description>{this.props.Message}</Modal.Description>
             </Modal.Content>
             <Modal.Actions>
-                <Button basic color='green' icon='check mark' content='Ah Ok' onClick={this.props.close}></Button>
+                <Button basic color='green' icon='check' content='Ah Ok' onClick={this.props.close}></Button>
             </Modal.Actions>
         </Modal>)
     }

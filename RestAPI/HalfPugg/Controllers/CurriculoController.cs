@@ -13,7 +13,7 @@ namespace HalfPugg.Controllers
     {
         public Player gamer;
         public int ConnectionsLenght;
-        public int Stars;
+        public float Stars;
     }
 
     public class CurriculoController : ApiController
@@ -32,14 +32,7 @@ namespace HalfPugg.Controllers
             curriculoInfo.gamer = db.Gamers.Find(GamerID);
             int conexoes = db.Matches.Where(ma => ma.IdPlayer1 == GamerID || ma.IdPlayer2 == GamerID).Count();
             curriculoInfo.ConnectionsLenght = conexoes;
-            List<ClassificationPlayer> clfsPlayers = db.Classification_Players.Where(cl => cl.IdJudgePlayer == GamerID).AsEnumerable().ToList();
-            int CountingStars = 0;
-            foreach (ClassificationPlayer clp in clfsPlayers)
-            {
-                CountingStars += (int)clp.Points;
-            }
-            if(clfsPlayers.Count != 0) CountingStars /= clfsPlayers.Count;
-            curriculoInfo.Stars = CountingStars;
+            curriculoInfo.Stars = p1.MPoints;
             return Ok(curriculoInfo);
         }
     }

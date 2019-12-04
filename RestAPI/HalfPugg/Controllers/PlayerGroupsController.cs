@@ -71,13 +71,17 @@ namespace HalfPugg.Controllers
         [HttpGet]
         public IHttpActionResult GetPlayerGroupsComplete(int playerID)
         {
-            var groups = db.PlayerGroups.Where(x => x.IdPlayer == playerID).Select(x => x.Group).AsEnumerable().ToArray();
-
-            if (groups.Count() == 0)
+            Group[] groups = new Group[0];
+            try
             {
-                return NotFound();
-            }
+                groups = db.PlayerGroups.Where(x => x.IdPlayer == playerID).Select(x => x.Group).Where(y => y.IdAdmin == playerID).AsEnumerable().ToArray();
 
+            }
+            catch
+            {
+
+            }
+           
             return Ok(groups);
         }
 
@@ -124,7 +128,8 @@ namespace HalfPugg.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            Group g = await db.Groups.FindAsync(playerGroup.IdGroup);
+           
             db.PlayerGroups.Add(playerGroup);
             await db.SaveChangesAsync();
 
@@ -161,21 +166,7 @@ namespace HalfPugg.Controllers
             return db.PlayerGroups.Count(e => e.ID == id) > 0;
         }
 
-        [Route("api/GroupIntegrants")]
-        [ResponseType(typeof(ICollection<Player>))]
-        [HttpGet]
-        public async Task<IHttpActionResult> GetGroupIntegrants(int IdGroup)
-        {
-            Group group = await db.Groups.FindAsync(IdGroup);
-            if (group == null)
-            {
-                return NotFound();
-            }
-            var query = db.PlayerGroups.Where(x => x.IdGroup == IdGroup).Select(x => x.Player);
-            if (query == null) return BadRequest();
-            //var p = db.PlayerGroups.Where(x => x.IdGroup == IdGroup).Select(x => x.Player);
-            return Ok(query);
-        }
+        
 
         
     }

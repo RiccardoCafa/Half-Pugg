@@ -18,7 +18,8 @@ namespace ChatHubServer.chatHub
         {
             if (userConnections.ContainsKey(userID))
             {
-                userConnections[userID].Add(Context.ConnectionId);
+               if(!userConnections[userID].Contains(Context.ConnectionId))
+                    userConnections[userID].Add(Context.ConnectionId);
             }
             else
             {

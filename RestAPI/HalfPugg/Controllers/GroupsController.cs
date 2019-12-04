@@ -32,8 +32,25 @@ namespace HalfPugg.Controllers
             {
                 return NotFound();
             }
-
+         
             return Ok(group);
+        }
+
+
+        [Route("api/GroupIntegrants")]
+        [ResponseType(typeof(ICollection<Player>))]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetGroupIntegrants(int IdGroup)
+        {
+            Group group = await db.Groups.FindAsync(IdGroup);
+            if (group == null)
+            {
+                return NotFound();
+            }
+            var query = db.PlayerGroups.Where(x => x.IdGroup == IdGroup).Select(x => x.Player);
+            if (query == null) return BadRequest();
+            //var p = db.PlayerGroups.Where(x => x.IdGroup == IdGroup).Select(x => x.Player);
+            return Ok(query);
         }
 
         //[ResponseType(typeof(void))]
@@ -135,8 +152,16 @@ namespace HalfPugg.Controllers
                 return BadRequest(message: "Seu grupo não pode ter mais de 15 pessoas!");
             }
 
+            group.CreateAt = DateTime.UtcNow;
             db.Groups.Add(group);
-            await db.SaveChangesAsync();
+            try
+            {
+                await db.SaveChangesAsync();
+            } catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest(message: "Algo inesperado ocorreu, tente recarregar a página, se voltar o erro contate o suporte!");
+            }
 
             return Ok(group);
         }

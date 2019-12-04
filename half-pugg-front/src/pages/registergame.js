@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Header,Grid,Button, Input, Image, Card, Loader, Modal, Segment } from 'semantic-ui-react';
+import { Header,Grid,Button, Input, Image, Card, Loader, Modal, Segment, List } from 'semantic-ui-react';
 import Auth from '../Components/auth';
 import api from '../services/api'
 
 import './registergame.css';
-import OWCard from '../Components/OWCard';
+import GameView from '../Components/gameView';
 import DOTACard from '../Components/DOTACard';
 import Headera from '../Components/headera';
 import overwatchImage from '../images/overwatch.jpg';
@@ -189,9 +189,9 @@ export default class registergame extends Component {
                     <Headera gamer = {this.state.GamerLogado }/>
                 </div>  
             <div className = "register-container">
-                <form> 
-                    <div>
-                        <div>
+                
+                   
+                        <div style={{width: '100%'}}>
                            
                             <Modal open={this.state.openMessageBox} onClose={this.closeBox} size='large'>
                                 <Modal.Header>
@@ -207,22 +207,17 @@ export default class registergame extends Component {
                                 </Modal.Actions>
                             </Modal>
 
-                        
-                            <Segment style={{marginTop: '2%'}}> <Header as='h3' textAlign='center' icon='users' content='Your games' /></Segment>
-                            <Segment style={{overflow: 'auto',marginBottom: '10%', maxWidht: 150, vertical: false}}>
-                             <Grid columns = {2} style={{'marginTop': '1%', 'marginLeft': '1%'}}>
-                                    <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
-                                            {this.state.OverwatchInfo.profile !== undefined ?<OWCard {...this.state.GamerLogado}/> : null }
-                                    </Grid.Column>
-                                    <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
-                                            {this.state.DotaInfo.stats !== undefined ? <DOTACard {...this.state.GamerLogado}/>:null}
-                                    </Grid.Column>
-                                </Grid>
-                           </Segment>
-                           
+                            <Segment > <Header as='h3' textAlign='center' icon='users' content='Your games' /></Segment>
+                           <div style={{marginLeft: '2%',marginRight: '2%'}}>
+                             <GameView gamer = {this.state.GamerLogado} ShowOw = {true} ShowDota = {true}/>
+                           </div>
+                            
+  
                             <Segment>
                                 <Header as='h3' textAlign='center' icon='gamepad' content='Choose a new Game'></Header>
                             </Segment>
+                            
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'left',marginLeft: '2%',marginRight: '2%'}}>
                             <Card.Group>
                                 {this.state.OverwatchInfo.profile === undefined ?
                                 <Card >
@@ -268,6 +263,8 @@ export default class registergame extends Component {
                                     </Card.Content>
                                 </Card> : null }
                             </Card.Group>
+                            </div>
+                           
                             <br></br>
                             <Button.Group >
                                 <Button color='blue' id="botoes" onClick={this.goBack}>
@@ -275,8 +272,8 @@ export default class registergame extends Component {
                                 </Button>
                             </Button.Group>
                         </div>
-                    </div>
-                </form>
+                    
+               
             </div>
             </div>
         );

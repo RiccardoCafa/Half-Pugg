@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import './curriculo.css';
-import { Image, Segment, Grid, Loader, Icon, Menu, Container, Rating } from 'semantic-ui-react'
+import { Image, Segment, Grid, Loader, Icon, Menu, Container, Rating, Header } from 'semantic-ui-react'
 import Headera from '../Components/headera';
 import api from '../services/api';
 import gostosao from '../images/chris.jpg';
-import OWCard from '../Components/OWCard';
+
 import getPlayer from '../Components/getPlayer';
 import CurriculoRightSide from '../Components/curriculoRightSide';
-import DOTACard from '../Components/DOTACard';
+import GameView from '../Components/gameView';
 
 export default class Curriculo extends Component {
 
@@ -64,6 +64,14 @@ export default class Curriculo extends Component {
                 </div>
                 <div>
                     <Segment style={{'marginLeft': '2%', 'marginRight': '2%', 'marginTop': '2%'}}>
+                        <Segment style={{marginTop: '1%', marginBottom: '1%', marginLeft: '0.5%', marginRight: '0.5%'}} > 
+                            <Header textAlign='center' as='h2'>
+                                <Icon name='clipboard outline'></Icon>
+                                <Header.Content>
+                                Currículo   
+                                </Header.Content>
+                            </Header>
+                        </Segment>
                         <Grid columns={2} style={{'marginBottom': '5%'}}>
                             <Grid.Column width={2}>
                                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '3%'}}>
@@ -113,17 +121,8 @@ export default class Curriculo extends Component {
                                         </div>
                                 </div>
                               
-                                <Grid columns = {2} style={{'marginTop': '1%', 'marginLeft': '1%'}}>
-                                    <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
-                                           <OWCard {...this.state.Gamer}/> 
-                                    </Grid.Column>
-                                    <Grid.Column width={7} style={{'marginLeft': '1%', 'marginRight': '1%', 'marginBottom': '1%'}} >
-                                            <DOTACard {...this.state.Gamer}/>
-                                    </Grid.Column>
-                                </Grid>
+                                <GameView gamer = {this.state.Gamer} ShowOw = {true} ShowDota = {true}/>
 
-                                    {/* <OWCard {...this.state.Gamer}></OWCard>
-                                    <DOTACard {...this.state.Gamer}></DOTACard> */}
                                 </div>
                             </Grid.Column>
                             <Grid.Column width={4} id='coluna-3' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', alignContent: 'center'}}>

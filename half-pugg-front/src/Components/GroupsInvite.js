@@ -72,7 +72,7 @@ class GroupsInvite extends Component {
         }
         return <div>
             {this.state.MyGroups.length === 0 ?
-                <Modal trigger={<Button basic fluid color='green'>Convidar para um grupo!</Button>} open={this.state.open} onOpen={this.setOpen} onClose={this.setClose}>
+                <Modal trigger={<Icon style={{cursor:'pointer'}} name = 'comments outline'/>} open={this.state.open} onOpen={this.setOpen} onClose={this.setClose}>
                         <Header size='medium' icon='users' style={{'marginLeft': '3%'}} content='Ops! Você não possui grupos'></Header>
                         <Modal.Content>
                             <Modal.Description>
@@ -83,7 +83,7 @@ class GroupsInvite extends Component {
                             <Button basic positive onClick={this.toGroupsPage}>Acessar meus grupos</Button>
                         </Modal.Actions>
                 </Modal>
-                :   <Modal trigger={<Button basic fluid color='green'>Convidar para um grupo!</Button>} open={this.state.open} onOpen={this.setOpen} onClose={this.setClose}>
+                :   <Modal trigger={<Icon style={{cursor:'pointer'}} name = 'comments outline'/>} open={this.state.open} onOpen={this.setOpen} onClose={this.setClose}>
                         <Header size='medium' icon='users' content='Convide para os grupos que você deseja'></Header>
                         {this.state.MyGroups.map((group) => 
                             <Modal.Content key={group.ID}>
