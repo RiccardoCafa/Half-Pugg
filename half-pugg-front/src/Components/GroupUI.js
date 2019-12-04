@@ -7,11 +7,12 @@ class GoupList extends Component{
 
     render() {
         return(
-            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'left'}}>
+            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'left',marginLeft : '2%',marginRight: '2%'}}>
                
                     {this.props.groups.map((g)=>
-                        
+                        <div style={{marginRight: '0.5%',marginLeft:'0.5%'}}>
                             <CardGroup group={g} history = { this.props.history} />
+                        </div>
                     )}
                     
               

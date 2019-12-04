@@ -14,12 +14,12 @@ class GameView extends Component{
         return(
             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'left'}}>
                 
-                
-                        {this.props.ShowOw === true ?<OWCard {...this.props.gamer}/> : null }
-                    
-                        {this.props.ShowDota === true ? <DOTACard {...this.props.gamer}/>:null}
-              
-            
+                <div style={{marginRight: '0.5%',marginLeft:'0.5%'}}>
+                    {this.props.ShowOw === true ?<OWCard {...this.props.gamer}/> : null }
+                </div>
+                <div style={{marginRight: '0.5%',marginLeft:'0.5%'}}>
+                    {this.props.ShowDota === true ? <DOTACard {...this.props.gamer}/>:null}
+                </div>                    
             </div>
            
         )
