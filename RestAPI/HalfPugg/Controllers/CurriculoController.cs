@@ -24,9 +24,7 @@ namespace HalfPugg.Controllers
         [Route("api/Curriculo")]
         public IHttpActionResult GetCurriculoInfo(int GamerID)
         {
-            // TODO validação de conta privada/publica
             CurriculoInformation curriculoInfo = null;
-
             curriculoInfo = new CurriculoInformation();
             Player p1 = db.Gamers.Find(GamerID);
             curriculoInfo.gamer = db.Gamers.Find(GamerID);
