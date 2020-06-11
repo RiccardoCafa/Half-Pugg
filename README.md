@@ -34,3 +34,8 @@ react
 semantic-ui-react
 CanvasJS
 axios
+
+Watch on youtube a brief usage of the website>
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=uxwJ_hiHZuM" target="_blank"><img src="http://img.youtube.com/vi/uxwJ_hiHZuM/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
